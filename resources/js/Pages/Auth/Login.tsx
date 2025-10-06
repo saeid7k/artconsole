@@ -1,4 +1,3 @@
-import InputError from '@/Components/InputError';
 // import PrimaryButton from '@/components/PrimaryButton';
 // import { Checkbox } from '@/components/ui/checkbox';
 // import { Input } from '@/components/ui/input';
@@ -52,7 +51,7 @@ export default function Login({
               onChange={(e) => setData('email', e.target.value)}
               required
             />
-            <InputError message={errors.email} className="mt-2" />
+            {/* <InputError message={errors.email} className="mt-2" /> */}
           </div>
 
           <div>
@@ -61,7 +60,7 @@ export default function Login({
               onChange={(e) => setData('password', e.target.value)}
               required
             />
-            <InputError message={errors.password} className="mt-2" />
+            {/* <InputError message={errors.password} className="mt-2" /> */}
           </div>
 
           <Checkbox
