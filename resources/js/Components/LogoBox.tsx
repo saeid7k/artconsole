@@ -11,14 +11,12 @@ function LogoBox({
   title = null
 }: Props) {
 
-  const user = usePage().props.auth.user
-
-  const defaultTitle = `${user.firstname}'s Gallery`
+  const { gallery }: any = usePage().props
 
   return (
     <div className="flex items-center gap-3">
-      <img src={logo} alt="Logo" className="w-8 h-8 mb-1" />
-      <div className="text-xl font-semibold text-center">{title ?? defaultTitle}</div>
+      <img src={logo} alt="Logo" className="w-10 h-10 p-1 mb-1 shadow rounded" />
+      <div className="text-xl font-semibold text-center">{title ?? gallery?.name}</div>
     </div>
   )
 }
