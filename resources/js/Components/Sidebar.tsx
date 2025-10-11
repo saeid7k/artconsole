@@ -1,9 +1,9 @@
 import { useApp } from "@/contexts/AppContext";
 import colors from "@/Themes/theme";
-import { ArrowLeftDoubleFreeIcons, ArrowRightDoubleFreeIcons, ContactIcon, DashboardBrowsingIcon, Image02Icon, InvoiceIcon, PresentationLineChart01Icon } from "@hugeicons/core-free-icons";
+import { ContactIcon, DashboardBrowsingIcon, Image02Icon, InvoiceIcon, PresentationLineChart01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
-import { Button, Layout, Menu } from "antd";
+import { Layout, Menu } from "antd";
 
 function Sidebar() {
 
@@ -34,16 +34,10 @@ function Sidebar() {
         border: '1px solid',
         borderColor: colors.slate['200'],
         borderWidth: '0 1px 0 0',
+        width: '100%',
+        position: 'relative',
       }}
     >
-      <Button
-        shape="circle"
-        type="default"
-        className="absolute top-2 -right-4 z-10"
-        onClick={toggleSidebar}
-      >
-        <HugeiconsIcon size={20} icon={ArrowLeftDoubleFreeIcons} altIcon={ArrowRightDoubleFreeIcons} showAlt={sidebarCollapsed} />
-      </Button>
       <Menu
         mode="inline"
         inlineCollapsed={sidebarCollapsed}
