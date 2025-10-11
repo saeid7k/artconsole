@@ -10,9 +10,45 @@ class ContactController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index( Request $request)
     {
-        //
+      $user = auth()->user();
+      $contacts = $user->contacts()
+        ->when($request->search, function ($q) use ($request) {
+          $search = '%' . strtolower($request->search) . '%';
+          $q->where(function ($q) use ($search) {
+            $q->whereRaw('LOWER(firstname) LIKE ?', $search)
+              ->orWhereRaw('LOWER(lastname) LIKE ?', $search)
+              ->orWhereRaw('LOWER(email) LIKE ?', $search)
+              ->orWhereRaw('LOWER(phone) LIKE ?', $search)
+              ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(address, '$.street'))) LIKE ?", $search)
+              ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(address, '$.city'))) LIKE ?", $search)
+              ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(address, '$.province'))) LIKE ?", $search)
+              ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(address, '$.postal_code'))) LIKE ?", $search)
+              ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(address, '$.country'))) LIKE ?", $search)
+              ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(business, '$.name'))) LIKE ?", $search)
+              ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(business, '$.position'))) LIKE ?", $search)
+              ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(business, '$.phone'))) LIKE ?", $search)
+              ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(business, '$.email'))) LIKE ?", $search)
+              ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(business, '$.website'))) LIKE ?", $search);
+          });
+        })
+        ->when($request->sort_by && $request->sort_order, function ($q) use ($request) {
+          if ($request->sort_by === 'full_name') {
+            $q->orderBy('firstname', $request->sort_order)->orderBy('lastname', $request->sort_order);
+          } elseif ($request->sort_by === 'formatted_address') {
+            $q->orderByRaw("JSON_UNQUOTE(JSON_EXTRACT(address, '$.street')) " . ($request->sort_order === 'asc' ? 'ASC' : 'DESC'));
+          } else {
+            $q->orderBy($request->sort_by, $request->sort_order);
+          }
+        }, function ($q) {
+          $q->orderBy('firstname', 'asc')->orderBy('lastname', 'asc');
+        })
+        ->paginate($request->per_page ?? 10)->withQueryString();
+
+      return inertia('Contacts/ContactsIndex', [
+        'contacts' => $contacts
+      ]);
     }
 
     /**
