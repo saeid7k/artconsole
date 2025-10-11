@@ -3,7 +3,9 @@ import Sidebar from "@/Components/Sidebar";
 import AppProvider, { useApp } from "@/contexts/AppContext";
 import { useWindow } from "@/hooks/useWindow";
 import colors from "@/Themes/theme";
-import { ConfigProvider, Layout } from "antd";
+import { ArrowLeftDoubleFreeIcons, ArrowRightDoubleFreeIcons } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Button, ConfigProvider, Layout } from "antd";
 import { Content, Footer, Header } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
 import React, { PropsWithChildren } from "react";
@@ -15,11 +17,11 @@ interface AppProps extends PropsWithChildren {
 
 function App ({ title = '', actionsBar = null, children }: AppProps) {
 
-  const { sidebarCollapsed } = useApp()
+  const { sidebarCollapsed, toggleSidebar } = useApp()
   const { scrollY } = useWindow()
 
   return (
-    <Layout className="min-h-[100vh]">
+    <Layout className="fixed w-full h-full">
       <Header
         className={`flex items-center bg-light leading-normal sticky top-0 z-10 w-full transition-all ${
           scrollY > 0 ? ' shadow-md' : ''
@@ -29,16 +31,28 @@ function App ({ title = '', actionsBar = null, children }: AppProps) {
           <LogoBox />
         </div>
       </Header>
-      <Layout>
-        <Sider
-          theme="light"
-          className="bg-light"
-          collapsed={sidebarCollapsed}
-          collapsedWidth={50}
+      <Layout className="">
+        <div className="relative h-full">
+          <Sider
+            theme="light"
+            className="h-full bg-light overflow-y-auto overflow-x-visible"
+            collapsed={sidebarCollapsed}
+            collapsedWidth={50}
+          >
+            <Sidebar />
+          </Sider>
+          <Button
+            shape="circle"
+            type="default"
+            className="absolute top-2 -right-4 z-10"
+            onClick={toggleSidebar}
+          >
+            <HugeiconsIcon size={20} icon={ArrowLeftDoubleFreeIcons} altIcon={ArrowRightDoubleFreeIcons} showAlt={sidebarCollapsed} />
+          </Button>
+        </div>
+        <Layout
+          className="overflow-y-auto my-1"
         >
-          <Sidebar />
-        </Sider>
-        <Layout>
           <Content
             className="flex items-center justify-between px-6 py-3 w-full h-12 grow-0"
           >
@@ -52,7 +66,7 @@ function App ({ title = '', actionsBar = null, children }: AppProps) {
           </Content>
         </Layout>
       </Layout>
-      <Footer className="bg-light">
+      <Footer className="bg-light py-2">
         Footer...
       </Footer>
     </Layout>
