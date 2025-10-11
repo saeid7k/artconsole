@@ -43,8 +43,18 @@ code {
   color: theme('colors.purple.500');
 }
 
+.light-small {
+  color: theme('colors.gray.400');
+  font-weight: 300;
+  font-size: small;
+}
+
 .bg-light {
   background-color: var(--bg-light);
+}
+
+.text-muted {
+  color: theme('colors.gray.400');
 }
 
 .ant-layout-sider .ant-menu-item-icon {
