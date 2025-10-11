@@ -1,6 +1,7 @@
 import LogoBox from "@/Components/LogoBox";
 import Sidebar from "@/Components/Sidebar";
 import AppProvider, { useApp } from "@/contexts/AppContext";
+import { useWindow } from "@/hooks/useWindow";
 import colors from "@/Themes/theme";
 import { ConfigProvider, Layout } from "antd";
 import { Content, Footer, Header } from "antd/es/layout/layout";
@@ -13,11 +14,16 @@ interface AppProps extends PropsWithChildren {
 }
 
 function App ({ title = '', actionsBar = null, children }: AppProps) {
-  const { sidebarCollapsed, toggleSidebar } = useApp()
+
+  const { sidebarCollapsed } = useApp()
+  const { scrollY } = useWindow()
+
   return (
     <Layout className="min-h-[100vh]">
       <Header
-        className="flex items-center bg-light leading-normal"
+        className={`flex items-center bg-light leading-normal sticky top-0 z-10 w-full transition-all ${
+          scrollY > 0 ? ' shadow-md' : ''
+        }`}
       >
         <div>
           <LogoBox />

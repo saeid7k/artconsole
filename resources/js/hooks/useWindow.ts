@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // Tailwind default breakpoints
 const breakpoints = {
@@ -10,7 +10,10 @@ const breakpoints = {
   '2xl': 1536,
 };
 
-export const useBreakpoints = () => {
+export const useWindow = () => {
+
+  // Breakpoint
+
   const [breakpoint, setBreakpoint] = useState<string>('sm');
 
   useEffect(() => {
@@ -27,5 +30,20 @@ export const useBreakpoints = () => {
     return () => window.removeEventListener('resize', check);
   }, []);
 
-  return breakpoint;
+  // Window Position
+
+  const [scrollY, setScrollY] = useState<number>(0);
+  const [scrollX, setScrollX] = useState<number>(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+      setScrollX(window.scrollX);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return {breakpoint, scrollY, scrollX}
 };
