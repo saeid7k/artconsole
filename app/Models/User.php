@@ -66,6 +66,7 @@ class User extends Authenticatable
     $owned = $this->galleriesOwned()->get();
 
     $shared = $this->belongsToMany(Gallery::class, 'gallery_user')
+      ->select('galleries.id', 'galleries.name')
       ->withPivot('access')
       ->withTimestamps()
       ->get();

@@ -31,14 +31,16 @@ class HandleInertiaRequests extends Middleware
   public function share(Request $request): array
   {
     $user = $request->user();
-    $gallery = $user?->currentGallery() ?? null;
+    $currentGallery = $user?->currentGallery() ?? null;
+    $galleries = $user?->galleries() ?? null;
 
     return [
       ...parent::share($request),
       'auth' => [
         'user' => $user,
       ],
-      'gallery' => $gallery,
+      'current_gallery' => $currentGallery,
+      'galleries' => $galleries,
       'flash' => [
         'type' => Session::get('flash.type'),
         'message' => Session::get('flash.message'),
