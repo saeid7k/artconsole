@@ -37,7 +37,8 @@ function App ({ title = '', actionsBar = null, children }: AppProps) {
         <Button
           shape="circle"
           type="default"
-          className={`absolute top-2 z-10 ${sidebarCollapsed ? `left-[${collapsedWidth - 16}px]` : `left-[${expandedWidth - 16}px]`}`}
+          className={`absolute top-2 z-10`}
+          style={{ left: sidebarCollapsed ? collapsedWidth - 16 : expandedWidth - 16 }}
           onClick={toggleSidebar}
         >
           <HugeiconsIcon size={20} icon={ArrowLeftDoubleFreeIcons} altIcon={ArrowRightDoubleFreeIcons} showAlt={sidebarCollapsed} />
