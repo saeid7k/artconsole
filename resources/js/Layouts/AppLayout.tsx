@@ -19,11 +19,13 @@ function App ({ title = '', actionsBar = null, children }: AppProps) {
 
   const { sidebarCollapsed, toggleSidebar } = useApp()
   const { scrollY } = useWindow()
+  const collapsedWidth = 50
+  const expandedWidth = 200
 
   return (
     <Layout className="fixed w-full h-full">
       <Header
-        className={`flex items-center bg-light leading-normal sticky top-0 z-10 w-full transition-all ${
+        className={`flex items-center bg-light leading-normal px-5 sticky top-0 z-10 w-full transition-all ${
           scrollY > 0 ? ' shadow-md' : ''
         }`}
       >
@@ -31,25 +33,26 @@ function App ({ title = '', actionsBar = null, children }: AppProps) {
           <LogoBox />
         </div>
       </Header>
-      <Layout className="">
-        <div className="relative h-full">
-          <Sider
-            theme="light"
-            className="h-full bg-light overflow-y-auto overflow-x-visible"
-            collapsed={sidebarCollapsed}
-            collapsedWidth={50}
-          >
-            <Sidebar />
-          </Sider>
-          <Button
-            shape="circle"
-            type="default"
-            className="absolute top-2 -right-4 z-10"
-            onClick={toggleSidebar}
-          >
-            <HugeiconsIcon size={20} icon={ArrowLeftDoubleFreeIcons} altIcon={ArrowRightDoubleFreeIcons} showAlt={sidebarCollapsed} />
-          </Button>
-        </div>
+      <Layout className="relative">
+        <Button
+          shape="circle"
+          type="default"
+          className={`absolute top-2 z-10 ${sidebarCollapsed ? `left-[${collapsedWidth - 16}px]` : `left-[${expandedWidth - 16}px]`}`}
+          onClick={toggleSidebar}
+        >
+          <HugeiconsIcon size={20} icon={ArrowLeftDoubleFreeIcons} altIcon={ArrowRightDoubleFreeIcons} showAlt={sidebarCollapsed} />
+        </Button>
+        <Sider
+          theme="light"
+          className="h-full bg-light overflow-y-auto overflow-x-visible"
+          collapsed={sidebarCollapsed}
+          collapsedWidth={collapsedWidth}
+          width={expandedWidth}
+        >
+          <Sidebar />
+        </Sider>
+        {/* <div className="relative h-full">
+        </div> */}
         <Layout
           className="overflow-y-auto my-1"
         >
@@ -67,7 +70,7 @@ function App ({ title = '', actionsBar = null, children }: AppProps) {
         </Layout>
       </Layout>
       <Footer className="bg-light py-2">
-        Footer...
+        <div className="text-center">...footer...</div>
       </Footer>
     </Layout>
   )

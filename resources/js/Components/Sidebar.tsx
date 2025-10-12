@@ -11,21 +11,23 @@ function Sidebar() {
   const { sidebarCollapsed, toggleSidebar } = useApp()
 
   const items = [
-    { key: 'dashboard', icon: <HugeiconsIcon icon={DashboardBrowsingIcon} />, label: 'Dashboard', path: '/' },
-    { key: 'exhibitions', icon: <HugeiconsIcon icon={PresentationLineChart01Icon} />, label: 'Exhibitions', path: '/exhibitions' },
-    { key: 'artworks', icon: <HugeiconsIcon icon={Image02Icon} />, label: 'Artworks', path: '/artworks' },
-    { key: 'invoices', icon: <HugeiconsIcon icon={InvoiceIcon} />, label: 'Sales & Invoices', path: '/invoices' },
-    { key: 'contacts', icon: <HugeiconsIcon icon={ContactIcon} />, label: 'Contacts', path: '/contacts' },
+    { key: 'dashboard', icon: <HugeiconsIcon icon={DashboardBrowsingIcon} />, label: 'Dashboard', route: 'dashboard' },
+    { key: 'exhibitions', icon: <HugeiconsIcon icon={PresentationLineChart01Icon} />, label: 'Exhibitions', route: 'exhibitions.index' },
+    { key: 'artworks', icon: <HugeiconsIcon icon={Image02Icon} />, label: 'Artworks', route: 'artworks.index' },
+    { key: 'invoices', icon: <HugeiconsIcon icon={InvoiceIcon} />, label: 'Sales & Invoices', route: 'invoices.index' },
+    { key: 'contacts', icon: <HugeiconsIcon icon={ContactIcon} />, label: 'Contacts', route: 'contacts.index' },
   ]
 
   function handleMenuClick(key: string) {
     let selected = items.find(item => item.key === key);
     if (selected) {
-      router.visit(selected.path || `/${selected.key}`)
+      router.get(route(selected.route))
     }
   }
 
-  const activeKey = items.find(item => item.path === url)?.key || 'quick-convert';
+  const activeKey = items.find(item => {
+    return url.includes(item.route.split('.')[0])
+  })?.key || 'dashboard'
 
   return (
     <Layout
