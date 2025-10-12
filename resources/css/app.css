@@ -43,7 +43,7 @@ code {
   color: theme('colors.purple.500');
 }
 
-.light-small {
+.text-ghost {
   color: theme('colors.gray.400');
   font-weight: 300;
   font-size: small;
@@ -67,4 +67,9 @@ code {
 
 .ant-form-item-label > label {
   color: var(--text-label) !important;
+}
+
+.ant-btn-icon {
+  display: grid;
+  place-items: center;
 }
