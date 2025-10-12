@@ -23,7 +23,7 @@ function ContactsIndex({ contacts }: { contacts: PageProps }) {
       title={
         <div className="flex items-center gap-2">
           <div>Contacts</div>
-          <small className="text-muted font-light">({contacts.total})</small>
+          <small className="text-muted font-light">({contacts.total?.toLocaleString()})</small>
         </div>
       }
       actionsBar={

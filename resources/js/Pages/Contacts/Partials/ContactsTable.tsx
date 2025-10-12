@@ -1,5 +1,6 @@
 import ContactStack from '@/Components/ContactStack';
-import { useBreakpoints } from '@/hooks/useBreakPoints';
+import RelationshipTag from '@/Components/RelationshipTag';
+import { useWindow } from '@/hooks/useWindow';
 import { PageProps } from '@/types';
 import { Contact } from '@/types/contact';
 import { formatPhoneNumber } from '@/utils/formatter';
@@ -8,10 +9,11 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { router } from '@inertiajs/react';
 import type { TableProps } from 'antd';
 import { Table } from 'antd';
+import ContactsActions from './ContactsActions';
 
 function ContactsTable({ contacts }: { contacts: PageProps }) {
 
-  const breakPoint = useBreakpoints()
+  const { breakpoint } = useWindow()
 
   const columns: TableProps['columns'] = [
     {
@@ -22,7 +24,7 @@ function ContactsTable({ contacts }: { contacts: PageProps }) {
       sortDirections: ['ascend', 'descend'],
       render: (text, record): JSX.Element => (<ContactStack contact={record as Contact} />),
       width: 200,
-      fixed: breakPoint == 'xs' ? undefined : 'left',
+      fixed: breakpoint == 'xs' ? undefined : 'left',
     },
     {
       title: 'Address',
@@ -56,6 +58,30 @@ function ContactsTable({ contacts }: { contacts: PageProps }) {
         )
       },
       width: 180,
+    },
+    {
+      title: 'Relationship',
+      dataIndex: 'relationship',
+      key: 'relationship',
+      filters: [
+        { text: 'Artist', value: 'artist' },
+        { text: 'Vendor', value: 'vendor' },
+        { text: 'Collector', value: 'collector' },
+        { text: 'Other', value: 'other' },
+      ],
+      sorter: (a, b) => a.relationship.localeCompare(b.relationship),
+      sortDirections: ['ascend', 'descend'],
+      render: (text) => {
+        return (<RelationshipTag relationship={text} />)
+      },
+      width: 180,
+    },
+    {
+      title: 'Actions',
+      key: 'actions',
+      render: (_, record) => (<ContactsActions contact={record as Contact} />),
+      fixed: ['xs', 'sm'].includes(breakpoint) ? undefined : 'right',
+      width: 100,
     }
   ];
 
@@ -63,8 +89,8 @@ function ContactsTable({ contacts }: { contacts: PageProps }) {
     <Table
       columns={columns}
       dataSource={contacts.data}
-      scroll={{ x: 'max-content' }}
       size='small'
+      scroll={{ x: 'max-content' }}
       pagination={{
         current: contacts.current_page,
         total: contacts.total,
@@ -77,6 +103,11 @@ function ContactsTable({ contacts }: { contacts: PageProps }) {
         urlParams.set('sort_order', sorter.order === 'ascend' ? 'asc' : 'desc');
         urlParams.set('page', String(pagination.current));
         urlParams.set('per_page', String(pagination.pageSize));
+        if (filters.relationship) {
+          urlParams.set('relationship', String(filters.relationship));
+        } else {
+          urlParams.delete('relationship');
+        }
 
         router.get(
           route('contacts.index'),
