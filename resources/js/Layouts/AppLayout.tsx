@@ -1,4 +1,4 @@
-import LogoBox from "@/Components/LogoBox";
+import GallerySwitch from "@/Components/GallerySwitch";
 import Sidebar from "@/Components/Sidebar";
 import AppProvider, { useApp } from "@/contexts/AppContext";
 import { useWindow } from "@/hooks/useWindow";
@@ -25,12 +25,12 @@ function App ({ title = '', actionsBar = null, children }: AppProps) {
   return (
     <Layout className="fixed w-full h-full">
       <Header
-        className={`flex items-center bg-light leading-normal px-5 sticky top-0 z-10 w-full transition-all ${
+        className={`flex items-center bg-light leading-normal sticky top-0 z-10 w-full transition-all ${
           scrollY > 0 ? ' shadow-md' : ''
         }`}
       >
         <div>
-          <LogoBox />
+          <GallerySwitch />
         </div>
       </Header>
       <Layout className="relative">
@@ -86,9 +86,12 @@ function AppLayout({ title = '', actionsBar = null, children }: AppProps) {
           colorPrimary: colors.purple['500'],
           colorTextSecondary: colors.gray['500'],
           colorTextLabel: colors.gray['300'],
-
-          // Alias Token
-          // colorBgContainer: '#f6ffed',
+        },
+        components: {
+          Layout: {
+            headerHeight: 48,
+            headerPadding: '4px 16px',
+          },
         },
       }}
     >
