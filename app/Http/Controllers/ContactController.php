@@ -46,6 +46,10 @@ class ContactController extends Controller
         }, function ($q) {
           $q->orderBy('firstname', 'asc')->orderBy('lastname', 'asc');
         })
+        ->when($request->relationship, function ($q) use ($request) {
+          $relationships = explode(',', $request->relationship);
+          $q->whereIn('relationship', $relationships);
+        })
         ->paginate($request->per_page ?? 10)->withQueryString();
 
       return inertia('Contacts/ContactsIndex', [
