@@ -20,6 +20,7 @@ return new class extends Migration
       $table->string('phone')->nullable();
       $table->json('address')->nullable();
       $table->string('website')->nullable();
+      $table->enum('relationship', ['artist', 'vendor', 'collector', 'other'])->default('collector');
       $table->json('business')->nullable();
       $table->date('birthday')->nullable();
       $table->timestamps();
