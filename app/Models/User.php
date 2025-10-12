@@ -77,9 +77,4 @@ class User extends Authenticatable
   {
     return Gallery::whereId($this->getMeta('current_gallery_id'))->first();
   }
-
-  public function contacts(): HasMany
-  {
-    return $this->hasMany(Contact::class);
-  }
 }

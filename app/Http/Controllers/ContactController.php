@@ -13,7 +13,9 @@ class ContactController extends Controller
     public function index( Request $request)
     {
       $user = auth()->user();
-      $contacts = $user->contacts()
+      $gallery = $user->currentGallery();
+
+      $contacts = $gallery->contacts()
         ->when($request->search, function ($q) use ($request) {
           $search = '%' . strtolower($request->search) . '%';
           $q->where(function ($q) use ($search) {

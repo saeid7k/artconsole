@@ -18,7 +18,14 @@ class Contact extends Model
 
   // Appends
 
-  protected $appends = ['full_name', 'formatted_address'];
+  protected $appends = ['abilities', 'full_name', 'formatted_address'];
+
+  public function getAbilitiesAttribute(): array
+  {
+    return [
+      'delete' => auth()->user()->can('delete', $this),
+    ];
+  }
 
   public function getFullNameAttribute(): string
   {
@@ -38,8 +45,13 @@ class Contact extends Model
 
   // Relationships
 
+  public function gallery()
+  {
+    return $this->belongsTo(Gallery::class, 'gallery_id');
+  }
+
   public function owner()
   {
-    return $this->belongsTo(User::class, 'user_id');
+    return User::find($this->gallery->user_id);
   }
 }

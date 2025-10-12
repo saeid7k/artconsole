@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Gallery extends Model
 {
@@ -29,5 +30,10 @@ class Gallery extends Model
     }
 
     return $members;
+  }
+
+  public function contacts(): HasMany
+  {
+    return $this->hasMany(Contact::class);
   }
 }
