@@ -11,6 +11,17 @@ class Gallery extends Model
     'address' => 'object',
   ];
 
+  // Appends
+
+  protected $appends = [ 'members_count' ];
+
+  public function getMembersCountAttribute()
+  {
+    return $this->members()->count();
+  }
+
+  // Relationships
+
   public function owner()
   {
     return $this->belongsTo(User::class, 'user_id');
