@@ -1,20 +1,42 @@
 import { AddIcon, AddMaleIcon, ArrowDown01Icon, CheckmarkCircle01Icon, GearsFreeIcons, GearsIcon, SettingsFreeIcons } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { usePage } from "@inertiajs/react";
-import { Button, Card, Divider, Dropdown, Tooltip } from "antd";
+import { router, usePage } from "@inertiajs/react";
+import { Button, Card, Divider, Dropdown, message, Tooltip } from "antd";
 import GalleryAvatar from "./GalleryAvatar";
 import colors from "@/Themes/theme";
 import GalleryAccessTag from "./GalleryAccessTag";
+import axios from "axios";
+import { useState } from "react";
 
 function GallerySwitch() {
 
-  const { current_gallery, galleries }: any = usePage().props
+  // Constants & States
 
+  const { current_gallery, galleries }: any = usePage().props
+  const [open, setOpen] = useState(false);
   const isClickedYet = localStorage.getItem('gallerySwitchClicked') == 'true';
+
+  // Functions
 
   function handleClick() {
     localStorage.setItem('gallerySwitchClicked', 'true');
   }
+
+  function switchGallery(galleryId: string) {
+    axios.post(route('galleries.set-current'), { gallery_id: galleryId })
+      .then(() => {
+        message.success('Switched Gallery');
+        router.reload()
+      })
+      .catch((error) => {
+        message.error(error.response?.data?.message || 'Failed to switch gallery');
+      })
+      .finally(() => {
+        setOpen(false);
+      });
+  }
+
+  // Render
 
   function Popup() {
     return (
@@ -65,10 +87,11 @@ function GallerySwitch() {
           </div>
           {galleries.length > 0 && galleries.map((gallery: any) => (
             <Button
+              key={gallery.id}
               variant="text"
               color="default"
               className="flex justify-between items-center px-1 gap-2"
-              key={gallery.id}
+              onClick={() => switchGallery(gallery.id)}
             >
               <div className="flex items-center gap-1">
                 <GalleryAvatar gallery={gallery} size="small" shadow />
@@ -89,6 +112,8 @@ function GallerySwitch() {
     <Dropdown
       trigger={['click']}
       popupRender={() => <Popup />}
+      onOpenChange={(flag) => setOpen(flag)}
+      open={open}
     >
       <Button
         className="flex items-center gap-2 px-1 group"
