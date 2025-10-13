@@ -1,6 +1,6 @@
 import colors from "@/Themes/theme";
 import { GalleryProps } from "@/types/gallery";
-import { User } from "@/types/user";
+import { UserProps } from "@/types/user";
 import { AddIcon, AddMaleIcon, ArrowDown01Icon, CheckmarkCircle01Icon, SettingsFreeIcons } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
@@ -17,7 +17,7 @@ function GallerySwitch() {
     current_gallery: GalleryProps,
     galleries: GalleryProps[],
     auth: {
-      user: User
+      user: UserProps
     }
   }
   const { current_gallery, galleries } = usePage<UsePageProps>().props;
