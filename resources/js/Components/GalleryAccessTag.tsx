@@ -11,12 +11,12 @@ function GalleryAccessTag({gallery, className}: Props) {
 
   const { user } = usePage().props.auth
 
-  const access = gallery.user_id == user.id ? 'owner' : gallery.pivot?.access || 'viewer'
+  const access = gallery.user_id == user.id ? 'owner' : (gallery.pivot?.access || 'viewer')
 
   const colors: any = {
     'owner': 'gold',
     'editor': 'blue',
-    'viewer': 'gray'
+    'viewer': 'default'
   }
 
   return (
