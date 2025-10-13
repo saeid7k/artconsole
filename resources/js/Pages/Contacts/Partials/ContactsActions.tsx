@@ -1,10 +1,10 @@
-import { Contact } from "@/types/contact"
-import { Delete01Icon, Delete02Icon, EyeIcon, PencilEditIcon, ViewIcon } from "@hugeicons/core-free-icons"
+import { ContactProps } from "@/types/contact"
+import { Delete02Icon, ViewIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router } from "@inertiajs/react"
 import { Button, Tooltip } from "antd"
 
-function ContactsActions({ contact }: { contact: Contact })
+function ContactsActions({ contact }: { contact: ContactProps })
 {
     return (
         <div

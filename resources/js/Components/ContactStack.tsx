@@ -1,9 +1,9 @@
-import { Contact } from "@/types/contact";
+import { ContactProps } from "@/types/contact";
 import { stringToColor } from "@/utils/colorHelper";
 import { getInitials } from "@/utils/stringHelper";
 import { Avatar } from "antd";
 
-function ContactStack({contact}: {contact: Contact}) {
+function ContactStack({contact}: {contact: ContactProps}) {
 
   return (
     <div className="flex items-center gap-2">
