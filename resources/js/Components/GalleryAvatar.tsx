@@ -1,9 +1,10 @@
+import { GalleryProps } from "@/types/gallery"
 import { getInitials } from "@/utils/stringHelper"
 import { Avatar } from "antd"
 import { twMerge } from "tailwind-merge"
 
 type Props = {
-  gallery: any,
+  gallery: GalleryProps,
   size?: 'small' | 'default' | 'large',
   shadow?: boolean,
 }

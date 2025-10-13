@@ -1,18 +1,26 @@
-import { AddIcon, AddMaleIcon, ArrowDown01Icon, CheckmarkCircle01Icon, GearsFreeIcons, GearsIcon, SettingsFreeIcons } from "@hugeicons/core-free-icons";
+import colors from "@/Themes/theme";
+import { GalleryProps } from "@/types/gallery";
+import { User } from "@/types/user";
+import { AddIcon, AddMaleIcon, ArrowDown01Icon, CheckmarkCircle01Icon, SettingsFreeIcons } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
 import { Button, Card, Divider, Dropdown, message, Tooltip } from "antd";
-import GalleryAvatar from "./GalleryAvatar";
-import colors from "@/Themes/theme";
-import GalleryAccessTag from "./GalleryAccessTag";
 import axios from "axios";
 import { useState } from "react";
+import GalleryAccessTag from "./GalleryAccessTag";
+import GalleryAvatar from "./GalleryAvatar";
 
 function GallerySwitch() {
 
   // Constants & States
-
-  const { current_gallery, galleries }: any = usePage().props
+  type UsePageProps = {
+    current_gallery: GalleryProps,
+    galleries: GalleryProps[],
+    auth: {
+      user: User
+    }
+  }
+  const { current_gallery, galleries } = usePage<UsePageProps>().props;
   const [open, setOpen] = useState(false);
   const isClickedYet = localStorage.getItem('gallerySwitchClicked') == 'true';
 
@@ -22,7 +30,7 @@ function GallerySwitch() {
     localStorage.setItem('gallerySwitchClicked', 'true');
   }
 
-  function switchGallery(galleryId: string) {
+  function switchGallery(galleryId: number) {
     axios.post(route('galleries.set-current'), { gallery_id: galleryId })
       .then(() => {
         message.success('Switched Gallery');
@@ -85,7 +93,7 @@ function GallerySwitch() {
               />
             </Tooltip>
           </div>
-          {galleries.length > 0 && galleries.map((gallery: any) => (
+          {galleries.length > 0 && galleries.map((gallery: GalleryProps) => (
             <Button
               key={gallery.id}
               variant="text"
