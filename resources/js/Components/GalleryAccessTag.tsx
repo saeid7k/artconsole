@@ -1,16 +1,22 @@
+import { GalleryProps } from "@/types/gallery"
 import { usePage } from "@inertiajs/react"
 import { Tag } from "antd"
 
-function GalleryAccessTag({gallery, className}: any) {
+type Props = {
+  gallery: GalleryProps,
+  className?: string,
+}
+
+function GalleryAccessTag({gallery, className}: Props) {
 
   const { user } = usePage().props.auth
 
-  const access = gallery.user_id == user.id ? 'Owner' : gallery.pivot.access
+  const access = gallery.user_id == user.id ? 'owner' : gallery.pivot?.access || 'viewer'
 
   const colors: any = {
-    'Owner': 'gold',
-    'Editor': 'blue',
-    'Viewer': 'gray'
+    'owner': 'gold',
+    'editor': 'blue',
+    'viewer': 'gray'
   }
 
   return (
