@@ -1,6 +1,6 @@
 import { Address, Business } from "./commonObjects";
 
-export interface Contact {
+export interface ContactProps {
   id: number;
   firstname: string;
   lastname: string;

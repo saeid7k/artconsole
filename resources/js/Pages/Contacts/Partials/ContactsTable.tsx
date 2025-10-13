@@ -2,7 +2,7 @@ import ContactStack from '@/Components/ContactStack';
 import RelationshipTag from '@/Components/RelationshipTag';
 import { useWindow } from '@/hooks/useWindow';
 import { PageProps } from '@/types';
-import { Contact } from '@/types/contact';
+import { ContactProps } from '@/types/contact';
 import { formatPhoneNumber } from '@/utils/formatter';
 import { Call02Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
@@ -22,7 +22,7 @@ function ContactsTable({ contacts }: { contacts: PageProps }) {
       key: 'full_name',
       sorter: (a, b) => a.full_name.localeCompare(b.full_name),
       sortDirections: ['ascend', 'descend'],
-      render: (text, record): JSX.Element => (<ContactStack contact={record as Contact} />),
+      render: (text, record): JSX.Element => (<ContactStack contact={record as ContactProps} />),
       width: 200,
       fixed: breakpoint == 'xs' ? undefined : 'left',
     },
@@ -79,7 +79,7 @@ function ContactsTable({ contacts }: { contacts: PageProps }) {
     {
       title: 'Actions',
       key: 'actions',
-      render: (_, record) => (<ContactsActions contact={record as Contact} />),
+      render: (_, record) => (<ContactsActions contact={record as ContactProps} />),
       fixed: ['xs', 'sm'].includes(breakpoint) ? undefined : 'right',
       width: 100,
     }
