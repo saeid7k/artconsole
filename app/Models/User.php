@@ -49,12 +49,21 @@ class User extends Authenticatable
     ];
   }
 
-  protected $appends = ['full_name'];
+  // Appends
+
+  protected $appends = ['full_name', 'is_admin'];
 
   public function getFullNameAttribute(): string
   {
     return trim($this->firstname . ' ' . $this->lastname);
   }
+
+  public function getIsAdminAttribute(): bool
+  {
+    return $this->id == 1;
+  }
+
+  // Relations
 
   public function galleriesOwned(): HasMany
   {
@@ -77,5 +86,10 @@ class User extends Authenticatable
   public function currentGallery()
   {
     return Gallery::whereId($this->getMeta('current_gallery_id'))->first();
+  }
+
+  public function is_admin()
+  {
+    return $this->id == 1;
   }
 }
