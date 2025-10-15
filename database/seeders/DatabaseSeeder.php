@@ -19,6 +19,16 @@ class DatabaseSeeder extends Seeder
         'lastname' => env('APP_NAME', 'App'),
         'username' => 'admin',
         'email' => env('ADMIN_EMAIL', 'admin@example.com'),
+        'phone' => '2345678901',
+        'website' => env('WEBSITE_URL', 'example.com'),
+        'address' => [
+          'unit' => 'Unit 1',
+          'street' => '123 Yonge St',
+          'city' => 'Toronto',
+          'province' => 'ON',
+          'postal_code' => 'A1A1A1',
+          'country' => 'Canada',
+        ],
         'password' => Hash::make('12345678'),
       ]);
 
