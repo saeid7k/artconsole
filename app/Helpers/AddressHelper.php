@@ -11,6 +11,17 @@ class AddressHelper
     return array_keys($provincesData['Canada']['provinces']);
   }
 
+  public static function formatAddress(object $address): string
+  {
+    $formatted = $address->unit ? $address->street . ' - ' . $address->unit : $address->street;
+    $formatted .= $address->city ? ', ' . $address->city : '';
+    $formatted .= $address->province ? ', ' . $address->province : '';
+    $formatted .= $address->postal_code ? ' ' . self::formatPostalCode($address->postal_code) : '';
+    $formatted .= $address->country ? ', ' . $address->country : '';
+
+    return $formatted;
+  }
+
   public static function formatPostalCode(string $postalCode): string
   {
     $postalCode = strtoupper(str_replace(' ', '', $postalCode));
