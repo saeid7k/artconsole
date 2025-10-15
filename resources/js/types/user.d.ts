@@ -4,4 +4,5 @@ export interface UserProps {
   lastname: string;
   email: string;
   email_verified_at?: string;
+  is_admin: boolean;
 }
