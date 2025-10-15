@@ -34,13 +34,7 @@ class Contact extends Model
 
   public function getFormattedAddressAttribute(): string
   {
-    $address = $this->address->unit ? $this->address->street . ' - ' . $this->address->unit : $this->address->street;
-    $address .= $this->address->city ? ', ' . $this->address->city : '';
-    $address .= $this->address->province ? ', ' . $this->address->province : '';
-    $address .= $this->address->postal_code ? ' ' . AddressHelper::formatPostalCode($this->address->postal_code) : '';
-    $address .= $this->address->country ? ', ' . $this->address->country : '';
-
-    return $address;
+    return AddressHelper::formatAddress($this->address);
   }
 
   // Relationships
