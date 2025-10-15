@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Helpers\AddressHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -46,12 +48,13 @@ class User extends Authenticatable
     return [
       'email_verified_at' => 'datetime',
       'password' => 'hashed',
+      'address' => 'object',
     ];
   }
 
   // Appends
 
-  protected $appends = ['full_name', 'is_admin'];
+  protected $appends = ['full_name', 'is_admin', 'formatted_address'];
 
   public function getFullNameAttribute(): string
   {
@@ -61,6 +64,11 @@ class User extends Authenticatable
   public function getIsAdminAttribute(): bool
   {
     return $this->id == 1;
+  }
+
+  public function getFormattedAddressAttribute(): string
+  {
+    return AddressHelper::formatAddress($this->address);
   }
 
   // Relations

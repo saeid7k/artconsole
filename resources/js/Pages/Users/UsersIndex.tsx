@@ -7,15 +7,15 @@ import UsersTable from "./Partials/UsersTable";
 function UsersIndex({ users }: { users: PageProps }) {
 
   function handleSearch(value: string) {
-    // const url = new URL(window.location.href);
-    // const params = new URLSearchParams(url.search);
-    // params.set('search', value);
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
+    params.set('search', value);
 
-    // router.get(
-    //   route('contacts.index'),
-    //   Object.fromEntries(params.entries()),
-    //   { preserveScroll: true, preserveState: true }
-    // );
+    router.get(
+      route('users.index'),
+      Object.fromEntries(params.entries()),
+      { preserveScroll: true, preserveState: true }
+    );
   }
 
   return (

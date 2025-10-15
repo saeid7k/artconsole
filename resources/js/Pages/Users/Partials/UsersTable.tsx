@@ -1,8 +1,12 @@
 import { useWindow } from '@/hooks/useWindow';
 import { PageProps } from '@/types';
+import { formatPhoneNumber } from '@/utils/formatter';
+import { getInitials } from '@/utils/stringHelper';
+import { Call02Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { router } from '@inertiajs/react';
 import type { TableProps } from 'antd';
-import { Table } from 'antd';
+import { Avatar, Table } from 'antd';
 
 function UsersTable({ users }: { users: PageProps }) {
 
@@ -15,7 +19,6 @@ function UsersTable({ users }: { users: PageProps }) {
       key: 'id',
       sorter: (a, b) => a.id - b.id,
       sortDirections: ['ascend', 'descend'],
-      // render: (text, record): JSX.Element => (<ContactStack contact={record as ContactProps} />),
       width: 30,
       fixed: breakpoint == 'xs' ? undefined : 'left',
     },
@@ -25,22 +28,27 @@ function UsersTable({ users }: { users: PageProps }) {
       key: 'full_name',
       sorter: (a, b) => a.full_name.localeCompare(b.full_name),
       sortDirections: ['ascend', 'descend'],
-      // render: (text, record): JSX.Element => (<ContactStack contact={record as ContactProps} />),
+      render: (text, record): JSX.Element => (
+        <div className='flex items-center gap-1'>
+          <Avatar size={'small'} className='text-xs'>{getInitials(record.full_name)}</Avatar>
+          <div>{record.full_name}</div>
+        </div>
+      ),
       width: 200,
       fixed: breakpoint == 'xs' ? undefined : 'left',
     },
     {
       title: 'Address',
-      // dataIndex: 'formatted_address',
+      dataIndex: 'formatted_address',
       key: 'formatted_address',
-      // sorter: (a, b) => a.formatted_address.localeCompare(b.formatted_address),
-      // sortDirections: ['ascend', 'descend'],
-      // render: (text) => (<div className="line-clamp-2">{text}</div>),
+      sorter: (a, b) => a.formatted_address.localeCompare(b.formatted_address),
+      sortDirections: ['ascend', 'descend'],
+      render: (text) => (<div className="line-clamp-2">{text}</div>),
       width: 200,
     },
     {
       title: 'Email',
-      // dataIndex: 'email',
+      dataIndex: 'email',
       key: 'email',
       sorter: (a, b) => a.email.localeCompare(b.email),
       sortDirections: ['ascend', 'descend'],
@@ -48,18 +56,18 @@ function UsersTable({ users }: { users: PageProps }) {
     },
     {
       title: 'Phone',
-      // dataIndex: 'phone',
+      dataIndex: 'phone',
       key: 'phone',
-      // sorter: (a, b) => a.phone.localeCompare(b.phone),
-      // sortDirections: ['ascend', 'descend'],
-      // render: (text) => {
-      //   return (
-      //     <div className='flex items-center gap-1'>
-      //       <HugeiconsIcon icon={Call02Icon} strokeWidth={1} size={20} />
-      //       {formatPhoneNumber(text)}
-      //     </div>
-      //   )
-      // },
+      sorter: (a, b) => a.phone.localeCompare(b.phone),
+      sortDirections: ['ascend', 'descend'],
+      render: (text) => {
+        return (
+          <div className='flex items-center gap-1'>
+            <HugeiconsIcon icon={Call02Icon} strokeWidth={1} size={20} />
+            {formatPhoneNumber(text)}
+          </div>
+        )
+      },
       width: 180,
     },
     {
