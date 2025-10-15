@@ -1,14 +1,16 @@
 import { useApp } from "@/contexts/AppContext";
 import colors from "@/Themes/theme";
-import { ContactIcon, DashboardBrowsingIcon, Image02Icon, InvoiceIcon, PresentationLineChart01Icon } from "@hugeicons/core-free-icons";
+import { UserProps } from "@/types/user";
+import { ContactIcon, DashboardBrowsingIcon, Image02Icon, InvoiceIcon, PresentationLineChart01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
-import { Layout, Menu } from "antd";
+import { Divider, Layout, Menu } from "antd";
 
 function Sidebar() {
 
-  const { url } = usePage();
-  const { sidebarCollapsed, toggleSidebar } = useApp()
+  const { url, props } = usePage()
+  const user = props.auth.user as UserProps
+  const { sidebarCollapsed } = useApp()
 
   const items = [
     { key: 'dashboard', icon: <HugeiconsIcon icon={DashboardBrowsingIcon} />, label: 'Dashboard', route: 'dashboard' },
@@ -18,14 +20,21 @@ function Sidebar() {
     { key: 'contacts', icon: <HugeiconsIcon icon={ContactIcon} />, label: 'Contacts', route: 'contacts.index' },
   ]
 
+  const adminItems = [
+    { key: 'users', icon: <HugeiconsIcon icon={UserMultipleIcon} />, label: 'Users', route: 'users.index' },
+  ]
+
+  const allItems = [...items, ...adminItems];
+
   function handleMenuClick(key: string) {
-    let selected = items.find(item => item.key === key);
+
+    let selected = allItems.find(item => item.key === key);
     if (selected) {
       router.get(route(selected.route))
     }
   }
 
-  const activeKey = items.find(item => {
+  const activeKey = allItems.find(item => {
     return url.includes(item.route.split('.')[0])
   })?.key || 'dashboard'
 
@@ -50,6 +59,28 @@ function Sidebar() {
         }}
         selectedKeys={[activeKey]}
       />
+
+      {user?.is_admin && (
+        <>
+          <Divider >
+            {!sidebarCollapsed && (
+              <div className="text-sm font-light">Admin Area</div>
+            )}
+          </Divider>
+
+          <Menu
+            mode="inline"
+            inlineCollapsed={sidebarCollapsed}
+            items={adminItems}
+            className="!border-none"
+            onClick={(e) => {
+              handleMenuClick(e.key);
+            }}
+            selectedKeys={[activeKey]}
+          />
+        </>
+      )}
+
     </Layout>
   );
 }
