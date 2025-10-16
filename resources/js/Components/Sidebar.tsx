@@ -1,15 +1,18 @@
 import { useApp } from "@/contexts/AppContext";
 import colors from "@/Themes/theme";
+import { AuthProps } from "@/types/auth";
 import { UserProps } from "@/types/user";
-import { ContactIcon, DashboardBrowsingIcon, Image02Icon, InvoiceIcon, PresentationLineChart01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons";
+import { ArrowTurnBackwardIcon, ContactIcon, DashboardBrowsingIcon, Image02Icon, InvoiceIcon, Logout03Icon, LogoutCircle01Icon, PresentationLineChart01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
 import { Divider, Layout, Menu } from "antd";
+import { twMerge } from "tailwind-merge";
 
 function Sidebar() {
 
   const { url, props } = usePage()
-  const user = props.auth.user as UserProps
+  const auth = props.auth as AuthProps
+  const user = auth.user
   const { sidebarCollapsed } = useApp()
 
   const items = [
@@ -24,7 +27,17 @@ function Sidebar() {
     { key: 'users', icon: <HugeiconsIcon icon={UserMultipleIcon} />, label: 'Users', route: 'users.index' },
   ]
 
-  const allItems = [...items, ...adminItems];
+  const lowerItems = [
+    { key: 'log-out', icon: <HugeiconsIcon icon={Logout03Icon} />, label: 'Log Out', route: 'logout' },
+  ]
+
+  const logBackItem = { key: 'log-back', icon: <HugeiconsIcon icon={ArrowTurnBackwardIcon} />, label: 'Log Back', route: 'logout-as' }
+
+  if (auth.is_logged_as ?? false) {
+    lowerItems.unshift(logBackItem);
+  }
+
+  const allItems = [...items, ...adminItems, ...lowerItems];
 
   function handleMenuClick(key: string) {
 
@@ -62,7 +75,7 @@ function Sidebar() {
 
       {user?.is_admin && (
         <>
-          <Divider >
+          <Divider className="!border-gray-200" >
             {!sidebarCollapsed && (
               <div className="text-sm font-light">Admin Area</div>
             )}
@@ -80,6 +93,23 @@ function Sidebar() {
           />
         </>
       )}
+
+      <div
+        className="absolute bottom-0 w-full"
+      >
+        <Menu
+          mode="inline"
+          inlineCollapsed={sidebarCollapsed}
+          items={lowerItems}
+          className={twMerge("!border-0 mb-2 rounded-lg",
+            !sidebarCollapsed && '!shadow-md shadow-black w-[90%] mx-auto'
+          )}
+          onClick={(e) => {
+            handleMenuClick(e.key);
+          }}
+          selectedKeys={[activeKey]}
+        />
+      </div>
 
     </Layout>
   );

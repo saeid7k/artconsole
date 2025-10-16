@@ -33,11 +33,13 @@ class HandleInertiaRequests extends Middleware
     $user = $request->user();
     $currentGallery = $user?->currentGallery() ?? null;
     $galleries = $user?->galleries() ?? null;
+    $isLoggedAs = session()->has('original_user_id') && session('original_user_id') !== $user?->id;
 
     return [
       ...parent::share($request),
       'auth' => [
         'user' => $user,
+        'is_logged_as' => $isLoggedAs,
       ],
       'current_gallery' => $currentGallery,
       'galleries' => $galleries,
