@@ -5,10 +5,11 @@ import { useWindow } from "@/hooks/useWindow";
 import colors from "@/Themes/theme";
 import { ArrowLeftDoubleFreeIcons, ArrowRightDoubleFreeIcons } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Button, ConfigProvider, Layout } from "antd";
+import { usePage } from "@inertiajs/react";
+import { Button, ConfigProvider, Layout, message } from "antd";
 import { Content, Footer, Header } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useEffect } from "react";
 
 interface AppProps extends PropsWithChildren {
   title?: string|React.ReactNode,
@@ -17,10 +18,20 @@ interface AppProps extends PropsWithChildren {
 
 function App ({ title = '', actionsBar = null, children }: AppProps) {
 
+  const flash: any = usePage().props.flash;
   const { sidebarCollapsed, toggleSidebar } = useApp()
   const { scrollY } = useWindow()
   const collapsedWidth = 50
   const expandedWidth = 200
+
+  useEffect(() => {
+    if (flash?.type == 'success' && flash?.message) {
+      message.success(flash.message, 3);
+    }
+    if (flash?.type == 'error' && flash?.error) {
+      message.error(flash.error, 5);
+    }
+  }, [flash]);
 
   return (
     <Layout className="fixed w-full h-full">

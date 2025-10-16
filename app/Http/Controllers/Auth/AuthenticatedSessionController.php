@@ -59,7 +59,10 @@ class AuthenticatedSessionController extends Controller
 
       auth()->login($user);
 
-      return redirect()->route('dashboard');
+      return redirect()->route('dashboard')->with('flash', [
+        'type' => 'success',
+        'message' => 'Logged in as ' . $user->full_name
+      ]);
     }
 
     public function logoutAs()
@@ -70,6 +73,9 @@ class AuthenticatedSessionController extends Controller
         session()->forget('original_user_id');
       }
 
-      return redirect()->route('users.index');
+      return redirect()->route('users.index')->with('flash', [
+        'type' => 'success',
+        'message' => 'Logged back in as ' . auth()->user()->full_name
+      ]);
     }
 }
