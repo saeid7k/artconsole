@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,5 +49,27 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    public function loginAs(User $user)
+    {
+      if (!session()->has('original_user_id')) {
+        session(['original_user_id' => auth()->id()]);
+      }
+
+      auth()->login($user);
+
+      return redirect()->route('dashboard');
+    }
+
+    public function logoutAs()
+    {
+      $originalUserId = session('original_user_id');
+      if ($originalUserId) {
+        auth()->loginUsingId($originalUserId);
+        session()->forget('original_user_id');
+      }
+
+      return redirect()->route('users.index');
     }
 }

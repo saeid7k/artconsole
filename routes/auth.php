@@ -62,6 +62,9 @@ Route::middleware('auth')->group(function () {
 
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+    Route::any('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
+
+    Route::get('/{user}/login-as', [AuthenticatedSessionController::class, 'loginAs'])->name('login-as');
+    Route::get('/logout-as', [AuthenticatedSessionController::class, 'logoutAs'])->name('logout-as');
 });

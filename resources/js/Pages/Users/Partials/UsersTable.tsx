@@ -7,6 +7,8 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { router } from '@inertiajs/react';
 import type { TableProps } from 'antd';
 import { Avatar, Table } from 'antd';
+import UsersActions from './UsersActions';
+import { UserProps } from '@/types/user';
 
 function UsersTable({ users }: { users: PageProps }) {
 
@@ -73,7 +75,7 @@ function UsersTable({ users }: { users: PageProps }) {
     {
       title: 'Actions',
       key: 'actions',
-      // render: (_, record) => (<ContactsActions contact={record as ContactProps} />),
+      render: (_, record) => (<UsersActions user={record as UserProps} />),
       fixed: ['xs', 'sm'].includes(breakpoint) ? undefined : 'right',
       width: 100,
     }
