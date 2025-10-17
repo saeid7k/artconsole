@@ -1,5 +1,6 @@
 import GallerySwitch from "@/Components/GallerySwitch";
 import Sidebar from "@/Components/Sidebar";
+import UserMenu from "@/Components/UserMenu";
 import AppProvider, { useApp } from "@/contexts/AppContext";
 import { useWindow } from "@/hooks/useWindow";
 import colors from "@/Themes/theme";
@@ -36,12 +37,15 @@ function App ({ title = '', actionsBar = null, children }: AppProps) {
   return (
     <Layout className="fixed w-full h-full">
       <Header
-        className={`flex items-center bg-light leading-normal sticky top-0 z-10 w-full transition-all ${
+        className={`flex justify-between items-center bg-light leading-normal sticky top-0 z-10 w-full transition-all ${
           scrollY > 0 ? ' shadow-md' : ''
         }`}
       >
         <div>
           <GallerySwitch />
+        </div>
+        <div>
+          <UserMenu />
         </div>
       </Header>
       <Layout className="relative">
