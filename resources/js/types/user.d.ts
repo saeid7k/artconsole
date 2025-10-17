@@ -12,4 +12,6 @@ export interface UserProps {
   email_verified_at?: string;
   is_admin: boolean;
   formatted_address?: string;
+  full_name: string;
+  photo?: string;
 }
