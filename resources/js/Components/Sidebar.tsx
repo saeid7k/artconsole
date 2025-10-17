@@ -2,7 +2,7 @@ import { useApp } from "@/contexts/AppContext";
 import colors from "@/Themes/theme";
 import { AuthProps } from "@/types/auth";
 import { UserProps } from "@/types/user";
-import { ArrowTurnBackwardIcon, ContactIcon, DashboardBrowsingIcon, Image02Icon, InvoiceIcon, Logout03Icon, LogoutCircle01Icon, PresentationLineChart01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons";
+import { ArrowTurnBackwardIcon, ContactIcon, DashboardBrowsingIcon, Image02Icon, InvoiceIcon, Logout03Icon, LogoutCircle01Icon, PresentationLineChart01Icon, Rocket01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
 import { Divider, Layout, Menu } from "antd";
@@ -28,7 +28,7 @@ function Sidebar() {
   ]
 
   const lowerItems = [
-    { key: 'log-out', icon: <HugeiconsIcon icon={Logout03Icon} />, label: 'Log Out', route: 'logout' },
+    { key: 'premium', icon: <HugeiconsIcon icon={Rocket01Icon} />, label: 'Premium', route: 'premium' },
   ]
 
   const logBackItem = { key: 'log-back', icon: <HugeiconsIcon icon={ArrowTurnBackwardIcon} />, label: 'Log Back', route: 'logout-as' }
@@ -101,7 +101,7 @@ function Sidebar() {
           mode="inline"
           inlineCollapsed={sidebarCollapsed}
           items={lowerItems}
-          className={twMerge("!border-0 mb-2 rounded-lg",
+          className={twMerge("!border-0 mb-2 rounded-lg bg-blue-100 [&_li]:!text-blue-700",
             !sidebarCollapsed && '!shadow-md shadow-black w-[90%] mx-auto'
           )}
           onClick={(e) => {
