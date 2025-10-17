@@ -3,10 +3,13 @@ import { Logout03Icon, UserAccountIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { usePage } from "@inertiajs/react";
 import { Avatar, Button, Dropdown, Menu } from "antd";
+import { useState } from "react";
+import ProfileModal from "./ProfileModal";
 
 function UserMenu() {
 
-  const { user } = usePage().props.auth;
+  const { user } = usePage().props.auth
+  const [openProfileModal, setOpenProfileModal] = useState(false)
 
   function Popup() {
     return (
@@ -20,7 +23,7 @@ function UserMenu() {
             <div className="text-sm text-slate-500">{user.email}</div>
           </div>
         </div>
-        <Menu.Item key="profile" onClick={() => { }}>
+        <Menu.Item key="profile" onClick={() => setOpenProfileModal(true)}>
           <div className="flex items-center gap-1"><HugeiconsIcon icon={UserAccountIcon} size={24} />Profile</div>
         </Menu.Item>
         <Menu.Divider />
@@ -47,6 +50,8 @@ function UserMenu() {
           </Avatar>
         </Button>
       </Dropdown>
+
+      <ProfileModal open={openProfileModal} setOpen={setOpenProfileModal} />
     </div>
   )
 }
