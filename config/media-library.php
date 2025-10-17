@@ -1,5 +1,8 @@
 <?php
 
+use App\CustomClasses\MediaPathGenerator;
+use App\Models\Media;
+
 return [
 
     /*
@@ -39,7 +42,7 @@ return [
     /*
      * The fully qualified class name of the media model.
      */
-    'media_model' => Spatie\MediaLibrary\MediaCollections\Models\Media::class,
+    'media_model' => Media::class,
 
     /*
      * The fully qualified class name of the media observer.
@@ -81,7 +84,8 @@ return [
     /*
      * The class that contains the strategy for determining a media file's path.
      */
-    'path_generator' => Spatie\MediaLibrary\Support\PathGenerator\DefaultPathGenerator::class,
+    // 'path_generator' => Spatie\MediaLibrary\Support\PathGenerator\DefaultPathGenerator::class,
+    'path_generator' => MediaPathGenerator::class,
 
     /*
      * The class that contains the strategy for determining how to remove files.
