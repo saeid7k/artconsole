@@ -1,6 +1,5 @@
 import colors from "@/Themes/theme";
 import { GalleryProps } from "@/types/gallery";
-import { UserProps } from "@/types/user";
 import { AddIcon, AddMaleIcon, ArrowDown01Icon, CheckmarkCircle01Icon, SettingsFreeIcons } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
@@ -9,17 +8,12 @@ import axios from "axios";
 import { useState } from "react";
 import GalleryAccessTag from "./GalleryAccessTag";
 import GalleryAvatar from "./GalleryAvatar";
+import { UsePageProps } from "@/types/usePage";
 
 function GallerySwitch() {
 
   // Constants & States
-  type UsePageProps = {
-    current_gallery: GalleryProps,
-    galleries: GalleryProps[],
-    auth: {
-      user: UserProps
-    }
-  }
+
   const { current_gallery, galleries } = usePage<UsePageProps>().props;
   const [open, setOpen] = useState(false);
   const isClickedYet = localStorage.getItem('gallerySwitchClicked') == 'true';
@@ -31,6 +25,10 @@ function GallerySwitch() {
   }
 
   function switchGallery(galleryId: number) {
+    if (galleryId === current_gallery.id) {
+      setOpen(false)
+      return
+    }
     axios.post(route('galleries.set-current'), { gallery_id: galleryId })
       .then(() => {
         message.success('Switched Gallery');
