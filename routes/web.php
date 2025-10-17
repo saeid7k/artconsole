@@ -16,6 +16,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::prefix('galleries')->name('galleries.')->group(function () {
     Route::post('set-current', [App\Http\Controllers\GalleryController::class, 'setCurrentGallery'])->name('set-current');
   });
+
+  Route::prefix('profile')->name('profile.')->group(function () {
+    Route::post('/update-photo', [App\Http\Controllers\ProfileController::class, 'updatePhoto'])->name('update-photo');
+  });
 });
 
 Route::middleware(['auth', Admin::class])->group(function () {

@@ -9,13 +9,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Zoha\Metable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
   /** @use HasFactory<\Database\Factories\UserFactory> */
 
-  use HasFactory, Notifiable, Metable;
+  use HasFactory, Notifiable, Metable, InteractsWithMedia;
   /**
    * The attributes that are mass assignable.
    *
@@ -54,7 +56,7 @@ class User extends Authenticatable
 
   // Appends
 
-  protected $appends = ['full_name', 'is_admin', 'formatted_address'];
+  protected $appends = ['full_name', 'is_admin', 'formatted_address', 'photo'];
 
   public function getFullNameAttribute(): string
   {
@@ -69,6 +71,12 @@ class User extends Authenticatable
   public function getFormattedAddressAttribute(): string
   {
     return AddressHelper::formatAddress($this->address);
+  }
+
+  public function getPhotoAttribute(): ?string
+  {
+    $media = $this->getLastMedia('profile_photo');
+    return $media ? $media->getUrl() : null;
   }
 
   // Relations
@@ -95,6 +103,8 @@ class User extends Authenticatable
   {
     return Gallery::whereId($this->getMeta('current_gallery_id'))->first();
   }
+
+  // Methods
 
   public function is_admin()
   {
