@@ -15,7 +15,7 @@ function UserMenu() {
     return (
       <Menu>
         <div className="flex gap-2 p-2">
-          <Avatar size="large" >
+          <Avatar size="large" src={user.photo ? user.photo : undefined}>
             {getInitials(user.full_name)}
           </Avatar>
           <div>
@@ -45,7 +45,7 @@ function UserMenu() {
           type="default"
           className="border-0"
         >
-          <Avatar size="default" >
+          <Avatar size="default" src={user.photo ? user.photo : undefined}>
             {getInitials(user.full_name)}
           </Avatar>
         </Button>
