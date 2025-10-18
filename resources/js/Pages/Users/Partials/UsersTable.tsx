@@ -32,7 +32,7 @@ function UsersTable({ users }: { users: PageProps }) {
       sortDirections: ['ascend', 'descend'],
       render: (text, record): JSX.Element => (
         <div className='flex items-center gap-1'>
-          <Avatar size={'small'} className='text-xs'>{getInitials(record.full_name)}</Avatar>
+          <Avatar size={'small'} className='text-xs' src={record.photo}>{getInitials(record.full_name)}</Avatar>
           <div>{record.full_name}</div>
         </div>
       ),
