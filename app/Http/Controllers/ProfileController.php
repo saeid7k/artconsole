@@ -7,6 +7,7 @@ use App\Models\Media;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -28,17 +29,18 @@ class ProfileController extends Controller
   /**
    * Update the user's profile information.
    */
-  public function update(ProfileUpdateRequest $request): RedirectResponse
+  public function update(ProfileUpdateRequest $request)
   {
-    $request->user()->fill($request->validated());
+    $user = $request->user();
+    $user->fill(Arr::except($request->validated(), ['email']));
 
-    if ($request->user()->isDirty('email')) {
-      $request->user()->email_verified_at = null;
+    if ($user->isDirty('email')) {
+      $user->email_verified_at = null;
     }
 
-    $request->user()->save();
+    $user->save();
 
-    return Redirect::route('profile.edit');
+    return response()->json(['message' => 'Profile updated successfully']);
   }
 
   /**
