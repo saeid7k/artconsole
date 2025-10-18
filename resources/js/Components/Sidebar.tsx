@@ -101,9 +101,7 @@ function Sidebar() {
           mode="inline"
           inlineCollapsed={sidebarCollapsed}
           items={lowerItems}
-          className={twMerge("!border-0 mb-2 rounded-lg bg-blue-100 [&_li]:!text-blue-700",
-            !sidebarCollapsed && '!shadow-md shadow-black w-[90%] mx-auto'
-          )}
+          className='!border-none'
           onClick={(e) => {
             handleMenuClick(e.key);
           }}

@@ -108,6 +108,9 @@ function AppLayout({ title = '', actionsBar = null, children }: AppProps) {
             headerHeight: 48,
             headerPadding: '4px 16px',
           },
+          Form: {
+            verticalLabelPadding: '0 0 4px',
+          }
         },
       }}
     >
