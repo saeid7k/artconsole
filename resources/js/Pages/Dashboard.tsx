@@ -2,14 +2,19 @@ import AppLayout from "@/Layouts/AppLayout";
 import { Card } from "antd";
 
 function Dashboard({ }) {
+  return (
+    <Card>
+      Dashboard Content
+    </Card>
+  )
+}
 
+Dashboard.layout = (page: any) => {
   return (
     <AppLayout title="Dashboard" >
-      <Card>
-        Body
-      </Card>
+      {page}
     </AppLayout>
   )
 }
 
-export default Dashboard;
+export default Dashboard

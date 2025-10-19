@@ -1,8 +1,9 @@
 import AppLayout from "@/Layouts/AppLayout";
-import ContactsTable from "./Partials/ContactsTable";
-import Search from "antd/es/input/Search";
-import { router } from "@inertiajs/react";
 import { PageProps } from "@/types";
+import { router } from "@inertiajs/react";
+import Search from "antd/es/input/Search";
+import ContactsTable from "./Partials/ContactsTable";
+import PageTitle from "@/Components/PageTitle";
 
 function ContactsIndex({ contacts }: { contacts: PageProps }) {
 
@@ -19,25 +20,30 @@ function ContactsIndex({ contacts }: { contacts: PageProps }) {
   }
 
   return (
-    <AppLayout
-      title={
-        <div className="flex items-center gap-2">
-          <div>Contacts</div>
-          <small className="text-muted font-light">({contacts.total?.toLocaleString()})</small>
-        </div>
-      }
-      actionsBar={
-        <Search
-          placeholder="search contacts..."
-          style={{ width: 200 }}
-          allowClear
-          onSearch={handleSearch}
-        />
-      }
-    >
+    <div>
+      <PageTitle
+        title="Contacts"
+        counter={contacts.total}
+        toolbar={
+          <Search
+            placeholder="search contacts..."
+            style={{ width: 200 }}
+            allowClear
+            onSearch={handleSearch}
+          />
+        }
+      />
       <ContactsTable contacts={contacts} />
+    </div>
+  )
+}
+
+ContactsIndex.layout = (page: any) => {
+  return (
+    <AppLayout>
+      {page}
     </AppLayout>
   )
 }
 
-export default ContactsIndex;
+export default ContactsIndex

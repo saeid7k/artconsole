@@ -73,12 +73,6 @@ function App ({ title = '', actionsBar = null, children }: AppProps) {
           className="overflow-y-auto my-1"
         >
           <Content
-            className="flex items-center justify-between px-6 py-3 w-full h-12 grow-0"
-          >
-            <h3 className="m-0">{title}</h3>
-            {actionsBar && <div>{actionsBar}</div>}
-          </Content>
-          <Content
             className="p-3 w-full m-x-auto"
           >
             {children}
@@ -92,7 +86,7 @@ function App ({ title = '', actionsBar = null, children }: AppProps) {
   )
 }
 
-function AppLayout({ title = '', actionsBar = null, children }: AppProps) {
+function AppLayout({ children }: AppProps) {
   return (
     <ConfigProvider
       theme={{
@@ -115,7 +109,7 @@ function AppLayout({ title = '', actionsBar = null, children }: AppProps) {
       }}
     >
       <AppProvider>
-        <App title={title} actionsBar={actionsBar}>
+        <App>
           {children}
         </App>
       </AppProvider>
