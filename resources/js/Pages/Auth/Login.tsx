@@ -72,17 +72,9 @@ export default function Login({
         </Space>
 
         <Space
-          className='w-full justify-end mt-4'
+          direction='vertical'
+          className='w-full justify-between items-end mt-4 gap-3'
         >
-          {canResetPassword && (
-            <Link
-              href={route('password.request')}
-              className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            >
-              Forgot your password?
-            </Link>
-          )}
-
           <Button
             type="primary"
             disabled={processing}
@@ -90,6 +82,22 @@ export default function Login({
           >
             Log in
           </Button>
+          <div className='flex flex-col gap-3'>
+            {canResetPassword && (
+              <Link
+                href={route('password.request')}
+                className="text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none"
+              >
+                Forgot your password?
+              </Link>
+            )}
+              <Link
+                href={route('register')}
+                className="text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none"
+              >
+                Don't have an account?
+              </Link>
+          </div>
         </Space>
       </form>
     </GuestLayout>

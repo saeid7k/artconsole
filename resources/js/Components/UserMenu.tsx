@@ -1,7 +1,7 @@
 import { getInitials } from "@/utils/stringHelper";
 import { Logout03Icon, UserAccountIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { usePage } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 import { Avatar, Button, Dropdown, Menu } from "antd";
 import { useState } from "react";
 import ProfileModal from "./ProfileModal";
@@ -27,7 +27,7 @@ function UserMenu() {
           <div className="flex items-center gap-1"><HugeiconsIcon icon={UserAccountIcon} size={24} />Profile</div>
         </Menu.Item>
         <Menu.Divider />
-        <Menu.Item key="logout" onClick={() => { }}>
+        <Menu.Item key="logout" onClick={() => { router.get(route('logout')) }}>
           <div className="flex items-center gap-1"><HugeiconsIcon icon={Logout03Icon} size={24} />Logout</div>
         </Menu.Item>
       </Menu>
