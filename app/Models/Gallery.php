@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Gallery extends Model
 {
+  protected $guarded = [];
+
   protected $casts = [
     'address' => 'object',
   ];
