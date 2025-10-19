@@ -11,8 +11,12 @@ class AddressHelper
     return array_keys($provincesData['Canada']['provinces']);
   }
 
-  public static function formatAddress(object $address): string
+  public static function formatAddress(object|null $address): string
   {
+    if (!$address) {
+      return '';
+    }
+
     $formatted = $address->unit ? $address->street . ' - ' . $address->unit : $address->street;
     $formatted .= $address->city ? ', ' . $address->city : '';
     $formatted .= $address->province ? ', ' . $address->province : '';
