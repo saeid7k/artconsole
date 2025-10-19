@@ -1,9 +1,7 @@
-import InputError from '@/Components/InputError';
-import PrimaryButton from '@/Components/PrimaryButton';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { Input } from 'antd';
-import React, { FormEventHandler, useEffect } from 'react';
+import { Alert, Button, Input, InputRef } from 'antd';
+import React, { FormEventHandler, useEffect, useRef } from 'react';
 
 export default function Register() {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -22,7 +20,7 @@ export default function Register() {
     });
   };
 
-  const firstnameRef = React.useRef<HTMLInputElement>(null);
+  const firstnameRef = useRef<InputRef>(null);
 
   useEffect(() => {
     firstnameRef.current?.focus();
@@ -41,9 +39,11 @@ export default function Register() {
               value={data.firstname}
               autoComplete="name"
               onChange={(e) => setData('firstname', e.target.value)}
-              // ref={firstnameRef}
+              ref={firstnameRef}
             />
-            <InputError message={errors.firstname} className="mt-2" />
+            {errors.firstname && (
+              <Alert message={errors.firstname} type="error" />
+            )}
           </div>
 
           <div>
@@ -54,7 +54,9 @@ export default function Register() {
               autoComplete="lastname"
               onChange={(e) => setData('lastname', e.target.value)}
             />
-            <InputError message={errors.lastname} className="mt-2" />
+            {errors.lastname && (
+              <Alert message={errors.lastname} type="error" />
+            )}
           </div>
 
           <div>
@@ -66,7 +68,9 @@ export default function Register() {
               onChange={(e) => setData('email', e.target.value)}
               required
             />
-            <InputError message={errors.email} className="mt-2" />
+            {errors.email && (
+              <Alert message={errors.email} type="error" />
+            )}
           </div>
 
           <div>
@@ -77,7 +81,9 @@ export default function Register() {
               onChange={(e) => setData('password', e.target.value)}
               required
             />
-            <InputError message={errors.password} className="mt-2" />
+            {errors.password && (
+              <Alert message={errors.password} type="error" />
+            )}
           </div>
 
           <div>
@@ -88,21 +94,27 @@ export default function Register() {
               onChange={(e) => setData('password_confirmation', e.target.value)}
               required
             />
-            <InputError message={errors.password_confirmation} className="mt-2" />
+            {errors.password_confirmation && (
+              <Alert message={errors.password_confirmation} type="error" />
+            )}
           </div>
         </div>
 
-        <div className="mt-4 flex items-center justify-end">
+        <div className="mt-4 flex items-center justify-end gap-3">
           <Link
             href={route('login')}
-            className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none"
           >
             Already registered?
           </Link>
 
-          <PrimaryButton className="ms-4" disabled={processing}>
+          <Button
+            type="primary"
+            disabled={processing}
+            htmlType='submit'
+          >
             Register
-          </PrimaryButton>
+          </Button>
         </div>
       </form>
     </GuestLayout>
