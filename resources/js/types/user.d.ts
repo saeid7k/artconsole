@@ -14,4 +14,7 @@ export interface UserProps {
   formatted_address?: string;
   full_name: string;
   photo?: string;
+  abilities: {
+    [key: string]: boolean;
+  };
 }
