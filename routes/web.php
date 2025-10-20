@@ -26,6 +26,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', Admin::class])->group(function () {
   Route::prefix('users')->name('users.')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('index');
+    Route::post('/{user}/delete', [UserController::class, 'destroy'])->name('delete');
   });
 });
 

@@ -9,6 +9,8 @@ class UserController extends Controller
 {
   public function index(Request $request)
   {
+    $this->authorize('viewAny', User::class);
+
     $users = User::when($request->search, function ($q) use ($request) {
         $search = '%' . strtolower($request->search) . '%';
         $q->where(function ($q) use ($search) {
@@ -38,6 +40,17 @@ class UserController extends Controller
 
     return inertia('Users/UsersIndex', [
       'users' => $users
+    ]);
+  }
+
+  public function destroy(User $user)
+  {
+    $this->authorize('delete', $user);
+
+    $user->delete();
+
+    return response()->json([
+      'message' => 'User deleted successfully.'
     ]);
   }
 }
