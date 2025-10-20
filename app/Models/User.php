@@ -56,7 +56,14 @@ class User extends Authenticatable implements HasMedia
 
   // Appends
 
-  protected $appends = ['full_name', 'is_admin', 'formatted_address', 'photo'];
+  protected $appends = ['abilities', 'full_name', 'is_admin', 'formatted_address', 'photo'];
+
+  public function getAbilitiesAttribute(): array
+  {
+    return [
+      'delete' => auth()->user()->can('delete', $this),
+    ];
+  }
 
   public function getFullNameAttribute(): string
   {
