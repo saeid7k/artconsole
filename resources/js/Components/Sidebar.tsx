@@ -1,12 +1,10 @@
 import { useApp } from "@/contexts/AppContext";
 import colors from "@/Themes/theme";
 import { AuthProps } from "@/types/auth";
-import { UserProps } from "@/types/user";
-import { ArrowTurnBackwardIcon, ContactIcon, DashboardBrowsingIcon, Image02Icon, InvoiceIcon, Logout03Icon, LogoutCircle01Icon, PresentationLineChart01Icon, Rocket01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons";
+import { ArrowTurnBackwardIcon, ContactIcon, DashboardBrowsingIcon, Image02Icon, InvoiceIcon, PresentationLineChart01Icon, Rocket01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
-import { Divider, Layout, Menu } from "antd";
-import { twMerge } from "tailwind-merge";
+import { Divider, Menu } from "antd";
 
 function Sidebar() {
 
@@ -52,7 +50,7 @@ function Sidebar() {
   })?.key || 'dashboard'
 
   return (
-    <Layout
+    <div
       style={{
         height: '100%',
         border: '1px solid',
@@ -109,7 +107,7 @@ function Sidebar() {
         />
       </div>
 
-    </Layout>
+    </div>
   );
 }
 

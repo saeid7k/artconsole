@@ -2,7 +2,7 @@
 @tailwind utilities;
 
 :root {
-  --bg-light: theme('colors.slate.100');
+  --bg-light: theme('colors.gray.50');
   --text-label: theme('colors.gray.500');
 
   --primary: var(--primary-500);
@@ -27,8 +27,12 @@
   --tw-scale-y: 1;
 }
 
-.ant-theme-dark {
+:root[data-theme='dark'] {
   --bg-light: theme('colors.slate.800');
+  --text-label: theme('colors.gray.400');
+
+  --primary: var(--primary-400);
+  --primary-foreground: var(--primary-900);
 }
 
 body {
