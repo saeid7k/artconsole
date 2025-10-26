@@ -7,7 +7,7 @@ import colors from "@/Themes/theme";
 import { ArrowLeftDoubleFreeIcons, ArrowRightDoubleFreeIcons } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { usePage } from "@inertiajs/react";
-import { Button, ConfigProvider, Layout, message } from "antd";
+import { Button, ConfigProvider, Layout, message, theme } from "antd";
 import { Content, Footer, Header } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
 import React, { PropsWithChildren, useEffect } from "react";
@@ -17,8 +17,9 @@ interface AppProps extends PropsWithChildren {
   actionsBar?: React.ReactNode | null,
 }
 
-function App ({ title = '', actionsBar = null, children }: AppProps) {
+function App ({ children }: AppProps) {
 
+  const { darkMode } = useApp()
   const flash: any = usePage().props.flash;
   const { sidebarCollapsed, toggleSidebar } = useApp()
   const { scrollY } = useWindow()
@@ -35,85 +36,99 @@ function App ({ title = '', actionsBar = null, children }: AppProps) {
   }, [flash]);
 
   return (
-    <Layout className="fixed w-full h-full">
-      <Header
-        className={`flex justify-between items-center bg-light leading-normal sticky top-0 z-10 w-full transition-all ${
-          scrollY > 0 ? ' shadow-md' : ''
-        }`}
-      >
-        <div>
-          <GallerySwitch />
-        </div>
-        <div>
-          <UserMenu />
-        </div>
-      </Header>
-      <Layout className="relative">
-        <Button
-          shape="circle"
-          type="default"
-          className={`absolute top-2 z-10`}
-          style={{ left: sidebarCollapsed ? collapsedWidth - 16 : expandedWidth - 16 }}
-          onClick={toggleSidebar}
-        >
-          <HugeiconsIcon size={20} icon={ArrowLeftDoubleFreeIcons} altIcon={ArrowRightDoubleFreeIcons} showAlt={sidebarCollapsed} />
-        </Button>
-        <Sider
-          theme="light"
-          className="h-full bg-light overflow-y-auto overflow-x-visible"
-          collapsed={sidebarCollapsed}
-          collapsedWidth={collapsedWidth}
-          width={expandedWidth}
-        >
-          <Sidebar />
-        </Sider>
-        {/* <div className="relative h-full">
-        </div> */}
-        <Layout
-          className="overflow-y-auto my-1"
-        >
-          <Content
-            className="p-3 w-full m-x-auto"
-          >
-            {children}
-          </Content>
-        </Layout>
-      </Layout>
-      <Footer className="bg-light py-2">
-        <div className="text-center">...footer...</div>
-      </Footer>
-    </Layout>
-  )
-}
-
-function AppLayout({ children }: AppProps) {
-  return (
     <ConfigProvider
       theme={{
+        algorithm: darkMode ? theme.darkAlgorithm : theme.defaultAlgorithm,
         token: {
-          // Seed Token
-          colorBgLayout: colors.white,
-          colorPrimary: colors.purple['500'],
+          colorPrimary: darkMode ? colors.purple['400'] : colors.purple['500'],
           colorTextSecondary: colors.gray['500'],
           colorTextLabel: colors.gray['300'],
+          colorBgBase: darkMode ? colors.neutral['950'] : colors.gray['100'],
+          colorBgLayout: darkMode ? colors.gray['900'] : colors.white,
+          colorBgContainer: darkMode ? colors.gray['900'] : colors.white,
+          colorBgElevated: darkMode ? colors.gray['900'] : colors.white,
+          // boxShadow: darkMode ? '0 1px 3px rgba(0, 0, 0, 0.9)' : '0 1px 3px rgba(0, 0, 0, 0.1)',
+          boxShadowSecondary: darkMode ? '0 6px 16px 4px rgba(0, 0, 0, 0.9)' : '0 6px 16px 4px rgba(0, 0, 0, 0.1)',
         },
         components: {
           Layout: {
             headerHeight: 48,
             headerPadding: '4px 16px',
+            headerBg: darkMode ? colors.gray['800'] : colors.gray['50'],
+            siderBg: darkMode ? colors.gray['800'] : colors.gray['50'],
+            footerBg: darkMode ? colors.gray['800'] : colors.gray['50'],
+          },
+          Menu: {
+            colorBgContainer: darkMode ? colors.gray['800'] : colors.gray['50'],
           },
           Form: {
             verticalLabelPadding: '0 0 4px',
+          },
+          Segmented: {
+            trackBg: darkMode ? colors.gray['800'] : colors.gray['200'],
           }
         },
       }}
     >
+      <Layout className="fixed w-full h-full">
+        <Header
+          className={`flex justify-between items-center leading-normal sticky top-0 z-10 w-full transition-all ${
+            scrollY > 0 ? ' shadow-md' : ''
+          }`}
+        >
+          <div>
+            <GallerySwitch />
+          </div>
+          <div>
+            <UserMenu />
+          </div>
+        </Header>
+        <Layout className="relative">
+          <Button
+            shape="circle"
+            type="default"
+            className={`absolute top-2 z-10`}
+            style={{ left: sidebarCollapsed ? collapsedWidth - 16 : expandedWidth - 16 }}
+            onClick={toggleSidebar}
+          >
+            <HugeiconsIcon size={20} icon={ArrowLeftDoubleFreeIcons} altIcon={ArrowRightDoubleFreeIcons} showAlt={sidebarCollapsed} />
+          </Button>
+          <Sider
+            // theme="light"
+            className="h-full overflow-y-auto overflow-x-visible"
+            collapsed={sidebarCollapsed}
+            collapsedWidth={collapsedWidth}
+            width={expandedWidth}
+          >
+            <Sidebar />
+          </Sider>
+          {/* <div className="relative h-full">
+          </div> */}
+          <Layout
+            className="overflow-y-auto my-1"
+          >
+            <Content
+              className="p-3 w-full m-x-auto"
+            >
+              {children}
+            </Content>
+          </Layout>
+        </Layout>
+        <Footer className="py-2">
+          <div className="text-center">...footer...</div>
+        </Footer>
+      </Layout>
+    </ConfigProvider>
+  )
+}
+
+function AppLayout({ children }: AppProps) {
+  return (
       <AppProvider>
         <App>
           {children}
         </App>
       </AppProvider>
-    </ConfigProvider>
   );
 }
 

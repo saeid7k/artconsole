@@ -4,33 +4,81 @@ export type AppContextType = {
   sidebarCollapsed: boolean;
   setSidebarCollapsed: Dispatch<SetStateAction<boolean>>;
   toggleSidebar: () => void;
+  darkMode: boolean;
+  setDarkMode: Dispatch<SetStateAction<boolean>>;
 };
 
 const AppContext = createContext<AppContextType>({
   sidebarCollapsed: false,
   setSidebarCollapsed: () => {},
   toggleSidebar: () => {},
+  darkMode: false,
+  setDarkMode: () => {},
 });
 
 function AppProvider({ children }: PropsWithChildren) {
-  // Read initial state from localStorage, fallback to false
+
+  // Sidebar collapsed state
+
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
     if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('sidebarCollapsed');
+      let stored = localStorage.getItem('sidebarCollapsed');
       return stored === 'true';
     }
     return false;
   });
 
-  // Sync sidebar state to localStorage whenever it changes
+  const toggleSidebar = () => setSidebarCollapsed((prev) => !prev);
+
   useEffect(() => {
     localStorage.setItem('sidebarCollapsed', String(sidebarCollapsed));
   }, [sidebarCollapsed]);
 
-  const toggleSidebar = () => setSidebarCollapsed((prev) => !prev);
+  // Dark mode state
+
+  const [darkMode, setDarkMode] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('darkMode');
+      if (stored === 'system') {
+        return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      }
+      if (stored === 'dark') return true;
+      if (stored === 'light') return false;
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      if (darkMode) {
+        document.documentElement.classList.add('dark');
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+      else {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.removeAttribute('data-theme');
+      }
+    }
+  }, [darkMode]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const stored = localStorage.getItem('darkMode');
+    if (stored !== 'system') return;
+
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    const onChange = (e: MediaQueryListEvent) => setDarkMode(e.matches);
+    if (mq.addEventListener) mq.addEventListener('change', onChange);
+    else if (mq.addListener) mq.addListener(onChange as any);
+
+    return () => {
+      if (mq.removeEventListener) mq.removeEventListener('change', onChange);
+      else if (mq.removeListener) mq.removeListener(onChange as any);
+    };
+  }, []);
 
   return (
-    <AppContext.Provider value={{ sidebarCollapsed, setSidebarCollapsed, toggleSidebar }}>
+    <AppContext.Provider value={{ sidebarCollapsed, setSidebarCollapsed, toggleSidebar, darkMode, setDarkMode }}>
       {children}
     </AppContext.Provider>
   );
