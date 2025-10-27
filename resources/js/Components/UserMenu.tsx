@@ -27,7 +27,10 @@ function UserMenu() {
         <Menu.Item key="profile" onClick={() => setOpenProfileModal(true)}>
           <div className="flex items-center gap-1"><HugeiconsIcon icon={UserAccountIcon} size={24} />Profile</div>
         </Menu.Item>
-        <DarkModeSwitch />
+        <div className="flex flex-col my-2 px-3">
+          <label>Theme</label>
+          <DarkModeSwitch />
+        </div>
         <Menu.Divider />
         <Menu.Item key="logout" onClick={() => { router.get(route('logout')) }}>
           <div className="flex items-center gap-1"><HugeiconsIcon icon={Logout03Icon} size={24} />Logout</div>
