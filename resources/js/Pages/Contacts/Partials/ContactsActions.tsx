@@ -16,7 +16,7 @@ function ContactsActions({ contact }: { contact: ContactProps })
               color='blue'
               shape="circle"
               icon={<HugeiconsIcon icon={ViewIcon} size={20} />}
-              onClick={() => router.visit(route('contacts.show', contact.id))}
+              onClick={() => router.get(route('contacts.view', contact.id))}
             />
           </Tooltip>
           <Tooltip title="Delete">
