@@ -5,7 +5,7 @@ import Search from "antd/es/input/Search";
 import ContactsTable from "./Partials/ContactsTable";
 import PageTitle from "@/Components/PageTitle";
 
-function ContactsIndex({ contacts }: { contacts: PageProps }) {
+function Index({ contacts }: { contacts: PageProps }) {
 
   function handleSearch(value: string) {
     const url = new URL(window.location.href);
@@ -38,7 +38,7 @@ function ContactsIndex({ contacts }: { contacts: PageProps }) {
   )
 }
 
-ContactsIndex.layout = (page: any) => {
+Index.layout = (page: any) => {
   return (
     <AppLayout>
       {page}
@@ -46,4 +46,4 @@ ContactsIndex.layout = (page: any) => {
   )
 }
 
-export default ContactsIndex
+export default Index

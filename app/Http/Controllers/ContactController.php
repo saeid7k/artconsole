@@ -52,7 +52,7 @@ class ContactController extends Controller
         })
         ->paginate($request->per_page ?? 10)->withQueryString();
 
-      return inertia('Contacts/ContactsIndex', [
+      return inertia('Contacts/Index', [
         'contacts' => $contacts
       ]);
     }
