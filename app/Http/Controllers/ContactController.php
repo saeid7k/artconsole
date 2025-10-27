@@ -78,7 +78,9 @@ class ContactController extends Controller
      */
     public function show(Contact $contact)
     {
-        //
+      return inertia('Contacts/View', [
+        'contact' => $contact
+      ]);
     }
 
     /**
