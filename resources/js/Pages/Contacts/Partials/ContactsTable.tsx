@@ -71,8 +71,14 @@ function ContactsTable({ contacts }: { contacts: PageProps }) {
       ],
       sorter: (a, b) => a.relationship.localeCompare(b.relationship),
       sortDirections: ['ascend', 'descend'],
-      render: (text) => {
-        return (<RelationshipTag relationship={text} />)
+      render: (array) => {
+        return (
+          <>
+            {array?.map((text: string, index: number) => (
+              <RelationshipTag relationship={text} key={index} />
+            ))}
+          </>
+        )
       },
       width: 180,
     },

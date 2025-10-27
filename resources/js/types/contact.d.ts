@@ -8,7 +8,7 @@ export interface ContactProps {
   phone: string;
   address: Address;
   website: string;
-  relationship: 'artist' | 'vendor' | 'collector' | 'other';
+  relationship: Array<string>;
   business: Business;
   birthday: string | Date;
   full_name: string;
