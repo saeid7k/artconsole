@@ -14,6 +14,7 @@ class Contact extends Model
     'address' => 'object',
     'business' => 'object',
     'birthday' => 'date',
+    'relationship' => 'array',
   ];
 
   // Appends
