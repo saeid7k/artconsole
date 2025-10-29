@@ -19,7 +19,7 @@ class Contact extends Model
 
   // Appends
 
-  protected $appends = ['abilities', 'full_name', 'formatted_address'];
+  protected $appends = ['abilities', 'full_name', 'formatted_address', 'business_formatted_address'];
 
   public function getAbilitiesAttribute(): array
   {
@@ -36,6 +36,11 @@ class Contact extends Model
   public function getFormattedAddressAttribute(): string
   {
     return AddressHelper::formatAddress($this->address);
+  }
+
+  public function getBusinessFormattedAddressAttribute(): string
+  {
+    return AddressHelper::formatAddress($this->business?->address ?? null);
   }
 
   // Relationships

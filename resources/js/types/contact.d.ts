@@ -13,4 +13,6 @@ export interface ContactProps {
   birthday: string | Date;
   full_name: string;
   abilities: { [key: string]: boolean };
+  formatted_address: string;
+  business_formatted_address: string;
 }
