@@ -9,7 +9,7 @@ export interface Address {
 
 export interface Business {
   name: string;
-  position: string;
+  title: string;
   address: Address;
   phone: string;
   email: string;
