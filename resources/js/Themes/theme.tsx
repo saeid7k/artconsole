@@ -5,6 +5,7 @@ import tailwindConfig from "~/tailwind.config.js";
 const twConfig = resolveConfig(tailwindConfig);
 
 // Extract the theme colors
-const colors = twConfig.theme?.colors || {};
+const colors = twConfig.theme?.colors as Record<string, any> || {};
 
-export {colors as default};
+export { colors as default };
+
