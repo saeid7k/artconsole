@@ -29,7 +29,7 @@ class ContactFactory extends Factory
       'relationship' => [$this->faker->randomElement(['artist', 'vendor', 'collector', 'other'])],
       'business' => [
         'name' => $this->faker->company,
-        'position' => $this->faker->jobTitle,
+        'title' => $this->faker->jobTitle,
         'address' => [
           'unit' => $this->faker->secondaryAddress,
           'street' => $this->faker->streetAddress,

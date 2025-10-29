@@ -29,7 +29,7 @@ class ContactController extends Controller
               ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(address, '$.postal_code'))) LIKE ?", $search)
               ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(address, '$.country'))) LIKE ?", $search)
               ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(business, '$.name'))) LIKE ?", $search)
-              ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(business, '$.position'))) LIKE ?", $search)
+              ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(business, '$.title'))) LIKE ?", $search)
               ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(business, '$.phone'))) LIKE ?", $search)
               ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(business, '$.email'))) LIKE ?", $search)
               ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(business, '$.website'))) LIKE ?", $search);
