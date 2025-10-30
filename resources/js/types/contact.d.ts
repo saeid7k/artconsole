@@ -15,4 +15,5 @@ export interface ContactProps {
   abilities: { [key: string]: boolean };
   formatted_address: string;
   business_formatted_address: string;
+  photo?: string;
 }

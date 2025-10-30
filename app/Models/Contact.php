@@ -5,10 +5,12 @@ namespace App\Models;
 use App\Helpers\AddressHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Contact extends Model
+class Contact extends Model implements HasMedia
 {
-  use HasFactory;
+  use HasFactory, InteractsWithMedia;
 
   protected $casts = [
     'address' => 'object',
@@ -19,7 +21,7 @@ class Contact extends Model
 
   // Appends
 
-  protected $appends = ['abilities', 'full_name', 'formatted_address', 'business_formatted_address'];
+  protected $appends = ['abilities', 'full_name', 'formatted_address', 'business_formatted_address', 'photo'];
 
   public function getAbilitiesAttribute(): array
   {
@@ -41,6 +43,12 @@ class Contact extends Model
   public function getBusinessFormattedAddressAttribute(): string
   {
     return AddressHelper::formatAddress($this->business?->address ?? null);
+  }
+
+  public function getPhotoAttribute(): ?string
+  {
+    $media = $this->getLastMedia('profile_photo');
+    return $media ? $media->getUrl() : null;
   }
 
   // Relationships
