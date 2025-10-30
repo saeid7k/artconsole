@@ -10,7 +10,7 @@ import { getInitials } from "@/utils/stringHelper";
 import { BirthdayCakeIcon, Briefcase01Icon, Call02Icon, City03Icon, EarthIcon, Location06Icon, Mail01Icon, MapingIcon, OfficeIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "@inertiajs/react";
-import { Avatar, Card, Divider } from "antd";
+import { Avatar, Card, Divider, Tabs } from "antd";
 import moment from "moment";
 
 function View({ contact }: { contact: ContactProps }) {
@@ -23,6 +23,8 @@ function View({ contact }: { contact: ContactProps }) {
         ]}
       />
       <div className="flex flex-col md:flex-row gap-3 w-full">
+
+        {/* Personal Information */}
         <Card
           className="min-w-[300px] md:max-w-[400px]"
         >
@@ -115,10 +117,25 @@ function View({ contact }: { contact: ContactProps }) {
             />
           </DataCol>
         </Card>
+
+        {/* Tabs */}
         <Card
           className="grow"
         >
-          details
+          <Tabs defaultActiveKey="activities">
+            <Tabs.TabPane tab="Activities" key="activities">
+              <p>Activities history</p>
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Purchase History" key="purchase-history">
+              <p>Purchase History</p>
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Inventory" key="inventory">
+              <p>Inventory List</p>
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Emails" key="emails">
+              <p>Emails</p>
+            </Tabs.TabPane>
+          </Tabs>
         </Card>
       </div>
     </div>
