@@ -4,6 +4,7 @@
 :root {
   --bg-light: theme('colors.gray.50');
   --text-label: theme('colors.gray.500');
+  --text-muted: theme('colors.gray.400');
 
   --primary: var(--primary-500);
   --primary-foreground: hsl(210 20% 98%);
@@ -30,6 +31,7 @@
 :root[data-theme='dark'] {
   --bg-light: theme('colors.slate.800');
   --text-label: theme('colors.gray.400');
+  --text-muted: theme('colors.gray.500');
 
   --primary: var(--primary-400);
   --primary-foreground: var(--primary-900);
@@ -48,7 +50,7 @@ code {
 }
 
 .text-ghost {
-  color: theme('colors.gray.400');
+  color: var(--text-muted);
   font-weight: 300;
   font-size: small;
 }
@@ -58,7 +60,7 @@ code {
 }
 
 .text-muted {
-  color: theme('colors.gray.400');
+  color: var(--text-muted);
 }
 
 .ant-layout-sider .ant-menu-item-icon {
@@ -76,4 +78,8 @@ code {
 .ant-btn-icon {
   display: grid;
   place-items: center;
+}
+
+.ant-tabs-tab:not(.ant-tabs-tab-active) {
+  color: var(--text-muted);
 }
