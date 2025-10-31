@@ -1,3 +1,4 @@
+import ActivityLogs from "@/Components/ActivityLogs";
 import DataCol from "@/Components/Containers/DataCol";
 import DataRow from "@/Components/Containers/DataRow";
 import PageTitle from "@/Components/PageTitle";
@@ -171,7 +172,7 @@ function View({ contact }: { contact: ContactProps }) {
         >
           <Tabs defaultActiveKey="activities">
             <Tabs.TabPane tab="Activities" key="activities">
-              <p>Activities history</p>
+              <ActivityLogs modelType="contact" modelId={contact.id} />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Purchase History" key="purchase-history">
               <p>Purchase History</p>
