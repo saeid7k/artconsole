@@ -80,7 +80,7 @@ class ContactController extends Controller
     public function show(Contact $contact)
     {
       $this->authorize('view', $contact);
-      
+
       return inertia('Contacts/View', [
         'contact' => $contact
       ]);
@@ -112,14 +112,15 @@ class ContactController extends Controller
 
   public function updatePhoto(Request $request)
   {
-    $this->authorize('update', Contact::class);
+    $contact = Contact::find($request->contact_id);
+
+    $this->authorize('update', $contact);
 
     $request->validate([
       'contact_id' => ['required', 'exists:contacts,id'],
       'photo' => ['required', 'image', 'max:10240'], // max 10MB
     ]);
 
-    $contact = Contact::find($request->contact_id);
 
     $contact->addMediaFromRequest('photo')
       ->toMediaCollection('contact_photo');
