@@ -26,6 +26,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/update', [App\Http\Controllers\ProfileController::class, 'update'])->name('update');
     Route::post('/update-photo', [App\Http\Controllers\ProfileController::class, 'updatePhoto'])->name('update-photo');
   });
+
+  Route::prefix('activity-logs')->name('activity-logs.')->group(function () {
+    Route::get('/model-activities', [App\Http\Controllers\ActivityLogController::class, 'modelActivities'])->name('model-activities');
+  });
 });
 
 Route::middleware(['auth', Admin::class])->group(function () {
