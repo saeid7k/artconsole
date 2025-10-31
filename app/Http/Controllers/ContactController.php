@@ -78,6 +78,8 @@ class ContactController extends Controller
      */
     public function show(Contact $contact)
     {
+      $this->authorize('view', $contact);
+      
       return inertia('Contacts/View', [
         'contact' => $contact
       ]);
