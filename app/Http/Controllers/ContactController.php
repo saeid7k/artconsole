@@ -127,7 +127,7 @@ class ContactController extends Controller
 
     activity()
       ->performedOn($contact)
-      ->log('Updated contact photo');
+      ->log('updated contact photo');
 
     // delete previous photos
     $medias = $contact->getMedia('contact_photo');
