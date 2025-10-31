@@ -125,6 +125,10 @@ class ContactController extends Controller
     $contact->addMediaFromRequest('photo')
       ->toMediaCollection('contact_photo');
 
+    activity()
+      ->performedOn($contact)
+      ->log('Updated contact photo');
+
     // delete previous photos
     $medias = $contact->getMedia('contact_photo');
     if ($medias->count() > 1) {
