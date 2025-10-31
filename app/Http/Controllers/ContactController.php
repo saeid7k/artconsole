@@ -3,75 +3,76 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
+use App\Models\Media;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index( Request $request)
-    {
-      $user = auth()->user();
-      $gallery = $user->currentGallery();
+  /**
+   * Display a listing of the resource.
+   */
+  public function index(Request $request)
+  {
+    $user = auth()->user();
+    $gallery = $user->currentGallery();
 
-      $contacts = $gallery->contacts()
-        ->when($request->search, function ($q) use ($request) {
-          $search = '%' . strtolower($request->search) . '%';
-          $q->where(function ($q) use ($search) {
-            $q->whereRaw('LOWER(firstname) LIKE ?', $search)
-              ->orWhereRaw('LOWER(lastname) LIKE ?', $search)
-              ->orWhereRaw('LOWER(email) LIKE ?', $search)
-              ->orWhereRaw('LOWER(phone) LIKE ?', $search)
-              ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(address, '$.street'))) LIKE ?", $search)
-              ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(address, '$.city'))) LIKE ?", $search)
-              ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(address, '$.province'))) LIKE ?", $search)
-              ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(address, '$.postal_code'))) LIKE ?", $search)
-              ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(address, '$.country'))) LIKE ?", $search)
-              ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(business, '$.name'))) LIKE ?", $search)
-              ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(business, '$.title'))) LIKE ?", $search)
-              ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(business, '$.phone'))) LIKE ?", $search)
-              ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(business, '$.email'))) LIKE ?", $search)
-              ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(business, '$.website'))) LIKE ?", $search);
-          });
-        })
-        ->when($request->sort_by && $request->sort_order, function ($q) use ($request) {
-          if ($request->sort_by === 'full_name') {
-            $q->orderBy('firstname', $request->sort_order)->orderBy('lastname', $request->sort_order);
-          } elseif ($request->sort_by === 'formatted_address') {
-            $q->orderByRaw("JSON_UNQUOTE(JSON_EXTRACT(address, '$.street')) " . ($request->sort_order === 'asc' ? 'ASC' : 'DESC'));
-          } else {
-            $q->orderBy($request->sort_by, $request->sort_order);
-          }
-        }, function ($q) {
-          $q->orderBy('firstname', 'asc')->orderBy('lastname', 'asc');
-        })
-        ->when($request->relationship, function ($q) use ($request) {
-          $relationships = explode(',', $request->relationship);
-          $q->whereIn('relationship', $relationships);
-        })
-        ->paginate($request->per_page ?? 10)->withQueryString();
+    $contacts = $gallery->contacts()
+      ->when($request->search, function ($q) use ($request) {
+        $search = '%' . strtolower($request->search) . '%';
+        $q->where(function ($q) use ($search) {
+          $q->whereRaw('LOWER(firstname) LIKE ?', $search)
+            ->orWhereRaw('LOWER(lastname) LIKE ?', $search)
+            ->orWhereRaw('LOWER(email) LIKE ?', $search)
+            ->orWhereRaw('LOWER(phone) LIKE ?', $search)
+            ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(address, '$.street'))) LIKE ?", $search)
+            ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(address, '$.city'))) LIKE ?", $search)
+            ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(address, '$.province'))) LIKE ?", $search)
+            ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(address, '$.postal_code'))) LIKE ?", $search)
+            ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(address, '$.country'))) LIKE ?", $search)
+            ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(business, '$.name'))) LIKE ?", $search)
+            ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(business, '$.title'))) LIKE ?", $search)
+            ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(business, '$.phone'))) LIKE ?", $search)
+            ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(business, '$.email'))) LIKE ?", $search)
+            ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(business, '$.website'))) LIKE ?", $search);
+        });
+      })
+      ->when($request->sort_by && $request->sort_order, function ($q) use ($request) {
+        if ($request->sort_by === 'full_name') {
+          $q->orderBy('firstname', $request->sort_order)->orderBy('lastname', $request->sort_order);
+        } elseif ($request->sort_by === 'formatted_address') {
+          $q->orderByRaw("JSON_UNQUOTE(JSON_EXTRACT(address, '$.street')) " . ($request->sort_order === 'asc' ? 'ASC' : 'DESC'));
+        } else {
+          $q->orderBy($request->sort_by, $request->sort_order);
+        }
+      }, function ($q) {
+        $q->orderBy('firstname', 'asc')->orderBy('lastname', 'asc');
+      })
+      ->when($request->relationship, function ($q) use ($request) {
+        $relationships = explode(',', $request->relationship);
+        $q->whereIn('relationship', $relationships);
+      })
+      ->paginate($request->per_page ?? 10)->withQueryString();
 
-      return inertia('Contacts/Index', [
-        'contacts' => $contacts
-      ]);
-    }
+    return inertia('Contacts/Index', [
+      'contacts' => $contacts
+    ]);
+  }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+  /**
+   * Show the form for creating a new resource.
+   */
+  public function create()
+  {
+    //
+  }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+  /**
+   * Store a newly created resource in storage.
+   */
+  public function store(Request $request)
+  {
+    //
+  }
 
     /**
      * Display the specified resource.
@@ -85,27 +86,52 @@ class ContactController extends Controller
       ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Contact $contact)
-    {
-        //
+  /**
+   * Show the form for editing the specified resource.
+   */
+  public function edit(Contact $contact)
+  {
+    //
+  }
+
+  /**
+   * Update the specified resource in storage.
+   */
+  public function update(Request $request, Contact $contact)
+  {
+    //
+  }
+
+  /**
+   * Remove the specified resource from storage.
+   */
+  public function destroy(Contact $contact)
+  {
+    //
+  }
+
+  public function updatePhoto(Request $request)
+  {
+    $this->authorize('update', Contact::class);
+
+    $request->validate([
+      'contact_id' => ['required', 'exists:contacts,id'],
+      'photo' => ['required', 'image', 'max:10240'], // max 10MB
+    ]);
+
+    $contact = Contact::find($request->contact_id);
+
+    $contact->addMediaFromRequest('photo')
+      ->toMediaCollection('contact_photo');
+
+    // delete previous photos
+    $medias = $contact->getMedia('contact_photo');
+    if ($medias->count() > 1) {
+      $medias->sortByDesc('id')->skip(1)->each(function (Media $media) {
+        $media->delete();
+      });
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Contact $contact)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Contact $contact)
-    {
-        //
-    }
+    return Response()->json(['message' => 'Contact photo updated successfully']);
+  }
 }

@@ -44,7 +44,7 @@ function ProfileModal({ open, setOpen }: { open: boolean, setOpen: (open: boolea
         'Content-Type': 'multipart/form-data'
       }
     }).then((res) => {
-      message.success(res.data.message || "yes Profile photo updated successfully")
+      message.success(res.data.message || "Profile photo updated successfully")
       router.reload()
     }).catch((e) => {
       message.error(e.response?.data?.message || "Failed to update profile photo")

@@ -47,7 +47,7 @@ class Contact extends Model implements HasMedia
 
   public function getPhotoAttribute(): ?string
   {
-    $media = $this->getLastMedia('profile_photo');
+    $media = $this->getLastMedia('contact_photo');
     return $media ? $media->getUrl() : null;
   }
 
