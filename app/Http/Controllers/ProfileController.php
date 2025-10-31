@@ -77,7 +77,7 @@ class ProfileController extends Controller
 
     activity()
       ->performedOn($user)
-      ->log('Updated profile photo');
+      ->log('updated profile photo');
 
     // delete previous photos
     $medias = $user->getMedia('profile_photo');
