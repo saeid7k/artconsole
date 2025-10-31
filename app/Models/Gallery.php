@@ -39,6 +39,7 @@ class Gallery extends Model
       ->get();
 
     if ($owner && !$members->contains('id', $owner->id)) {
+      $owner->pivot = ['access' => 'owner'];
       $members->push($owner);
     }
 
@@ -48,5 +49,20 @@ class Gallery extends Model
   public function contacts(): HasMany
   {
     return $this->hasMany(Contact::class);
+  }
+
+  // Methods
+
+  public function isMember(User $user)
+  {
+    return $this->members()->contains('id', $user->id);
+  }
+
+  public function accessLevel(User $user): string|null
+  {
+    return $this->members()
+      ->where('id', $user->id)
+      ->first()
+      ?->pivot['access'] ?? null;
   }
 }
