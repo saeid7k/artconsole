@@ -3,6 +3,7 @@
 
 :root {
   --bg-light: theme('colors.gray.50');
+  --border-light: theme('colors.gray.200');
   --text-label: theme('colors.gray.500');
   --text-muted: theme('colors.gray.400');
 
@@ -30,6 +31,7 @@
 
 :root[data-theme='dark'] {
   --bg-light: theme('colors.slate.800');
+  --border-light: theme('colors.slate.700');
   --text-label: theme('colors.gray.400');
   --text-muted: theme('colors.gray.500');
 
@@ -57,6 +59,10 @@ code {
 
 .bg-light {
   background-color: var(--bg-light);
+}
+
+.border-light {
+  border-color: var(--border-light);
 }
 
 .text-muted {
