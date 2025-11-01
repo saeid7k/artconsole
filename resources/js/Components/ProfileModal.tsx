@@ -66,7 +66,7 @@ function ProfileModal({ open, setOpen }: { open: boolean, setOpen: (open: boolea
           });
       })
       .catch((info) => {
-        console.log('Validate Failed:', info);
+        message.error("Please correct the errors in the form")
       });
   }
 
