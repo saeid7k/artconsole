@@ -52,16 +52,12 @@ function View({ contact }: { contact: ContactProps }) {
           { title: contact.full_name }
         ]}
       />
-      <div className="flex flex-col md:flex-row gap-3 w-full">
+      <div className="flex flex-col lg:flex-row gap-3 w-full">
 
         {/* Personal Information */}
         <Card
-          className="min-w-[300px] md:max-w-[400px] overflow-hidden"
+          className="min-w-[250px] lg:min-w-[300px] lg:max-w-[400px] overflow-hidden"
         >
-          <div className="absolute top-0 right-0 bg-gray-100 dark:bg-gray-800 p-1 rounded-bl-lg h-max cursor-pointer hover:bg-primary-100 dark:hover:bg-primary-800
-           transition-colors">
-            <HugeiconsIcon icon={PencilEdit02Icon} size={16} />
-          </div>
           <div className="flex gap-2 mb-5">
             <div className="relative rounded-md overflow-hidden">
               <Avatar
@@ -172,7 +168,7 @@ function View({ contact }: { contact: ContactProps }) {
 
         {/* Tabs */}
         <Card
-          className="grow"
+          className="grow overflow-x-auto"
         >
           <Tabs defaultActiveKey="activities">
             <Tabs.TabPane tab="Activities" key="activities">

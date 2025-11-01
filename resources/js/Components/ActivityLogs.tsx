@@ -41,11 +41,11 @@ function ActivityLogs({ modelType, modelId }: { modelType: string; modelId: numb
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 overflow-x-auto">
       {logs.map(log => (
         <div
           key={log.id}
-          className="flex items-center justify-between gap-2 px-2 py-1 bg-light border border-solid border-light rounded"
+          className="flex items-center justify-between gap-2 px-2 py-1 bg-light border border-solid border-light rounded min-w-[500px]"
         >
           <div className="flex items-center gap-1">
             <Avatar
