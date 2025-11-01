@@ -11,7 +11,7 @@ import { getInitials } from "@/utils/stringHelper";
 import { BirthdayCakeIcon, Briefcase01Icon, Call02Icon, City03Icon, EarthIcon, Edit03Icon, Location06Icon, Mail01Icon, MapingIcon, OfficeIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link, router } from "@inertiajs/react";
-import { Avatar, Card, Divider, message, Tabs } from "antd";
+import { Avatar, Card, Divider, Empty, message, Tabs } from "antd";
 import axios from "axios";
 import moment from "moment";
 import { useRef } from "react";
@@ -175,13 +175,13 @@ function View({ contact }: { contact: ContactProps }) {
               <ActivityLogs modelType="contact" modelId={contact.id} />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Purchase History" key="purchase-history">
-              <p>Purchase History</p>
+              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No purchase history found" />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Inventory" key="inventory">
-              <p>Inventory List</p>
+              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No inventory found" />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Emails" key="emails">
-              <p>Emails</p>
+              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No emails found" />
             </Tabs.TabPane>
           </Tabs>
         </Card>
