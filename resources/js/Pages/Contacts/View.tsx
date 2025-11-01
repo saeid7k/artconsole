@@ -11,16 +11,19 @@ import { getInitials } from "@/utils/stringHelper";
 import { BirthdayCakeIcon, Briefcase01Icon, Call02Icon, City03Icon, EarthIcon, Edit03Icon, Location06Icon, Mail01Icon, MapingIcon, OfficeIcon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link, router } from "@inertiajs/react";
-import { Avatar, Card, Divider, Empty, message, Tabs } from "antd";
+import { Avatar, Button, Card, Divider, Empty, message, Tabs, Tooltip } from "antd";
 import axios from "axios";
-import moment from "moment";
-import { useRef } from "react";
+import dayjs from "dayjs";
+import { useRef, useState } from "react";
+import ContactsEditDrawer from "./Partials/ContactsEditDrawer";
 
 function View({ contact }: { contact: ContactProps }) {
 
+  // Picture Upload
+
   const pictureUploadRef = useRef<HTMLInputElement | null>(null)
 
-  function handleOverlayClick() {
+  function handlePictureClick() {
     pictureUploadRef.current?.click()
   }
 
@@ -44,6 +47,10 @@ function View({ contact }: { contact: ContactProps }) {
     })
   }
 
+  // Edit Drawer
+
+  const [showEditDrawer, setShowEditDrawer] = useState(false)
+
   return (
     <div>
       <PageTitle
@@ -51,6 +58,19 @@ function View({ contact }: { contact: ContactProps }) {
           { title: <Link href={route('contacts.index')}>Contacts</Link> },
           { title: contact.full_name }
         ]}
+        toolbar={
+          <div>
+            <Tooltip title="Edit Contact" mouseEnterDelay={1} >
+              <Button
+                type="text"
+                shape="circle"
+                onClick={() => setShowEditDrawer(true)}
+              >
+                <HugeiconsIcon icon={PencilEdit02Icon} size={20} />
+              </Button>
+            </Tooltip>
+          </div>
+        }
       />
       <div className="flex flex-col lg:flex-row gap-3 w-full">
 
@@ -71,7 +91,7 @@ function View({ contact }: { contact: ContactProps }) {
               </Avatar>
               <div
                 tabIndex={0}
-                onClick={() => handleOverlayClick()}
+                onClick={() => handlePictureClick()}
                 className="bg-black text-white opacity-0 w-full h-full absolute top-0 left-0 hover:opacity-50 cursor-pointer grid place-content-center transition-all"
               >
                 <HugeiconsIcon icon={Edit03Icon} size={32} />
@@ -161,7 +181,7 @@ function View({ contact }: { contact: ContactProps }) {
             <DataRow
               icon={<HugeiconsIcon icon={BirthdayCakeIcon} size={18} />}
               label="Birthday:"
-              value={moment(contact.birthday).format("MMMM D, YYYY")}
+              value={dayjs(contact.birthday).format("MMMM D, YYYY")}
             />
           </DataCol>
         </Card>
@@ -186,6 +206,11 @@ function View({ contact }: { contact: ContactProps }) {
           </Tabs>
         </Card>
       </div>
+      <ContactsEditDrawer
+        contact={contact}
+        show={showEditDrawer}
+        onClose={() => setShowEditDrawer(false)}
+      />
     </div>
   )
 }
