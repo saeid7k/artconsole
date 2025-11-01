@@ -17,7 +17,7 @@ class Contact extends Model implements HasMedia
   protected $casts = [
     'address' => 'object',
     'business' => 'object',
-    'birthday' => 'date',
+    'birthday' => 'date:Y-m-d',
     'relationship' => 'array',
   ];
 
