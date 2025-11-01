@@ -8,7 +8,7 @@ import { ContactProps } from "@/types/contact";
 import { stringToColor } from "@/utils/colorHelper";
 import { formatPhoneNumber } from "@/utils/formatter";
 import { getInitials } from "@/utils/stringHelper";
-import { BirthdayCakeIcon, Briefcase01Icon, Call02Icon, City03Icon, EarthIcon, Edit03Icon, Location06Icon, Mail01Icon, MapingIcon, OfficeIcon } from "@hugeicons/core-free-icons";
+import { BirthdayCakeIcon, Briefcase01Icon, Call02Icon, City03Icon, EarthIcon, Edit03Icon, Location06Icon, Mail01Icon, MapingIcon, OfficeIcon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link, router } from "@inertiajs/react";
 import { Avatar, Card, Divider, Empty, message, Tabs } from "antd";
@@ -56,8 +56,12 @@ function View({ contact }: { contact: ContactProps }) {
 
         {/* Personal Information */}
         <Card
-          className="min-w-[300px] md:max-w-[400px]"
+          className="min-w-[300px] md:max-w-[400px] overflow-hidden"
         >
+          <div className="absolute top-0 right-0 bg-gray-100 dark:bg-gray-800 p-1 rounded-bl-lg h-max cursor-pointer hover:bg-primary-100 dark:hover:bg-primary-800
+           transition-colors">
+            <HugeiconsIcon icon={PencilEdit02Icon} size={16} />
+          </div>
           <div className="flex gap-2 mb-5">
             <div className="relative rounded-md overflow-hidden">
               <Avatar
