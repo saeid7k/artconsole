@@ -1,11 +1,11 @@
+import LoadingSpinner from "@/Components/LoadingSpinner";
 import { ActivityLogProps } from "@/types/activityLog";
 import { Time04Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Avatar, Empty, Spin } from "antd";
+import { Avatar, Empty } from "antd";
 import axios from "axios";
-import moment from "moment";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import LoadingSpinner from "@/Components/LoadingSpinner";
 
 function ActivityLogs({ modelType, modelId }: { modelType: string; modelId: number }) {
 
@@ -57,7 +57,7 @@ function ActivityLogs({ modelType, modelId }: { modelType: string; modelId: numb
           </div>
           <div className="flex items-center gap-1">
             <HugeiconsIcon icon={Time04Icon} size={16} className="text-muted" />
-            {moment(log.created_at).format('MMM D, YYYY h:mm A')}
+            {dayjs(log.created_at).format('MMM D, YYYY h:mm A')}
           </div>
         </div>
       ))}
