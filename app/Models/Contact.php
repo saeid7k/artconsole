@@ -14,9 +14,23 @@ class Contact extends Model implements HasMedia
 {
   use HasFactory, InteractsWithMedia, LogsActivity;
 
+  protected $fillable = [
+    'gallery_id',
+    'firstname',
+    'lastname',
+    'email',
+    'phone',
+    'address',
+    'website',
+    'relationship',
+    'business',
+    'birthday',
+  ];
+
   protected $casts = [
     'address' => 'object',
     'business' => 'object',
+    'business.address' => 'object',
     'birthday' => 'date:Y-m-d',
     'relationship' => 'array',
   ];
@@ -69,6 +83,9 @@ class Contact extends Model implements HasMedia
 
   public function getActivitylogOptions(): LogOptions
   {
-    return LogOptions::defaults();
+    return LogOptions::defaults()
+      ->logFillable()
+      ->logOnlyDirty()
+      ->dontSubmitEmptyLogs();
   }
 }
