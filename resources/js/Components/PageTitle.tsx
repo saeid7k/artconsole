@@ -12,7 +12,7 @@ type Props = {
 function PageTitle({ title = null, counter = null, toolbar = null, breadcrumbItems = [] }: Props) {
   return (
       <div
-        className="flex items-center justify-between px-6 pb-3 w-full grow-0"
+        className="flex items-center justify-between flex-wrap gap-2 px-6 pb-3 w-full grow-0"
       >
         <div>
           {breadcrumbItems.length > 0 && (
