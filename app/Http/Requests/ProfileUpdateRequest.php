@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
+use App\Rules\Phone;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -21,12 +22,11 @@ class ProfileUpdateRequest extends FormRequest
         'email' => [
           'required',
           'string',
-          'lowercase',
           'email',
           'max:255',
           Rule::unique(User::class)->ignore($this->user()->id),
         ],
-        'phone' => ['nullable', 'string', 'max:20', 'regex:/^[0-9]{10,20}$/'],
+        'phone' => ['nullable', new Phone()],
         'website' => ['nullable', 'string', 'max:255'],
         // 'address' => ['nullable'],
         'address.unit' => ['nullable', 'string', 'max:255'],
@@ -51,13 +51,11 @@ class ProfileUpdateRequest extends FormRequest
 
         'email.required' => 'Email address is required.',
         'email.email' => 'Please provide a valid email address.',
-        'email.lowercase' => 'Email must be in lowercase.',
         'email.max' => 'Email may not be greater than 255 characters.',
         'email.unique' => 'This email address is already in use.',
 
         'phone.string' => 'Phone must be a valid text.',
         'phone.max' => 'Phone may not be greater than 20 characters.',
-        'phone.regex' => 'Phone number must contain at least 10 digits.',
 
         'website.string' => 'Website must be a valid text.',
         'website.max' => 'Website may not be greater than 255 characters.',
