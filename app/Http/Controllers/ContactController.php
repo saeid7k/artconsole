@@ -117,7 +117,11 @@ class ContactController extends Controller
    */
   public function destroy(Contact $contact)
   {
-    //
+    $this->authorize('delete', $contact);
+
+    $contact->delete();
+
+    return Response()->json(['message' => 'Contact deleted successfully']);
   }
 
   public function updatePhoto(Request $request)
