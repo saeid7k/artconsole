@@ -140,6 +140,18 @@ class User extends Authenticatable implements HasMedia
     return LogOptions::defaults()
       ->logFillable()
       ->logOnlyDirty()
-      ->dontSubmitEmptyLogs();
+      ->dontSubmitEmptyLogs()
+      ->setDescriptionForEvent(function (string $event) {
+        switch ($event) {
+          case 'created':
+            return "created the user";
+          case 'updated':
+            return "updated user information";
+          case 'deleted':
+            return "deleted the user";
+          default:
+            return $event;
+        }
+      });
   }
 }

@@ -86,6 +86,18 @@ class Contact extends Model implements HasMedia
     return LogOptions::defaults()
       ->logFillable()
       ->logOnlyDirty()
-      ->dontSubmitEmptyLogs();
+      ->dontSubmitEmptyLogs()
+      ->setDescriptionForEvent(function (string $event) {
+        switch ($event) {
+          case 'created':
+            return "created the contact";
+          case 'updated':
+            return "updated contact information";
+          case 'deleted':
+            return "deleted the contact";
+          default:
+            return $event;
+        }
+      });
   }
 }
