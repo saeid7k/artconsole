@@ -25,6 +25,7 @@ class ContactController extends Controller
             ->orWhereRaw('LOWER(lastname) LIKE ?', $search)
             ->orWhereRaw('LOWER(email) LIKE ?', $search)
             ->orWhereRaw('LOWER(phone) LIKE ?', $search)
+            ->orWhereRaw('LOWER(relationship) LIKE ?', $search)
             ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(address, '$.street'))) LIKE ?", $search)
             ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(address, '$.city'))) LIKE ?", $search)
             ->orWhereRaw("LOWER(JSON_UNQUOTE(JSON_EXTRACT(address, '$.province'))) LIKE ?", $search)
@@ -50,7 +51,11 @@ class ContactController extends Controller
       })
       ->when($request->relationship, function ($q) use ($request) {
         $relationships = explode(',', $request->relationship);
-        $q->whereIn('relationship', $relationships);
+        $q->where(function ($qq) use ($relationships) {
+          foreach ($relationships as $r) {
+            $qq->orWhereJsonContains('relationship', $r);
+          }
+        });
       })
       ->paginate($request->per_page ?? 10)->withQueryString();
 
