@@ -192,7 +192,7 @@ function View({ contact }: { contact: ContactProps }) {
         >
           <Tabs defaultActiveKey="activities">
             <Tabs.TabPane tab="Activities" key="activities">
-              <ActivityLogs modelType="contact" modelId={contact.id} />
+              <ActivityLogs key={contact.updated_at} modelType="contact" modelId={contact.id} />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Purchase History" key="purchase-history">
               <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No purchase history found" />
