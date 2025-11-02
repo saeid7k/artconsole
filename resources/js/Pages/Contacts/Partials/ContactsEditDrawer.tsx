@@ -1,7 +1,7 @@
 import countries from "@/constants/Countries.json";
 import { ContactProps } from "@/types/contact";
 import { router } from "@inertiajs/react";
-import { Button, DatePicker, Drawer, Form, Input, message, Select } from "antd";
+import { Button, DatePicker, Divider, Drawer, Form, Input, message, Select } from "antd";
 import axios from "axios";
 import dayjs from "dayjs";
 
@@ -108,6 +108,7 @@ function ContactsEditDrawer({ contact, show, onClose }: { contact: ContactProps;
             <Input />
           </Form.Item>
         </div>
+        <Divider />
         <h4 className="mt-0">Address</h4>
         <div className="sm:flex gap-4">
           <Form.Item
@@ -164,6 +165,7 @@ function ContactsEditDrawer({ contact, show, onClose }: { contact: ContactProps;
             />
           </Form.Item>
         </div>
+        <Divider />
         <h4>Business</h4>
         <div className="sm:flex gap-4">
           <Form.Item
@@ -210,6 +212,7 @@ function ContactsEditDrawer({ contact, show, onClose }: { contact: ContactProps;
             <Input />
           </Form.Item>
         </div>
+        <Divider />
         <h4>Personal</h4>
         <Form.Item
           name="birthday"
