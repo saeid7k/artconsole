@@ -70,6 +70,10 @@ function ProfileModal({ open, setOpen }: { open: boolean, setOpen: (open: boolea
       });
   }
 
+  function handleClose() {
+    setOpen(false)
+  }
+
   // Effects
 
   useEffect(() => {
@@ -84,13 +88,14 @@ function ProfileModal({ open, setOpen }: { open: boolean, setOpen: (open: boolea
     <Modal
       title="Profile"
       open={open}
-      onCancel={() => setOpen(false)}
+      onCancel={handleClose}
       closeIcon={<HugeiconsIcon icon={Cancel01Icon} size={32} />}
       // footer={null}
       width={800}
       okText="Save"
       onOk={handleSave}
-      afterClose={form.resetFields}
+      afterClose={handleClose}
+      afterOpenChange={() => form.resetFields()}
     >
       {/* Photo */}
 
