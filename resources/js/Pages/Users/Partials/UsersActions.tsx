@@ -7,7 +7,7 @@ import axios from "axios"
 
 function UsersActions({ user }: { user: UserProps }) {
 
-  function confirmDelete() {
+  function handleDelete() {
     axios.post(route('users.delete', user.id))
       .then((res) => {
         message.success(res.data.message || 'User deleted successfully')
@@ -44,7 +44,7 @@ function UsersActions({ user }: { user: UserProps }) {
         <Popconfirm
           title="Delete the user"
           description="Are you sure to delete this user?"
-          onConfirm={() => confirmDelete()}
+          onConfirm={() => handleDelete()}
           okText="Yes"
           cancelText="No"
           placement="left"
