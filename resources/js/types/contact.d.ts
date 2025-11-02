@@ -16,4 +16,6 @@ export interface ContactProps {
   formatted_address: string;
   business_formatted_address: string;
   photo?: string;
+  created_at: string;
+  updated_at: string;
 }
