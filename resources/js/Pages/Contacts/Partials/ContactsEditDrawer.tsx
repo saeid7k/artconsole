@@ -1,6 +1,8 @@
 import countries from "@/constants/Countries.json";
 import { ContactProps } from "@/types/contact";
-import { DatePicker, Drawer, Form, Input, Select } from "antd";
+import { router } from "@inertiajs/react";
+import { Button, DatePicker, Drawer, Form, Input, message, Select } from "antd";
+import axios from "axios";
 import dayjs from "dayjs";
 
 function ContactsEditDrawer({ contact, show, onClose }: { contact: ContactProps; show: boolean; onClose: () => void }) {
@@ -19,6 +21,25 @@ function ContactsEditDrawer({ contact, show, onClose }: { contact: ContactProps;
 
   const watchCountry = Form.useWatch(['address', 'country'], form);
 
+  function handleSave() {
+    form
+      .validateFields()
+      .then((values) => {
+        axios.post(route('contacts.update', { contact: contact.id }), values)
+          .then((res) => {
+            message.success(res.data.message || "Profile updated successfully")
+            router.reload()
+            handleClose()
+          })
+          .catch((e) => {
+            message.error(e.response?.data?.message || "Failed to update profile")
+          });
+      })
+      .catch((info) => {
+        message.error("Please correct the errors in the form")
+      })
+  }
+
   return (
     <Drawer
       title="Edit Contact"
@@ -26,13 +47,18 @@ function ContactsEditDrawer({ contact, show, onClose }: { contact: ContactProps;
       size="large"
       onClose={handleClose}
       open={show}
+      extra={
+        <Button type="primary" onClick={handleSave}>Save</Button>
+      }
+      afterOpenChange={() => form.resetFields()}
     >
       <Form
         layout="vertical"
         form={form}
         initialValues={{ ...contact,
           birthday: contact.birthday ? dayjs(contact.birthday) : null
-         }}
+        }}
+        validateTrigger="onBlur"
       >
         <h4 className="mt-0">Communication</h4>
         <div className="sm:flex gap-4">
@@ -62,6 +88,7 @@ function ContactsEditDrawer({ contact, show, onClose }: { contact: ContactProps;
             name="phone"
             label="Phone"
             rules={[
+              { pattern: /^\d+$/, message: 'Phone number must be digits only' },
               { max: 20, message: 'Phone number cannot exceed 20 characters' }
             ]}
             className="sm:w-1/2"
@@ -165,7 +192,8 @@ function ContactsEditDrawer({ contact, show, onClose }: { contact: ContactProps;
             name={['business', 'phone']}
             label="Phone"
             rules={[
-              { max: 20, message: 'Phone number cannot exceed 20 characters' }
+              { pattern: /^\d+$/, message: 'Phone number must be digits only' },
+              { max: 20, message: 'Phone number cannot exceed 20 characters' },
             ]}
             className="sm:w-1/2"
           >
@@ -182,6 +210,7 @@ function ContactsEditDrawer({ contact, show, onClose }: { contact: ContactProps;
             <Input />
           </Form.Item>
         </div>
+        <h4>Personal</h4>
         <Form.Item
           name="birthday"
           label="Birthday"

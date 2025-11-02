@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContactUpdateRequest;
 use App\Models\Contact;
 use App\Models\Media;
 use Illuminate\Http\Request;
@@ -97,9 +98,13 @@ class ContactController extends Controller
   /**
    * Update the specified resource in storage.
    */
-  public function update(Request $request, Contact $contact)
+  public function update(ContactUpdateRequest $request, Contact $contact)
   {
-    //
+    $this->authorize('update', $contact);
+
+    $contact->update($request->all());
+
+    return Response()->json(['message' => 'Contact updated successfully']);
   }
 
   /**
