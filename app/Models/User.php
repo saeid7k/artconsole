@@ -25,6 +25,19 @@ class User extends Authenticatable implements HasMedia
    *
    * @var list<string>
    */
+
+  protected $fillable = [
+    'firstname',
+    'lastname',
+    'username',
+    'email',
+    'phone',
+    'website',
+    'address',
+    'bio',
+    'password',
+  ];
+
   protected $guarded = [
     'email_verified_at',
     'remember_token',
@@ -124,6 +137,9 @@ class User extends Authenticatable implements HasMedia
 
   public function getActivitylogOptions(): LogOptions
   {
-    return LogOptions::defaults();
+    return LogOptions::defaults()
+      ->logFillable()
+      ->logOnlyDirty()
+      ->dontSubmitEmptyLogs();
   }
 }
