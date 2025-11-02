@@ -2,13 +2,25 @@ import { ContactProps } from "@/types/contact"
 import { Delete02Icon, PencilEdit02Icon, ViewIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router } from "@inertiajs/react"
-import { Button, Tooltip } from "antd"
+import { Button, message, Popconfirm, Tooltip } from "antd"
 import { useState } from "react"
 import ContactsEditDrawer from "./ContactsEditDrawer"
+import axios from "axios"
 
 function ContactsActions({ contact }: { contact: ContactProps }) {
 
   const [showEditDrawer, setShowEditDrawer] = useState(false)
+
+  function handleDelete() {
+    axios.post(route('contacts.delete', contact.id))
+      .then((res) => {
+        message.success(res.data.message || 'Contact deleted successfully')
+        router.reload()
+      })
+      .catch((e) => {
+        message.error(e.response?.data?.message || 'An error occurred while deleting the contact')
+      })
+  }
 
   return (
     <>
@@ -34,14 +46,28 @@ function ContactsActions({ contact }: { contact: ContactProps }) {
           />
         </Tooltip>
         <Tooltip title="Delete">
-          <Button
-            variant="text"
-            color='danger'
-            shape="circle"
-            icon={<HugeiconsIcon icon={Delete02Icon} size={20} />}
-            onClick={() => router.post(route('contacts.remove', contact.id))}
-            disabled={!contact.abilities.delete}
-          />
+          <Popconfirm
+            title="Delete the contact"
+            description={
+              <div>
+                Are you sure to delete this contact?
+                <div className="italic text-red-500">{contact.full_name}</div>
+              </div>
+            }
+            onConfirm={() => handleDelete()}
+            okText="Yes"
+            cancelText="No"
+            placement="left"
+            okType="danger"
+          >
+            <Button
+              variant="text"
+              color='danger'
+              shape="circle"
+              icon={<HugeiconsIcon icon={Delete02Icon} size={20} />}
+              disabled={!contact.abilities.delete}
+            />
+          </Popconfirm>
         </Tooltip>
       </div>
       <ContactsEditDrawer
