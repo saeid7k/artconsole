@@ -2,7 +2,8 @@ import ActivityLogs from "@/Components/ActivityLogs";
 import DataCol from "@/Components/Containers/DataCol";
 import DataRow from "@/Components/Containers/DataRow";
 import PageTitle from "@/Components/PageTitle";
-import RelationshipTag from "@/Components/RelationshipTag";
+import RelationshipTags from "@/Components/RelationshipTags";
+import { ContactProvider } from "@/contexts/ContactContext";
 import AppLayout from "@/Layouts/AppLayout";
 import { ContactProps } from "@/types/contact";
 import { stringToColor } from "@/utils/colorHelper";
@@ -52,7 +53,7 @@ function View({ contact }: { contact: ContactProps }) {
   const [showEditDrawer, setShowEditDrawer] = useState(false)
 
   return (
-    <div>
+    <ContactProvider value={{}}>
       <PageTitle
         breadcrumbItems={[
           { title: <Link href={route('contacts.index')}>Contacts</Link> },
@@ -106,11 +107,7 @@ function View({ contact }: { contact: ContactProps }) {
             </div>
             <div className="flex flex-col justify-between items-start">
               <div className="text-xl">{contact.full_name}</div>
-              <div className="flex">
-                {contact.relationship.map((relation: string, index: number) => (
-                  <RelationshipTag relationship={relation} key={index} />
-                ))}
-              </div>
+              <RelationshipTags contact={contact} />
             </div>
           </div>
           <DataCol title="Communication">
@@ -211,7 +208,7 @@ function View({ contact }: { contact: ContactProps }) {
         show={showEditDrawer}
         onClose={() => setShowEditDrawer(false)}
       />
-    </div>
+    </ContactProvider>
   )
 }
 

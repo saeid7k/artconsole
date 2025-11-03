@@ -18,6 +18,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/update-photo', [ContactController::class, 'updatePhoto'])->name('update-photo');
     Route::post('/{contact}/update', [ContactController::class, 'update'])->name('update');
     Route::post('/{contact}/delete', [ContactController::class, 'destroy'])->name('delete');
+    Route::post('/{contact}/update-relationships', [ContactController::class, 'updateRelationships'])->name('update-relationships');
   });
 
   Route::prefix('galleries')->name('galleries.')->group(function () {

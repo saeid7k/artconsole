@@ -1,5 +1,5 @@
 import ContactStack from '@/Components/ContactStack';
-import RelationshipTag from '@/Components/RelationshipTag';
+import RelationshipTags from '@/Components/RelationshipTags';
 import { useWindow } from '@/hooks/useWindow';
 import { PageProps } from '@/types';
 import { ContactProps } from '@/types/contact';
@@ -71,13 +71,9 @@ function ContactsTable({ contacts }: { contacts: PageProps }) {
       ],
       sorter: (a, b) => a.relationship.localeCompare(b.relationship),
       sortDirections: ['ascend', 'descend'],
-      render: (array) => {
+      render: (value, record) => {
         return (
-          <>
-            {array?.map((text: string, index: number) => (
-              <RelationshipTag relationship={text} key={index} />
-            ))}
-          </>
+          <RelationshipTags key={record.id} contact={record as ContactProps} manageButtonDelay={500} />
         )
       },
       width: 180,

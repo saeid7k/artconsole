@@ -153,4 +153,19 @@ class ContactController extends Controller
 
     return Response()->json(['message' => 'Contact photo updated successfully']);
   }
+
+  public function updateRelationships(Request $request, Contact $contact)
+  {
+    $this->authorize('update', $contact);
+
+    $request->validate([
+      'relationships' => ['nullable', 'array'],
+      'relationships.*' => ['string'],
+    ]);
+
+    $contact->relationship = $request->relationships ?? [];
+    $contact->save();
+
+    return Response()->json(['message' => 'Contact relationships updated successfully']);
+  }
 }
