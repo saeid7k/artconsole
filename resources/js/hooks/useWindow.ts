@@ -12,16 +12,29 @@ const breakpoints = {
 
 export const useWindow = () => {
 
+  // Window Width
+
+  const [windowWidth, setWindowWidth] = useState<number>(0);
+
+  useEffect(() => {
+    const updateWidth = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', updateWidth);
+    updateWidth();
+    return () => window.removeEventListener('resize', updateWidth);
+  }, []);
+
   // Breakpoint
 
   const [breakpoint, setBreakpoint] = useState<string>('sm');
 
   useEffect(() => {
     const check = () => {
-      const width = window.innerWidth;
       const keys = Object.keys(breakpoints) as (keyof typeof breakpoints)[];
       const active =
-        keys.findLast((key) => width >= breakpoints[key]) ?? 'sm';
+        keys.findLast((key) => windowWidth >= breakpoints[key]) ?? 'sm';
       setBreakpoint(active);
     };
 
@@ -45,5 +58,5 @@ export const useWindow = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  return {breakpoint, scrollY, scrollX}
+  return {windowWidth, breakpoint, scrollY, scrollX}
 };
