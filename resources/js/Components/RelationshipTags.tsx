@@ -6,7 +6,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
 import { Button, Card, Checkbox, Dropdown, message, Tag, Tooltip } from "antd";
 import axios from "axios";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function RelationshipTags({ contact, manageButtonDelay = 2000 }: { contact: ContactProps, manageButtonDelay?: number }) {
 
@@ -66,6 +66,10 @@ function RelationshipTags({ contact, manageButtonDelay = 2000 }: { contact: Cont
     })
   }
 
+  useEffect(() => {
+    setRelationships(contact.relationship || []);
+  }, [contact.relationship]);
+
   return (
     <div
       className="flex items-center"
@@ -84,7 +88,7 @@ function RelationshipTags({ contact, manageButtonDelay = 2000 }: { contact: Cont
       {relationships.map((relation: string, index: number) => (
         <RelationTag key={index} relation={relation} />
       ))}
-      {(showManageButton || windowWidth <= 768) && (
+      {(showManageButton || windowWidth <= 768 || relationships.length == 0) && (
         <Tooltip title="Manage Relationships" mouseEnterDelay={1}>
           <Dropdown
             popupRender={() => {
