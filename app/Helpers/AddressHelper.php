@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use function PHPUnit\Framework\isArray;
+
 class AddressHelper
 {
   public static function CANADIAN_PROVINCE_ABBREVIATIONS(): array
@@ -11,10 +13,14 @@ class AddressHelper
     return array_keys($provincesData['Canada']['provinces']);
   }
 
-  public static function formatAddress(object|null $address): string
+  public static function formatAddress($address): string
   {
-    if (!$address) {
+    if (!$address || empty((array) $address)) {
       return '';
+    }
+
+    if (is_array($address)) {
+      $address = (object) $address;
     }
 
     $formatted = $address->unit ? $address->street . ' - ' . $address->unit : $address->street;
