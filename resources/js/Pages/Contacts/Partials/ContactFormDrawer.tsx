@@ -1,4 +1,5 @@
 import countries from "@/constants/Countries.json";
+import RELATIONSHIPS from "@/constants/relationships";
 import { ContactProps } from "@/types/contact";
 import { router } from "@inertiajs/react";
 import { Button, Checkbox, DatePicker, Divider, Drawer, Form, Input, message, Select, Tabs } from "antd";
@@ -134,10 +135,9 @@ function ContactFormDrawer({ mode = 'create', contact = null, show, onClose }: P
               label="Relationship"
             >
               <Checkbox.Group>
-                <Checkbox value="artist">Artist</Checkbox>
-                <Checkbox value="vendor">Vendor</Checkbox>
-                <Checkbox value="collector">Collector</Checkbox>
-                <Checkbox value="other">Other</Checkbox>
+                {RELATIONSHIPS.map((relation) => (
+                  <Checkbox key={relation.value} value={relation.value}>{relation.label}</Checkbox>
+                ))}
               </Checkbox.Group>
             </Form.Item>
             <Form.Item
