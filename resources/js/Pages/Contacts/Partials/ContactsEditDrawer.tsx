@@ -25,7 +25,12 @@ function ContactsEditDrawer({ contact, show, onClose }: { contact: ContactProps;
     form
       .validateFields()
       .then((values) => {
-        axios.post(route('contacts.update', { contact: contact.id }), values)
+        let payload = { ...values }
+
+        // preserve business address and website here since they're not in the form
+        payload.business = { ...payload.business, address: contact.business?.address || {}, website: contact.business?.website || '' }
+
+        axios.post(route('contacts.update', { contact: contact.id }), payload)
           .then((res) => {
             message.success(res.data.message || "Profile updated successfully")
             router.reload()
