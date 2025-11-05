@@ -16,7 +16,7 @@ import { Avatar, Button, Card, Divider, Empty, message, Tabs, Tooltip } from "an
 import axios from "axios";
 import dayjs from "dayjs";
 import { useRef, useState } from "react";
-import ContactsEditDrawer from "./Partials/ContactsEditDrawer";
+import ContactFormDrawer from "./Partials/ContactFormDrawer";
 
 function View({ contact }: { contact: ContactProps }) {
 
@@ -165,7 +165,7 @@ function View({ contact }: { contact: ContactProps }) {
             <DataRow
               icon={<HugeiconsIcon icon={Call02Icon} size={18} />}
               label="Phone:"
-              value={formatPhoneNumber(contact.business?.phone)}
+              value={contact.business?.phone ? formatPhoneNumber(contact.business?.phone) : ''}
             />
             <DataRow
               icon={<HugeiconsIcon icon={Mail01Icon} size={18} />}
@@ -203,10 +203,11 @@ function View({ contact }: { contact: ContactProps }) {
           </Tabs>
         </Card>
       </div>
-      <ContactsEditDrawer
+      <ContactFormDrawer
+        mode="update"
         contact={contact}
         show={showEditDrawer}
-        onClose={() => setShowEditDrawer(false)}
+        onClose={() => {setShowEditDrawer(false); router.reload()}}
       />
     </ContactProvider>
   )

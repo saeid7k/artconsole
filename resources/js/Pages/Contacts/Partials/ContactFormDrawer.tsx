@@ -1,11 +1,18 @@
 import countries from "@/constants/Countries.json";
 import { ContactProps } from "@/types/contact";
 import { router } from "@inertiajs/react";
-import { Button, DatePicker, Divider, Drawer, Form, Input, message, Select, Tabs } from "antd";
+import { Button, Checkbox, DatePicker, Divider, Drawer, Form, Input, message, Select, Tabs } from "antd";
 import axios from "axios";
 import dayjs from "dayjs";
 
-function ContactsEditDrawer({ contact, show, onClose }: { contact: ContactProps; show: boolean; onClose: () => void }) {
+type Props = {
+  mode?: 'create' | 'update';
+  contact?: ContactProps|null;
+  show: boolean;
+  onClose: () => void;
+}
+
+function ContactFormDrawer({ mode = 'create', contact = null, show, onClose }: Props) {
 
   const [form] = Form.useForm();
 
@@ -26,29 +33,29 @@ function ContactsEditDrawer({ contact, show, onClose }: { contact: ContactProps;
     form
       .validateFields()
       .then((values) => {
-        let payload = { ...values }
-
-        // preserve business address and website here since they're not in the form
-        payload.business = { ...payload.business, address: contact.business?.address || {}, website: contact.business?.website || '' }
-
-        axios.post(route('contacts.update', { contact: contact.id }), payload)
+        axios.post(route('contacts.create-update'), {
+          ...values,
+          mode: mode,
+          contact_id: mode == 'update' ? contact?.id : null,
+        })
           .then((res) => {
-            message.success(res.data.message || "Profile updated successfully")
+            message.success(res.data.message || `Profile ${mode === 'update' ? 'updated' : 'created'} successfully`)
             router.reload()
             handleClose()
           })
           .catch((e) => {
-            message.error(e.response?.data?.message || "Failed to update profile")
+            message.error(e.response?.data?.message || `Failed to ${mode === 'update' ? 'update' : 'create'} contact`)
           });
       })
-      .catch((info) => {
-        message.error("Please correct the errors in the form")
-      })
+      // .catch((e) => {
+      //   console.log(e);
+      //   message.error(e || `Failed to ${mode === 'update' ? 'update' : 'create'} contact`)
+      // })
   }
 
   return (
     <Drawer
-      title="Edit Contact"
+      title={`${mode === 'update' ? 'Edit' : 'Create'} Contact`}
       placement="right"
       size="large"
       onClose={handleClose}
@@ -61,9 +68,15 @@ function ContactsEditDrawer({ contact, show, onClose }: { contact: ContactProps;
       <Form
         layout="vertical"
         form={form}
-        initialValues={{ ...contact,
-          birthday: contact.birthday ? dayjs(contact.birthday) : null
-        }}
+        initialValues={
+          contact ?
+            {
+              ...contact,
+              birthday: contact?.birthday ? dayjs(contact?.birthday) : null
+            }
+          :
+            {}
+        }
         validateTrigger="onBlur"
       >
         <Tabs defaultActiveKey="personal" type="card" >
@@ -73,6 +86,7 @@ function ContactsEditDrawer({ contact, show, onClose }: { contact: ContactProps;
                 label="First Name"
                 name="firstname"
                 rules={[
+                  { required: true, message: 'First Name is required' },
                   { max: 255, message: 'First Name cannot exceed 255 characters' }
                 ]}
                 className="sm:w-1/2"
@@ -115,6 +129,17 @@ function ContactsEditDrawer({ contact, show, onClose }: { contact: ContactProps;
                 <Input />
               </Form.Item>
             </div>
+            <Form.Item
+              name="relationship"
+              label="Relationship"
+            >
+              <Checkbox.Group>
+                <Checkbox value="artist">Artist</Checkbox>
+                <Checkbox value="vendor">Vendor</Checkbox>
+                <Checkbox value="collector">Collector</Checkbox>
+                <Checkbox value="other">Other</Checkbox>
+              </Checkbox.Group>
+            </Form.Item>
             <Form.Item
               name="birthday"
               label="Birthday"
@@ -180,8 +205,6 @@ function ContactsEditDrawer({ contact, show, onClose }: { contact: ContactProps;
               </Form.Item>
             </div>
           </Tabs.TabPane>
-          {/* <Tabs.TabPane tab="Address" key="address">
-          </Tabs.TabPane> */}
           <Tabs.TabPane tab="Business" key="business">
             <div className="sm:flex gap-4">
               <Form.Item
@@ -213,7 +236,7 @@ function ContactsEditDrawer({ contact, show, onClose }: { contact: ContactProps;
                   { pattern: /^\d+$/, message: 'Phone number must be digits only' },
                   { max: 20, message: 'Phone number cannot exceed 20 characters' },
                 ]}
-                className="sm:w-1/2"
+                className="sm:w-1/3"
               >
                 <Input
                   addonBefore={countries.find(country => country.name === watchBusinessCountry)?.dialCode}
@@ -225,7 +248,17 @@ function ContactsEditDrawer({ contact, show, onClose }: { contact: ContactProps;
                 rules={[
                   { type: 'email', message: 'Email is not valid' },
                 ]}
-                className="sm:w-1/2"
+                className="sm:w-1/3"
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                name={['business', 'website']}
+                label="Business Website"
+                rules={[
+                  { type: 'url', message: 'Website is not valid' },
+                ]}
+                className="sm:w-1/3"
               >
                 <Input />
               </Form.Item>
@@ -293,4 +326,4 @@ function ContactsEditDrawer({ contact, show, onClose }: { contact: ContactProps;
   );
 }
 
-export default ContactsEditDrawer
+export default ContactFormDrawer

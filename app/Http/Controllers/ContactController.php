@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContactCreateUpdateRequest;
 use App\Http\Requests\ContactUpdateRequest;
 use App\Models\Contact;
 use App\Models\Media;
@@ -103,13 +104,30 @@ class ContactController extends Controller
   /**
    * Update the specified resource in storage.
    */
-  public function update(ContactUpdateRequest $request, Contact $contact)
+  public function createUpdate(ContactCreateUpdateRequest $request)
   {
-    $this->authorize('update', $contact);
+    $user = auth()->user();
 
-    $contact->update($request->all());
+    if ($request->mode == 'create') {
+      $this->authorize('create', Contact::class);
 
-    return Response()->json(['message' => 'Contact updated successfully']);
+      $gallery = $user->currentGallery();
+      $contact = Contact::create([
+        ...$request->except('contact_id'),
+        'gallery_id' => $gallery->id
+      ]);
+      $contact->gallery()->associate($gallery);
+      $contact->save();
+
+      return Response()->json(['message' => 'Contact created successfully']);
+    } else if ($request->mode == 'update') {
+      $contact = Contact::find($request->contact_id);
+      $this->authorize('update', $contact);
+
+      $contact->update($request->except('contact_id'));
+
+      return Response()->json(['message' => 'Contact updated successfully']);
+    }
   }
 
   /**
