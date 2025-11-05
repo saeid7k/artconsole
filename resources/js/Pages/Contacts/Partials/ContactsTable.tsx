@@ -22,6 +22,7 @@ function ContactsTable({ contacts }: { contacts: PageProps }) {
       key: 'full_name',
       sorter: (a, b) => a.full_name.localeCompare(b.full_name),
       sortDirections: ['ascend', 'descend'],
+      showSorterTooltip: false,
       render: (text, record): JSX.Element => (<ContactStack contact={record as ContactProps} />),
       width: 200,
       fixed: breakpoint == 'xs' ? undefined : 'left',
@@ -32,6 +33,7 @@ function ContactsTable({ contacts }: { contacts: PageProps }) {
       key: 'formatted_address',
       sorter: (a, b) => a.formatted_address.localeCompare(b.formatted_address),
       sortDirections: ['ascend', 'descend'],
+      showSorterTooltip: false,
       render: (text) => (<div className="line-clamp-2">{text}</div>),
       width: 200,
     },
@@ -41,6 +43,7 @@ function ContactsTable({ contacts }: { contacts: PageProps }) {
       key: 'email',
       sorter: (a, b) => a.email.localeCompare(b.email),
       sortDirections: ['ascend', 'descend'],
+      showSorterTooltip: false,
       width: 200,
     },
     {
@@ -49,6 +52,7 @@ function ContactsTable({ contacts }: { contacts: PageProps }) {
       key: 'phone',
       sorter: (a, b) => a.phone.localeCompare(b.phone),
       sortDirections: ['ascend', 'descend'],
+      showSorterTooltip: false,
       render: (text) => {
         return (
           <div className='flex items-center gap-1'>
@@ -71,6 +75,7 @@ function ContactsTable({ contacts }: { contacts: PageProps }) {
       ],
       sorter: (a, b) => a.relationship.localeCompare(b.relationship),
       sortDirections: ['ascend', 'descend'],
+      showSorterTooltip: false, 
       render: (value, record) => {
         return (
           <RelationshipTags key={record.id} contact={record as ContactProps} manageButtonDelay={500} />
