@@ -3,9 +3,9 @@ import { Delete02Icon, PencilEdit02Icon, ViewIcon } from "@hugeicons/core-free-i
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router } from "@inertiajs/react"
 import { Button, message, Popconfirm, Tooltip } from "antd"
-import { useState } from "react"
-import ContactsEditDrawer from "./ContactsEditDrawer"
 import axios from "axios"
+import { useState } from "react"
+import ContactFormDrawer from "./ContactFormDrawer"
 
 function ContactsActions({ contact }: { contact: ContactProps }) {
 
@@ -70,7 +70,8 @@ function ContactsActions({ contact }: { contact: ContactProps }) {
           </Popconfirm>
         </Tooltip>
       </div>
-      <ContactsEditDrawer
+      <ContactFormDrawer
+        mode="update"
         contact={contact}
         show={showEditDrawer}
         onClose={() => setShowEditDrawer(false)}

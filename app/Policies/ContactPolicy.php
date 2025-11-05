@@ -12,25 +12,30 @@ class ContactPolicy
    */
   public function __construct() {}
 
+  public function create(User $user): bool
+  {
+    return $this->isEditorOrOwner($user);
+  }
+
   public function view(User $user, Contact $contact): bool
   {
-    $gallery = $contact->gallery;
+    $gallery = $user->currentGallery();
     return $gallery ? $gallery->isMember($user) : false;
   }
 
   public function delete(User $user, Contact $contact): bool
   {
-    return $this->isEditorOrOwner($user, $contact);
+    return $this->isEditorOrOwner($user);
   }
 
   public function update(User $user, Contact $contact): bool
   {
-    return $this->isEditorOrOwner($user, $contact);
+    return $this->isEditorOrOwner($user);
   }
 
-  protected function isEditorOrOwner(User $user, Contact $contact): bool
+  protected function isEditorOrOwner(User $user): bool
   {
-    $gallery = $contact->gallery;
+    $gallery = $user->currentGallery();
     $accessLevel = $gallery ? $gallery->accessLevel($user) : null;
     return in_array($accessLevel, ['owner', 'editor']);
   }

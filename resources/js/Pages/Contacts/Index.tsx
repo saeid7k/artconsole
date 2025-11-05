@@ -4,6 +4,8 @@ import { router } from "@inertiajs/react";
 import Search from "antd/es/input/Search";
 import ContactsTable from "./Partials/ContactsTable";
 import PageTitle from "@/Components/PageTitle";
+import { useState } from "react";
+import ContactFormDrawer from "./Partials/ContactFormDrawer";
 
 function Index({ contacts }: { contacts: PageProps }) {
 
@@ -19,11 +21,14 @@ function Index({ contacts }: { contacts: PageProps }) {
     );
   }
 
+  const [showCreateDrawer, setShowCreateDrawer] = useState(false)
+
   return (
     <div>
       <PageTitle
         title="Contacts"
         counter={contacts.total}
+        onCreateButtonClick={() => { setShowCreateDrawer(true) }}
         toolbar={
           <Search
             placeholder="search contacts..."
@@ -34,6 +39,11 @@ function Index({ contacts }: { contacts: PageProps }) {
         }
       />
       <ContactsTable contacts={contacts} />
+      <ContactFormDrawer
+        mode="create"
+        show={showCreateDrawer}
+        onClose={() => setShowCreateDrawer(false)}
+      />
     </div>
   )
 }
