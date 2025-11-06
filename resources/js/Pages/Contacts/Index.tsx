@@ -4,8 +4,9 @@ import { router } from "@inertiajs/react";
 import Search from "antd/es/input/Search";
 import ContactsTable from "./Partials/ContactsTable";
 import PageTitle from "@/Components/PageTitle";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ContactFormDrawer from "./Partials/ContactFormDrawer";
+import { deleteQueryParam, getQueryParam } from "@/utils/urlHelper";
 
 function Index({ contacts }: { contacts: PageProps }) {
 
@@ -22,6 +23,14 @@ function Index({ contacts }: { contacts: PageProps }) {
   }
 
   const [showCreateDrawer, setShowCreateDrawer] = useState(false)
+
+  useEffect(() => {
+    let action = getQueryParam('action');
+    if (action === 'create') {
+      setShowCreateDrawer(true);
+      deleteQueryParam('action');
+    }
+  }, [])
 
   return (
     <div>
