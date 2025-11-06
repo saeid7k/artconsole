@@ -1,5 +1,6 @@
 import GallerySwitch from "@/Components/GallerySwitch";
 import Sidebar from "@/Components/Sidebar";
+import TopbarMenu from "@/Components/TopbarMenu";
 import UserMenu from "@/Components/UserMenu";
 import AppProvider, { useApp } from "@/contexts/AppContext";
 import { useWindow } from "@/hooks/useWindow";
@@ -82,7 +83,8 @@ function App ({ children }: AppProps) {
           <div>
             <GallerySwitch />
           </div>
-          <div>
+          <div className="flex items-center gap-2">
+            <TopbarMenu />
             <UserMenu />
           </div>
         </Header>
