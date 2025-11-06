@@ -10,6 +10,7 @@ import { router } from '@inertiajs/react';
 import type { TableProps } from 'antd';
 import { Table } from 'antd';
 import ContactsActions from './ContactsActions';
+import RELATIONSHIPS from '@/constants/relationships';
 
 function ContactsTable({ contacts }: { contacts: PageProps }) {
 
@@ -67,15 +68,10 @@ function ContactsTable({ contacts }: { contacts: PageProps }) {
       title: 'Relationship',
       dataIndex: 'relationship',
       key: 'relationship',
-      filters: [
-        { text: 'Artist', value: 'artist' },
-        { text: 'Vendor', value: 'vendor' },
-        { text: 'Collector', value: 'collector' },
-        { text: 'Other', value: 'other' },
-      ],
+      filters: RELATIONSHIPS.map(rel => ({ text: rel.label, value: rel.value })),
       sorter: (a, b) => a.relationship.localeCompare(b.relationship),
       sortDirections: ['ascend', 'descend'],
-      showSorterTooltip: false, 
+      showSorterTooltip: false,
       render: (value, record) => {
         return (
           <RelationshipTags key={record.id} contact={record as ContactProps} manageButtonDelay={500} />

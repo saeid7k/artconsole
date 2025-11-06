@@ -18,23 +18,7 @@ function RelationshipTags({ contact, manageButtonDelay = 2000 }: { contact: Cont
   const hideManageButtonTimer = useRef<NodeJS.Timeout | null>(null);
 
   const RelationTag = ({ relation, ...props }: { relation: string } & any) => {
-    let color = 'default';
-    switch (relation) {
-      case 'artist':
-        color = 'purple';
-        break;
-      case 'vendor':
-        color = 'orange';
-        break;
-      case 'collector':
-        color = 'green';
-        break;
-      case 'other':
-        color = 'default';
-        break;
-      default:
-        color = 'default';
-    }
+    let color = RELATIONSHIPS.find(rel => rel.value === relation)?.color || 'default';
 
     return (
       <Tag color={color} className="capitalize" {...props}>
