@@ -21,6 +21,7 @@ function UsersTable({ users }: { users: PageProps }) {
       key: 'id',
       sorter: (a, b) => a.id - b.id,
       sortDirections: ['ascend', 'descend'],
+      showSorterTooltip: false,
       width: 30,
       fixed: breakpoint == 'xs' ? undefined : 'left',
     },
@@ -30,6 +31,7 @@ function UsersTable({ users }: { users: PageProps }) {
       key: 'full_name',
       sorter: (a, b) => a.full_name.localeCompare(b.full_name),
       sortDirections: ['ascend', 'descend'],
+      showSorterTooltip: false,
       render: (text, record): JSX.Element => (
         <div className='flex items-center gap-1'>
           <Avatar size={'small'} className='text-xs' src={record.photo}>{getInitials(record.full_name)}</Avatar>
@@ -45,6 +47,7 @@ function UsersTable({ users }: { users: PageProps }) {
       key: 'formatted_address',
       sorter: (a, b) => a.formatted_address.localeCompare(b.formatted_address),
       sortDirections: ['ascend', 'descend'],
+      showSorterTooltip: false,
       render: (text) => (<div className="line-clamp-2">{text}</div>),
       width: 200,
     },
@@ -54,6 +57,7 @@ function UsersTable({ users }: { users: PageProps }) {
       key: 'email',
       sorter: (a, b) => a.email.localeCompare(b.email),
       sortDirections: ['ascend', 'descend'],
+      showSorterTooltip: false,
       width: 200,
     },
     {
@@ -62,6 +66,7 @@ function UsersTable({ users }: { users: PageProps }) {
       key: 'phone',
       sorter: (a, b) => a.phone.localeCompare(b.phone),
       sortDirections: ['ascend', 'descend'],
+      showSorterTooltip: false,
       render: (text) => {
         return (
           <div className='flex items-center gap-1'>
