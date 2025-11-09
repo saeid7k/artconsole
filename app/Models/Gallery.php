@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Zoha\Metable;
 
 class Gallery extends Model
 {
+  use Metable;
+ 
   protected $guarded = [];
 
   protected $casts = [
