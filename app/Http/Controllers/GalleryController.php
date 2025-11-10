@@ -50,7 +50,7 @@ class GalleryController extends Controller
     $this->authorize('update', $gallery);
 
     $request->validate([
-      'name' => 'string|max:255',
+      'name' => 'required|string|max:255',
       'description' => 'string|max:1000',
     ]);
 

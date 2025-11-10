@@ -1,5 +1,5 @@
 import { useGallerySettings } from "@/contexts/GallerySettingsContext"
-import { Add01Icon, Delete01Icon, Delete02Icon } from "@hugeicons/core-free-icons"
+import { Add01Icon, Delete02Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router } from "@inertiajs/react"
 import { Button, GetProp, Input, message, Tooltip, Upload, UploadProps } from "antd"
@@ -10,11 +10,18 @@ import LoadingSpinner from "../LoadingSpinner"
 
 function General() {
 
+  // Constants
+
   const { gallery, open } = useGallerySettings()
+  const INITIAL_DATA = {
+    logo: gallery?.logo || null,
+    name: gallery?.name || '',
+    description: gallery?.description || '',
+  }
 
   // Save Changes
 
-  const [data, setData] = useState<any>(gallery)
+  const [data, setData] = useState<any>(INITIAL_DATA)
   const [processing, setProcessing] = useState(false)
 
   function handleChange(id: string, value: any) {
@@ -22,6 +29,8 @@ function General() {
   }
 
   function save() {
+    if (!validate()) return;
+
     setProcessing(true)
     axios.post(route('galleries.update', { gallery: gallery.id }), {
       ...data,
@@ -33,6 +42,14 @@ function General() {
       setProcessing(false)
       router.reload()
     })
+  }
+
+  function validate() {
+    if (!data?.name || data?.name.trim() === '') {
+      message.error('Gallery name is required')
+      return false
+    }
+    return true
   }
 
   const isDataChanged = JSON.stringify(gallery) !== JSON.stringify(data)
@@ -103,8 +120,10 @@ function General() {
   // Effects
 
   useEffect(() => {
-    setData(gallery)
-  }, [gallery, open])
+    if (open) {
+      setData(INITIAL_DATA);
+    }
+  }, [open]);
 
   return (
     <div className="flex flex-col gap-3">
