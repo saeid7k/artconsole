@@ -155,14 +155,14 @@ class ContactController extends Controller
 
 
     $contact->addMediaFromRequest('photo')
-      ->toMediaCollection('contact_photo');
+      ->toMediaCollection('contact-photo');
 
     activity()
       ->performedOn($contact)
       ->log('updated contact photo');
 
     // delete previous photos
-    $medias = $contact->getMedia('contact_photo');
+    $medias = $contact->getMedia('contact-photo');
     if ($medias->count() > 1) {
       $medias->sortByDesc('id')->skip(1)->each(function (Media $media) {
         $media->delete();
