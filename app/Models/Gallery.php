@@ -4,12 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Zoha\Metable;
 
-class Gallery extends Model
+class Gallery extends Model implements HasMedia
 {
-  use Metable;
- 
+  use Metable, InteractsWithMedia, LogsActivity;
+
   protected $guarded = [];
 
   protected $casts = [
@@ -18,11 +22,17 @@ class Gallery extends Model
 
   // Appends
 
-  protected $appends = [ 'members_count' ];
+  protected $appends = [ 'members_count', 'logo' ];
 
   public function getMembersCountAttribute()
   {
     return $this->members()->count();
+  }
+
+  public function getLogoAttribute(): ?string
+  {
+    $media = $this->getLastMedia('gallery-logo');
+    return $media ? $media->getUrl() : null;
   }
 
   // Relationships
@@ -67,5 +77,27 @@ class Gallery extends Model
       ->where('id', $user->id)
       ->first()
       ?->pivot['access'] ?? null;
+  }
+
+  // Activity Log
+
+  public function getActivitylogOptions(): LogOptions
+  {
+    return LogOptions::defaults()
+      ->logFillable()
+      ->logOnlyDirty()
+      ->dontSubmitEmptyLogs()
+      ->setDescriptionForEvent(function (string $event) {
+        switch ($event) {
+          case 'created':
+            return "created the gallery";
+          case 'updated':
+            return "updated gallery information";
+          case 'deleted':
+            return "deleted the gallery";
+          default:
+            return $event;
+        }
+      });
   }
 }

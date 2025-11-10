@@ -9,6 +9,7 @@ import { useState } from "react";
 import GalleryAccessTag from "./GalleryAccessTag";
 import GalleryAvatar from "./GalleryAvatar";
 import { UsePageProps } from "@/types/usePage";
+import GallerySettingsModal from "./GallerySettingsModal";
 
 function GallerySwitch() {
 
@@ -42,6 +43,10 @@ function GallerySwitch() {
       });
   }
 
+  // Settings Modal
+
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
+
   // Render
 
   function Popup() {
@@ -62,6 +67,7 @@ function GallerySwitch() {
                 variant="text"
                 color="default"
                 shape="circle"
+                onClick={() => {setShowSettingsModal(true); setOpen(false);}}
               >
                 <HugeiconsIcon icon={SettingsFreeIcons} size={20} />
               </Button>
@@ -115,31 +121,37 @@ function GallerySwitch() {
   }
 
   return (
-    <Dropdown
-      trigger={['click']}
-      popupRender={() => <Popup />}
-      onOpenChange={(flag) => setOpen(flag)}
-      open={open}
-    >
-      <Button
-        className="flex items-center gap-2 px-1 group"
-        variant="text"
-        color="default"
-        onClick={handleClick}
+    <>
+      <Dropdown
+        trigger={['click']}
+        popupRender={() => <Popup />}
+        onOpenChange={(flag) => setOpen(flag)}
+        open={open}
       >
-        <GalleryAvatar gallery={current_gallery} size="small" shadow />
-        <div
-          className="font-semibold"
+        <Button
+          className="flex items-center gap-2 px-1 group"
+          variant="text"
+          color="default"
+          onClick={handleClick}
         >
-          {current_gallery.name}
-        </div>
-        <HugeiconsIcon
-          icon={ArrowDown01Icon}
-          size={16}
-          className={`${isClickedYet ? 'opacity-0' : 'opacity-100'} group-hover:opacity-100 duration-500`}
-        />
-      </Button>
-    </Dropdown>
+          <GalleryAvatar gallery={current_gallery} size="small" shadow />
+          <div
+            className="font-semibold"
+          >
+            {current_gallery.name}
+          </div>
+          <HugeiconsIcon
+            icon={ArrowDown01Icon}
+            size={16}
+            className={`${isClickedYet ? 'opacity-0' : 'opacity-100'} group-hover:opacity-100 duration-500`}
+          />
+        </Button>
+      </Dropdown>
+      <GallerySettingsModal
+        open={showSettingsModal}
+        setOpen={setShowSettingsModal}
+      />
+    </>
   );
 }
 
