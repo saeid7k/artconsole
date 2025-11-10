@@ -1,6 +1,6 @@
 import { GallerySettingsProvider } from "@/contexts/GallerySettingsContext"
 import { UsePageProps } from "@/types/usePage"
-import { Cancel01Icon, Key01Icon, Settings01Icon, UserGroupIcon } from "@hugeicons/core-free-icons"
+import { Cancel01Icon, Key01Icon, Link04Icon, Location03Icon, Settings01Icon, UserGroupIcon, UserMultipleIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router, usePage } from "@inertiajs/react"
 import { Modal, Tabs } from "antd"
@@ -15,6 +15,34 @@ function GallerySettingsModal({ open, setOpen }: { open: boolean, setOpen: (open
     router.reload()
   }
 
+  const items = [
+    {
+      key: 'general',
+      label: <div className="flex items-center gap-1"><HugeiconsIcon icon={Settings01Icon} size={20} />General</div>,
+      children: <General />
+    },
+    {
+      key: 'members',
+      label: <div className="flex items-center gap-1"><HugeiconsIcon icon={UserMultipleIcon} size={20} />Members</div>,
+      children: <div>Members...</div>
+    },
+    {
+      key: 'links',
+      label: <div className="flex items-center gap-1"><HugeiconsIcon icon={Link04Icon} size={20} />Links</div>,
+      children: <div>Links...</div>
+    },
+    {
+      key: 'location',
+      label: <div className="flex items-center gap-1"><HugeiconsIcon icon={Location03Icon} size={20} />Location</div>,
+      children: <div>Location...</div>
+    },
+    {
+      key: 'security',
+      label: <div className="flex items-center gap-1"><HugeiconsIcon icon={Key01Icon} size={20} />Security</div>,
+      children: <div>Security Settings...</div>
+    },
+  ]
+
   return (
     <GallerySettingsProvider value={{ open, setOpen, gallery }}>
       <Modal
@@ -28,46 +56,13 @@ function GallerySettingsModal({ open, setOpen }: { open: boolean, setOpen: (open
         afterClose={handleClose}
       >
         <Tabs
+          items={items}
           defaultActiveKey="general"
           tabPosition="left"
           type="card"
           size="middle"
           className="mt-5 [&_.ant-tabs-content-holder]:border-0"
-        >
-          <Tabs.TabPane
-            key="general"
-            tab={
-              <div className="flex items-center gap-1">
-                <HugeiconsIcon icon={Settings01Icon} size={16} />
-                General
-              </div>
-            }
-          >
-            <General />
-          </Tabs.TabPane>
-          <Tabs.TabPane
-            key="members"
-            tab={
-              <div className="flex items-center gap-1">
-                <HugeiconsIcon icon={UserGroupIcon} size={16} />
-                Members
-              </div>
-            }
-          >
-            <div>Members</div>
-          </Tabs.TabPane>
-          <Tabs.TabPane
-            key="security"
-            tab={
-              <div className="flex items-center gap-1">
-                <HugeiconsIcon icon={Key01Icon} size={16} />
-                Security
-              </div>
-            }
-          >
-            <div>Security Settings</div>
-          </Tabs.TabPane>
-        </Tabs>
+        />
       </Modal>
     </GallerySettingsProvider>
   )
