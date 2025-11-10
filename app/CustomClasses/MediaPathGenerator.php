@@ -18,7 +18,7 @@ class MediaPathGenerator implements PathGenerator
     $modelName = $modelType ? strtolower(class_basename($modelType)) : 'media';
 
     switch ($collection) {
-      case 'profile_photo':
+      case 'profile-photo':
         $path = "profile-photos/user-{$modelId}/{$media->getKey()}/";
         break;
       default:

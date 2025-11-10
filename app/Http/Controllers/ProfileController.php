@@ -73,14 +73,14 @@ class ProfileController extends Controller
     $user = $request->user();
 
     $user->addMediaFromRequest('photo')
-      ->toMediaCollection('profile_photo');
+      ->toMediaCollection('profile-photo');
 
     activity()
       ->performedOn($user)
       ->log('updated profile photo');
 
     // delete previous photos
-    $medias = $user->getMedia('profile_photo');
+    $medias = $user->getMedia('profile-photo');
     if ($medias->count() > 1) {
       $medias->sortByDesc('id')->skip(1)->each(function (Media $media) {
         $media->delete();
