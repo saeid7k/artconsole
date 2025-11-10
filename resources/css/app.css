@@ -101,3 +101,7 @@ code {
 .ant-tabs-tab:not(.ant-tabs-tab-active) {
   color: var(--text-muted);
 }
+
+.ant-upload {
+  overflow: hidden;
+}
