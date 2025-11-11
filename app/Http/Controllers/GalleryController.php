@@ -52,9 +52,11 @@ class GalleryController extends Controller
     $request->validate([
       'name' => 'required|string|max:255',
       'description' => 'string|max:1000',
+      'website' => 'string|max:255',
+      'email' => 'email|max:255',
     ]);
 
-    $gallery->update($request->only(['name', 'description']));
+    $gallery->update($request->all());
 
     activity()
       ->performedOn($gallery)

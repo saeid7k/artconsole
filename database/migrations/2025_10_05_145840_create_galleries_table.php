@@ -18,6 +18,8 @@ return new class extends Migration
       $table->string('name');
       $table->text('description')->nullable();
       $table->json('address')->nullable();
+      $table->string('website')->nullable();
+      $table->string('email')->nullable();
       $table->timestamps();
     });
   }
