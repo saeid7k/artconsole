@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Contact;
+use App\Models\Gallery;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -33,5 +35,16 @@ class DatabaseSeeder extends Seeder
       ]);
 
       User::factory(10)->create();
+
+      Contact::factory(50)->create([
+        'gallery_id' => Gallery::first()->id,
+      ]);
+
+      $galleries = Gallery::all();
+      foreach ($galleries as $gallery) {
+        Contact::factory(5)->create([
+          'gallery_id' => $gallery->id,
+        ]);
+      }
     }
 }
