@@ -2,57 +2,42 @@ import { useGallerySettings } from "@/contexts/GallerySettingsContext"
 import { Add01Icon, Delete02Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router } from "@inertiajs/react"
-import { Button, GetProp, Input, message, Tooltip, Upload, UploadProps } from "antd"
+import { Button, Form, GetProp, Input, message, Tooltip, Upload, UploadProps } from "antd"
 import TextArea from "antd/es/input/TextArea"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import LoadingSpinner from "../LoadingSpinner"
+import { trimWebsite } from "@/utils/formatter"
 
 function General() {
 
   // Constants
 
   const { gallery, open } = useGallerySettings()
-  const INITIAL_DATA = {
-    logo: gallery?.logo || null,
-    name: gallery?.name || '',
-    description: gallery?.description || '',
-  }
+  const [form] = Form.useForm()
 
   // Save Changes
 
-  const [data, setData] = useState<any>(INITIAL_DATA)
-  const [processing, setProcessing] = useState(false)
+  const [processing, setProcessing] = useState(false);
 
-  function handleChange(id: string, value: any) {
-    setData((prev: any) => ({ ...prev, [id]: value }))
+  function handleSave() {
+    form
+      .validateFields()
+      .then((values) => {
+        setProcessing(true);
+        axios.post(route('galleries.update', { gallery: gallery.id }), values)
+          .then((res) => {
+            message.success(res.data.message || "Gallery updated successfully")
+            router.reload()
+          })
+          .catch((e) => {
+            message.error(e.response?.data?.message || "Failed to update gallery")
+          })
+          .finally(() => {
+            setProcessing(false);
+          });
+      })
   }
-
-  function save() {
-    if (!validate()) return;
-
-    setProcessing(true)
-    axios.post(route('galleries.update', { gallery: gallery.id }), {
-      ...data,
-    }).then(() => {
-      message.success('Changes saved successfully')
-    }).catch(() => {
-      message.error('Failed to save changes')
-    }).finally(() => {
-      setProcessing(false)
-      router.reload()
-    })
-  }
-
-  function validate() {
-    if (!data?.name || data?.name.trim() === '') {
-      message.error('Gallery name is required')
-      return false
-    }
-    return true
-  }
-
-  const isDataChanged = JSON.stringify(gallery) !== JSON.stringify(data)
 
   // Update Logo
 
@@ -84,11 +69,11 @@ function General() {
       headers: { 'Content-Type': 'multipart/form-data' },
     }).then((response) => {
       message.success('Logo updated successfully');
-      setData((prev: any) => ({ ...prev, logo: response?.data?.url }));
     }).catch(() => {
       message.error('Failed to update logo');
     }).finally(() => {
       setLogoLoading(false);
+      router.reload();
     })
   }
 
@@ -107,13 +92,13 @@ function General() {
     axios.post(route('galleries.remove-logo', { gallery: gallery?.id }))
       .then(() => {
         message.success('Logo removed successfully');
-        setData((prev: any) => ({ ...prev, logo: null }));
       })
       .catch(() => {
         message.error('Failed to remove logo');
       })
       .finally(() => {
         setLogoLoading(false);
+        router.reload();
       });
   }
 
@@ -121,7 +106,7 @@ function General() {
 
   useEffect(() => {
     if (open) {
-      setData(INITIAL_DATA);
+      form.resetFields()
     }
   }, [open]);
 
@@ -138,13 +123,13 @@ function General() {
             onChange={handleChangeLogo}
             customRequest={() => {}}
           >
-            {data?.logo ? (
-              <img draggable={false} src={data.logo} alt="avatar" style={{ width: '100%' }} />
+            {gallery?.logo ? (
+              <img draggable={false} src={gallery.logo} alt="avatar" style={{ width: '100%' }} />
             ) : (
               uploadButton
             )}
           </Upload>
-          {data?.logo && (
+          {gallery?.logo && (
             <div>
               <Tooltip title="Remove Logo">
                 <Button
@@ -161,27 +146,70 @@ function General() {
         </div>
       </ItemRow>
 
-      <ItemRow label="Name">
-        <Input
-          placeholder="Enter gallery name"
-          value={data?.name ?? ''}
-          onChange={(e) => handleChange('name', e.target.value)}
-        />
-      </ItemRow>
+      <Form
+        form={form}
+        layout="horizontal"
+        initialValues={{
+          name: gallery?.name || '',
+          description: gallery?.description || '',
+          website: gallery?.website || '',
+          email: gallery?.email || '',
+        }}
+        validateTrigger="onSubmit"
+        labelCol={{
+          xs:{span: 24},
+          sm:{span: 6},
+          md:{span: 4}
+        }}
+        wrapperCol={{
+          xs:{span: 24},
+          sm:{span: 18},
+          md:{span: 20}
+        }}
+      >
+        <Form.Item
+          label="Name"
+          name="name"
+          rules={[{ required: true, message: 'Please enter the gallery name' }]}
+        >
+          <Input placeholder="Enter gallery name" />
+        </Form.Item>
 
-      <ItemRow label="Description">
-        <TextArea
-          rows={4}
-          placeholder="Enter gallery description"
-          value={data?.description ?? ''}
-          onChange={(e) => handleChange('description', e.target.value)}
-        />
-      </ItemRow>
+        <Form.Item
+          label="Description"
+          name="description"
+        >
+          <TextArea
+            rows={4}
+            placeholder="Enter gallery description"
+          />
+        </Form.Item>
+
+        <Form.Item
+          label="Website"
+          name="website"
+        >
+          <Input
+            placeholder="Enter gallery website"
+            addonBefore="https://"
+            onChange={(e) => {form.setFieldsValue({ website: trimWebsite(e.target.value) })}}
+          />
+        </Form.Item>
+
+        <Form.Item
+          label="Email"
+          name="email"
+          rules={[{ type: 'email', message: 'Please enter a valid email address' }]}
+        >
+          <Input
+            placeholder="Enter gallery email"
+          />
+        </Form.Item>
+      </Form>
       <div className="flex justify-end">
         <Button
           type="primary"
-          onClick={save}
-          disabled={!isDataChanged || processing}
+          onClick={handleSave}
         >
           {processing ? 'Saving...' : 'Save'}
         </Button>
