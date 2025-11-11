@@ -15,4 +15,8 @@ function formatPhoneNumber(phoneNumber: string): string {
   return phoneNumber; // Return the original input if it doesn't match the expected format
 }
 
-export { formatPhoneNumber }
+function trimWebsite(website: string): string {
+  return website.replace(/^(https?:\/\/)?(www\.)?/, '');
+}
+
+export { formatPhoneNumber, trimWebsite }
