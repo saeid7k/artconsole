@@ -51,18 +51,32 @@ class GalleryController extends Controller
 
     $request->validate([
       'name' => 'required|string|max:255',
-      'about' => 'string|max:1000',
-      'website' => 'string|max:255',
-      'email' => 'email|max:255',
+      'about' => 'nullable|string|max:1000',
+      'website' => 'nullable|string|max:255',
+      'email' => 'nullable|email|max:255',
     ]);
 
     $gallery->update($request->all());
 
-    activity()
-      ->performedOn($gallery)
-      ->log('updated gallery details');
-
     return response(['message' => 'Gallery details updated successfully.']);
+  }
+
+  public function updateAddress(Request $request, Gallery $gallery)
+  {
+    $this->authorize('update', $gallery);
+
+    $request->validate([
+      'address.unit' => ['nullable', 'string', 'max:255'],
+      'address.street' => ['nullable', 'string', 'max:255'],
+      'address.city' => ['nullable', 'string', 'max:255'],
+      'address.province' => ['nullable', 'string', 'max:255'],
+      'address.postal_code' => ['nullable', 'string', 'max:20'],
+      'address.country' => ['nullable', 'string', 'max:50'],
+    ]);
+
+    $gallery->update($request->all());
+
+    return response(['message' => 'Gallery address updated successfully.']);
   }
 
   public function removeLogo(Request $request, Gallery $gallery)

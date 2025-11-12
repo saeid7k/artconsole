@@ -14,7 +14,13 @@ class Gallery extends Model implements HasMedia
 {
   use Metable, InteractsWithMedia, LogsActivity;
 
-  protected $guarded = [];
+  protected $fillable = [
+    'name',
+    'about',
+    'address',
+    'website',
+    'email',
+  ];
 
   protected $casts = [
     'address' => 'object',

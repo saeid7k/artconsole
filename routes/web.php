@@ -26,6 +26,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('{gallery}/update-logo', [App\Http\Controllers\GalleryController::class, 'updateGalleryLogo'])->name('update-logo');
     Route::post('{gallery}/remove-logo', [App\Http\Controllers\GalleryController::class, 'removeLogo'])->name('remove-logo');
     Route::post('{gallery}/update', [App\Http\Controllers\GalleryController::class, 'update'])->name('update');
+    Route::post('{gallery}/update-address', [App\Http\Controllers\GalleryController::class, 'updateAddress'])->name('update-address');
   });
 
   Route::prefix('profile')->name('profile.')->group(function () {
