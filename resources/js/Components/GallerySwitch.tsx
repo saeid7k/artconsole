@@ -1,5 +1,6 @@
 import colors from "@/Themes/theme";
 import { GalleryProps } from "@/types/gallery";
+import { UsePageProps } from "@/types/usePage";
 import { AddIcon, AddMaleIcon, ArrowDown01Icon, CheckmarkCircle01Icon, SettingsFreeIcons } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
@@ -8,8 +9,7 @@ import axios from "axios";
 import { useState } from "react";
 import GalleryAccessTag from "./GalleryAccessTag";
 import GalleryAvatar from "./GalleryAvatar";
-import { UsePageProps } from "@/types/usePage";
-import GallerySettingsModal from "./GallerySettingsModal";
+import GallerySettingsModal from "./GallerySettings/GallerySettingsModal";
 
 function GallerySwitch() {
 
