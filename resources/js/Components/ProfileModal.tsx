@@ -1,3 +1,4 @@
+import COUNTRIES from "@/constants/Countries.json"
 import { AuthProps } from "@/types/auth"
 import { getInitials } from "@/utils/stringHelper"
 import { Cancel01Icon, Edit03Icon } from "@hugeicons/core-free-icons"
@@ -6,6 +7,7 @@ import { router, usePage } from "@inertiajs/react"
 import { Avatar, Divider, Form, Input, message, Modal } from "antd"
 import axios from "axios"
 import React, { useEffect, useRef, useState } from "react"
+import AddressFields from "./Fields/AddressFields"
 
 function ProfileModal({ open, setOpen }: { open: boolean, setOpen: (open: boolean) => void }) {
 
@@ -18,6 +20,7 @@ function ProfileModal({ open, setOpen }: { open: boolean, setOpen: (open: boolea
 
   const pictureUploadRef = useRef<HTMLInputElement | null>(null)
   const [preview, setPreview] = useState<string>(user.photo ?? '')
+  const watchCountry = Form.useWatch(['address', 'country'], form);
 
   // Functions
 
@@ -199,62 +202,13 @@ function ProfileModal({ open, setOpen }: { open: boolean, setOpen: (open: boolea
               ]}
               className="sm:w-1/2"
             >
-              <Input />
+              <Input
+                addonBefore={COUNTRIES.find(country => country.name === watchCountry)?.dialCode}
+              />
             </Form.Item>
           </div>
           <Divider plain >Address</Divider>
-          <div className="md:flex gap-4">
-            <Form.Item
-              name={['address', 'street']}
-              label="Street Address"
-              rules={[{ max: 255, message: 'Street Address cannot exceed 255 characters' }]}
-              className="w-full grow"
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              name={['address', 'unit']}
-              label="Unit"
-              rules={[{ max: 255, message: 'Unit cannot exceed 255 characters' }]}
-              className="md:shrink min-w-[100px]"
-            >
-              <Input />
-            </Form.Item>
-          </div>
-          <div className="grid grid-cols-4 gap-x-4">
-            <Form.Item
-              name={['address', 'city']}
-              label="City"
-              rules={[{ max: 255, message: 'City cannot exceed 255 characters' }]}
-              className="col-span-4 sm:col-span-2 lg:col-span-1"
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              name={['address', 'province']}
-              label="Province/State"
-              rules={[{ max: 255, message: 'Province/State cannot exceed 255 characters' }]}
-              className="col-span-4 sm:col-span-2 lg:col-span-1"
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              name={['address', 'postal_code']}
-              label="Postal Code"
-              rules={[{ max: 20, message: 'Postal Code cannot exceed 20 characters' }]}
-              className="col-span-4 sm:col-span-2 lg:col-span-1"
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              name={['address', 'country']}
-              label="Country"
-              rules={[{ max: 50, message: 'Country cannot exceed 50 characters' }]}
-              className="col-span-4 sm:col-span-2 lg:col-span-1"
-            >
-              <Input />
-            </Form.Item>
-          </div>
+          <AddressFields />
         </Form>
       </div>
     </Modal>
