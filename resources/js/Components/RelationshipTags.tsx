@@ -13,7 +13,6 @@ function RelationshipTags({ contact, manageButtonDelay = 2000 }: { contact: Cont
   const { windowWidth } = useWindow()
 
   const [relationships, setRelationships] = useState<Array<string>>(contact.relationship || []);
-  const [changed, setChanged] = useState(false)
   const [showManageButton, setShowManageButton] = useState(false)
   const hideManageButtonTimer = useRef<NodeJS.Timeout | null>(null);
 
@@ -35,18 +34,17 @@ function RelationshipTags({ contact, manageButtonDelay = 2000 }: { contact: Cont
       newValues = newValues.filter((value) => value !== id);
     }
     setRelationships(newValues)
-    setChanged(true)
+    updateRelationships(newValues)
   }
 
-  function updateRelationships() {
+  function updateRelationships(newValues: Array<string>) {
     axios.post(route('contacts.update-relationships', { contact: contact.id }), {
-      relationships: relationships
+      relationships: newValues
     }).then(() => {
       router.reload()
     }).catch((error) => {
       message.error(error.response?.data?.message || 'Failed to update relationships');
     }).finally(() => {
-      setChanged(false)
     })
   }
 
@@ -93,11 +91,6 @@ function RelationshipTags({ contact, manageButtonDelay = 2000 }: { contact: Cont
               )
             }}
             trigger={['click']}
-            onOpenChange={(open) => {
-              if (!open && changed) {
-                updateRelationships()
-              }
-            }}
           >
             <Button
               type="default"
