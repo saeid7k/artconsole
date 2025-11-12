@@ -51,7 +51,7 @@ class GalleryController extends Controller
 
     $request->validate([
       'name' => 'required|string|max:255',
-      'description' => 'string|max:1000',
+      'about' => 'string|max:1000',
       'website' => 'string|max:255',
       'email' => 'email|max:255',
     ]);
