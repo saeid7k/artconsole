@@ -1,10 +1,11 @@
 import { GallerySettingsProvider } from "@/contexts/GallerySettingsContext"
 import { UsePageProps } from "@/types/usePage"
-import { Cancel01Icon, Key01Icon, Link04Icon, Location03Icon, Settings01Icon, UserGroupIcon, UserMultipleIcon } from "@hugeicons/core-free-icons"
+import { BankIcon, Cancel01Icon, Key01Icon, Link04Icon, Location03Icon, Settings01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router, usePage } from "@inertiajs/react"
 import { Modal, Tabs } from "antd"
-import General from "./GallerySettings/General"
+import General from "./General"
+import Location from "./Location"
 
 function GallerySettingsModal({ open, setOpen }: { open: boolean, setOpen: (open: boolean) => void }) {
 
@@ -27,14 +28,19 @@ function GallerySettingsModal({ open, setOpen }: { open: boolean, setOpen: (open
       children: <div>Members...</div>
     },
     {
+      key: 'location',
+      label: <div className="flex items-center gap-1"><HugeiconsIcon icon={Location03Icon} size={20} />Location</div>,
+      children: <Location />
+    },
+    {
+      key: 'accounting',
+      label: <div className="flex items-center gap-1"><HugeiconsIcon icon={BankIcon} size={20} />Accounting</div>,
+      children: <div>Accounting...</div>
+    },
+    {
       key: 'links',
       label: <div className="flex items-center gap-1"><HugeiconsIcon icon={Link04Icon} size={20} />Links</div>,
       children: <div>Links...</div>
-    },
-    {
-      key: 'location',
-      label: <div className="flex items-center gap-1"><HugeiconsIcon icon={Location03Icon} size={20} />Location</div>,
-      children: <div>Location...</div>
     },
     {
       key: 'security',
