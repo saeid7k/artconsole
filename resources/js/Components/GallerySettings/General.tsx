@@ -151,7 +151,7 @@ function General() {
         layout="horizontal"
         initialValues={{
           name: gallery?.name || '',
-          description: gallery?.description || '',
+          about: gallery?.about || '',
           website: gallery?.website || '',
           email: gallery?.email || '',
         }}
@@ -176,12 +176,12 @@ function General() {
         </Form.Item>
 
         <Form.Item
-          label="Description"
-          name="description"
+          label="About"
+          name="about"
         >
           <TextArea
             rows={4}
-            placeholder="Enter gallery description"
+            placeholder="Write a brief description about the gallery"
           />
         </Form.Item>
 

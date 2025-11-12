@@ -4,7 +4,7 @@ export interface GalleryProps {
   id: number;
   user_id: number;
   name: string;
-  description?: string | null;
+  about?: string | null;
   address?: Address | null;
   logo?: string | null;
   pivot?: {
