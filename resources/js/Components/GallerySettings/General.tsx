@@ -8,6 +8,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import LoadingSpinner from "../LoadingSpinner"
 import { trimWebsite } from "@/utils/formatter"
+import ActionFooter from "../ActionFooter"
 
 function General() {
 
@@ -206,14 +207,10 @@ function General() {
           />
         </Form.Item>
       </Form>
-      <div className="flex justify-end">
-        <Button
-          type="primary"
-          onClick={handleSave}
-        >
-          {processing ? 'Saving...' : 'Save'}
-        </Button>
-      </div>
+      <ActionFooter
+        isProcessing={processing}
+        save={handleSave}
+      />
     </div>
   )
 }
