@@ -1,4 +1,5 @@
-import countries from "@/constants/Countries.json";
+import AddressFields from "@/Components/Fields/AddressFields";
+import COUNTRIES from "@/constants/Countries.json";
 import RELATIONSHIPS from "@/constants/relationships";
 import { ContactProps } from "@/types/contact";
 import { router } from "@inertiajs/react";
@@ -21,11 +22,6 @@ function ContactFormDrawer({ mode = 'create', contact = null, show, onClose }: P
     form.resetFields()
     onClose()
   }
-
-  const countryOptions = countries.map((country) => ({
-    label: country.name,
-    value: country.name,
-  }))
 
   const watchCountry = Form.useWatch(['address', 'country'], form);
   const watchBusinessCountry = Form.useWatch(['business', 'address', 'country'], form);
@@ -116,7 +112,7 @@ function ContactFormDrawer({ mode = 'create', contact = null, show, onClose }: P
                 className="sm:w-1/2"
               >
                 <Input
-                  addonBefore={countries.find(country => country.name === watchCountry)?.dialCode}
+                  addonBefore={COUNTRIES.find(country => country.name === watchCountry)?.dialCode}
                 />
               </Form.Item>
               <Form.Item
@@ -149,61 +145,7 @@ function ContactFormDrawer({ mode = 'create', contact = null, show, onClose }: P
               />
             </Form.Item>
             <Divider><div className="text-muted font-light">Address</div></Divider>
-            <div className="sm:flex gap-4">
-              <Form.Item
-                name={['address', 'street']}
-                label="Street Address"
-                rules={[{ max: 255, message: 'Street Address cannot exceed 255 characters' }]}
-                className="w-full grow"
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                name={['address', 'unit']}
-                label="Unit"
-                rules={[{ max: 255, message: 'Unit cannot exceed 255 characters' }]}
-                className="sm:shrink min-w-[100px]"
-              >
-                <Input />
-              </Form.Item>
-            </div>
-            <div className="grid grid-cols-4 gap-x-4">
-              <Form.Item
-                name={['address', 'city']}
-                label="City"
-                rules={[{ max: 255, message: 'City cannot exceed 255 characters' }]}
-                className="col-span-4 sm:col-span-2 lg:col-span-1"
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                name={['address', 'province']}
-                label="Province/State"
-                rules={[{ max: 255, message: 'Province/State cannot exceed 255 characters' }]}
-                className="col-span-4 sm:col-span-2 lg:col-span-1"
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                name={['address', 'postal_code']}
-                label="Postal Code"
-                rules={[{ max: 20, message: 'Postal Code cannot exceed 20 characters' }]}
-                className="col-span-4 sm:col-span-2 lg:col-span-1"
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                name={['address', 'country']}
-                label="Country"
-                rules={[{ max: 50, message: 'Country cannot exceed 50 characters' }]}
-                className="col-span-4 sm:col-span-2 lg:col-span-1"
-              >
-                <Select
-                  options={countryOptions}
-                  showSearch
-                />
-              </Form.Item>
-            </div>
+            <AddressFields />
           </Tabs.TabPane>
           <Tabs.TabPane tab="Business" key="business">
             <div className="sm:flex gap-4">
@@ -239,7 +181,7 @@ function ContactFormDrawer({ mode = 'create', contact = null, show, onClose }: P
                 className="sm:w-1/3"
               >
                 <Input
-                  addonBefore={countries.find(country => country.name === watchBusinessCountry)?.dialCode}
+                  addonBefore={COUNTRIES.find(country => country.name === watchBusinessCountry)?.dialCode}
                 />
               </Form.Item>
               <Form.Item
@@ -264,61 +206,7 @@ function ContactFormDrawer({ mode = 'create', contact = null, show, onClose }: P
               </Form.Item>
             </div>
             <Divider><div className="text-muted font-light">Address</div></Divider>
-            <div className="sm:flex gap-4">
-              <Form.Item
-                name={['business', 'address', 'street']}
-                label="Street Address"
-                rules={[{ max: 255, message: 'Street Address cannot exceed 255 characters' }]}
-                className="w-full grow"
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                name={['business', 'address', 'unit']}
-                label="Unit"
-                rules={[{ max: 255, message: 'Unit cannot exceed 255 characters' }]}
-                className="sm:shrink min-w-[100px]"
-              >
-                <Input />
-              </Form.Item>
-            </div>
-            <div className="grid grid-cols-4 gap-x-4">
-              <Form.Item
-                name={['business', 'address', 'city']}
-                label="City"
-                rules={[{ max: 255, message: 'City cannot exceed 255 characters' }]}
-                className="col-span-4 sm:col-span-2 lg:col-span-1"
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                name={['business', 'address', 'province']}
-                label="Province/State"
-                rules={[{ max: 255, message: 'Province/State cannot exceed 255 characters' }]}
-                className="col-span-4 sm:col-span-2 lg:col-span-1"
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                name={['business', 'address', 'postal_code']}
-                label="Postal Code"
-                rules={[{ max: 20, message: 'Postal Code cannot exceed 20 characters' }]}
-                className="col-span-4 sm:col-span-2 lg:col-span-1"
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                name={['business', 'address', 'country']}
-                label="Country"
-                rules={[{ max: 50, message: 'Country cannot exceed 50 characters' }]}
-                className="col-span-4 sm:col-span-2 lg:col-span-1"
-              >
-                <Select
-                  options={countryOptions}
-                  showSearch
-                />
-              </Form.Item>
-            </div>
+            <AddressFields namePathPrefix={["business"]} />
           </Tabs.TabPane>
         </Tabs>
       </Form>
