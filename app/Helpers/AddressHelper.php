@@ -40,4 +40,22 @@ class AddressHelper
     }
     return $postalCode;
   }
+
+  public static function addressToCoordinates(string $address): ?array
+  {
+    $geocoder = app('geocoder')->geocode($address)->get();
+
+    if ($geocoder->isEmpty()) {
+      return null;
+    }
+
+    $coordinates = $geocoder->first()->getCoordinates();
+    $postalCode = $geocoder->first()->getPostalCode();
+
+    return [
+      'lat' => $coordinates->getLatitude(),
+      'lng' => $coordinates->getLongitude(),
+      'postal_code' => $postalCode,
+    ];
+  }
 }

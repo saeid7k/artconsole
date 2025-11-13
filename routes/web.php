@@ -2,11 +2,15 @@
 
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GeocodeController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\Admin;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
+  Route::prefix('geocode')->name('geocode.')->group(function () {
+    Route::get('/coordinates', [GeocodeController::class, 'getCoordinates'])->name('coordinates');
+  });
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\AddressHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\LogOptions;
@@ -28,7 +29,7 @@ class Gallery extends Model implements HasMedia
 
   // Appends
 
-  protected $appends = [ 'members_count', 'logo' ];
+  protected $appends = [ 'members_count', 'logo', 'formatted_address' ];
 
   public function getMembersCountAttribute()
   {
@@ -39,6 +40,11 @@ class Gallery extends Model implements HasMedia
   {
     $media = $this->getLastMedia('gallery-logo');
     return $media ? $media->getUrl() : null;
+  }
+
+  public function getFormattedAddressAttribute(): string
+  {
+    return AddressHelper::formatAddress($this->address);
   }
 
   // Relationships
