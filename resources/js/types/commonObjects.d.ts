@@ -5,6 +5,7 @@ export interface Address {
   province: string;
   postal_code: string;
   country: string;
+  coordinates?: { lat: number; lng: number };
 }
 
 export interface Business {
