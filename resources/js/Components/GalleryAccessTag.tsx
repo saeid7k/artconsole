@@ -1,5 +1,5 @@
+import { getAccessLevelColor } from "@/constants/accessLevels"
 import { GalleryProps } from "@/types/gallery"
-import { usePage } from "@inertiajs/react"
 import { Tag } from "antd"
 
 type Props = {
@@ -8,23 +8,12 @@ type Props = {
 }
 
 function GalleryAccessTag({gallery, className}: Props) {
-
-  const { user } = usePage().props.auth
-
-  const access = gallery.user_id == user.id ? 'owner' : (gallery.pivot?.access || 'viewer')
-
-  const colors: any = {
-    'owner': 'gold',
-    'editor': 'blue',
-    'viewer': 'default'
-  }
-
   return (
     <Tag
-      color={colors[access]}
+      color={getAccessLevelColor(gallery.pivot?.access)}
       className={className}
     >
-      {access}
+      {gallery.pivot?.access}
     </Tag>
   )
 }

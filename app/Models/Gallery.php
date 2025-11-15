@@ -56,19 +56,7 @@ class Gallery extends Model implements HasMedia
 
   public function members()
   {
-    $owner = $this->owner;
-
-    $members = $this->belongsToMany(User::class, 'gallery_user')
-      ->withPivot('access')
-      ->withTimestamps()
-      ->get();
-
-    if ($owner && !$members->contains('id', $owner->id)) {
-      $owner->pivot = ['access' => 'owner'];
-      $members->push($owner);
-    }
-
-    return $members;
+    return $this->belongsToMany(User::class, 'gallery_user')->withPivot('access');
   }
 
   public function contacts(): HasMany
@@ -85,10 +73,8 @@ class Gallery extends Model implements HasMedia
 
   public function accessLevel(User $user): string|null
   {
-    return $this->members()
-      ->where('id', $user->id)
-      ->first()
-      ?->pivot['access'] ?? null;
+    $member = $this->members->firstWhere('id', $user->id);
+    return $member?->pivot->access ?? null;
   }
 
   // Activity Log
