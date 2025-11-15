@@ -69,10 +69,14 @@ function UsersTable({ users }: { users: PageProps }) {
       showSorterTooltip: false,
       render: (text) => {
         return (
-          <div className='flex items-center gap-1'>
-            <HugeiconsIcon icon={Call02Icon} strokeWidth={1} size={20} />
-            {formatPhoneNumber(text)}
-          </div>
+          <>
+            {text && (
+              <div className='flex items-center gap-1'>
+                <HugeiconsIcon icon={Call02Icon} strokeWidth={1} size={20} />
+                {formatPhoneNumber(text)}
+              </div>
+            )}
+          </>
         )
       },
       width: 180,
