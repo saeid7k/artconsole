@@ -9,6 +9,7 @@ import type { TableProps } from 'antd';
 import { Avatar, Table } from 'antd';
 import UsersActions from './UsersActions';
 import { UserProps } from '@/types/user';
+import UserStack from '@/Components/UserStack';
 
 function UsersTable({ users }: { users: PageProps }) {
 
@@ -32,12 +33,7 @@ function UsersTable({ users }: { users: PageProps }) {
       sorter: (a, b) => a.full_name.localeCompare(b.full_name),
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
-      render: (text, record): JSX.Element => (
-        <div className='flex items-center gap-1'>
-          <Avatar size={'small'} className='text-xs' src={record.photo}>{getInitials(record.full_name)}</Avatar>
-          <div>{record.full_name}</div>
-        </div>
-      ),
+      render: (text, record): JSX.Element => (<UserStack user={record as UserProps} />),
       width: 200,
       fixed: breakpoint == 'xs' ? undefined : 'left',
     },
