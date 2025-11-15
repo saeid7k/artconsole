@@ -15,6 +15,11 @@ class UserObserver
     $gallery = $user->galleriesOwned()->create([
       'name' =>  $user->firstname . "'s Gallery",
     ]);
+    $gallery->members()->attach($user->id, [
+      'access' => 'owner',
+      'created_at' => now(),
+      'updated_at' => now(),
+    ]);
 
     $user->setMeta('current_gallery_id', $gallery->id);
   }

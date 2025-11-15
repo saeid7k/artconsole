@@ -1,3 +1,4 @@
+import { accessLevelsType } from "@/constants/accessLevels";
 import { Address } from "./commonObjects";
 
 export interface GalleryProps {
@@ -8,7 +9,7 @@ export interface GalleryProps {
   address?: Address | null;
   logo?: string | null;
   pivot?: {
-    access: 'editor' | 'viewer';
+    access: accessLevelsType
   };
   members_count?: number;
 }
