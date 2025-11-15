@@ -33,12 +33,15 @@ class DatabaseSeeder extends Seeder
         ],
         'password' => Hash::make('12345678'),
       ]);
+      $this->command->info('Admin user created: ' . env('ADMIN_EMAIL', 'admin@example.com') . ' / 12345678');
 
       User::factory(10)->create();
+      $this->command->info('10 fake users created.');
 
       Contact::factory(50)->create([
         'gallery_id' => Gallery::first()->id,
       ]);
+      $this->command->info('50 contacts created for first gallery.');
 
       $galleries = Gallery::all();
       foreach ($galleries as $gallery) {
@@ -46,5 +49,6 @@ class DatabaseSeeder extends Seeder
           'gallery_id' => $gallery->id,
         ]);
       }
+      $this->command->info('5 contacts created for each gallery.');
     }
 }
