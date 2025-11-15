@@ -33,7 +33,7 @@ export default function Login({
 
       {status && (
         <div className="mb-4 text-sm font-medium text-green-600">
-          {status}
+          {status == 'passwords.reset' ? "Your password has been reset!" : status}
         </div>
       )}
 
@@ -50,6 +50,7 @@ export default function Login({
               autoComplete="email"
               onChange={(e) => setData('email', e.target.value)}
               required
+              size='large'
             />
             {/* <InputError message={errors.email} className="mt-2" /> */}
           </div>
@@ -59,8 +60,17 @@ export default function Login({
               placeholder='Password'
               onChange={(e) => setData('password', e.target.value)}
               required
+              size='large'
             />
             {/* <InputError message={errors.password} className="mt-2" /> */}
+            {canResetPassword && (
+              <Link
+                href={route('password.request')}
+                className="block text-sm text-right text-gray-600 underline hover:text-gray-900 focus:outline-none"
+              >
+                Forgot your password?
+              </Link>
+            )}
           </div>
 
           <Checkbox
@@ -82,22 +92,12 @@ export default function Login({
           >
             Log in
           </Button>
-          <div className='flex flex-col gap-3'>
-            {canResetPassword && (
-              <Link
-                href={route('password.request')}
-                className="text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none"
-              >
-                Forgot your password?
-              </Link>
-            )}
-              <Link
-                href={route('register')}
-                className="text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none"
-              >
-                Don't have an account?
-              </Link>
-          </div>
+          <Link
+            href={route('register')}
+            className="text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none"
+          >
+            Don't have an account? Register here.
+          </Link>
         </Space>
       </form>
     </GuestLayout>

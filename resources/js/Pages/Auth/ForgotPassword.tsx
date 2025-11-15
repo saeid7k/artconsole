@@ -26,7 +26,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
 
       {status && (
         <div className="mb-4 text-sm font-medium text-green-600">
-          {status}
+          {status == 'passwords.sent' ? "A password reset link has been sent to your email address." : status}
         </div>
       )}
 
