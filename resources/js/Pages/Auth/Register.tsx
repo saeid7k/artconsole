@@ -40,6 +40,7 @@ export default function Register() {
               autoComplete="name"
               onChange={(e) => setData('firstname', e.target.value)}
               ref={firstnameRef}
+              size='large'
             />
             {errors.firstname && (
               <Alert message={errors.firstname} type="error" />
@@ -53,6 +54,7 @@ export default function Register() {
               value={data.lastname}
               autoComplete="lastname"
               onChange={(e) => setData('lastname', e.target.value)}
+              size='large'
             />
             {errors.lastname && (
               <Alert message={errors.lastname} type="error" />
@@ -67,6 +69,7 @@ export default function Register() {
               autoComplete="email"
               onChange={(e) => setData('email', e.target.value)}
               required
+              size='large'
             />
             {errors.email && (
               <Alert message={errors.email} type="error" />
@@ -80,6 +83,7 @@ export default function Register() {
               value={data.password}
               onChange={(e) => setData('password', e.target.value)}
               required
+              size='large'
             />
             {errors.password && (
               <Alert message={errors.password} type="error" />
@@ -93,6 +97,7 @@ export default function Register() {
               value={data.password_confirmation}
               onChange={(e) => setData('password_confirmation', e.target.value)}
               required
+              size='large'
             />
             {errors.password_confirmation && (
               <Alert message={errors.password_confirmation} type="error" />
@@ -100,14 +105,7 @@ export default function Register() {
           </div>
         </div>
 
-        <div className="mt-4 flex items-center justify-end gap-3">
-          <Link
-            href={route('login')}
-            className="text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none"
-          >
-            Already registered?
-          </Link>
-
+        <div className="mt-4 flex flex-col items-end gap-3">
           <Button
             type="primary"
             disabled={processing}
@@ -115,6 +113,12 @@ export default function Register() {
           >
             Register
           </Button>
+          <Link
+            href={route('login')}
+            className="text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none"
+          >
+            Already registered? Login here.
+          </Link>
         </div>
       </form>
     </GuestLayout>
