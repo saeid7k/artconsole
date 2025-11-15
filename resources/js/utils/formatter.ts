@@ -1,4 +1,6 @@
 function formatPhoneNumber(phoneNumber: string): string {
+  if (!phoneNumber) return '';
+
   // Remove all non-numeric characters
   const cleaned = phoneNumber.replace(/\D/g, '');
 
@@ -16,6 +18,8 @@ function formatPhoneNumber(phoneNumber: string): string {
 }
 
 function trimWebsite(website: string): string {
+  if (!website) return '';
+  
   return website.replace(/^(https?:\/\/)?(www\.)?/, '');
 }
 
