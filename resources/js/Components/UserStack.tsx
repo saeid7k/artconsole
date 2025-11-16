@@ -9,7 +9,7 @@ type Props = {
 function UserStack({ user }: Props): JSX.Element {
   return (
     <div className='flex items-center gap-1'>
-      <Avatar size={'small'} className='text-xs' src={user.photo}>{getInitials(user.full_name)}</Avatar>
+      <Avatar size={'small'} className='text-xs shrink-0' src={user.photo}>{getInitials(user.full_name)}</Avatar>
       <div>{user.full_name}</div>
     </div>
   )
