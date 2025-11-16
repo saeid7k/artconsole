@@ -1,3 +1,9 @@
-const APP_LOGO = '/assets/logo/LiamSoft Icon.png'
+const APP = {
+  logo: '/assets/logo/LiamSoft Icon.png'
+}
 
-export { APP_LOGO }
+const CONFIGS = {
+  defaultAccessLevel: 'viewer',
+}
+
+export { APP, CONFIGS }

@@ -1,4 +1,4 @@
-import { APP_LOGO } from "@/constants/appConstants"
+import { APP } from "@/constants/appConstants"
 import { usePage } from "@inertiajs/react"
 
 type Props = {
@@ -7,7 +7,7 @@ type Props = {
 }
 
 function LogoBox({
-  logo = APP_LOGO,
+  logo = APP.logo,
   title = null
 }: Props) {
 
