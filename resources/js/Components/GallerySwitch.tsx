@@ -10,6 +10,7 @@ import { useState } from "react";
 import GalleryAccessTag from "./GalleryAccessTag";
 import GalleryAvatar from "./GalleryAvatar";
 import GallerySettingsModal from "./GallerySettings/GallerySettingsModal";
+import AddMemberModal from "./GallerySettings/AddMemberModal";
 
 function GallerySwitch() {
 
@@ -46,6 +47,7 @@ function GallerySwitch() {
   // Settings Modal
 
   const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [showAddMemberModal, setShowAddMemberModal] = useState(false);
 
   // Render
 
@@ -78,6 +80,7 @@ function GallerySwitch() {
               size="small"
               icon={<HugeiconsIcon icon={AddMaleIcon} size={16} />}
               className="text-gray-500"
+              onClick={() => setShowAddMemberModal(true)}
             >
               invite members
             </Button>
@@ -150,6 +153,11 @@ function GallerySwitch() {
       <GallerySettingsModal
         open={showSettingsModal}
         setOpen={setShowSettingsModal}
+      />
+      <AddMemberModal
+        open={showAddMemberModal}
+        setOpen={setShowAddMemberModal}
+        gallery={current_gallery}
       />
     </>
   );

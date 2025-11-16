@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Gallery;
 use App\Models\Media;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class GalleryController extends Controller
 {
@@ -93,5 +94,44 @@ class GalleryController extends Controller
       ->log('removed gallery logo');
 
     return response(['message' => 'Gallery logo removed successfully.']);
+  }
+
+  public function getMembers(Gallery $gallery)
+  {
+    $this->authorize('view', $gallery);
+
+    $members = $gallery->members()->get();
+    $invitations = $gallery->invitations()->active()->get();
+
+    return response([
+      'members' => $members,
+      'invitations' => $invitations,
+    ]);
+  }
+
+  public function addMember(Request $request, Gallery $gallery)
+  {
+    $this->authorize('update', $gallery);
+
+    $request->validate([
+      'email' => 'required|email|max:255',
+      'access' => 'required|string|in:viewer,editor,owner',
+      'message' => 'nullable|string|max:1000',
+    ]);
+
+    $inviteLink = $gallery->invitations()->create([
+      'email' => $request->input('email'),
+      'token' => Str::uuid(),
+      'settings' => [
+        'access' => $request->input('access'),
+        'message' => $request->input('message'),
+      ],
+      'expires_at' => null,
+    ]);
+
+    return response([
+      'message' => 'Invitation sent successfully.',
+      'entry' => $inviteLink,
+    ]);
   }
 }

@@ -31,6 +31,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('{gallery}/remove-logo', [App\Http\Controllers\GalleryController::class, 'removeLogo'])->name('remove-logo');
     Route::post('{gallery}/update', [App\Http\Controllers\GalleryController::class, 'update'])->name('update');
     Route::post('{gallery}/update-address', [App\Http\Controllers\GalleryController::class, 'updateAddress'])->name('update-address');
+    Route::get('{gallery}/members', [App\Http\Controllers\GalleryController::class, 'getMembers'])->name('members');
+    Route::post('{gallery}/add-member', [App\Http\Controllers\GalleryController::class, 'addMember'])->name('add-member');
   });
 
   Route::prefix('profile')->name('profile.')->group(function () {
@@ -40,6 +42,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
   Route::prefix('activity-logs')->name('activity-logs.')->group(function () {
     Route::get('/model-activities', [App\Http\Controllers\ActivityLogController::class, 'modelActivities'])->name('model-activities');
+  });
+
+  Route::prefix('invite-links')->name('invite-links.')->group(function () {
+    Route::post('{inviteLink}/delete', [App\Http\Controllers\InviteLinkController::class, 'delete'])->name('delete');
   });
 });
 

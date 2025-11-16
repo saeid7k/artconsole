@@ -64,17 +64,28 @@ class Gallery extends Model implements HasMedia
     return $this->hasMany(Contact::class);
   }
 
+  public function invitations(): HasMany
+  {
+    return $this->hasMany(InviteLink::class);
+  }
+
   // Methods
 
   public function isMember(User $user)
   {
-    return $this->members()->contains('id', $user->id);
+    return $this->members()->get()->contains('id', $user->id);
   }
 
   public function accessLevel(User $user): string|null
   {
     $member = $this->members->firstWhere('id', $user->id);
     return $member?->pivot->access ?? null;
+  }
+
+  public function isEditorOrOwner(User $user): bool
+  {
+    $accessLevel = $this->accessLevel($user);
+    return in_array($accessLevel, ['owner', 'editor']);
   }
 
   // Activity Log
