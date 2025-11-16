@@ -127,6 +127,11 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     return Gallery::whereId($this->getMeta('current_gallery_id'))->first();
   }
 
+  public function invitations(): HasMany
+  {
+    return $this->hasMany(InviteLink::class);
+  }
+
   // Methods
 
   public function is_admin()

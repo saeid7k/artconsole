@@ -21,7 +21,7 @@ class GalleryPolicy
    */
   public function view(User $user, Gallery $gallery): bool
   {
-    return false;
+    return $gallery->isMember($user);
   }
 
   /**

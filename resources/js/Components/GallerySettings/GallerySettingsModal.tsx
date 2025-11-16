@@ -6,10 +6,13 @@ import { router, usePage } from "@inertiajs/react"
 import { Modal, Tabs } from "antd"
 import General from "./General"
 import Location from "./Location"
+import Members from "./Members"
+import { useWindow } from "@/hooks/useWindow"
 
 function GallerySettingsModal({ open, setOpen }: { open: boolean, setOpen: (open: boolean) => void }) {
 
   const { current_gallery: gallery } = usePage<UsePageProps>().props
+  const { windowWidth } = useWindow()
 
   function handleClose() {
     setOpen(false)
@@ -25,7 +28,7 @@ function GallerySettingsModal({ open, setOpen }: { open: boolean, setOpen: (open
     {
       key: 'members',
       label: <div className="flex items-center gap-1"><HugeiconsIcon icon={UserMultipleIcon} size={20} />Members</div>,
-      children: <div>Members...</div>
+      children: <Members />
     },
     {
       key: 'location',
@@ -64,7 +67,7 @@ function GallerySettingsModal({ open, setOpen }: { open: boolean, setOpen: (open
         <Tabs
           items={items}
           defaultActiveKey="general"
-          tabPosition="left"
+          tabPosition={windowWidth < 768 ? "top" : "left"}
           type="card"
           size="middle"
           className="mt-5 [&_.ant-tabs-content-holder]:border-0"

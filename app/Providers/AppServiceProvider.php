@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Models\Gallery;
+use App\Models\InviteLink;
 use App\Models\User;
 use App\Observers\GalleryObserver;
+use App\Observers\InviteLinkObserver;
 use App\Observers\UserObserver;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -28,5 +30,6 @@ class AppServiceProvider extends ServiceProvider
 
         User::observe(UserObserver::class);
         Gallery::observe(GalleryObserver::class);
+        InviteLink::observe(InviteLinkObserver::class);
     }
 }
