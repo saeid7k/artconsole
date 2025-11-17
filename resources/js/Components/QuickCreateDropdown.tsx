@@ -1,9 +1,9 @@
-import { AddCircleIcon, AddSquareIcon, ContactIcon } from "@hugeicons/core-free-icons";
+import { AddSquareIcon, ContactIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
 import { Button, Dropdown, Menu } from "antd";
 
-function TopbarMenu() {
+function QuickCreateDropdown() {
 
   const popup = () => {
     return (
@@ -39,4 +39,4 @@ function TopbarMenu() {
   );
 }
 
-export default TopbarMenu;
+export default QuickCreateDropdown;
