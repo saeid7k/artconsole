@@ -3,6 +3,8 @@
 namespace App\Observers;
 
 use App\Models\InviteLink;
+use App\Models\User;
+use App\Notifications\NewInvitation;
 
 class InviteLinkObserver
 {
@@ -13,6 +15,11 @@ class InviteLinkObserver
     {
       $inviteLink->creator()->associate(auth()->user());
       $inviteLink->saveQuietly();
+
+      $userInvited = User::where('email', $inviteLink->email)->first();
+      if ($userInvited) {
+        $userInvited->notify(new NewInvitation($inviteLink));
+      }
     }
 
     /**
