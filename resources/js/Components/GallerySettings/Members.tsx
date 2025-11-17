@@ -94,7 +94,7 @@ function Members() {
       sorter: (a, b) => a.email.localeCompare(b.email),
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
-      width: 250,
+      // width: 250,
     },
     {
       title: 'Access',
@@ -104,7 +104,7 @@ function Members() {
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
       render: (text) => (<>{ucFirst(text)}</>),
-      width: 150,
+      width: 100,
     },
     {
       title: 'Expiration',
@@ -118,13 +118,13 @@ function Members() {
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
       render: (text): string => text ? dayjs(text).format('LL') : 'Never',
-      width: 150,
+      width: 160,
     },
     {
       title: '',
       key: 'actions',
       render: (_, record) => (
-        <div>
+        <div className="flex justify-end">
           <Tooltip title="Remove Invitation">
             <Popconfirm
               title="Delete the invitation"
@@ -149,7 +149,7 @@ function Members() {
             </Popconfirm>
           </Tooltip>
         </div>
-      )
+      ),
     }
   ]
 
