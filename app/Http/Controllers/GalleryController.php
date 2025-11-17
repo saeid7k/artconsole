@@ -119,6 +119,27 @@ class GalleryController extends Controller
       'message' => 'nullable|string|max:1000',
     ]);
 
+    $existingInvitation = $gallery->invitations()
+      ->where('email', $request->input('email'))
+      ->active()
+      ->first();
+
+    if ($existingInvitation) {
+      return response([
+        'message' => 'An active invitation already exists for this email address.',
+      ], 422);
+    }
+
+    $existingMember = $gallery->members()
+      ->where('email', $request->input('email'))
+      ->first();
+
+    if ($existingMember) {
+      return response([
+        'message' => 'This email address is already a member of the gallery.',
+      ], 422);
+    }
+
     $inviteLink = $gallery->invitations()->create([
       'email' => $request->input('email'),
       'token' => Str::uuid(),
