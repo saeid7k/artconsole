@@ -1,9 +1,8 @@
 import ACCESS_LEVELS from "@/constants/accessLevels";
 import { CONFIGS } from "@/constants/appConstants";
-import { useGallerySettings } from "@/contexts/GallerySettingsContext";
 import { GalleryProps } from "@/types/gallery";
 import { ucFirst } from "@/utils/stringHelper";
-import { AddMaleIcon, Cancel01Icon, Sent02Icon } from "@hugeicons/core-free-icons";
+import { AddMaleIcon, Cancel01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
 import { Form, Input, message, Modal, Select } from "antd";
@@ -38,7 +37,7 @@ function AddMemberModal({ open = false, setOpen, gallery }: Props) {
           handleClose();
         })
         .catch(error => {
-          message.error(error.response?.data?.message || 'Failed to send invitation.');
+          message.error(error.response?.data?.message || 'Failed to send invitation.', 7);
         })
         .finally(() => {
           setProcessing(false);

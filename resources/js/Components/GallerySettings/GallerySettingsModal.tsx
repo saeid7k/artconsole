@@ -60,7 +60,7 @@ function GallerySettingsModal({ open, setOpen }: { open: boolean, setOpen: (open
         onCancel={handleClose}
         closeIcon={<HugeiconsIcon icon={Cancel01Icon} size={32} />}
         footer={null}
-        width={800}
+        width={1000}
         okText="Save"
         afterClose={handleClose}
       >
