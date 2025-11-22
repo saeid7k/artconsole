@@ -6,6 +6,7 @@ export interface NotificationProps {
   data: {
     message: string;
     link?: string;
+    route?: string;
   };
   read_at: string | null;
   created_at: string;
