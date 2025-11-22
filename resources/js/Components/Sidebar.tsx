@@ -41,7 +41,15 @@ function Sidebar() {
 
     let selected = allItems.find(item => item.key === key);
     if (selected) {
-      router.get(route(selected.route))
+      if (key === 'log-back') {
+        router.get(route(selected.route), {}, {
+          onSuccess: () => {
+            window.location.reload()
+          }
+        })
+      } else {
+        router.visit(route(selected.route))
+      }
     }
   }
 
