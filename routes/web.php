@@ -47,6 +47,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::prefix('invite-links')->name('invite-links.')->group(function () {
     Route::post('{inviteLink}/delete', [App\Http\Controllers\InviteLinkController::class, 'delete'])->name('delete');
   });
+
+  Route::prefix('notifications')->name('notifications.')->group(function () {
+    Route::get('/', [App\Http\Controllers\NotificationController::class, 'index'])->name('index');
+    Route::get('/{count}/latest-notifications', [App\Http\Controllers\NotificationController::class, 'getLatest'])->name('latest');
+  });
 });
 
 Route::middleware(['auth', Admin::class])->group(function () {
