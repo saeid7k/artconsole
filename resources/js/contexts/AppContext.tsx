@@ -1,4 +1,5 @@
-import { createContext, Dispatch, PropsWithChildren, SetStateAction, useContext, useEffect, useState } from 'react';
+import axios from 'axios';
+import { createContext, Dispatch, PropsWithChildren, SetStateAction, useContext, useEffect, useRef, useState } from 'react';
 
 export type AppContextType = {
   sidebarCollapsed: boolean;
@@ -6,6 +7,9 @@ export type AppContextType = {
   toggleSidebar: () => void;
   darkMode: boolean;
   setDarkMode: Dispatch<SetStateAction<boolean>>;
+  intervalData: {
+    [key: string]: any;
+  };
 };
 
 const AppContext = createContext<AppContextType>({
@@ -14,9 +18,12 @@ const AppContext = createContext<AppContextType>({
   toggleSidebar: () => {},
   darkMode: false,
   setDarkMode: () => {},
+  intervalData: {},
 });
 
 function AppProvider({ children }: PropsWithChildren) {
+
+  const initialRender = useRef(true);
 
   // Sidebar collapsed state
 
@@ -77,8 +84,32 @@ function AppProvider({ children }: PropsWithChildren) {
     };
   }, []);
 
+  // Interval Data
+
+  const [intervalData, setIntervalData] = useState<object>({});
+
+  function fetchIntervalData() {
+    axios.get(route('interval-data'))
+      .then(response => {
+        setIntervalData(response.data);
+      })
+      .catch(error => {
+        console.error('Failed to fetch interval data:', error);
+      });
+  }
+
+  useEffect(() => {
+    if (!initialRender.current) {
+      return
+    }
+    initialRender.current = false
+    fetchIntervalData();
+    const interval = setInterval(fetchIntervalData, 20000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <AppContext.Provider value={{ sidebarCollapsed, setSidebarCollapsed, toggleSidebar, darkMode, setDarkMode }}>
+    <AppContext.Provider value={{ sidebarCollapsed, setSidebarCollapsed, toggleSidebar, darkMode, setDarkMode, intervalData }}>
       {children}
     </AppContext.Provider>
   );

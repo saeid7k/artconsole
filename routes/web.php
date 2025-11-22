@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AppLayoutController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GeocodeController;
@@ -15,6 +16,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
   Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+  Route::get('/interval-data', [AppLayoutController::class, 'intervalData'])->name('interval-data');
 
   Route::prefix('contacts')->name('contacts.')->group(function () {
     Route::get('/', [ContactController::class, 'index'])->name('index');
