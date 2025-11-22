@@ -1,5 +1,5 @@
 import { UserProps } from "@/types/user"
-import { Delete02Icon, Login01Icon, SidebarRightIcon, ViewIcon } from "@hugeicons/core-free-icons"
+import { Delete02Icon, Login01Icon, SidebarRightIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router } from "@inertiajs/react"
 import { Button, message, Popconfirm, Tooltip } from "antd"
@@ -18,6 +18,14 @@ function UsersActions({ user }: { user: UserProps }) {
       })
   }
 
+  function loginAs(userId: number) {
+    router.visit(route('login-as', userId), {
+      onSuccess: () => {
+        window.location.reload()
+      }
+    })
+  }
+
   return (
     <div
       className="flex items-center gap-1"
@@ -28,7 +36,7 @@ function UsersActions({ user }: { user: UserProps }) {
           color='purple'
           shape="circle"
           icon={<HugeiconsIcon icon={Login01Icon} size={20} />}
-          onClick={() => router.visit(route('login-as', user.id))}
+          onClick={() => loginAs(user.id)}
         />
       </Tooltip>
       <Tooltip title="View Details">
