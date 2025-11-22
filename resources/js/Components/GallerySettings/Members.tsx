@@ -125,7 +125,7 @@ function Members() {
       key: 'actions',
       render: (_, record) => (
         <div className="flex justify-end">
-          <Tooltip title="Remove Invitation">
+          <Tooltip title="Cancel Invitation">
             <Popconfirm
               title="Delete the invitation"
               description={
