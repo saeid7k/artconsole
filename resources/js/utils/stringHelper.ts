@@ -16,4 +16,21 @@ function getInitials(name: string): string {
   return initials;
 }
 
-export { ucFirst, getInitials }
+function keyToTitle(key: string): string {
+  if (!key) {
+    return '';
+  }
+  let label = key.replace(/([A-Z])/g, ' $1');
+
+  label = label
+    .replace(/[._\-\/]+/g, ' ')
+    .replace(/\s{2,}/g, ' ').trim();
+
+  if (label.length > 0) {
+    label = ucFirst(label);
+  }
+
+  return label;
+}
+
+export { ucFirst, getInitials, keyToTitle }
