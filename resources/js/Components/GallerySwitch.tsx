@@ -1,17 +1,18 @@
+import { useApp } from "@/contexts/AppContext";
 import colors from "@/Themes/theme";
 import { GalleryProps } from "@/types/gallery";
+import { InviteLinkProps } from "@/types/inviteLink";
 import { UsePageProps } from "@/types/usePage";
 import { AddIcon, AddMaleIcon, ArrowDown01Icon, Cancel01Icon, CheckmarkCircle01Icon, CircleIcon, SettingsFreeIcons, Tick02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
 import { Badge, Button, Card, Divider, Dropdown, message, Tooltip } from "antd";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GalleryAccessTag from "./GalleryAccessTag";
 import GalleryAvatar from "./GalleryAvatar";
-import GallerySettingsModal from "./GallerySettings/GallerySettingsModal";
 import AddMemberModal from "./GallerySettings/AddMemberModal";
-import { useApp } from "@/contexts/AppContext";
+import GallerySettingsModal from "./GallerySettings/GallerySettingsModal";
 
 function GallerySwitch() {
 
@@ -22,7 +23,8 @@ function GallerySwitch() {
   const { current_gallery, galleries } = usePage<UsePageProps>().props;
   const [open, setOpen] = useState(false);
   const isClickedYet = localStorage.getItem('gallerySwitchClicked') == 'true';
-  const invitations = intervalData.invitations || []
+  const [invitations, setInvitations] = useState<InviteLinkProps[]>(intervalData.invitations || [])
+  const hasInvitations = invitations.length > 0
 
   // Functions
 
@@ -47,6 +49,35 @@ function GallerySwitch() {
         setOpen(false);
       });
   }
+
+  function acceptInvitation(inviteLinkId: number) {
+    axios.post(route('invite-links.accept', { invite_link: inviteLinkId }))
+      .then((response) => {
+        message.success(response.data.message || 'Joined gallery successfully');
+        setInvitations((prev: InviteLinkProps[]) => prev.filter((invitation: InviteLinkProps) => invitation.id !== inviteLinkId));
+        switchGallery(response.data.gallery_id);
+        router.reload()
+      })
+      .catch((error) => {
+        message.error(error.response?.data?.message || 'Failed to join gallery');
+      });
+  }
+
+  function declineInvitation(inviteLinkId: number) {
+    axios.post(route('invite-links.decline', { invite_link: inviteLinkId }))
+      .then((response) => {
+        message.success(response.data.message || 'Invitation declined successfully');
+        setInvitations((prev: InviteLinkProps[]) => prev.filter((invitation: InviteLinkProps) => invitation.id !== inviteLinkId));
+        router.reload()
+      })
+      .catch((error) => {
+        message.error(error.response?.data?.message || 'Failed to decline invitation');
+      });
+  }
+
+  useEffect(() => {
+    setInvitations(intervalData.invitations || [])
+  }, [intervalData.invitations])
 
   // Settings Modal
 
@@ -130,7 +161,7 @@ function GallerySwitch() {
           ))}
         </div>
 
-        {invitations.length > 0 && (
+        {hasInvitations && (
           <>
             <Divider className="my-3" />
 
@@ -145,18 +176,20 @@ function GallerySwitch() {
                     <GalleryAccessTag access={invitation.settings?.access} className="ms-1" />
                   </div>
                   <div className="flex">
-                    <Tooltip title="Join" mouseEnterDelay={1}>
+                    <Tooltip title="Join">
                       <Button
                         type="text"
                         shape="circle"
+                        onClick={() => acceptInvitation(invitation.id)}
                       >
                         <HugeiconsIcon icon={Tick02Icon} size={20} className="text-green-600" />
                       </Button>
                     </Tooltip>
-                    <Tooltip title="Decline" mouseEnterDelay={1}>
+                    <Tooltip title="Decline">
                       <Button
                         type="text"
                         shape="circle"
+                        onClick={() => declineInvitation(invitation.id)}
                       >
                         <HugeiconsIcon icon={Cancel01Icon} size={20} className="text-red-600" />
                       </Button>
@@ -191,7 +224,7 @@ function GallerySwitch() {
             <div className="font-semibold" >
               {current_gallery.name}
             </div>
-            <Badge status="warning" />
+            {hasInvitations && <Badge status="warning" className="badge-md" />}
           </div>
           <HugeiconsIcon
             icon={ArrowDown01Icon}
