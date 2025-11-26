@@ -33,9 +33,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('{gallery}/remove-logo', [App\Http\Controllers\GalleryController::class, 'removeLogo'])->name('remove-logo');
     Route::post('{gallery}/update', [App\Http\Controllers\GalleryController::class, 'update'])->name('update');
     Route::post('{gallery}/update-address', [App\Http\Controllers\GalleryController::class, 'updateAddress'])->name('update-address');
-    Route::get('{gallery}/members', [App\Http\Controllers\GalleryController::class, 'getMembers'])->name('members');
-    Route::post('{gallery}/add-member', [App\Http\Controllers\GalleryController::class, 'addMember'])->name('add-member');
   });
+
+  Route::prefix('members')->name('members.')->group(function () {
+    Route::get('{gallery}', [App\Http\Controllers\MemberController::class, 'getMembers'])->name('all');
+    Route::post('{gallery}/add', [App\Http\Controllers\MemberController::class, 'addMember'])->name('add');
+    Route::post('{gallery}/change-access-level', [App\Http\Controllers\MemberController::class, 'changeAccessLevel'])->name('change-access-level');
+  });
+
 
   Route::prefix('profile')->name('profile.')->group(function () {
     Route::post('/update', [App\Http\Controllers\ProfileController::class, 'update'])->name('update');
