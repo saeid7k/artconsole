@@ -105,3 +105,13 @@ code {
 .ant-upload {
   overflow: hidden;
 }
+
+.badge-md .ant-badge-status-dot {
+  width: 8px !important;
+  height: 8px !important;
+}
+
+.badge-xl .ant-badge-status-dot {
+  width: 12px !important;
+  height: 12px !important;
+}
