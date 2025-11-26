@@ -1,24 +1,28 @@
 import colors from "@/Themes/theme";
 import { GalleryProps } from "@/types/gallery";
 import { UsePageProps } from "@/types/usePage";
-import { AddIcon, AddMaleIcon, ArrowDown01Icon, CheckmarkCircle01Icon, SettingsFreeIcons } from "@hugeicons/core-free-icons";
+import { AddIcon, AddMaleIcon, ArrowDown01Icon, Cancel01Icon, CheckmarkCircle01Icon, CircleIcon, SettingsFreeIcons, Tick02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
-import { Button, Card, Divider, Dropdown, message, Tooltip } from "antd";
+import { Badge, Button, Card, Divider, Dropdown, message, Tooltip } from "antd";
 import axios from "axios";
 import { useState } from "react";
 import GalleryAccessTag from "./GalleryAccessTag";
 import GalleryAvatar from "./GalleryAvatar";
 import GallerySettingsModal from "./GallerySettings/GallerySettingsModal";
 import AddMemberModal from "./GallerySettings/AddMemberModal";
+import { useApp } from "@/contexts/AppContext";
 
 function GallerySwitch() {
+
+  const { intervalData  } = useApp();
 
   // Constants & States
 
   const { current_gallery, galleries } = usePage<UsePageProps>().props;
   const [open, setOpen] = useState(false);
   const isClickedYet = localStorage.getItem('gallerySwitchClicked') == 'true';
+  const invitations = intervalData.invitations || []
 
   // Functions
 
@@ -105,20 +109,65 @@ function GallerySwitch() {
               key={gallery.id}
               variant="text"
               color="default"
-              className="flex justify-between items-center px-1 gap-2"
+              className="flex justify-start items-center px-1 gap-2"
               onClick={() => switchGallery(gallery.id)}
             >
+              <div className="grow-0">
+                {gallery.id === current_gallery.id ?
+                  (
+                    <HugeiconsIcon icon={CheckmarkCircle01Icon} size={20} color={colors.blue[600]} />
+                  ) : (
+                    <HugeiconsIcon icon={CircleIcon} size={20} color={colors.gray[600]} />
+                  )
+                }
+              </div>
               <div className="flex items-center gap-1">
                 <GalleryAvatar gallery={gallery} size="small" shadow />
                 <div>{gallery.name}</div>
-                <GalleryAccessTag gallery={gallery} className="ms-1" />
+                <GalleryAccessTag access={gallery.pivot?.access} className="ms-1" />
               </div>
-              {gallery.id === current_gallery.id && (
-                <HugeiconsIcon icon={CheckmarkCircle01Icon} size={20} color={colors.blue[600]} />
-              )}
             </Button>
           ))}
         </div>
+
+        {invitations.length > 0 && (
+          <>
+            <Divider className="my-3" />
+
+            {/* Invitations */}
+            <div className="flex flex-col gap-1">
+              <div className="text-ghost tracking-wide">Invitations<Badge status="warning" className="ms-1" /></div>
+              {invitations.map((invitation: any) => (
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-1">
+                    <GalleryAvatar gallery={invitation.gallery} size="small" shadow />
+                    <div>{invitation.gallery.name}</div>
+                    <GalleryAccessTag access={invitation.settings?.access} className="ms-1" />
+                  </div>
+                  <div className="flex">
+                    <Tooltip title="Join" mouseEnterDelay={1}>
+                      <Button
+                        type="text"
+                        shape="circle"
+                      >
+                        <HugeiconsIcon icon={Tick02Icon} size={20} className="text-green-600" />
+                      </Button>
+                    </Tooltip>
+                    <Tooltip title="Decline" mouseEnterDelay={1}>
+                      <Button
+                        type="text"
+                        shape="circle"
+                      >
+                        <HugeiconsIcon icon={Cancel01Icon} size={20} className="text-red-600" />
+                      </Button>
+                    </Tooltip>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
       </Card>
     );
   }
@@ -138,10 +187,11 @@ function GallerySwitch() {
           onClick={handleClick}
         >
           <GalleryAvatar gallery={current_gallery} size="small" shadow />
-          <div
-            className="font-semibold"
-          >
-            {current_gallery.name}
+          <div className="flex items-center gap-1">
+            <div className="font-semibold" >
+              {current_gallery.name}
+            </div>
+            <Badge status="warning" />
           </div>
           <HugeiconsIcon
             icon={ArrowDown01Icon}
