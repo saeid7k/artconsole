@@ -1,19 +1,22 @@
 import { getAccessLevelColor } from "@/constants/accessLevels"
-import { GalleryProps } from "@/types/gallery"
 import { Tag } from "antd"
 
 type Props = {
-  gallery: GalleryProps,
+  access: string | undefined,
   className?: string,
 }
 
-function GalleryAccessTag({gallery, className}: Props) {
+function GalleryAccessTag({access, className}: Props) {
+  if (!access) {
+    return null;
+  }
+  
   return (
     <Tag
-      color={getAccessLevelColor(gallery.pivot?.access)}
+      color={getAccessLevelColor(access)}
       className={className}
     >
-      {gallery.pivot?.access}
+      {access}
     </Tag>
   )
 }
