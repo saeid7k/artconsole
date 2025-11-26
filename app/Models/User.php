@@ -124,7 +124,15 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
   public function currentGallery()
   {
-    return Gallery::whereId($this->getMeta('current_gallery_id'))->first();
+    $galleryId = $this->getMeta('current_gallery_id');
+    if (!$galleryId) {
+      return null;
+    }
+
+    return $this->belongsToMany(Gallery::class, 'gallery_user')
+      ->withPivot('access')
+      ->where('galleries.id', $galleryId)
+      ->first();
   }
 
   public function invitations(): HasMany
