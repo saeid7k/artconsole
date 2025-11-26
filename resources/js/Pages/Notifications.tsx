@@ -139,7 +139,7 @@ function Notifications({ notifications }: { notifications: PageProps}) {
         dataSource={notifications.data}
         size='small'
         rowClassName={(record) => {
-          return record.read_at ? '' : 'font-semibold bg-blue-50'
+          return record.read_at ? '' : 'font-semibold bg-blue-50 dark:bg-blue-950';
         }}
         scroll={{ x: 'min-content' }}
         pagination={{
