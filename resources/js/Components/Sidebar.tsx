@@ -53,9 +53,15 @@ function Sidebar() {
     }
   }
 
-  const activeKey = allItems.find(item => {
-    return url.includes(item.route.split('.')[0])
-  })?.key || 'dashboard'
+  const activeKey = () => {
+    if (url === '/' || url.startsWith('/dashboard')) {
+      return 'dashboard';
+    }
+
+    return allItems.find(item => {
+      return url.includes(item.route.split('.')[0])
+    })?.key || ''
+  }
 
   return (
     <div
@@ -76,7 +82,7 @@ function Sidebar() {
         onClick={(e) => {
           handleMenuClick(e.key);
         }}
-        selectedKeys={[activeKey]}
+        selectedKeys={[activeKey()]}
       />
 
       {user?.is_admin && (
@@ -95,7 +101,7 @@ function Sidebar() {
             onClick={(e) => {
               handleMenuClick(e.key);
             }}
-            selectedKeys={[activeKey]}
+            selectedKeys={[activeKey()]}
           />
         </>
       )}
@@ -111,7 +117,7 @@ function Sidebar() {
           onClick={(e) => {
             handleMenuClick(e.key);
           }}
-          selectedKeys={[activeKey]}
+          selectedKeys={[activeKey()]}
         />
       </div>
 
