@@ -19,4 +19,16 @@ class InviteLinkPolicy
   {
     return $inviteLink->gallery->isEditorOrOwner($user);
   }
+
+  public function accept(User $user, InviteLink $inviteLink)
+  {
+    if (
+      $user->is_admin ||
+      $inviteLink->email == $user->email
+    ) {
+      return true;
+    }
+
+    return false;
+  }
 }

@@ -33,7 +33,7 @@ function Members() {
   }
 
   function handleDeleteInvitation(inviteLink: InviteLinkProps) {
-    axios.post(route('invite-links.delete', { inviteLink: inviteLink.id }))
+    axios.post(route('invite-links.delete', { invite_link: inviteLink.id }))
       .then((response) => {
         message.success(response.data.message || 'Invitation deleted successfully.');
         fetchMembers();

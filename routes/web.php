@@ -47,7 +47,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
   });
 
   Route::prefix('invite-links')->name('invite-links.')->group(function () {
-    Route::post('{inviteLink}/delete', [App\Http\Controllers\InviteLinkController::class, 'delete'])->name('delete');
+    Route::post('{invite_link}/delete', [App\Http\Controllers\InviteLinkController::class, 'delete'])->name('delete');
+    Route::post('{invite_link}/accept', [App\Http\Controllers\InviteLinkController::class, 'accept'])->name('accept');
+    Route::post('{invite_link}/decline', [App\Http\Controllers\InviteLinkController::class, 'decline'])->name('decline');
   });
 
   Route::prefix('notifications')->name('notifications.')->group(function () {
