@@ -15,6 +15,7 @@ function NotificationsDropdown() {
   const { intervalData } = useApp();
   const [notifications, setNotifications] = useState<NotificationProps[]>([]);
   const [unreadCount, setUnreadCount] = useState<number>(0);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     if (intervalData.latest_notifications && Array.isArray(intervalData['latest_notifications'])) {
@@ -56,6 +57,11 @@ function NotificationsDropdown() {
       .catch((error) => {
         console.error('Failed to mark all notifications as read:', error);
       });
+  }
+
+  function handleViewAll() {
+    router.visit(route('notifications.index'));
+    setDropdownOpen(false);
   }
 
   const popup = () => {
@@ -109,6 +115,14 @@ function NotificationsDropdown() {
             </div>
           </Menu.Item>
         ))}
+        <Menu.Divider />
+        <Button
+          type="link"
+          className="w-full"
+          onClick={handleViewAll}
+        >
+          View All Notifications
+        </Button>
       </Menu>
     );
   };
@@ -117,6 +131,8 @@ function NotificationsDropdown() {
     <Dropdown
       trigger={['click']}
       popupRender={popup}
+      onOpenChange={(open) => setDropdownOpen(open)}
+      open={dropdownOpen}
     >
       <Badge
         count={unreadCount}
