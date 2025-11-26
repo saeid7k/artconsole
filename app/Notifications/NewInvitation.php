@@ -44,7 +44,7 @@ class NewInvitation extends Notification
   public function toArray(object $notifiable): array
   {
     return [
-      'message' => 'You have been invited to join the gallery "' . $this->inviteLink->gallery->name . '".',
+      'message' => 'You have been invited to join "' . $this->inviteLink->gallery->name . '".',
     ];
   }
 
