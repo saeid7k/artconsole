@@ -38,7 +38,7 @@ class UserController extends Controller
       })
       ->paginate($request->per_page ?? 20)->withQueryString();
 
-    return inertia('Users/UsersIndex', [
+    return inertia('Users/Index', [
       'users' => $users
     ]);
   }
