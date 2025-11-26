@@ -31,7 +31,7 @@ function AddMemberModal({ open = false, setOpen, gallery }: Props) {
   function handleSubmit() {
     form.validateFields().then(values => {
       setProcessing(true);
-      axios.post(route('galleries.add-member', { gallery: gallery.id }), values)
+      axios.post(route('members.add', { gallery: gallery.id }), values)
         .then((response) => {
           message.success(response.data.message || 'Invitation sent successfully.');
           handleClose();

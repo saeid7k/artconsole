@@ -1,28 +1,29 @@
+import ACCESS_LEVELS from "@/constants/accessLevels"
 import { useGallerySettings } from "@/contexts/GallerySettingsContext"
 import { InviteLinkProps } from "@/types/inviteLink"
 import { UserProps } from "@/types/user"
-import { Delete02Icon, RemoveCircleIcon, SentIcon, UserMultipleIcon } from "@hugeicons/core-free-icons"
+import { ucFirst } from "@/utils/stringHelper"
+import { RemoveCircleIcon, SentIcon, UserMultipleIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { Button, message, Popconfirm, Table, TableProps, Tooltip } from "antd"
+import { Button, message, Popconfirm, Select, Table, TableProps, Tooltip } from "antd"
 import axios from "axios"
 import dayjs from "dayjs"
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 import { useEffect, useState } from "react"
 import UserStack from "../UserStack"
 import AddMemberModal from "./AddMemberModal"
-import GalleryAccessTag from "../GalleryAccessTag"
-import { ucFirst } from "@/utils/stringHelper"
 dayjs.extend(localizedFormat);
 
 function Members() {
 
   const { gallery, open } = useGallerySettings()
+
   const [members, setMembers] = useState<UserProps[]>([])
   const [invitations, setInvitations] = useState<InviteLinkProps[]>([])
   const [showAddMemberModal, setShowAddMemberModal] = useState(false)
 
   function fetchMembers() {
-    axios.get(route('galleries.members', { gallery: gallery.id }))
+    axios.get(route('members.all', { gallery: gallery.id }))
       .then(response => {
         setMembers(response.data.members);
         setInvitations(response.data.invitations);
@@ -40,6 +41,20 @@ function Members() {
       })
       .catch((error) => {
         message.error(error.response?.data?.message || 'Failed to delete invitation.');
+      });
+  }
+
+  function changeAccessLevel(userId: number, accessLevel: string) {
+    axios.post(route('members.change-access-level', { gallery: gallery.id }), {
+      member_id: userId,
+      access: accessLevel,
+    })
+      .then((response) => {
+        message.success(response.data.message || 'Member access level updated successfully.');
+        fetchMembers();
+      })
+      .catch((error) => {
+        message.error(error.response?.data?.message || 'Failed to update member access level.');
       });
   }
 
@@ -79,9 +94,30 @@ function Members() {
       title: 'Access',
       dataIndex: ['pivot', 'access'],
       key: 'access',
-      sorter: (a, b) => a.access.localeCompare(b.access),
+      sorter: (a, b) => a.pivot.access.localeCompare(b.pivot.access),
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
+      render: (text, record) => (
+        <>
+          {gallery.pivot?.access === 'owner' ? (
+            <Select
+              placeholder="Select access level"
+              defaultValue={text}
+              value={text}
+              onChange={(value) => changeAccessLevel((record as UserProps).id, value)}
+              disabled={gallery.user_id == record.id}
+            >
+              {ACCESS_LEVELS.map(level => (
+                <Select.Option key={level.name} value={level.name}>
+                  {ucFirst(level.name)}
+                </Select.Option>
+              ))}
+            </Select>
+          ) : (
+            <>{ucFirst(text)}</>
+          )}
+        </>
+      ),
       width: 150,
     },
   ]
