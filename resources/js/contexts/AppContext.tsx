@@ -10,6 +10,7 @@ export type AppContextType = {
   intervalData: {
     [key: string]: any;
   };
+  fetchIntervalData: () => void;
 };
 
 const AppContext = createContext<AppContextType>({
@@ -19,6 +20,7 @@ const AppContext = createContext<AppContextType>({
   darkMode: false,
   setDarkMode: () => {},
   intervalData: {},
+  fetchIntervalData: () => {},
 });
 
 function AppProvider({ children }: PropsWithChildren) {
@@ -109,7 +111,7 @@ function AppProvider({ children }: PropsWithChildren) {
   }, []);
 
   return (
-    <AppContext.Provider value={{ sidebarCollapsed, setSidebarCollapsed, toggleSidebar, darkMode, setDarkMode, intervalData }}>
+    <AppContext.Provider value={{ sidebarCollapsed, setSidebarCollapsed, toggleSidebar, darkMode, setDarkMode, intervalData, fetchIntervalData }}>
       {children}
     </AppContext.Provider>
   );
