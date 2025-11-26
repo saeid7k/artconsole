@@ -3,7 +3,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { Breadcrumb, Button, Tooltip } from "antd";
 
 type Props = {
-  title?: string | null;
+  title?: string;
   counter?: number | null;
   toolbar?: React.ReactNode | null;
   breadcrumbItems?: {
@@ -12,7 +12,7 @@ type Props = {
   onCreateButtonClick?: () => void;
 }
 
-function PageTitle({ title = null, counter = null, toolbar = null, breadcrumbItems = [], onCreateButtonClick = undefined }: Props) {
+function PageTitle({ title, counter = null, toolbar = null, breadcrumbItems = [], onCreateButtonClick = undefined }: Props) {
   return (
       <div
         className="flex items-center justify-between flex-wrap gap-2 px-6 pb-3 w-full grow-0"
