@@ -5,7 +5,7 @@ import { PageProps } from "@/types";
 import UsersTable from "./Partials/UsersTable";
 import PageTitle from "@/Components/PageTitle";
 
-function UsersIndex({ users }: { users: PageProps }) {
+function Index({ users }: { users: PageProps }) {
 
   function handleSearch(value: string) {
     const url = new URL(window.location.href);
@@ -38,6 +38,6 @@ function UsersIndex({ users }: { users: PageProps }) {
   )
 }
 
-UsersIndex.layout = (page: any) => <AppLayout>{page}</AppLayout>;
+Index.layout = (page: any) => <AppLayout>{page}</AppLayout>;
 
-export default UsersIndex;
+export default Index;
