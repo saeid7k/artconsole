@@ -132,6 +132,11 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     return $this->hasMany(InviteLink::class);
   }
 
+  public function invitedTo()
+  {
+    return $this->hasMany(InviteLink::class, 'email', 'email');
+  }
+
   // Methods
 
   public function is_admin()
