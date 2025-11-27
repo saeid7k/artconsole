@@ -1,4 +1,5 @@
 import { useGallerySettings } from "@/contexts/GallerySettingsContext"
+import { trimWebsite } from "@/utils/formatter"
 import { Add01Icon, Delete02Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router } from "@inertiajs/react"
@@ -6,9 +7,8 @@ import { Button, Form, GetProp, Input, message, Tooltip, Upload, UploadProps } f
 import TextArea from "antd/es/input/TextArea"
 import axios from "axios"
 import { useEffect, useState } from "react"
-import LoadingSpinner from "../LoadingSpinner"
-import { trimWebsite } from "@/utils/formatter"
 import ActionFooter from "../ActionFooter"
+import LoadingSpinner from "../LoadingSpinner"
 
 function General() {
 
@@ -113,39 +113,6 @@ function General() {
 
   return (
     <div className="flex flex-col gap-3">
-      <ItemRow label="Logo">
-        <div className="flex items-start gap-1">
-          <Upload
-            name="logo"
-            listType="picture-card"
-            className="avatar-uploader !cursor-pointer"
-            showUploadList={false}
-            beforeUpload={beforeUploadLogo}
-            onChange={handleChangeLogo}
-            customRequest={() => {}}
-          >
-            {gallery?.logo ? (
-              <img draggable={false} src={gallery.logo} alt="avatar" style={{ width: '100%' }} />
-            ) : (
-              uploadButton
-            )}
-          </Upload>
-          {gallery?.logo && (
-            <div>
-              <Tooltip title="Remove Logo">
-                <Button
-                  variant="text"
-                  color="danger"
-                  shape="circle"
-                  onClick={removeLogo}
-                >
-                  <HugeiconsIcon icon={Delete02Icon} size={20}  />
-                </Button>
-              </Tooltip>
-            </div>
-          )}
-        </div>
-      </ItemRow>
 
       <Form
         form={form}
@@ -168,6 +135,41 @@ function General() {
           md:{span: 20}
         }}
       >
+        <Form.Item
+          label="Logo"
+        >
+          <div className="flex items-start gap-1">
+            <Upload
+              name="logo"
+              listType="picture-card"
+              className="avatar-uploader !cursor-pointer"
+              showUploadList={false}
+              beforeUpload={beforeUploadLogo}
+              onChange={handleChangeLogo}
+              customRequest={() => {}}
+            >
+              {gallery?.logo ? (
+                <img draggable={false} src={gallery.logo} alt="avatar" style={{ width: '100%' }} />
+              ) : (
+                uploadButton
+              )}
+            </Upload>
+            {gallery?.logo && (
+              <div>
+                <Tooltip title="Remove Logo">
+                  <Button
+                    variant="text"
+                    color="danger"
+                    shape="circle"
+                    onClick={removeLogo}
+                  >
+                    <HugeiconsIcon icon={Delete02Icon} size={20}  />
+                  </Button>
+                </Tooltip>
+              </div>
+            )}
+          </div>
+        </Form.Item>
         <Form.Item
           label="Name"
           name="name"
