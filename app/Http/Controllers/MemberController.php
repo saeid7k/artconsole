@@ -99,4 +99,33 @@ class MemberController extends Controller
       'message' => 'Member access level updated successfully.',
     ]);
   }
+
+  public function removeMember(Request $request, Gallery $gallery, $memberId)
+  {
+    $this->authorize('update', $gallery);
+
+    if ($memberId == $gallery->user_id) {
+      return response([
+        'message' => 'Cannot remove the gallery creator from members.',
+      ], 422);
+    }
+
+    $member = $gallery->members()->where('users.id', $memberId)->first();
+
+    if (!$member) {
+      return response([
+        'message' => 'Member not found in the gallery.',
+      ], 404);
+    }
+
+    $gallery->members()->detach($memberId);
+
+    if ($member->getMeta('current_gallery_id') == $gallery->id) {
+      $member->setCurrentGallery();
+    }
+
+    return response([
+      'message' => 'Member removed successfully.',
+    ]);
+  }
 }
