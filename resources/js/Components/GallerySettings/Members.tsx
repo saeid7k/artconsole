@@ -3,7 +3,7 @@ import { useGallerySettings } from "@/contexts/GallerySettingsContext"
 import { InviteLinkProps } from "@/types/inviteLink"
 import { UserProps } from "@/types/user"
 import { ucFirst } from "@/utils/stringHelper"
-import { RemoveCircleIcon, SentIcon, UserMultipleIcon } from "@hugeicons/core-free-icons"
+import { RemoveCircleIcon, SentIcon, UserMinus01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Button, message, Popconfirm, Select, Table, TableProps, Tooltip } from "antd"
 import axios from "axios"
@@ -114,7 +114,7 @@ function Members() {
       showSorterTooltip: false,
       render: (text, record) => (
         <>
-          {gallery.pivot?.access === 'owner' ? (
+          {gallery.abilities.update ? (
             <Select
               placeholder="Select access level"
               defaultValue={text}
@@ -209,29 +209,31 @@ function Members() {
       key: 'actions',
       render: (_, record) => (
         <div className="flex justify-end">
-          <Tooltip title="Cancel Invitation">
-            <Popconfirm
-              title="Delete the invitation"
-              description={
-                <div>
-                  Are you sure to delete this invitation?
-                  <div className="italic text-red-500">{record.email}</div>
-                </div>
-              }
-              onConfirm={() => handleDeleteInvitation(record as InviteLinkProps)}
-              okText="Yes"
-              cancelText="No"
-              placement="left"
-              okType="danger"
-            >
-              <Button
-                variant="text"
-                color='danger'
-                shape="circle"
-                icon={<HugeiconsIcon icon={RemoveCircleIcon} size={20} />}
-              />
-            </Popconfirm>
-          </Tooltip>
+          {gallery.abilities.update && (
+            <Tooltip title="Cancel Invitation">
+              <Popconfirm
+                title="Delete the invitation"
+                description={
+                  <div>
+                    Are you sure to delete this invitation?
+                    <div className="italic text-red-500">{record.email}</div>
+                  </div>
+                }
+                onConfirm={() => handleDeleteInvitation(record as InviteLinkProps)}
+                okText="Yes"
+                cancelText="No"
+                placement="left"
+                okType="danger"
+              >
+                <Button
+                  variant="text"
+                  color='danger'
+                  shape="circle"
+                  icon={<HugeiconsIcon icon={RemoveCircleIcon} size={20} />}
+                />
+              </Popconfirm>
+            </Tooltip>
+          )}
         </div>
       ),
     }

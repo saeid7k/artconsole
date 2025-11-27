@@ -29,7 +29,14 @@ class Gallery extends Model implements HasMedia
 
   // Appends
 
-  protected $appends = [ 'members_count', 'logo', 'formatted_address' ];
+  protected $appends = [ 'abilities', 'members_count', 'logo', 'formatted_address' ];
+
+  public function getAbilitiesAttribute()
+  {
+    return [
+      'update' => auth()->user()->can('update', $this),
+    ];
+  }
 
   public function getMembersCountAttribute()
   {
