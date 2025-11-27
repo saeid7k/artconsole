@@ -58,6 +58,21 @@ function Members() {
       });
   }
 
+  function removeMember(userId: number) {
+    axios.post(route('members.remove', {
+        gallery: gallery.id,
+        member: userId,
+      })
+    )
+      .then((response) => {
+        message.success(response.data.message || 'Member removed successfully.');
+        fetchMembers();
+      })
+      .catch((error) => {
+        message.error(error.response?.data?.message || 'Failed to remove member.');
+      });
+  }
+
   useEffect(() => {
     if (open) {
       fetchMembers();
@@ -120,6 +135,39 @@ function Members() {
       ),
       width: 150,
     },
+    {
+      title: '',
+      key: 'actions',
+      render: (_, record) => (
+        <div className="flex justify-end">
+          {gallery.user_id !== record.id && gallery.abilities.update && (
+            <Tooltip title="Remove Member">
+              <Popconfirm
+                title="Remove the member"
+                description={
+                  <div>
+                    Are you sure to remove this member?
+                    <div className="italic text-red-500">{record.full_name}</div>
+                  </div>
+                }
+                onConfirm={() => removeMember(record.id)}
+                okText="Yes"
+                cancelText="No"
+                placement="left"
+                okType="danger"
+              >
+                <Button
+                  variant="text"
+                  color='danger'
+                  shape="circle"
+                  icon={<HugeiconsIcon icon={UserMinus01Icon} size={20} />}
+                />
+              </Popconfirm>
+            </Tooltip>
+          )}
+        </div>
+      ),
+    }
   ]
 
   const invitationColumns: TableProps['columns'] = [
