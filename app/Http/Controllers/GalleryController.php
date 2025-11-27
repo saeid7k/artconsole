@@ -12,7 +12,7 @@ class GalleryController extends Controller
   public function setCurrentGallery(Request $request)
   {
     $galleryId = $request->input('gallery_id');
-    $request->user()->setMeta('current_gallery_id', $galleryId);
+    $request->user()->setCurrentGallery($galleryId);
 
     return response(['message' => 'Current gallery switched successfully.']);
   }
