@@ -124,15 +124,27 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
   public function currentGallery()
   {
-    $galleryId = $this->getMeta('current_gallery_id');
+    $galleryId = $this->getMeta('current_gallery_id') ?? null;
     if (!$galleryId) {
-      return null;
+      $galleryId = $this->galleries()->first()?->id;
+      $this->setCurrentGallery($galleryId);
     }
 
-    return $this->belongsToMany(Gallery::class, 'gallery_user')
+    $found =  $this->belongsToMany(Gallery::class, 'gallery_user')
       ->withPivot('access')
       ->where('galleries.id', $galleryId)
       ->first();
+
+    if ($found) {
+      return $found;
+    } else {
+      $newGallery = $this->galleries()->first();
+      $this->setCurrentGallery($newGallery?->id);
+      return $this->belongsToMany(Gallery::class, 'gallery_user')
+        ->withPivot('access')
+        ->where('galleries.id', $newGallery?->id)
+        ->first();
+    }
   }
 
   public function invitations(): HasMany
@@ -150,6 +162,17 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
   public function is_admin()
   {
     return $this->id == 1;
+  }
+
+  public function setCurrentGallery($galleryId = null)
+  {
+    if (!$galleryId) {
+      $newCurrentGallery = $this->galleries()->first();
+      $this->setMeta('current_gallery_id', $newCurrentGallery?->id);
+      return;
+    }
+
+    $this->setMeta('current_gallery_id', $galleryId);
   }
 
   // Activity Log

@@ -21,7 +21,7 @@ class UserObserver
       'updated_at' => now(),
     ]);
 
-    $user->setMeta('current_gallery_id', $gallery->id);
+    $user->setCurrentGallery($gallery->id);
   }
 
   /**
