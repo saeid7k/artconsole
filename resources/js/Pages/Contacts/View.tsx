@@ -66,6 +66,7 @@ function View({ contact }: { contact: ContactProps }) {
                 type="text"
                 shape="circle"
                 onClick={() => setShowEditDrawer(true)}
+                disabled={!contact.abilities.update}
               >
                 <HugeiconsIcon icon={PencilEdit02Icon} size={20} />
               </Button>

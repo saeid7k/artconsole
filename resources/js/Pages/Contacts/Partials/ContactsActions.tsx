@@ -43,6 +43,7 @@ function ContactsActions({ contact }: { contact: ContactProps }) {
             shape="circle"
             icon={<HugeiconsIcon icon={PencilEdit02Icon} size={20} />}
             onClick={() => setShowEditDrawer(true)}
+            disabled={!contact.abilities.update}
           />
         </Tooltip>
         <Tooltip title="Delete">
