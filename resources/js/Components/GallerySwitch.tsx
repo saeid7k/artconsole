@@ -6,7 +6,7 @@ import { UsePageProps } from "@/types/usePage";
 import { AddIcon, AddMaleIcon, ArrowDown01Icon, Cancel01Icon, CheckmarkCircle01Icon, CircleIcon, SettingsFreeIcons, Tick02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
-import { Badge, Button, Card, Divider, Dropdown, message, Tooltip } from "antd";
+import { Avatar, Badge, Button, Card, Divider, Dropdown, message, Tooltip } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import GalleryAccessTag from "./GalleryAccessTag";
@@ -99,26 +99,33 @@ function GallerySwitch() {
                 <small className="font-light">{current_gallery.members_count} {current_gallery.members_count == 1 ? 'member' : 'members'}</small>
               </div>
             </div>
-            <Tooltip title="Gallery Settings" placement="bottom" mouseEnterDelay={1}>
-              <Button
-                variant="text"
-                color="default"
-                shape="circle"
-                onClick={() => {setShowSettingsModal(true); setOpen(false);}}
-              >
-                <HugeiconsIcon icon={SettingsFreeIcons} size={20} />
-              </Button>
-            </Tooltip>
+            {current_gallery.abilities?.update && (
+              <Tooltip title="Gallery Settings" placement="bottom" mouseEnterDelay={1}>
+                <Button
+                  variant="text"
+                  color="default"
+                  shape="circle"
+                  onClick={() => {setShowSettingsModal(true); setOpen(false);}}
+                >
+                  <HugeiconsIcon icon={SettingsFreeIcons} size={20} />
+                </Button>
+              </Tooltip>
+            )}
           </div>
+          {/* <Avatar.Group max={5} size="small">
+            <Avatar
+          </Avatar.Group> */}
           <div className="flex">
-            <Button
-              size="small"
-              icon={<HugeiconsIcon icon={AddMaleIcon} size={16} />}
-              className="text-gray-500"
-              onClick={() => setShowAddMemberModal(true)}
-            >
-              invite members
-            </Button>
+            {current_gallery.abilities?.update && (
+              <Button
+                size="small"
+                icon={<HugeiconsIcon icon={AddMaleIcon} size={16} />}
+                className="text-gray-500"
+                onClick={() => setShowAddMemberModal(true)}
+              >
+                invite members
+              </Button>
+            )}
           </div>
         </div>
 
