@@ -12,4 +12,8 @@ export interface GalleryProps {
     access: accessLevelsType
   };
   members_count?: number;
+  abilities?: {
+    update: boolean;
+    delete: boolean;
+  };
 }
