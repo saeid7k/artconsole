@@ -42,8 +42,10 @@ class Contact extends Model implements HasMedia
 
   public function getAbilitiesAttribute(): array
   {
+    $user = auth()->user();
     return [
-      'delete' => auth()->user()->can('delete', $this),
+      'update' => $user->can('update', $this),
+      'delete' => $user->can('delete', $this),
     ];
   }
 

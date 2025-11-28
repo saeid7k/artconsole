@@ -52,6 +52,14 @@ function RelationshipTags({ contact, manageButtonDelay = 2000 }: { contact: Cont
     setRelationships(contact.relationship || []);
   }, [contact.relationship]);
 
+  const isManageButtonVisible = (
+      showManageButton ||
+      windowWidth <= 768 ||
+      relationships.length == 0
+    ) &&
+    contact.abilities.update
+
+
   return (
     <div
       className="flex items-center"
@@ -70,7 +78,7 @@ function RelationshipTags({ contact, manageButtonDelay = 2000 }: { contact: Cont
       {relationships.map((relation: string, index: number) => (
         <RelationTag key={index} relation={relation} />
       ))}
-      {(showManageButton || windowWidth <= 768 || relationships.length == 0) && (
+      {isManageButtonVisible && (
         <Tooltip title="Manage Relationships" mouseEnterDelay={1}>
           <Dropdown
             popupRender={() => {
