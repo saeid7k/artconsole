@@ -2,9 +2,11 @@
 
 namespace App\Observers;
 
+use App\Mail\NewInvitationMail;
 use App\Models\InviteLink;
 use App\Models\User;
 use App\Notifications\NewInvitation;
+use Illuminate\Support\Facades\Mail;
 
 class InviteLinkObserver
 {
@@ -19,6 +21,9 @@ class InviteLinkObserver
       $userInvited = User::where('email', $inviteLink->email)->first();
       if ($userInvited) {
         $userInvited->notify(new NewInvitation($inviteLink));
+      } else {
+        // Send email invitation
+        Mail::to($inviteLink->email)->send(new NewInvitationMail($inviteLink));
       }
     }
 
