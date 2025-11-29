@@ -51,7 +51,7 @@ function AddMemberModal({ open = false, setOpen, gallery }: Props) {
       open={open}
       onCancel={handleClose}
       closeIcon={<HugeiconsIcon icon={Cancel01Icon} size={32} />}
-      style={{ top: 150 }}
+      style={{ top: 100 }}
       okText="Send Invitation"
       afterClose={handleClose}
       onOk={handleSubmit}

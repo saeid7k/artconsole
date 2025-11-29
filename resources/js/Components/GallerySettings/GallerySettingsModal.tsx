@@ -63,7 +63,8 @@ function GallerySettingsModal({ open, setOpen }: { open: boolean, setOpen: (open
         width={1000}
         okText="Save"
         afterClose={handleClose}
-      >
+        style={{ top: 50 }}
+        >
         <Tabs
           items={items}
           defaultActiveKey="general"
