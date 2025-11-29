@@ -259,7 +259,10 @@ function Members() {
           columns={columns}
           pagination={false}
           size="small"
-          scroll={{ x: 'min-content' }}
+          scroll={{
+            x: 'min-content',
+            y: 400
+          }}
         />
         {invitations.length > 0 && (
           <>
