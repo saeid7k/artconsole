@@ -1,5 +1,6 @@
 import { accessLevelsType } from "@/constants/accessLevels";
 import { Address } from "./commonObjects";
+import { UserProps } from "./user";
 
 export interface GalleryProps {
   id: number;
@@ -12,6 +13,7 @@ export interface GalleryProps {
     access: accessLevelsType
   };
   members_count?: number;
+  members: UserProps[];
   abilities?: {
     update: boolean;
     delete: boolean;
