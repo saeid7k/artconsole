@@ -1,9 +1,13 @@
 import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
-import { Alert, Button, Input, InputRef } from 'antd';
-import React, { FormEventHandler, useEffect, useRef } from 'react';
+import { UsePageProps } from '@/types/usePage';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { Alert, Button, Divider, Input, InputRef } from 'antd';
+import { FormEventHandler, useEffect, useRef } from 'react';
 
 export default function Register() {
+
+  const { gallery_invited, email } = usePage<UsePageProps>().props;
+
   const { data, setData, post, processing, errors, reset } = useForm({
     firstname: '',
     lastname: '',
@@ -24,11 +28,21 @@ export default function Register() {
 
   useEffect(() => {
     firstnameRef.current?.focus();
+    if (email) {
+      setData('email', email);
+    }
   }, []);
 
   return (
     <GuestLayout>
       <Head title="Register" />
+
+      {gallery_invited && (
+        <>
+          Register to join <strong>{gallery_invited}</strong>.
+          <Divider />
+        </>
+      )}
 
       <form onSubmit={submit}>
         <div className="flex flex-col gap-3">
@@ -77,8 +91,7 @@ export default function Register() {
           </div>
 
           <div>
-            <Input
-              type='password'
+            <Input.Password
               placeholder='Password'
               value={data.password}
               onChange={(e) => setData('password', e.target.value)}
@@ -91,8 +104,7 @@ export default function Register() {
           </div>
 
           <div>
-            <Input
-              type='password'
+            <Input.Password
               placeholder='Confirm Password'
               value={data.password_confirmation}
               onChange={(e) => setData('password_confirmation', e.target.value)}

@@ -46,6 +46,7 @@ class HandleInertiaRequests extends Middleware
       'flash' => [
         'type' => Session::get('flash.type'),
         'message' => Session::get('flash.message'),
+        'error' => Session::get('flash.error'),
       ],
     ];
   }
