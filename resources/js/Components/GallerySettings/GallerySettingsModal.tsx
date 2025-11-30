@@ -1,13 +1,13 @@
 import { GallerySettingsProvider } from "@/contexts/GallerySettingsContext"
+import { useWindow } from "@/hooks/useWindow"
 import { UsePageProps } from "@/types/usePage"
 import { BankIcon, Cancel01Icon, Key01Icon, Link04Icon, Location03Icon, Settings01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router, usePage } from "@inertiajs/react"
-import { Modal, Tabs } from "antd"
+import { Divider, Modal, Tabs } from "antd"
 import General from "./General"
 import Location from "./Location"
 import Members from "./Members"
-import { useWindow } from "@/hooks/useWindow"
 
 function GallerySettingsModal({ open, setOpen }: { open: boolean, setOpen: (open: boolean) => void }) {
 
@@ -55,7 +55,13 @@ function GallerySettingsModal({ open, setOpen }: { open: boolean, setOpen: (open
   return (
     <GallerySettingsProvider value={{ open, setOpen, gallery }}>
       <Modal
-        title="Gallery Settings"
+        title={
+          <div className="flex items-center gap-3">
+            <div>Gallery Settings</div>
+            <Divider type="vertical" className="top-0 border-gray-300" />
+            <div className="text-primary-700">{gallery.name}</div>
+          </div>
+        }
         open={open}
         onCancel={handleClose}
         closeIcon={<HugeiconsIcon icon={Cancel01Icon} size={32} />}

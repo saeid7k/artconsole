@@ -9,6 +9,7 @@ import { Form, Input, message, Modal, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
 import axios from "axios";
 import { useState } from "react";
+import GalleryAvatar from "../GalleryAvatar";
 
 type Props = {
   open?: boolean;
@@ -57,9 +58,12 @@ function AddMemberModal({ open = false, setOpen, gallery }: Props) {
       onOk={handleSubmit}
     >
       <div className="flex flex-col items-center">
-        <HugeiconsIcon icon={AddMaleIcon} strokeWidth={1} size={64} />
+        <div className="flex">
+          <GalleryAvatar gallery={gallery} size={64} shape="circle" border />
+          <HugeiconsIcon icon={AddMaleIcon} strokeWidth={1} size={64} />
+        </div>
         <p className="max-w-[300px] text-muted text-center">
-          Invite a new member to access this gallery by entering their email address below.
+          Invite a new member to access <span className="font-semibold text-primary-500 whitespace-nowrap">{gallery.name}</span> by entering their email address below.
         </p>
       </div>
       <Form
