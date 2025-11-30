@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Mail\NewInvitationMail;
 use App\Models\InviteLink;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -28,13 +29,22 @@ class NewInvitation extends Notification
    */
   public function via(object $notifiable): array
   {
-    return ['database'];
+    $channels = ['database'];
+
+    if ($notifiable->hasVerifiedEmail()) {
+      $channels[] = 'mail';
+    }
+
+    return $channels;
   }
 
   /**
    * Get the mail representation of the notification.
    */
-  public function toMail(object $notifiable) {}
+  public function toMail(object $notifiable) {
+    return (new NewInvitationMail($this->inviteLink))
+      ->to($notifiable->email);
+  }
 
   /**
    * Get the array representation of the notification.

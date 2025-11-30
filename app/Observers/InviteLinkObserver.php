@@ -18,7 +18,7 @@ class InviteLinkObserver
       $inviteLink->creator()->associate(auth()->user());
       $inviteLink->saveQuietly();
 
-      $userInvited = User::where('email', $inviteLink->email)->first();
+      $userInvited = User::where('email', $inviteLink->email)->verified()->first();
       if ($userInvited) {
         $userInvited->notify(new NewInvitation($inviteLink));
       } else {

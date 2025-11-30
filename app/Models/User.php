@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Helpers\AddressHelper;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -173,6 +174,18 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     }
 
     $this->setMeta('current_gallery_id', $galleryId);
+  }
+
+  // Scopes
+
+  public function scopeVerified(Builder $query): void
+  {
+    $query->whereNotNull('email_verified_at');
+  }
+
+  public function scopeUnverified(Builder $query): void
+  {
+    $query->whereNull('email_verified_at');
   }
 
   // Activity Log
