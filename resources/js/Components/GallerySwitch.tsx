@@ -65,7 +65,6 @@ function GallerySwitch() {
       .then((response) => {
         message.success(response.data.message || 'Joined gallery successfully');
         setInvitations((prev: InviteLinkProps[]) => prev.filter((invitation: InviteLinkProps) => invitation.id !== inviteLinkId));
-        switchGallery(response.data.gallery_id);
         router.reload()
       })
       .catch((error) => {
