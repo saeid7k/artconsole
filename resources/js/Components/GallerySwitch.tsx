@@ -14,6 +14,7 @@ import GalleryAvatar from "./GalleryAvatar";
 import AddMemberModal from "./GallerySettings/AddMemberModal";
 import GallerySettingsModal from "./GallerySettings/GallerySettingsModal";
 import { getInitials } from "@/utils/stringHelper";
+import CreateGalleryModal from "./CreateGalleryModal";
 
 function GallerySwitch() {
 
@@ -88,6 +89,10 @@ function GallerySwitch() {
     setInvitations(intervalData.invitations || [])
   }, [intervalData.invitations])
 
+  // Create Gallery
+
+  const [showCreateGalleryModal, setShowCreateGalleryModal] = useState(false)
+
   return (
     <>
       <Dropdown
@@ -135,7 +140,7 @@ function GallerySwitch() {
                       size="small"
                       icon={<HugeiconsIcon icon={AddMaleIcon} size={16} />}
                       className="text-gray-500"
-                      onClick={() => setShowAddMemberModal(true)}
+                      onClick={() => {setShowAddMemberModal(true); setOpen(false);}}
                     >
                       invite members
                     </Button>
@@ -153,6 +158,7 @@ function GallerySwitch() {
                     <Button
                       size="small"
                       icon={<HugeiconsIcon icon={AddIcon} size={16} />}
+                      onClick={() => {setShowCreateGalleryModal(true); setOpen(false);}}
                     />
                   </Tooltip>
                 </div>
@@ -256,6 +262,10 @@ function GallerySwitch() {
         open={showAddMemberModal}
         setOpen={setShowAddMemberModal}
         gallery={current_gallery}
+      />
+      <CreateGalleryModal
+        open={showCreateGalleryModal}
+        setOpen={setShowCreateGalleryModal}
       />
     </>
   );

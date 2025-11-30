@@ -9,6 +9,37 @@ use Illuminate\Support\Str;
 
 class GalleryController extends Controller
 {
+  public function create(Request $request)
+  {
+    $this->authorize('create', Gallery::class);
+    
+    $request->validate([
+      'logo' => 'nullable|image|max:10240',
+      'name' => 'required|string|max:255',
+      'about' => 'nullable|string|max:1000',
+      'website' => 'nullable|string|max:255',
+      'email' => 'nullable|email|max:255',
+    ]);
+
+    $user = $request->user();
+
+    $gallery = Gallery::create([
+      'user_id' => $user->id,
+      'name' => $request->input('name'),
+      'about' => $request->input('about'),
+      'website' => $request->input('website'),
+      'email' => $request->input('email'),
+    ]);
+
+    $gallery->addMediaFromRequest('logo')
+      ->toMediaCollection('gallery-logo');
+
+    return response([
+      'message' => 'Gallery created successfully.',
+      'gallery_id' => $gallery->id,
+    ]);
+  }
+
   public function setCurrentGallery(Request $request)
   {
     $galleryId = $request->input('gallery_id');
