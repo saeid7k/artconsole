@@ -1,4 +1,5 @@
 import GallerySwitch from "@/Components/GallerySwitch";
+import ServerFlashMessage from "@/Components/ServerFlashMessage";
 import Sidebar from "@/Components/Sidebar";
 import TopbarActions from "@/Components/TopbarActions";
 import AppProvider, { useApp } from "@/contexts/AppContext";
@@ -10,7 +11,7 @@ import { usePage } from "@inertiajs/react";
 import { Button, ConfigProvider, Layout, message, theme } from "antd";
 import { Content, Footer, Header } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
-import React, { PropsWithChildren, useEffect } from "react";
+import React, { PropsWithChildren, useEffect, useState } from "react";
 
 interface AppProps extends PropsWithChildren {
   title?: string|React.ReactNode,
@@ -20,20 +21,10 @@ interface AppProps extends PropsWithChildren {
 function App ({ children }: AppProps) {
 
   const { darkMode } = useApp()
-  const flash: any = usePage().props.flash;
   const { sidebarCollapsed, toggleSidebar } = useApp()
   const { scrollY } = useWindow()
   const collapsedWidth = 50
   const expandedWidth = 200
-
-  useEffect(() => {
-    if (flash?.type == 'success' && flash?.message) {
-      message.success(flash.message, 3);
-    }
-    if (flash?.type == 'error' && flash?.error) {
-      message.error(flash.error, 5);
-    }
-  }, [flash]);
 
   return (
     <ConfigProvider
@@ -119,6 +110,7 @@ function App ({ children }: AppProps) {
           <div className="text-center">...footer...</div>
         </Footer>
       </Layout>
+      <ServerFlashMessage />
     </ConfigProvider>
   )
 }

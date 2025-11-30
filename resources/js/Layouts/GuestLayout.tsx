@@ -1,4 +1,5 @@
 import LogoBox from '@/Components/LogoBox';
+import ServerFlashMessage from '@/Components/ServerFlashMessage';
 import colors from '@/Themes/theme';
 import { Link } from '@inertiajs/react';
 import { Card, ConfigProvider } from 'antd';
@@ -40,6 +41,7 @@ export default function GuestLayout({ children }: PropsWithChildren) {
       <Guest>
         {children}
       </Guest>
+      <ServerFlashMessage />
     </ConfigProvider>
   )
 }
