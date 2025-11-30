@@ -7,6 +7,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "fedeisas/laravel-mail-css-inliner": "^5.4",
         "geocoder-php/open-cage-provider": "^4.7",
         "inertiajs/inertia-laravel": "^2.0",
         "laravel/framework": "^12.0",
