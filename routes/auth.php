@@ -14,12 +14,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
-
-    Route::get('test-login', function () {
-      Auth::loginUsingId(1);
-      return redirect()->intended(route('dashboard', absolute: false));
-    })->name('test-login');
-
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('register');
 
