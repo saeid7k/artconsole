@@ -5,21 +5,24 @@ import { twMerge } from "tailwind-merge"
 
 type Props = {
   gallery: GalleryProps,
-  size?: 'small' | 'default' | 'large',
+  size?: 'small' | 'default' | 'large' | number,
+  shape?: 'square' | 'circle',
   shadow?: boolean,
+  border?: boolean,
 }
 
-function GalleryAvatar({ gallery, size = 'default', shadow }: Props) {
+function GalleryAvatar({ gallery, size = 'default', shape = 'square', shadow, border }: Props) {
 
   const initials = getInitials(gallery?.name ?? 'LI')
 
   return (
     <Avatar
       src={gallery?.logo}
-      shape="square"
+      shape={shape}
       size={size}
       className={twMerge(
-        shadow ? 'shadow' : ''
+        shadow ? 'shadow' : '',
+        border ? 'border-1 border-solid border-gray-200' : '',
       )}
     >
       {initials}
