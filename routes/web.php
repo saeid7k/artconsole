@@ -30,6 +30,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
   });
 
   Route::prefix('galleries')->name('galleries.')->group(function () {
+    Route::post('/create', [App\Http\Controllers\GalleryController::class, 'create'])->name('create');
     Route::post('set-current', [App\Http\Controllers\GalleryController::class, 'setCurrentGallery'])->name('set-current');
     Route::post('{gallery}/update-logo', [App\Http\Controllers\GalleryController::class, 'updateGalleryLogo'])->name('update-logo');
     Route::post('{gallery}/remove-logo', [App\Http\Controllers\GalleryController::class, 'removeLogo'])->name('remove-logo');

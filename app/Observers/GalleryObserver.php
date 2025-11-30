@@ -13,7 +13,15 @@ class GalleryObserver
    */
   public function created(Gallery $gallery): void
   {
-    //
+    $user = auth()->user();
+
+    $gallery->members()->attach($user->id, [
+      'access' => 'owner',
+      'created_at' => now(),
+      'updated_at' => now(),
+    ]);
+
+    $user->setCurrentGallery($gallery->id);
   }
 
   /**
