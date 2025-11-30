@@ -1,18 +1,30 @@
+@extends('mail.layouts.main')
 
+@section('content')
 <div>
-    <h2>You have been invited to join {{ $gallery->name }} on {{ config('app.name') }}</h2>
+  <h3>Hello!</h3>
+  <p>You have been invited to join
+    <strong>{{ $gallery->name }}</strong>
+    on
+    <a
+      href="{{ config('app.url') }}"
+      style="text-decoration: none;"
+    >
+      <strong>{{ config('app.full_name') }}</strong>
+    </a>
+  </p>
 
-    <p>To accept the invitation and join the team, please click the link below:</p>
+  <p>To accept the invitation and join the team, please click the link below:</p>
 
-    <p>
-        <a href="{{ config('app.url') }}">Accept Invitation</a>
-    </p>
+  <p>
+    <a
+      class="button"
+      href="{{ config('app.url') }}/join/{{ $inviteLink->token }}"
+    >
+      Accept Invitation
+    </a>
+  </p>
 
-    <p>If you did not expect this invitation, you can safely ignore this email.</p>
-
-    <p>
-      Thank you,
-      <br>
-      {{ config('app.name') }} Team
-    </p>
+  <p>If you did not expect this invitation, you can safely ignore this email.</p>
 </div>
+@endsection
