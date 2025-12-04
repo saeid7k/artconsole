@@ -82,6 +82,11 @@ class Contact extends Model implements HasMedia
     return User::find($this->gallery->user_id);
   }
 
+  public function artworks()
+  {
+    return $this->hasMany(Artwork::class);
+  }
+
   // Activity Log
 
   public function getActivitylogOptions(): LogOptions
