@@ -17,5 +17,6 @@ export interface GalleryProps {
   abilities?: {
     update: boolean;
     delete: boolean;
+    manage_members: boolean;
   };
 }
