@@ -48,4 +48,9 @@ class Location extends Model
   {
     return $this->contact_id ? $this->belongsTo(Contact::class) : null;
   }
+
+  public function artworks()
+  {
+    return $this->hasMany(Artwork::class);
+  }
 }

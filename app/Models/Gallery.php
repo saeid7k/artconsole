@@ -83,6 +83,11 @@ class Gallery extends Model implements HasMedia
     return $this->hasMany(Location::class);
   }
 
+  public function artworks(): HasMany
+  {
+    return $this->hasMany(Artwork::class);
+  }
+
   // Methods
 
   public function isMember(User $user)
