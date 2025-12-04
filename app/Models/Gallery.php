@@ -76,6 +76,11 @@ class Gallery extends Model implements HasMedia
     return $this->hasMany(InviteLink::class);
   }
 
+  public function locations(): HasMany
+  {
+    return $this->hasMany(Location::class);
+  }
+
   // Methods
 
   public function isMember(User $user)
@@ -93,6 +98,15 @@ class Gallery extends Model implements HasMedia
   {
     $accessLevel = $this->accessLevel($user);
     return in_array($accessLevel, ['owner', 'editor']);
+  }
+
+  public function addMember(User $user, ?string $access = 'viewer'): void
+  {
+    $this->members()->attach($user->id, [
+      'access' => $access,
+      'created_at' => now(),
+      'updated_at' => now(),
+    ]);
   }
 
   // Activity Log

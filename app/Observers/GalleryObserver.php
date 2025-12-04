@@ -13,15 +13,19 @@ class GalleryObserver
    */
   public function created(Gallery $gallery): void
   {
-    $user = auth()->user();
 
-    $gallery->members()->attach($user->id, [
-      'access' => 'owner',
-      'created_at' => now(),
-      'updated_at' => now(),
+    // Set Owner and current gallery
+    $owner = $gallery->owner;
+    $gallery->addMember($owner, 'owner');
+    $owner->setCurrentGallery($gallery->id);
+
+    // Create default Location
+    $gallery->locations()->create([
+      'type' => 'Internal',
+      'name' => 'Main Location',
+      'is_primary' => true,
+      'is_active' => true,
     ]);
-
-    $user->setCurrentGallery($gallery->id);
   }
 
   /**
@@ -38,7 +42,7 @@ class GalleryObserver
     $address = $gallery->address;
     $coordinates = $address?->coordinates ?? null;
 
-    if ($address?->street && (empty($coordinates?->lat) || empty($coordinates?->lng))) {
+    if (($address?->street ?? false) && (empty($coordinates?->lat) || empty($coordinates?->lng))) {
       $coordinates = AddressHelper::addressToCoordinates($gallery->formatted_address);
 
       if ($coordinates) {

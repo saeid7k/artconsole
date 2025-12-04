@@ -15,10 +15,11 @@ return new class extends Migration
       $table->id();
       $table->foreignId('gallery_id')->constrained()->cascadeOnDelete();
       $table->string('type', 100); // Internal | External | Venue | Client
-      $table->foreignId('contact_id')->nullOnDelete();
+      $table->foreignId('contact_id')->nullable()->nullOnDelete();
       $table->string('name');
       $table->text('description')->nullable();
       $table->json('address')->nullable();
+      $table->boolean('address_same_as_gallery')->default(true);
       $table->boolean('is_primary')->default(false);
       $table->boolean('is_active')->default(true);
       $table->timestamps();
