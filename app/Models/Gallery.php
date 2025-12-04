@@ -35,6 +35,8 @@ class Gallery extends Model implements HasMedia
   {
     return [
       'update' => auth()->user()->can('update', $this),
+      'delete' => auth()->user()->can('delete', $this),
+      'manage_members' => auth()->user()->can('manageMembers', $this),
     ];
   }
 

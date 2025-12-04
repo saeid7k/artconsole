@@ -114,7 +114,7 @@ function Members() {
       showSorterTooltip: false,
       render: (text, record) => (
         <>
-          {gallery.abilities.update ? (
+          {gallery.abilities.manage_members ? (
             <Select
               placeholder="Select access level"
               defaultValue={text}
@@ -140,7 +140,7 @@ function Members() {
       key: 'actions',
       render: (_, record) => (
         <div className="flex justify-end">
-          {gallery.user_id !== record.id && gallery.abilities.update && (
+          {gallery.user_id !== record.id && gallery.abilities.manage_members && (
             <Tooltip title="Remove Member">
               <Popconfirm
                 title="Remove the member"
@@ -242,14 +242,16 @@ function Members() {
   return (
     <>
       <div className="flex flex-col gap-3">
-        <div className="flex justify-end">
-          <Button
-            type="primary"
-            onClick={() => setShowAddMemberModal(true)}
-          >
-            Add Member
-          </Button>
-        </div>
+        {gallery.abilities.manage_members && (
+          <div className="flex justify-end">
+            <Button
+              type="primary"
+              onClick={() => setShowAddMemberModal(true)}
+            >
+              Add Member
+            </Button>
+          </div>
+        )}
         <div className="flex items-center gap-1 text-primary-700">
           <HugeiconsIcon icon={UserMultipleIcon} size={20} />
           <div>Members</div>

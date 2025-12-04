@@ -64,7 +64,12 @@ class GalleryPolicy
     return false;
   }
 
-protected function isEditorOrOwner(User $user, Gallery $gallery): bool
+  public function manageMembers(User $user, Gallery $gallery): bool
+  {
+    return $gallery->accessLevel($user) === 'owner';
+  }
+
+  protected function isEditorOrOwner(User $user, Gallery $gallery): bool
   {
     $accessLevel = $gallery->accessLevel($user);
     return in_array($accessLevel, ['owner', 'editor']);
