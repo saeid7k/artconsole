@@ -23,11 +23,18 @@ class AddressHelper
       $address = (object) $address;
     }
 
-    $formatted = $address->unit ? $address->street . ' - ' . $address->unit : $address->street;
-    $formatted .= $address->city ? ', ' . $address->city : '';
-    $formatted .= $address->province ? ', ' . $address->province : '';
-    $formatted .= $address->postal_code ? ' ' . self::formatPostalCode($address->postal_code) : '';
-    $formatted .= $address->country ? ', ' . $address->country : '';
+    $unit = property_exists($address, 'unit') ? $address->unit : null;
+    $street = property_exists($address, 'street') ? $address->street : null;
+    $city = property_exists($address, 'city') ? $address->city : null;
+    $province = property_exists($address, 'province') ? $address->province : null;
+    $postal_code = property_exists($address, 'postal_code') ? $address->postal_code : null;
+    $country = property_exists($address, 'country') ? $address->country : null;
+
+    $formatted = $unit ? $street . ' - ' . $unit : $street;
+    $formatted .= $city ? ', ' . $city : '';
+    $formatted .= $province ? ', ' . $province : '';
+    $formatted .= $postal_code ? ' ' . self::formatPostalCode($postal_code) : '';
+    $formatted .= $country ? ', ' . $country : '';
 
     return $formatted;
   }
