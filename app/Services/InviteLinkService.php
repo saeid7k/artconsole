@@ -12,11 +12,7 @@ class InviteLinkService
   public function join(Gallery $gallery, User $user, InviteLink $inviteLink): void
   {
     DB::transaction(function () use ($gallery, $user, $inviteLink) {
-      $gallery->members()->attach($user->id, [
-        'access' => $inviteLink->settings['access'] ?? 'viewer',
-        'created_at' => now(),
-        'updated_at' => now(),
-      ]);
+      $gallery->addMember($user, $inviteLink->settings['access'] ?? 'viewer');
 
       $inviteLink->update([
         'registered_at' => now(),
