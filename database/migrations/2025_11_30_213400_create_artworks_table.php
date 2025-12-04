@@ -19,6 +19,7 @@ return new class extends Migration
       $table->foreignId('gallery_id')->constrained()->cascadeOnDelete();
       $table->foreignId('location_id')->nullOnDelete();
       $table->foreignIdFor(Contact::class, 'artist_id')->nullable()->nullOnDelete();
+      $table->json('artist_data')->nullable(); // Store artist data when is not linked to a Contact
 
       $table->string('sku', 10)->unique(); // PNT-25-001
       $table->string('category', 100); // e.g., Painting, Sculpture, Photography
