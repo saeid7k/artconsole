@@ -135,7 +135,7 @@ function GallerySwitch() {
                   })}
                 </Avatar.Group>
                 <div className="flex">
-                  {current_gallery.abilities?.update && (
+                  {current_gallery.abilities?.manage_members && (
                     <Button
                       size="small"
                       icon={<HugeiconsIcon icon={AddMaleIcon} size={16} />}
