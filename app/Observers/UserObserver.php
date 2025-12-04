@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Models\Gallery;
 use App\Models\User;
 
 class UserObserver
@@ -12,16 +13,9 @@ class UserObserver
   public function created(User $user): void
   {
     // create default gallery for user
-    $gallery = $user->galleriesOwned()->create([
+    $user->galleriesOwned()->create([
       'name' =>  $user->firstname . "'s Gallery",
     ]);
-    $gallery->members()->attach($user->id, [
-      'access' => 'owner',
-      'created_at' => now(),
-      'updated_at' => now(),
-    ]);
-
-    $user->setCurrentGallery($gallery->id);
   }
 
   /**
