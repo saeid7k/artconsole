@@ -73,6 +73,11 @@ class Gallery extends Model implements HasMedia
     return $this->hasMany(Contact::class);
   }
 
+  public function artists(): HasMany
+  {
+    return $this->hasMany(Contact::class)->whereJsonContains('relationship', 'artist');
+  }
+
   public function invitations(): HasMany
   {
     return $this->hasMany(InviteLink::class);
