@@ -2,24 +2,31 @@
 
 namespace Database\Seeders;
 
+use App\Models\Artwork;
 use App\Models\Contact;
 use App\Models\Gallery;
 use App\Models\User;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 
 class DemoSeeder extends Seeder
 {
   protected ?Gallery $firstGallery = null;
+  protected ?Collection $allGalleries = null;
+  protected ?Collection $allLocations = null;
+  protected $faker;
 
   public function run(): void
   {
+    $this->faker = Factory::create('en_CA');
     $this->createAdmin();
     $this->createFakeUsers();
     $this->addMembers();
     $this->createContacts();
+    $this->createArtworks();
   }
 
   private function createAdmin(): void
@@ -51,13 +58,12 @@ class DemoSeeder extends Seeder
     $this->command->info('✅' . ' Admin user created: ' . env('ADMIN_EMAIL', 'admin@example.com') . ' / 12345678');
 
     $this->firstGallery = Gallery::first();
-    $faker = Factory::create();
     $this->firstGallery->address = [
-      'unit' => $faker->secondaryAddress,
-      'street' => $faker->streetAddress,
+      'unit' => $this->faker->secondaryAddress,
+      'street' => $this->faker->streetAddress,
       'city' => 'Toronto',
       'province' => 'ON',
-      'postal_code' => str_replace([' ', '-'], '', $faker->postcode),
+      'postal_code' => str_replace([' ', '-'], '', $this->faker->postcode),
       'country' => 'Canada',
     ];
     $this->firstGallery->save();
@@ -79,20 +85,19 @@ class DemoSeeder extends Seeder
       }
     }
     $this->command->info('✅' . ' 10 fake users created.');
-    $galleries = Gallery::all();
-    $faker = Factory::create('en_CA');
-    foreach ($galleries as $gallery) {
+    $this->allGalleries = Gallery::all();
+    foreach ($this->allGalleries as $gallery) {
       if ($gallery->user_id !== 1) {
         $gallery->address = [
-          'unit' => $faker->secondaryAddress,
-          'street' => $faker->streetAddress,
+          'unit' => $this->faker->secondaryAddress,
+          'street' => $this->faker->streetAddress,
           'city' => 'Toronto',
           'province' => 'ON',
-          'postal_code' => str_replace([' ', '-'], '', $faker->postcode),
+          'postal_code' => str_replace([' ', '-'], '', $this->faker->postcode),
           'country' => 'Canada',
         ];
-        $gallery->website = $faker->domainName;
-        $gallery->email = $faker->unique()->safeEmail;
+        $gallery->website = $this->faker->domainName;
+        $gallery->email = $this->faker->unique()->safeEmail;
         $gallery->save();
       }
       $logoData = Http::get("https://api.dicebear.com/9.x/shapes/svg?seed={$gallery->id}")->body() ?? null;
@@ -121,12 +126,31 @@ class DemoSeeder extends Seeder
     ]);
     $this->command->info('✅' . ' 50 contacts created for first gallery.');
 
-    $galleries = Gallery::all();
-    foreach ($galleries as $gallery) {
+    foreach ($this->allGalleries as $gallery) {
       Contact::factory(5)->create([
         'gallery_id' => $gallery->id,
       ]);
     }
     $this->command->info('✅' . ' 5 contacts created for each gallery.');
+  }
+
+  private function createArtworks(): void
+  {
+    $this->command->comment('Creating artworks for all galleries...');
+    $this->allLocations = $this->allGalleries->flatMap(function (Gallery $gallery) {
+      return $gallery->locations;
+    });
+    $artworks = $this->allLocations->flatMap(function ($location) {
+      $gallery = $location->gallery;
+      $owner = $gallery->owner;
+      $artistIds = $gallery->artists()->inRandomOrder()->pluck('id')->toArray();
+      return Artwork::factory(10)->create([
+        'creator_id' => $owner->id,
+        'gallery_id' => $location->gallery_id,
+        'location_id' => $location->id,
+        'artist_id' => $this->faker->randomElement($artistIds) ?? null,
+      ]);
+    });
+    $this->command->info('✅' . ' 10 Artworks created per location.');
   }
 }
