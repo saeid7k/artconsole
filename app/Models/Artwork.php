@@ -2,10 +2,16 @@
 
 namespace App\Models;
 
+use App\Enums\ArtworkCategory;
+use App\Enums\ArtworkEdition;
+use App\Enums\ArtworkStatus;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Artwork extends Model
 {
+  use HasFactory;
+
   protected $fillable = [
     'creator_id',
     'gallery_id',
@@ -30,11 +36,13 @@ class Artwork extends Model
   ];
 
   protected $casts = [
-    'edition' => 'object',
+    'category' => 'string',
+    'edition' => 'array',
     'dimensions' => 'object',
     'styles' => 'array',
     'collections' => 'array',
     'details' => 'object',
+    'status' => 'string',
   ];
 
   // Attributes
@@ -68,5 +76,26 @@ class Artwork extends Model
   public function artist()
   {
     return $this->belongsTo(Contact::class, 'artist_id');
+  }
+
+  // Methods
+
+  public static function newSku(string $category): string
+  {
+    $prefix = ArtworkCategory::from($category)->code();
+    $year = date('y');
+
+    $latestArtwork = self::where('sku', 'like', "{$prefix}-{$year}-%")
+      ->orderBy('sku', 'desc')
+      ->first();
+
+    if ($latestArtwork) {
+      $parts = explode('-', $latestArtwork->sku);
+      $number = (int) $parts[2] + 1;
+    } else {
+      $number = 1;
+    }
+
+    return sprintf("%s-%s-%03d", $prefix, $year, $number);
   }
 }
