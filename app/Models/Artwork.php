@@ -80,12 +80,12 @@ class Artwork extends Model
 
   // Methods
 
-  public static function newSku(string $category): string
+  public function newSku(string $category): string
   {
     $prefix = ArtworkCategory::from($category)->code();
     $year = date('y');
 
-    $latestArtwork = self::where('sku', 'like', "{$prefix}-{$year}-%")
+    $latestArtwork = self::where('gallery_id', $this->gallery_id)->where('sku', 'like', "{$prefix}-{$year}-%")
       ->orderBy('sku', 'desc')
       ->first();
 
