@@ -13,7 +13,7 @@ class ArtworkObserver
   {
     // set SKU if not set
     if (!$artwork->sku) {
-      $artwork->sku = Artwork::newSku($artwork->category);
+      $artwork->sku = $artwork->newSku($artwork->category);
       $artwork->saveQuietly();
     }
   }

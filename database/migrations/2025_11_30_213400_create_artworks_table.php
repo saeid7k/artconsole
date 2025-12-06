@@ -21,7 +21,7 @@ return new class extends Migration
       $table->foreignIdFor(Contact::class, 'artist_id')->nullable()->nullOnDelete();
       $table->json('artist_data')->nullable(); // Store artist data when is not linked to a Contact
 
-      $table->string('sku', 10)->nullable()->unique(); // PNT-25-001
+      $table->string('sku', 10)->nullable(); // PNT-25-001
       $table->string('category', 100); // e.g., Painting, Sculpture, Photography
       $table->json('edition', 100)->nullable(); // e.g., {type: (Unique | Limited Edition | Open Edition), number: 1, size: 50}
 
