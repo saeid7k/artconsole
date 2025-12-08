@@ -12,7 +12,7 @@ function Index({ artworks }: { artworks: PageProps }) {
   return (
     <div>
       <PageTitle
-        title="Artworks"
+        title="Artworks Inventory"
         counter={artworks.total}
         // onCreateButtonClick={() => {}}
         toolbar={
