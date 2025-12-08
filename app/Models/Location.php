@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\AddressHelper;
 use Illuminate\Database\Eloquent\Model;
 
 class Location extends Model
@@ -23,6 +24,17 @@ class Location extends Model
     'is_primary' => 'boolean',
     'is_active' => 'boolean',
   ];
+
+  // Appends
+
+  protected $appends = [ 'formatted_address' ];
+
+  public function getFormattedAddressAttribute(): string
+  {
+    return AddressHelper::formatAddress($this->address);
+  }
+
+  // Attributes
 
   public function getAddressAttribute($value)
   {
