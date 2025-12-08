@@ -3,14 +3,15 @@
 namespace App\Models;
 
 use App\Enums\ArtworkCategory;
-use App\Enums\ArtworkEdition;
-use App\Enums\ArtworkStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Artwork extends Model
+class Artwork extends Model implements HasMedia
 {
-  use HasFactory;
+  use HasFactory, InteractsWithMedia;
 
   protected $fillable = [
     'creator_id',
@@ -46,6 +47,24 @@ class Artwork extends Model
   ];
 
   // Attributes
+
+  protected $appends = ['main_image_url', 'main_image_thumb_url' ];
+
+  public function getMainImageUrlAttribute(): ?string
+  {
+    $media = $this->media()->where('collection_name', 'artwork-images')
+      ->where('custom_properties->is_main', true)
+      ->first();
+    return $media ? $media->getUrl() : null;
+  }
+
+  public function getMainImageThumbUrlAttribute(): ?string
+  {
+    $media = $this->media()->where('collection_name', 'artwork-images')
+      ->where('custom_properties->is_main', true)
+      ->first();
+    return $media ? $media->getUrl('thumb') : null;
+  }
 
   public function getArtistDataAttribute($value)
   {
@@ -97,5 +116,19 @@ class Artwork extends Model
     }
 
     return sprintf("%s-%s-%03d", $prefix, $year, $number);
+  }
+
+  public function images()
+  {
+    return $this->media->where('collection_name', 'artwork-images')->all();
+  }
+
+  public function registerMediaConversions(?Media $media = null): void
+  {
+    $this->addMediaConversion('thumb')
+      ->width(200)
+      ->height(200)
+      ->sharpen(10)
+      ->nonQueued();
   }
 }
