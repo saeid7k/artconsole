@@ -46,7 +46,7 @@ class Artwork extends Model implements HasMedia
     'status' => 'string',
   ];
 
-  // Attributes
+  // Appends
 
   protected $appends = ['main_image_url', 'main_image_thumb_url' ];
 
@@ -65,6 +65,8 @@ class Artwork extends Model implements HasMedia
       ->first();
     return $media ? $media->getUrl('thumb') : null;
   }
+
+  // Attributes
 
   public function getArtistDataAttribute($value)
   {
