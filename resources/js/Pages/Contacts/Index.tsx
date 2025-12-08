@@ -7,20 +7,11 @@ import PageTitle from "@/Components/PageTitle";
 import { useEffect, useState } from "react";
 import ContactFormDrawer from "./Partials/ContactFormDrawer";
 import { deleteQueryParam, getQueryParam } from "@/utils/urlHelper";
+import { useSearch } from "@/hooks/useSearch";
 
 function Index({ contacts }: { contacts: PageProps }) {
 
-  function handleSearch(value: string) {
-    const url = new URL(window.location.href);
-    const params = new URLSearchParams(url.search);
-    params.set('search', value);
-
-    router.get(
-      route('contacts.index'),
-      Object.fromEntries(params.entries()),
-      { preserveScroll: true, preserveState: true }
-    );
-  }
+  const { handleSearch } = useSearch('contacts.index');
 
   const [showCreateDrawer, setShowCreateDrawer] = useState(false)
 
