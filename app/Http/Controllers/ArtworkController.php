@@ -20,7 +20,8 @@ class ArtworkController extends Controller
         $q->where(function ($q) use ($search) {
           $q->whereRaw('LOWER(title) LIKE ?', $search)
             ->orWhereRaw('LOWER(description) LIKE ?', $search)
-            ->orWhereRaw('LOWER(notes) LIKE ?', $search);
+            ->orWhereRaw('LOWER(notes) LIKE ?', $search)
+            ->orWhereRaw('LOWER(sku) LIKE ?', $search);
         });
       })
       ->when($request->sort_by && $request->sort_order, function ($q) use ($request) {
