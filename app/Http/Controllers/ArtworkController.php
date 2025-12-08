@@ -16,6 +16,19 @@ class ArtworkController extends Controller
           $q->select('id', 'firstname', 'lastname');
         },
       ])
+      ->when($request->search, function ($q) use ($request) {
+        $search = '%' . strtolower($request->search) . '%';
+        $q->where(function ($q) use ($search) {
+          $q->whereRaw('LOWER(title) LIKE ?', $search)
+            ->orWhereRaw('LOWER(description) LIKE ?', $search)
+            ->orWhereRaw('LOWER(notes) LIKE ?', $search);
+        });
+      })
+      ->when($request->sort_by && $request->sort_order, function ($q) use ($request) {
+        $q->orderBy($request->sort_by, $request->sort_order);
+      }, function ($q) {
+        $q->orderBy('id', 'desc');
+      })
       ->paginate($request->per_page ?? 10)->withQueryString();
 
     return inertia('Artworks/Index', [
