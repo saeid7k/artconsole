@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactCreateUpdateRequest;
-use App\Http\Requests\ContactUpdateRequest;
 use App\Models\Contact;
 use App\Models\Media;
 use Illuminate\Http\Request;
