@@ -19,8 +19,22 @@ function formatPhoneNumber(phoneNumber: string): string {
 
 function trimWebsite(website: string): string {
   if (!website) return '';
-  
+
   return website.replace(/^(https?:\/\/)?(www\.)?/, '');
 }
 
-export { formatPhoneNumber, trimWebsite }
+function formatCurrency(amount: number | string, maximumFractionDigits: number = 2, currency: string = 'CAD', locale: string = 'en-CA'): string {
+  if (amount === null || amount === undefined || amount === '') return '';
+
+  const num = typeof amount === 'string' ? parseFloat(amount) : amount;
+
+  if (isNaN(num)) return '';
+
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: currency,
+    maximumFractionDigits: maximumFractionDigits,
+  }).format(num);
+}
+
+export { formatPhoneNumber, trimWebsite, formatCurrency };
