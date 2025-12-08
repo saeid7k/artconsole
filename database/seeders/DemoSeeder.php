@@ -152,5 +152,20 @@ class DemoSeeder extends Seeder
       ]);
     });
     $this->command->info('✅' . ' 10 Artworks created per location.');
+
+    // Add images to artworks
+    foreach ($artworks as $artwork) {
+      $numImages = rand(1, 3);
+      for ($i = 0; $i < $numImages; $i++) {
+        $imageData = Http::get('https://picsum.photos/800/600')->body() ?? null;
+        if ($imageData) {
+          $artwork->addMediaFromString($imageData)
+            ->usingFileName('artwork-' . $artwork->id . '-image-' . ($i + 1) . '.jpg')
+            ->withCustomProperties(['is_main' => $i === 0])
+            ->toMediaCollection('artwork-images');
+        }
+      }
+    }
+    $this->command->info('✅' . ' Sample images added to artworks.');
   }
 }
