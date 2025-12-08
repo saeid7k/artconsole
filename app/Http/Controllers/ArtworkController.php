@@ -12,9 +12,8 @@ class ArtworkController extends Controller
     $gallery = $user->currentGallery();
     $artworks = $gallery->artworks()
       ->with([
-        'artist' => function ($q) {
-          $q->select('id', 'firstname', 'lastname');
-        },
+        'artist:id,firstname,lastname',
+        'location',
       ])
       ->when($request->search, function ($q) use ($request) {
         $search = '%' . strtolower($request->search) . '%';

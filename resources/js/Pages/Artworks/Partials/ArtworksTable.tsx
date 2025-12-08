@@ -70,6 +70,16 @@ function ArtworksTable({ artworks }: { artworks: PageProps }) {
       // width: 250,
     },
     {
+      title: 'Location',
+      dataIndex: 'location',
+      key: 'location',
+      sorter: (a, b) => a.location.name.localeCompare(b.location.name),
+      sortDirections: ['ascend', 'descend'],
+      showSorterTooltip: false,
+      render: (location) => (location ? location.name : ''),
+      // width: 250,
+    },
+    {
       title: 'Price',
       dataIndex: 'price',
       key: 'price',
