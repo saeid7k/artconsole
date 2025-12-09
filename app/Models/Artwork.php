@@ -46,7 +46,18 @@ class Artwork extends Model implements HasMedia
 
   // Appends
 
-  protected $appends = ['main_image_url', 'main_image_thumb_url' ];
+  protected $appends = ['abilities', 'main_image_url', 'main_image_thumb_url' ];
+
+  public function getAbilitiesAttribute(): array
+  {
+    $user = auth()->user();
+    return [
+      'create' => $user->can('create', Artwork::class),
+      'view' => $user->can('view', $this),
+      'update' => $user->can('update', $this),
+      'delete' => $user->can('delete', $this),
+    ];
+  }
 
   public function getMainImageUrlAttribute(): ?string
   {
