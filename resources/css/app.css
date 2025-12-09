@@ -22,6 +22,20 @@
   --primary-800: hsl(263.5 61.6% 43.9%); /* #6b21a8 */
   --primary-900: hsl(264.4 55.0% 39.0%); /* #581c87 */
 
+  /* tailwind teal shades as accent */
+  --accent: hsl(174 100% 29.0%); /* #0d9488 */
+  --accent-foreground: hsl(174 100% 98.0%); /* #ecfeff */
+  --accent-50: hsl(166 100% 97.0%);   /* #f0fdfa */
+  --accent-100: hsl(167 85.7% 89.2%); /* #ccfbf1 */
+  --accent-200: hsl(168 84.2% 78.4%); /* #99f6e4 */
+  --accent-300: hsl(170 77.8% 64.7%); /* #5eead4 */
+  --accent-400: hsl(172 66.7% 50.6%); /* #2dd4bf */
+  --accent-500: hsl(173 80.0% 40.0%); /* #14b8a6 */
+  --accent-600: hsl(174 83.3% 31.4%); /* #0d9488 */
+  --accent-700: hsl(175 75.0% 25.5%); /* #0f766e */
+  --accent-800: hsl(176 69.2% 19.6%); /* #115e59 */
+  --accent-900: hsl(177 80.0% 14.5%); /* #134e4a */
+
   --tw-translate-x: 0;
   --tw-translate-y: 0;
   --tw-rotate: 0;
