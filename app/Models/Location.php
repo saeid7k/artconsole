@@ -20,6 +20,7 @@ class Location extends Model
   ];
 
   protected $casts = [
+    'address' => 'object',
     'address_same_as_gallery' => 'boolean',
     'is_primary' => 'boolean',
     'is_active' => 'boolean',
