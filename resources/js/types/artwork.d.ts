@@ -15,8 +15,14 @@ export interface ArtworkProps {
   subject?: string | null;
   description?: string | null;
   year?: string | null;
-  dimensions?: object | null;
+  dimensions: {
+    width: number;
+    height: number;
+    depth: number;
+    unit: string;
+  } | null;
   price: number;
+  medium?: string | null;
   styles: string[];
   collections: string[];
   details?: object | null;
