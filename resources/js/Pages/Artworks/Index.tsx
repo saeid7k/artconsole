@@ -4,8 +4,9 @@ import { PageProps } from "@/types"
 import Search from "antd/es/input/Search"
 import ArtworksTable from "./Partials/ArtworksTable"
 import { useSearch } from "@/hooks/useSearch"
+import { LocationProps } from "@/types/location"
 
-function Index({ artworks }: { artworks: PageProps }) {
+function Index({ artworks, locations }: { artworks: PageProps, locations: Array<LocationProps> }) {
 
   const { handleSearch } = useSearch('artworks.index');
 
@@ -24,7 +25,7 @@ function Index({ artworks }: { artworks: PageProps }) {
           />
         }
       />
-      <ArtworksTable artworks={artworks} />
+      <ArtworksTable artworks={artworks} locations={locations} />
     </div>
   )
 }
