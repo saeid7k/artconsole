@@ -13,6 +13,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { router } from '@inertiajs/react';
 import type { TableProps } from 'antd';
 import { Image, Table } from 'antd';
+import ArtworksActions from './ArtworksActions';
 
 function ArtworksTable({ artworks }: { artworks: PageProps }) {
 
@@ -114,7 +115,7 @@ function ArtworksTable({ artworks }: { artworks: PageProps }) {
     {
       title: 'Actions',
       key: 'actions',
-      // render: (_, record) => (<ContactsActions contact={record as ContactProps} />),
+      render: (_, record) => (<ArtworksActions artwork={record as ArtworkProps} />),
       fixed: ['xs', 'sm'].includes(breakpoint) ? undefined : 'right',
       width: 100,
     }
