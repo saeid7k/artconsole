@@ -1,5 +1,6 @@
 import ArtworkSpecificationsStack from '@/Components/ArtworkSpecificationsStack';
 import ArtworkTitleStack from '@/Components/ArtworkTitleStack';
+import LocationStack from '@/Components/LocationStack';
 import ARTWORK_CATEGORIES from '@/constants/artworkCategories';
 import { useWindow } from '@/hooks/useWindow';
 import { PageProps } from '@/types';
@@ -81,10 +82,12 @@ function ArtworksTable({ artworks }: { artworks: PageProps }) {
       title: 'Location',
       dataIndex: 'location',
       key: 'location',
-      sorter: (a, b) => a.location.name.localeCompare(b.location.name),
-      sortDirections: ['ascend', 'descend'],
-      showSorterTooltip: false,
-      render: (location) => (location ? location.name : ''),
+      render: (location) => (location ? (
+        <LocationStack
+          name={location.name}
+          address={location.formatted_address}
+        />
+      ) : ''),
       // width: 250,
     },
     {
