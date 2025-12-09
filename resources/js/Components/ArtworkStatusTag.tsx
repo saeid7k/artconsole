@@ -8,7 +8,6 @@ function ArtworkStatusTag({ status }: { status: string }) {
   return (
     <Tag
       color={selectedStatus?.color || 'default'}
-      bordered={false}
     >
       {selectedStatus?.label || status}
     </Tag>
