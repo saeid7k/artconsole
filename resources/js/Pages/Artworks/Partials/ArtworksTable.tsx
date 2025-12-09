@@ -1,4 +1,5 @@
 import ArtworkSpecificationsStack from '@/Components/ArtworkSpecificationsStack';
+import ArtworkStatusTag from '@/Components/ArtworkStatusTag';
 import ArtworkTitleStack from '@/Components/ArtworkTitleStack';
 import LocationStack from '@/Components/LocationStack';
 import ARTWORK_CATEGORIES from '@/constants/artworkCategories';
@@ -107,7 +108,7 @@ function ArtworksTable({ artworks }: { artworks: PageProps }) {
       sorter: (a, b) => a.status.localeCompare(b.status),
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
-      render: (text) => keyToTitle(text),
+      render: (text) => <ArtworkStatusTag status={text} />,
       // width: 250,
     },
     {
