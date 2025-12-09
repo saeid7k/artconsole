@@ -1,5 +1,7 @@
+import ArtworkTitleStack from '@/Components/ArtworkTitleStack';
 import { useWindow } from '@/hooks/useWindow';
 import { PageProps } from '@/types';
+import { ArtworkProps } from '@/types/artwork';
 import { formatCurrency } from '@/utils/formatter';
 import { keyToTitle } from '@/utils/stringHelper';
 import { ViewIcon } from '@hugeicons/core-free-icons';
@@ -20,9 +22,9 @@ function ArtworksTable({ artworks }: { artworks: PageProps }) {
       sorter: (a, b) => a.sku.localeCompare(b.sku),
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
-      render: (text) => text,
+      render: (text) => (<span className='font-mono text-xs'>{text}</span>),
       width: 100,
-      fixed: breakpoint == 'xs' ? undefined : 'left',
+      // fixed: breakpoint == 'xs' ? undefined : 'left',
     },
     {
       title: 'Preview',
@@ -33,11 +35,17 @@ function ArtworksTable({ artworks }: { artworks: PageProps }) {
           alt={record.title}
           width={70}
           preview={{
-            mask: <HugeiconsIcon icon={ViewIcon} />,
+            mask: (
+              <div className='flex flex-col items-center'>
+                <div>Preview</div>
+                <HugeiconsIcon icon={ViewIcon} />
+              </div>
+            ),
             src: record.main_image_url,
           }}
         />
       ),
+      width: 80,
     },
     {
       title: 'Title',
@@ -113,7 +121,8 @@ function ArtworksTable({ artworks }: { artworks: PageProps }) {
       columns={columns}
       dataSource={artworks.data}
       size='small'
-      scroll={{ x: 'max-content' }}
+      scroll={{ x: 'max-content', y: '70vh' }}
+
       pagination={{
         current: artworks.current_page,
         total: artworks.total,
