@@ -24,6 +24,10 @@ class ArtworkController extends Controller
             ->orWhereRaw('LOWER(sku) LIKE ?', $search);
         });
       })
+      ->when($request->category, function ($q) use ($request) {
+        $categories = explode(',', $request->category);
+        $q->whereIn('category', $categories);
+      })
       ->when($request->sort_by && $request->sort_order, function ($q) use ($request) {
         $q->orderBy($request->sort_by, $request->sort_order);
       }, function ($q) {
