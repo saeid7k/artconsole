@@ -37,13 +37,11 @@ class Artwork extends Model implements HasMedia
   ];
 
   protected $casts = [
-    'category' => 'string',
-    'edition' => 'array',
+    'edition' => 'object',
     'dimensions' => 'object',
     'styles' => 'array',
     'collections' => 'array',
     'details' => 'object',
-    'status' => 'string',
   ];
 
   // Appends
