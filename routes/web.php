@@ -22,7 +22,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
   Route::prefix('contacts')->name('contacts.')->group(function () {
     Route::get('/', [ContactController::class, 'index'])->name('index');
-    Route::get('/{contact}', [ContactController::class, 'show'])->name('view');
+    Route::get('/{contact}', [ContactController::class, 'show'])->name('show');
     Route::post('/update-photo', [ContactController::class, 'updatePhoto'])->name('update-photo');
     Route::post('/create-update', [ContactController::class, 'createUpdate'])->name('create-update');
     Route::post('/{contact}/delete', [ContactController::class, 'destroy'])->name('delete');

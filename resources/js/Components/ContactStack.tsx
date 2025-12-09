@@ -11,7 +11,7 @@ function ContactStack({contact}: {contact: ContactProps}) {
   return (
     <div
       className="flex items-center gap-1 cursor-pointer group"
-      onClick={() => router.get(route('contacts.view', contact.id))}
+      onClick={() => router.get(route('contacts.show', contact.id))}
     >
       <Avatar
         shape="square"

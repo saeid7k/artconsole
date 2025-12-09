@@ -33,7 +33,7 @@ function ContactsActions({ contact }: { contact: ContactProps }) {
             color='blue'
             shape="circle"
             icon={<HugeiconsIcon icon={ViewIcon} size={20} />}
-            onClick={() => router.get(route('contacts.view', contact.id))}
+            onClick={() => router.get(route('contacts.show', contact.id))}
           />
         </Tooltip>
         <Tooltip title="Edit">
