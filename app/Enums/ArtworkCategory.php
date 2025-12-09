@@ -9,6 +9,8 @@ enum ArtworkCategory: string
   case Painting = 'painting';
   case Sculpture = 'sculpture';
   case Photography = 'photography';
+  case DigitalArt = 'digital_art';
+  case MixedMedia = 'mixed_media';
 
   public function label(): string
   {
@@ -20,7 +22,9 @@ enum ArtworkCategory: string
     return match ($this) {
       self::Painting => 'blue',
       self::Sculpture => 'gold',
-      self::Photography => 'cyan'
+      self::Photography => 'cyan',
+      self::DigitalArt => 'purple',
+      self::MixedMedia => 'green',
     };
   }
 
@@ -29,7 +33,9 @@ enum ArtworkCategory: string
     return match ($this) {
       self::Painting => 'PNT',
       self::Sculpture => 'SCL',
-      self::Photography => 'PHT'
+      self::Photography => 'PHT',
+      self::DigitalArt => 'DGT',
+      self::MixedMedia => 'MMD',
     };
   }
 }

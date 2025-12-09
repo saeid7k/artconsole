@@ -1,4 +1,5 @@
 import ArtworkTitleStack from '@/Components/ArtworkTitleStack';
+import ARTWORK_CATEGORIES from '@/constants/artworkCategories';
 import { useWindow } from '@/hooks/useWindow';
 import { PageProps } from '@/types';
 import { ArtworkProps } from '@/types/artwork';
@@ -61,6 +62,7 @@ function ArtworksTable({ artworks }: { artworks: PageProps }) {
       title: 'Category',
       dataIndex: 'category',
       key: 'category',
+      filters: ARTWORK_CATEGORIES.map((cat) => ({ text: cat.label, value: cat.value })),
       sorter: (a, b) => a.category.localeCompare(b.category),
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
@@ -135,6 +137,12 @@ function ArtworksTable({ artworks }: { artworks: PageProps }) {
         urlParams.set('sort_order', sorter.order === 'ascend' ? 'asc' : 'desc');
         urlParams.set('page', String(pagination.current));
         urlParams.set('per_page', String(pagination.pageSize));
+
+        if (filters.category) {
+          urlParams.set('category', String(filters.category));
+        } else {
+          urlParams.delete('category');
+        }
 
         router.get(
           route('artworks.index'),
