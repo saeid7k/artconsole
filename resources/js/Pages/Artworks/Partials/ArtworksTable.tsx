@@ -14,8 +14,14 @@ import { router } from '@inertiajs/react';
 import type { TableProps } from 'antd';
 import { Image, Table } from 'antd';
 import ArtworksActions from './ArtworksActions';
+import ARTWORK_STATUSES from '@/constants/artworkStatuses';
 
-function ArtworksTable({ artworks }: { artworks: PageProps }) {
+type LocationsProps = Array<{
+  id: number;
+  name: string;
+}>;
+
+function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations: LocationsProps }) {
 
   const { breakpoint } = useWindow()
 
@@ -84,6 +90,7 @@ function ArtworksTable({ artworks }: { artworks: PageProps }) {
       title: 'Location',
       dataIndex: 'location',
       key: 'location',
+      filters: locations?.map((loc) => ({ text: loc.name, value: loc.id })),
       render: (location) => (location ? (
         <LocationStack
           name={location.name}
@@ -109,6 +116,7 @@ function ArtworksTable({ artworks }: { artworks: PageProps }) {
       sorter: (a, b) => a.status.localeCompare(b.status),
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
+      filters: ARTWORK_STATUSES.map((status) => ({ text: status.label, value: status.value })),
       render: (text) => <ArtworkStatusTag status={text} />,
       // width: 250,
     },
@@ -141,11 +149,13 @@ function ArtworksTable({ artworks }: { artworks: PageProps }) {
         urlParams.set('page', String(pagination.current));
         urlParams.set('per_page', String(pagination.pageSize));
 
-        if (filters.category) {
-          urlParams.set('category', String(filters.category));
-        } else {
-          urlParams.delete('category');
-        }
+        Object.entries(filters).forEach(([key, value]) => {
+          if (value && value.length > 0) {
+            urlParams.set(key, String(value));
+          } else {
+            urlParams.delete(key);
+          }
+        });
 
         router.get(
           route('artworks.index'),

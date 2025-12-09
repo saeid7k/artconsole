@@ -28,6 +28,14 @@ class ArtworkController extends Controller
         $categories = explode(',', $request->category);
         $q->whereIn('category', $categories);
       })
+      ->when($request->status, function ($q) use ($request) {
+        $statuses = explode(',', $request->status);
+        $q->whereIn('status', $statuses);
+      })
+      ->when($request->location, function ($q) use ($request) {
+        $locationIds = explode(',', $request->location);
+        $q->whereIn('location_id', $locationIds);
+      })
       ->when($request->sort_by && $request->sort_order, function ($q) use ($request) {
         $q->orderBy($request->sort_by, $request->sort_order);
       }, function ($q) {
@@ -35,8 +43,11 @@ class ArtworkController extends Controller
       })
       ->paginate($request->per_page ?? 10)->withQueryString();
 
+    $locations = $gallery->locations()->get(['id', 'name']);
+
     return inertia('Artworks/Index', [
       'artworks' => $artworks,
+      'locations' => $locations,
     ]);
   }
 }
