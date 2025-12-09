@@ -28,4 +28,12 @@ export interface ArtworkProps {
   details?: object | null;
   notes?: string | null;
   status: string;
+  abilities: {
+    update: boolean;
+    delete: boolean;
+  };
+  main_image_url?: string | null;
+  main_image_thumb_url?: string | null;
+  created_at: string;
+  updated_at: string;
 }
