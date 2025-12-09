@@ -46,7 +46,7 @@ function ArtworksTable({ artworks }: { artworks: PageProps }) {
       sorter: (a, b) => a.title.localeCompare(b.title),
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
-      render: (text) => text,
+      render: (_, record) => <ArtworkTitleStack artwork={record as ArtworkProps} />,
       // width: 250,
     },
     {
