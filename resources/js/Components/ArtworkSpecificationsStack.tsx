@@ -1,0 +1,32 @@
+import { ArtworkProps } from "@/types/artwork";
+import DimensionsTag from "./DimensionsTag";
+
+type Props = {
+  artwork: ArtworkProps
+}
+
+function ArtworkSpecificationsStack({artwork}: Props) {
+
+  const styledLabel = (label: string) => (
+    <span className="text-muted">{label}</span>
+  )
+
+  return (
+    <div className="flex flex-col">
+      <div className="flex gap-1">
+        {styledLabel("Medium:")}
+        <div>{artwork.medium}</div>
+      </div>
+      <div className="flex gap-1">
+        {styledLabel("Styles:")}
+        <div className="max-w-[200px] line-clamp-1" title={artwork.styles.join(', ')}>{artwork.styles.join(', ')}</div>
+      </div>
+      <div className="flex gap-1">
+        {styledLabel("Size:")}
+        <DimensionsTag dimensions={artwork.dimensions} />
+      </div>
+    </div>
+  );
+}
+
+export default ArtworkSpecificationsStack;

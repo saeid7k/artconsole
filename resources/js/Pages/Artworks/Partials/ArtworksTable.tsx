@@ -1,3 +1,4 @@
+import ArtworkSpecificationsStack from '@/Components/ArtworkSpecificationsStack';
 import ArtworkTitleStack from '@/Components/ArtworkTitleStack';
 import ARTWORK_CATEGORIES from '@/constants/artworkCategories';
 import { useWindow } from '@/hooks/useWindow';
@@ -70,13 +71,10 @@ function ArtworksTable({ artworks }: { artworks: PageProps }) {
       // width: 250,
     },
     {
-      title: 'Medium',
-      dataIndex: 'medium',
-      key: 'medium',
-      sorter: (a, b) => a.medium.localeCompare(b.medium),
-      sortDirections: ['ascend', 'descend'],
-      showSorterTooltip: false,
-      render: (text) => text,
+      title: 'Specifications',
+      // dataIndex: 'specifications',
+      key: 'specification',
+      render: (_,record) => <ArtworkSpecificationsStack artwork={record as ArtworkProps} />,
       // width: 250,
     },
     {
