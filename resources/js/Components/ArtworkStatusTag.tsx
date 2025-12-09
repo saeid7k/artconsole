@@ -9,6 +9,7 @@ function ArtworkStatusTag({ status }: { status: string }) {
     <Tag
       color={selectedStatus?.color || 'default'}
       bordered={false}
+      className="text-sm font-semibold"
     >
       {selectedStatus?.label || status}
     </Tag>
