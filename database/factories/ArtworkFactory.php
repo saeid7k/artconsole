@@ -42,6 +42,7 @@ class ArtworkFactory extends Factory
         'width' => $this->faker->randomElement([12, 16, 20, 24, 30, 36, 48]),
         'height' => $this->faker->randomElement([12, 16, 20, 24, 30, 36, 48]),
         'depth' => $this->faker->randomElement([0.75, 1.5, 2]),
+        'unit' => $this->faker->randomElement(['inches', 'cm']),
       ],
       'price' => $this->faker->numberBetween(1, 100) * 100,
       'medium' => $this->faker->randomElement(self::MEDIUMS),
