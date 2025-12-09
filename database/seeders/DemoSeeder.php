@@ -143,29 +143,38 @@ class DemoSeeder extends Seeder
     $artworks = $this->allLocations->flatMap(function ($location) {
       $gallery = $location->gallery;
       $owner = $gallery->owner;
-      $artistIds = $gallery->artists()->inRandomOrder()->pluck('id')->toArray();
       return Artwork::factory(10)->create([
         'creator_id' => $owner->id,
         'gallery_id' => $location->gallery_id,
         'location_id' => $location->id,
-        'artist_id' => $this->faker->randomElement($artistIds) ?? null,
       ]);
     });
     $this->command->info('✅' . ' 10 Artworks created per location.');
 
-    // Add images to artworks
-    foreach ($artworks as $artwork) {
-      $numImages = rand(1, 3);
-      for ($i = 0; $i < $numImages; $i++) {
-        $imageData = Http::get('https://picsum.photos/800/600')->body() ?? null;
-        if ($imageData) {
-          $artwork->addMediaFromString($imageData)
-            ->usingFileName('artwork-' . $artwork->id . '-image-' . ($i + 1) . '.jpg')
-            ->withCustomProperties(['is_main' => $i === 0])
-            ->toMediaCollection('artwork-images');
+    // Add artist and images to artworks
+    foreach ($artworks as &$artwork) {
+      // Assign an artist
+      $gallery = $artwork->gallery;
+      $artistIds = $gallery->artists()->inRandomOrder()->pluck('id')->toArray();
+      if (!empty($artistIds)) {
+        $artwork->artist_id = $this->faker->randomElement($artistIds);
+        $artwork->saveQuietly();
+      }
+
+      if ($gallery->id == 1) {
+        // Add images to artworks in the first gallery
+        $numImages = rand(1, 3);
+        for ($i = 0; $i < $numImages; $i++) {
+          $imageData = Http::get('https://picsum.photos/800/600')->body() ?? null;
+          if ($imageData) {
+            $artwork->addMediaFromString($imageData)
+              ->usingFileName('artwork-' . $artwork->id . '-image-' . ($i + 1) . '.jpg')
+              ->withCustomProperties(['is_main' => $i === 0])
+              ->toMediaCollection('artwork-images');
+          }
         }
       }
     }
-    $this->command->info('✅' . ' Sample images added to artworks.');
+    $this->command->info('✅' . ' Sample images added to artworks in the first gallery.');
   }
 }
