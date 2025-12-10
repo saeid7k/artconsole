@@ -23,7 +23,7 @@ type LocationsProps = Array<{
 
 function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations: LocationsProps }) {
 
-  const { breakpoint } = useWindow()
+  const { breakpoint, windowWidth } = useWindow()
 
   const columns: TableProps['columns'] = [
     {
@@ -135,7 +135,7 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
       columns={columns}
       dataSource={artworks.data}
       size='small'
-      scroll={{ x: 'max-content', y: '70vh' }}
+      scroll={{ x: 'max-content', y: windowWidth < 640 ? '60vh' : '70vh' }}
 
       pagination={{
         current: artworks.current_page,
