@@ -59,7 +59,7 @@ function Index({ artworks, locations }: { artworks: PageProps, locations: Array<
       {viewMode === 'table' ? (
         <ArtworksTable artworks={artworks} locations={locations} />
       ) : (
-        <ArtworksGrids />
+        <ArtworksGrids artworks={artworks} />
       )}
     </div>
   )
