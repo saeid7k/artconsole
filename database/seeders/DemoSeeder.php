@@ -143,13 +143,13 @@ class DemoSeeder extends Seeder
     $artworks = $this->allLocations->flatMap(function ($location) {
       $gallery = $location->gallery;
       $owner = $gallery->owner;
-      return Artwork::factory(10)->create([
+      return Artwork::factory(25)->create([
         'creator_id' => $owner->id,
         'gallery_id' => $location->gallery_id,
         'location_id' => $location->id,
       ]);
     });
-    $this->command->info('✅' . ' 10 Artworks created per location.');
+    $this->command->info('✅' . ' 25 Artworks created per location.');
 
     // Add artist and images to artworks
     foreach ($artworks as &$artwork) {
@@ -165,7 +165,8 @@ class DemoSeeder extends Seeder
         // Add images to artworks in the first gallery
         $numImages = rand(1, 3);
         for ($i = 0; $i < $numImages; $i++) {
-          $imageData = Http::get('https://picsum.photos/800/600')->body() ?? null;
+          $size = $this->faker->randomElement(['800/600', '800/800', '600/800', '400/800']);
+          $imageData = Http::get('https://picsum.photos/' . $size)->body() ?? null;
           if ($imageData) {
             $artwork->addMediaFromString($imageData)
               ->usingFileName('artwork-' . $artwork->id . '-image-' . ($i + 1) . '.jpg')
