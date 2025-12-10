@@ -6,9 +6,10 @@ type Props = {
     unit: string;
   } | null;
   showDepth?: boolean;
+  className?: string;
 }
 
-function DimensionsTag({ dimensions, showDepth = false }: Props) {
+function DimensionsTag({ dimensions, showDepth = false, className = "" }: Props) {
   if (!dimensions) {
     return <span>N/A</span>;
   }
@@ -21,7 +22,11 @@ function DimensionsTag({ dimensions, showDepth = false }: Props) {
   }
 
   return (
-    <span>{dimensionString}</span>
+    <div
+      className={className}
+    >
+      {dimensionString}
+    </div>
   );
 }
 
