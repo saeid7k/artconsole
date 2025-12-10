@@ -39,7 +39,7 @@ export default function Login({
 
       <form onSubmit={submit}>
         <Space
-          direction="vertical"
+          orientation="vertical"
           className='w-full'
           size={'middle'}
         >
@@ -82,7 +82,7 @@ export default function Login({
         </Space>
 
         <Space
-          direction='vertical'
+          orientation='vertical'
           className='w-full justify-between items-end mt-4 gap-3'
         >
           <Button

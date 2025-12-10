@@ -57,7 +57,7 @@ export default function Register() {
               size='large'
             />
             {errors.firstname && (
-              <Alert message={errors.firstname} type="error" />
+              <Alert title={errors.firstname} type="error" />
             )}
           </div>
 
@@ -71,7 +71,7 @@ export default function Register() {
               size='large'
             />
             {errors.lastname && (
-              <Alert message={errors.lastname} type="error" />
+              <Alert title={errors.lastname} type="error" />
             )}
           </div>
 
@@ -86,7 +86,7 @@ export default function Register() {
               size='large'
             />
             {errors.email && (
-              <Alert message={errors.email} type="error" />
+              <Alert title={errors.email} type="error" />
             )}
           </div>
 
@@ -99,7 +99,7 @@ export default function Register() {
               size='large'
             />
             {errors.password && (
-              <Alert message={errors.password} type="error" />
+              <Alert title={errors.password} type="error" />
             )}
           </div>
 
@@ -112,7 +112,7 @@ export default function Register() {
               size='large'
             />
             {errors.password_confirmation && (
-              <Alert message={errors.password_confirmation} type="error" />
+              <Alert title={errors.password_confirmation} type="error" />
             )}
           </div>
         </div>

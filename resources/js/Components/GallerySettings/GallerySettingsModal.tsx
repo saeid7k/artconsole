@@ -58,7 +58,7 @@ function GallerySettingsModal({ open, setOpen }: { open: boolean, setOpen: (open
         title={
           <div className="flex items-center gap-3">
             <div>Gallery Settings</div>
-            <Divider type="vertical" className="top-0 border-gray-300" />
+            <Divider orientation="vertical" className="top-0 border-gray-300" />
             <div className="text-primary-700">{gallery.name}</div>
           </div>
         }
@@ -74,7 +74,7 @@ function GallerySettingsModal({ open, setOpen }: { open: boolean, setOpen: (open
         <Tabs
           items={items}
           defaultActiveKey="general"
-          tabPosition={windowWidth < 768 ? "top" : "left"}
+          tabPlacement={windowWidth < 768 ? "top" : "start"}
           type="card"
           size="middle"
           className="mt-5 [&_.ant-tabs-content-holder]:border-0"

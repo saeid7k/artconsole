@@ -41,7 +41,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
           required
         />
         {errors.email && (
-          <Alert message={errors.email} type="error" />
+          <Alert title={errors.email} type="error" />
         )}
 
         <div className="mt-4 flex items-center justify-end gap-3">

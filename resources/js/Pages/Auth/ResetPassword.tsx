@@ -40,7 +40,7 @@ export default function ResetPassword({
                         onChange={(e) => setData('email', e.target.value)}
                     />
                     {errors.email && (
-                      <Alert message={errors.email} type="error" />
+                      <Alert title={errors.email} type="error" />
                     )}
                 </div>
 
@@ -54,7 +54,7 @@ export default function ResetPassword({
                         onChange={(e) => setData('password', e.target.value)}
                     />
                     {errors.password && (
-                      <Alert message={errors.password} type="error" />
+                      <Alert title={errors.password} type="error" />
                     )}
                 </div>
 
@@ -69,7 +69,7 @@ export default function ResetPassword({
                         }
                     />
                     {errors.password_confirmation && (
-                      <Alert message={errors.password_confirmation} type="error" />
+                      <Alert title={errors.password_confirmation} type="error" />
                     )}
                 </div>
 

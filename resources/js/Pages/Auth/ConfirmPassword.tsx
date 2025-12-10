@@ -35,7 +35,7 @@ export default function ConfirmPassword() {
                         onChange={(e) => setData('password', e.target.value)}
                     />
                     {errors.password && (
-                      <Alert message={errors.password} type="error" />
+                      <Alert title={errors.password} type="error" />
                     )}
                 </div>
                 <div className="mt-4 flex items-center justify-end">
