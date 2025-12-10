@@ -1,0 +1,37 @@
+import { ArtworkProps } from "@/types/artwork";
+import ArtworkStatusTag from "./ArtworkStatusTag";
+import ArtworkTitleStack from "./ArtworkTitleStack";
+import { formatCurrency } from "@/utils/formatter";
+import DimensionsTag from "./DimensionsTag";
+
+function ArtworkCard({ artwork }: { artwork: ArtworkProps }) {
+  return (
+    <div
+      className="overflow-hidden shadow-md"
+    >
+      <div className="relative">
+        <img
+          src={artwork.main_image_url ?? ''}
+          alt={artwork.title}
+          className="block w-full"
+        />
+        <DimensionsTag
+          dimensions={artwork.dimensions}
+          className="absolute bottom-0 left-0 bg-white dark:bg-black !bg-opacity-60 px-1 text-xs"
+        />
+      </div>
+      <div className="flex flex-col gap-1 p-2 text-center">
+        <ArtworkTitleStack artwork={artwork} rootClassName="text-center" />
+        <div className="flex justify-center items-center gap-2">
+          <div>{formatCurrency(artwork.price, 0)}</div>
+          <ArtworkStatusTag
+            status={artwork.status}
+            fontSize="xs"
+          />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default ArtworkCard;
