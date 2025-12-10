@@ -129,3 +129,8 @@ code {
   width: 12px !important;
   height: 12px !important;
 }
+
+table .ant-image {
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
