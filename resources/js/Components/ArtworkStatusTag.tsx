@@ -1,15 +1,22 @@
 import ARTWORK_STATUSES from "@/constants/artworkStatuses";
 import { Tag } from "antd";
 
-function ArtworkStatusTag({ status }: { status: string }) {
+type Props = {
+  status: string;
+  variant?: 'filled' | 'outlined' | 'solid';
+  fontSize?: 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl';
+  className?: string;
+};
+
+function ArtworkStatusTag({ status, variant = "filled", fontSize = "sm", className }: Props) {
 
   const selectedStatus = ARTWORK_STATUSES.find((s) => s.value === status);
 
   return (
     <Tag
       color={selectedStatus?.color || 'default'}
-      variant="filled"
-      className="text-sm font-semibold"
+      variant={variant}
+      className={`text-${fontSize} font-semibold ${className || ''}`}
     >
       {selectedStatus?.label || status}
     </Tag>
