@@ -16,7 +16,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
         <GuestLayout>
             <Head title="Email Verification" />
 
-            <Alert type="success" message="Verification Email Sent" showIcon className="mb-4" />
+            <Alert type="success" title="Verification Email Sent" showIcon className="mb-4" />
             <div className="mb-4 text-gray-600">
                 Thanks for registration!<br />
                 Before getting started, verify your email address by
