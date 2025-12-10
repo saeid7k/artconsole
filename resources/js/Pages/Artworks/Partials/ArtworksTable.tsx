@@ -44,7 +44,8 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
         <Image
           src={record.main_image_thumb_url}
           alt={record.title}
-          width={70}
+          height={60}
+          style={{ aspectRatio: '1 / 1', objectFit: 'cover' }}
           preview={{
             mask: (
               <div className='flex flex-col items-center'>
