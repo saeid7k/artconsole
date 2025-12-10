@@ -165,7 +165,7 @@ class DemoSeeder extends Seeder
         // Add images to artworks in the first gallery
         $numImages = rand(1, 3);
         for ($i = 0; $i < $numImages; $i++) {
-          $size = $this->faker->randomElement(['800/600', '800/800', '600/800', '400/800']);
+          $size = $this->faker->randomElement(['800/800', '800/600', '600/800', '800/700', '700/800', '400/800']);
           $imageData = Http::get('https://picsum.photos/' . $size)->body() ?? null;
           if ($imageData) {
             $artwork->addMediaFromString($imageData)
