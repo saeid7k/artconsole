@@ -22,7 +22,7 @@ function ArtworksActions({ artwork }: { artwork: ArtworkProps }) {
       <div
         className="flex items-center gap-1"
       >
-        <Tooltip title="Artwork Card">
+        <Tooltip title="View Artwork">
           <Button
             variant="text"
             color='blue'

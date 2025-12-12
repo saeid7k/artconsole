@@ -62,7 +62,7 @@ function RelationshipTags({ contact, manageButtonDelay = 2000 }: { contact: Cont
 
   return (
     <div
-      className="flex items-center"
+      className="flex items-center gap-1"
       onMouseEnter={() => {
         setShowManageButton(true)
         if (hideManageButtonTimer.current) {
