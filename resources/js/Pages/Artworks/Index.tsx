@@ -10,12 +10,25 @@ import Search from "antd/es/input/Search"
 import { useState } from "react"
 import ArtworksGrids from "./Partials/ArtworksGrids"
 import ArtworksTable from "./Partials/ArtworksTable"
+import { router } from "@inertiajs/react"
 
 function Index({ artworks, locations }: { artworks: PageProps, locations: Array<LocationProps> }) {
 
   const { handleSearch } = useSearch('artworks.index');
 
   const [viewMode, setViewMode] = useState<'table' | 'grid'>('table');
+
+  function switchViewMode(mode: 'table' | 'grid') {
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set('page', '1');
+    urlParams.set('per_page', mode == 'grid' ? '50' : '10');
+    if (mode == 'grid') {
+      urlParams.delete('sort_by');
+      urlParams.delete('sort_order');
+    }
+    router.get(route('artworks.index'), Object.fromEntries(urlParams.entries()), { preserveState: true });
+    setViewMode(mode);
+  }
 
   return (
     <div>
@@ -44,7 +57,7 @@ function Index({ artworks, locations }: { artworks: PageProps, locations: Array<
                   value: 'grid'
                 },
               ]}
-              onChange={(value) => setViewMode(value as 'table' | 'grid')}
+              onChange={(value) => switchViewMode(value as 'table' | 'grid')}
             />
             <Search
               placeholder="search artworks..."
