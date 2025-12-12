@@ -15,6 +15,7 @@ import type { TableProps } from 'antd';
 import { Image, Table } from 'antd';
 import ArtworksActions from './ArtworksActions';
 import ARTWORK_STATUSES from '@/constants/artworkStatuses';
+import { useArtworksIndex } from '@/contexts/ArtworksIndexContext';
 
 type LocationsProps = Array<{
   id: number;
@@ -24,6 +25,7 @@ type LocationsProps = Array<{
 function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations: LocationsProps }) {
 
   const { breakpoint, windowWidth } = useWindow()
+  const { filters } = useArtworksIndex()
 
   const columns: TableProps['columns'] = [
     {
@@ -74,6 +76,7 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
       dataIndex: 'category',
       key: 'category',
       filters: ARTWORK_CATEGORIES.map((cat) => ({ text: cat.label, value: cat.value })),
+      filteredValue: filters?.category?.length > 0 ? filters.category : null,
       sorter: (a, b) => a.category.localeCompare(b.category),
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
@@ -92,6 +95,7 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
       dataIndex: 'location',
       key: 'location',
       filters: locations?.map((loc) => ({ text: loc.name, value: loc.id })),
+      filteredValue: filters?.location?.length > 0 ? filters.location : null,
       render: (location) => (location ? (
         <LocationStack
           name={location.name}
@@ -118,6 +122,7 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
       filters: ARTWORK_STATUSES.map((status) => ({ text: status.label, value: status.value })),
+      filteredValue: filters?.status?.length > 0 ? filters.status : null,
       render: (text) => <ArtworkStatusTag status={text} />,
       // width: 250,
     },
