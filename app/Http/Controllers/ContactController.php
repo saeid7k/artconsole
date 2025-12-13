@@ -80,17 +80,17 @@ class ContactController extends Controller
     //
   }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Contact $contact)
-    {
-      $this->authorize('view', $contact);
+  /**
+   * Display the specified resource.
+   */
+  public function show(Contact $contact)
+  {
+    $this->authorize('view', $contact);
 
-      return inertia('Contacts/View', [
-        'contact' => $contact
-      ]);
-    }
+    return inertia('Contacts/View', [
+      'contact' => $contact
+    ]);
+  }
 
   /**
    * Show the form for editing the specified resource.
