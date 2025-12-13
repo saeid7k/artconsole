@@ -28,7 +28,7 @@ function ArtworksActions({ artwork }: { artwork: ArtworkProps }) {
             color='blue'
             shape="circle"
             icon={<HugeiconsIcon icon={ViewIcon} size={20} />}
-            // onClick={() => router.get(route('artworks.show', artwork.id))}
+            onClick={() => router.get(route('artworks.show', artwork.id))}
           />
         </Tooltip>
         <Tooltip title="Edit">

@@ -10,12 +10,13 @@ import { formatCurrency } from '@/utils/formatter';
 import { keyToTitle } from '@/utils/stringHelper';
 import { ViewIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { router } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import type { TableProps } from 'antd';
 import { Image, Table } from 'antd';
 import ArtworksActions from './ArtworksActions';
 import ARTWORK_STATUSES from '@/constants/artworkStatuses';
 import { useArtworksIndex } from '@/contexts/ArtworksIndexContext';
+import CopyToClipboard from '@/Components/CopyToClipboard';
 
 type LocationsProps = Array<{
   id: number;
@@ -35,7 +36,17 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
       sorter: (a, b) => a.sku.localeCompare(b.sku),
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
-      render: (text) => (<span className='font-mono text-xs'>{text}</span>),
+      render: (_, record) => (
+        <div className="flex items-center gap-1">
+          <Link
+            className='font-mono text-body text-xs whitespace-nowrap'
+            href={route('artworks.show', record.id)}
+          >
+            {record.sku}
+          </Link>
+          <CopyToClipboard content={record.sku} title="SKU" />
+        </div>
+      ),
       width: 100,
       // fixed: breakpoint == 'xs' ? undefined : 'left',
     },
