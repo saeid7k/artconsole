@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Artwork;
 use Illuminate\Http\Request;
 
 class ArtworkController extends Controller
 {
   public function index(Request $request)
   {
+    $this->authorize('viewAny', Artwork::class);
+
     $user = auth()->user();
     $gallery = $user->currentGallery();
     $artworks = $gallery->artworks()
@@ -48,6 +51,15 @@ class ArtworkController extends Controller
     return inertia('Artworks/Index', [
       'artworks' => $artworks,
       'locations' => $locations,
+    ]);
+  }
+
+  public function show(Artwork $artwork)
+  {
+    $this->authorize('view', $artwork);
+
+    return inertia('Artworks/Show', [
+      'artwork' => $artwork,
     ]);
   }
 }
