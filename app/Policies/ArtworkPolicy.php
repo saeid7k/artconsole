@@ -18,6 +18,12 @@ class ArtworkPolicy
     return $this->isEditorOrOwner($user);
   }
 
+  public function viewAny(User $user): bool
+  {
+    $gallery = $user->currentGallery();
+    return $gallery ? $gallery->isMember($user) : false;
+  }
+
   public function view(User $user, Artwork $artwork): bool
   {
     $gallery = $user->currentGallery();
