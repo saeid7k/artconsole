@@ -46,7 +46,7 @@ class Artwork extends Model implements HasMedia
 
   // Appends
 
-  protected $appends = ['abilities', 'main_image_url', 'main_image_thumb_url' ];
+  protected $appends = ['abilities', 'main_image_url', 'main_image_thumb_url'];
 
   public function getAbilitiesAttribute(): array
   {
@@ -129,11 +129,6 @@ class Artwork extends Model implements HasMedia
     return sprintf("%s-%s-%03d", $prefix, $year, $number);
   }
 
-  public function images()
-  {
-    return $this->media->where('collection_name', 'artwork-images')->all();
-  }
-
   public function registerMediaConversions(?Media $media = null): void
   {
     $this->addMediaConversion('thumb')
@@ -141,5 +136,12 @@ class Artwork extends Model implements HasMedia
       ->height(200)
       ->sharpen(10)
       ->nonQueued();
+  }
+
+  public function getImagesAttribute()
+  {
+    return $this->media()
+      ->where('collection_name', 'artwork-images')
+      ->get();
   }
 }
