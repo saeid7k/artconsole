@@ -45,15 +45,13 @@ function UserMenu() {
         trigger={['click']}
         popupRender={() => <Popup />}
       >
-        <Button
-          shape="circle"
-          type="default"
-          className="border-0"
+        <Avatar
+          size="default"
+          src={user.photo ? user.photo : undefined}
+          className="cursor-pointer border-2 hover:border-primary transition-all"
         >
-          <Avatar size="default" src={user.photo ? user.photo : undefined}>
-            {getInitials(user.full_name)}
-          </Avatar>
-        </Button>
+          {getInitials(user.full_name)}
+        </Avatar>
       </Dropdown>
 
       <ProfileModal open={openProfileModal} setOpen={setOpenProfileModal} />
