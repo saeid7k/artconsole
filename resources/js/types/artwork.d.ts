@@ -10,7 +10,11 @@ export interface ArtworkProps {
   artist_data: UserProps;
   sku: string;
   category: string;
-  edition: string;
+  edition: {
+    type: string;
+    number: number | null;
+    size: number | null;
+  } | null;
   title: string;
   subject?: string | null;
   description?: string | null;
