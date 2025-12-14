@@ -32,8 +32,9 @@ export interface ArtworkProps {
     update: boolean;
     delete: boolean;
   };
-  main_image_url?: string | null;
-  main_image_thumb_url?: string | null;
   created_at: string;
   updated_at: string;
+  main_image_url?: string | null;
+  main_image_thumb_url?: string | null;
+  images: Array<any>;
 }

@@ -1,3 +1,4 @@
+import ImageGallery from "@/Components/ImageGallery";
 import PageTitle from "@/Components/PageTitle";
 import AppLayout from "@/Layouts/AppLayout";
 import { ArtworkProps } from "@/types/artwork";
@@ -15,10 +16,10 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
       />
       <div className="flex flex-col gap-3">
         <div className="flex flex-col lg:flex-row gap-3 w-full">
-          <Card className="grow">
-            gallery
+          <Card className="lg:w-1/2">
+            <ImageGallery images={artwork.images} />
           </Card>
-          <Card className="grow">
+          <Card className="lg:w-1/2">
             details
           </Card>
         </div>

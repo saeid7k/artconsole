@@ -134,3 +134,8 @@ table .ant-image {
   border-radius: 0.25rem;
   overflow: hidden;
 }
+
+.gallery-thumbnails img:hover {
+  filter: brightness(1.1) !important;
+  transition: all 0.3s ease-in-out;
+}
