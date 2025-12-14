@@ -27,6 +27,7 @@ function ArtworkCard({ artwork }: { artwork: ArtworkProps }) {
           artwork={artwork}
           rootClassName="text-center"
           artistTooltipPlacement="right"
+          showEdition={false}
         />
         <div className="flex justify-center items-center gap-2">
           <div>{formatCurrency(artwork.price, 0)}</div>
