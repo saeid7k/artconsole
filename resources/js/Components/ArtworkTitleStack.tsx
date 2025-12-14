@@ -5,9 +5,10 @@ import { Tooltip } from "antd";
 type Props = {
   artwork: ArtworkProps
   rootClassName?: string;
+  artistTooltipPlacement?: "top" | "left" | "right" | "bottom" | "topLeft" | "topRight" | "bottomLeft" | "bottomRight" | "leftTop" | "leftBottom" | "rightTop" | "rightBottom";
 }
 
-function ArtworkTitleStack({ artwork, rootClassName }: Props) {
+function ArtworkTitleStack({ artwork, rootClassName, artistTooltipPlacement = "bottom" }: Props) {
 
   const artistName = artwork.artist_data.full_name;
 
@@ -22,7 +23,7 @@ function ArtworkTitleStack({ artwork, rootClassName }: Props) {
       <div>
         <span className="text-muted italic">by </span>
         {artwork.artist ? (
-          <Tooltip title="View Artist Profile" mouseEnterDelay={0.5} placement="bottom">
+          <Tooltip title="View Artist Profile" mouseEnterDelay={0.5} placement={artistTooltipPlacement}>
             <Link
               className="text-accent"
               href={route('contacts.show', artwork.artist.id)}
