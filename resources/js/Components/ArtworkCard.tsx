@@ -3,6 +3,7 @@ import ArtworkStatusTag from "./ArtworkStatusTag";
 import ArtworkTitleStack from "./ArtworkTitleStack";
 import { formatCurrency } from "@/utils/formatter";
 import DimensionsTag from "./DimensionsTag";
+import { router } from "@inertiajs/react";
 
 function ArtworkCard({ artwork }: { artwork: ArtworkProps }) {
   return (
@@ -13,7 +14,8 @@ function ArtworkCard({ artwork }: { artwork: ArtworkProps }) {
         <img
           src={artwork.main_image_url ?? ''}
           alt={artwork.title}
-          className="block w-full"
+          className="block w-full cursor-pointer hover:scale-105 origin-bottom transition-transform duration-300"
+          onClick={() => {router.visit(route('artworks.show', artwork.id))}}
         />
         <DimensionsTag
           dimensions={artwork.dimensions}
@@ -21,7 +23,11 @@ function ArtworkCard({ artwork }: { artwork: ArtworkProps }) {
         />
       </div>
       <div className="flex flex-col gap-1 p-2 text-center">
-        <ArtworkTitleStack artwork={artwork} rootClassName="text-center" />
+        <ArtworkTitleStack
+          artwork={artwork}
+          rootClassName="text-center"
+          artistTooltipPlacement="right"
+        />
         <div className="flex justify-center items-center gap-2">
           <div>{formatCurrency(artwork.price, 0)}</div>
           <ArtworkStatusTag
