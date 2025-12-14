@@ -9,7 +9,7 @@ type Props = {
   className?: string;
 }
 
-function DimensionsTag({ dimensions, showDepth = false, className = "" }: Props) {
+function FormattedDimensions({ dimensions, showDepth = false, className = "" }: Props) {
   if (!dimensions) {
     return <span>N/A</span>;
   }
@@ -30,4 +30,4 @@ function DimensionsTag({ dimensions, showDepth = false, className = "" }: Props)
   );
 }
 
-export default DimensionsTag;
+export default FormattedDimensions;
