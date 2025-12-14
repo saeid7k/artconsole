@@ -13,7 +13,7 @@ function FormattedEdition({ edition, muted = true, size = 'xs' }: Props) {
   const sizeMap = {
     'xs': 'text-xs',
     'sm': 'text-sm',
-    'md': 'text-base',
+    'md': 'text-md',
     'lg': 'text-lg',
   };
 
