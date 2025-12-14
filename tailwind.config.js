@@ -16,7 +16,7 @@ export default {
     	extend: {
     		fontFamily: {
     			sans: [
-            'Segue UI',
+            'Segoe UI',
             ...defaultTheme.fontFamily.sans
           ],
           serif: [
