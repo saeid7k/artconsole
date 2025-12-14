@@ -1,26 +1,33 @@
 import { ArtworkProps } from "@/types/artwork";
 import { formatCurrency } from "@/utils/formatter";
 import { router } from "@inertiajs/react";
+import { useState } from "react";
 import ArtworkStatusTag from "./ArtworkStatusTag";
 import ArtworkTitleStack from "./ArtworkTitleStack";
 import FormattedDimensions from "./FormattedDimensions";
 
 function ArtworkCard({ artwork }: { artwork: ArtworkProps }) {
+
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   return (
     <div
       className="overflow-hidden shadow-md"
     >
-      <div className="relative">
-        <img
-          src={artwork.main_image_url ?? ''}
-          alt={artwork.title}
-          className="block w-full cursor-pointer hover:scale-105 origin-bottom transition-transform duration-300"
-          onClick={() => {router.visit(route('artworks.show', artwork.id))}}
-        />
-        <FormattedDimensions
-          dimensions={artwork.dimensions}
-          className="absolute bottom-0 left-0 bg-white dark:bg-black !bg-opacity-60 px-1 text-xs"
-        />
+      <div className={!imageLoaded ? "min-h-[200px]" : ""}>
+        <div className="relative">
+          <img
+            src={artwork.main_image_url ?? ''}
+            alt={artwork.title}
+            className="relative block w-full cursor-pointer hover:scale-105 origin-bottom transition-transform duration-300"
+            onLoad={() => setImageLoaded(true)}
+            onClick={() => {router.visit(route('artworks.show', artwork.id))}}
+          />
+          <FormattedDimensions
+            dimensions={artwork.dimensions}
+            className="absolute bottom-0 left-0 bg-white dark:bg-black !bg-opacity-60 px-1 text-xs"
+          />
+        </div>
       </div>
       <div className="flex flex-col gap-1 p-2 text-center">
         <ArtworkTitleStack
