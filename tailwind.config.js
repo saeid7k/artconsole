@@ -16,9 +16,13 @@ export default {
     	extend: {
     		fontFamily: {
     			sans: [
-    				'Figtree',
-                    ...defaultTheme.fontFamily.sans
-                ]
+            'Segue UI',
+            ...defaultTheme.fontFamily.sans
+          ],
+          serif: [
+            'EB Garamond',
+            ...defaultTheme.fontFamily.serif
+          ]
     		},
     		// borderRadius: {
     		// 	lg: 'var(--radius)',

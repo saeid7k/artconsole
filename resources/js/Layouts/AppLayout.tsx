@@ -40,6 +40,7 @@ function App ({ children }: AppProps) {
           colorBgElevated: darkMode ? colors.gray['900'] : colors.white,
           // boxShadow: darkMode ? '0 1px 3px rgba(0, 0, 0, 0.9)' : '0 1px 3px rgba(0, 0, 0, 0.1)',
           boxShadowSecondary: darkMode ? '0 6px 16px 4px rgba(0, 0, 0, 0.9)' : '0 6px 16px 4px rgba(0, 0, 0, 0.1)',
+          fontFamily: `'Segue UI', sans-serif`,
         },
         components: {
           Layout: {
