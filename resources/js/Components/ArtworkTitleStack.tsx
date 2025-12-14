@@ -2,25 +2,52 @@ import { ArtworkProps } from "@/types/artwork";
 import { Link } from "@inertiajs/react";
 import { Tooltip } from "antd";
 import FormattedEdition from "./FormattedEdition";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   artwork: ArtworkProps
   rootClassName?: string;
   artistTooltipPlacement?: "top" | "left" | "right" | "bottom" | "topLeft" | "topRight" | "bottomLeft" | "bottomRight" | "leftTop" | "leftBottom" | "rightTop" | "rightBottom";
   showEdition?: boolean;
+  size?: "medium" | "large";
+  serifTitle?: boolean;
+  className?: string;
 }
 
-function ArtworkTitleStack({ artwork, rootClassName, artistTooltipPlacement = "bottom", showEdition = true }: Props) {
+function ArtworkTitleStack({
+  artwork,
+  rootClassName,
+  artistTooltipPlacement = "bottom",
+  showEdition = true,
+  size = "medium",
+  serifTitle = false,
+  className = '',
+}: Props)
+{
 
   const artistName = artwork.artist_data.full_name;
 
+  const titleFontSizeClass = {
+    medium: 'text-md',
+    large: 'text-2xl'
+  }
+
+  const editionSize: any = {
+    medium: 'xs',
+    large: 'md'
+  }
+
   return (
-    <div className={`flex flex-col ${rootClassName || ''}`}>
+    <div className={`flex flex-col ${rootClassName || ''} ${className}`}>
 
       {/* Title */}
 
       <Link
-        className="text-body font-semibold"
+        className={twMerge(
+          'text-body font-semibold',
+          titleFontSizeClass[size],
+          serifTitle ? 'font-serif' : ''
+        )}
         href={route('artworks.show', artwork.id)}
       >
         {artwork.title}
@@ -49,7 +76,10 @@ function ArtworkTitleStack({ artwork, rootClassName, artistTooltipPlacement = "b
 
       {showEdition && (
         <div>
-          <FormattedEdition edition={artwork.edition} />
+          <FormattedEdition
+            edition={artwork.edition}
+            size={editionSize[size]}
+          />
         </div>
       )}
     </div>
