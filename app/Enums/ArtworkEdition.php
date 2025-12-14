@@ -11,7 +11,7 @@ enum ArtworkEdition: string
   public function label(): string
   {
     return match ($this) {
-      self::Unique => 'Unique',
+      self::Unique => 'Unique Piece',
       self::Limited => 'Limited Edition',
       self::Open => 'Open Edition'
     };
