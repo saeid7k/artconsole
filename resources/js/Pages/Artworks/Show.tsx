@@ -9,7 +9,7 @@ import { ArtworkProps } from "@/types/artwork";
 import { BrushIcon, PackageDimensions01Icon, PaintBucketIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "@inertiajs/react";
-import { Card, Tabs } from "antd";
+import { Card, Divider, Tabs } from "antd";
 import React from "react";
 
 function Show ({ artwork }: { artwork: ArtworkProps }) {
@@ -28,27 +28,34 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
           <Card className="lg:w-1/2">
             <ArtworkTitleStack
               artwork={artwork}
+              linkedTitle={false}
               size="large"
               serifTitle={true}
               className="mb-5"
             />
-            <DataCol title="Details" >
+            <Divider />
+            <DataCol>
               <DataRow
                 icon={<HugeiconsIcon icon={PaintBucketIcon} size={18} />}
                 label="Medium:"
                 value={artwork.medium}
+                labelClassName="min-w-[80px]"
               />
               <DataRow
                 icon={<HugeiconsIcon icon={BrushIcon} size={18} />}
                 label="Styles:"
                 value={artwork.styles.join(', ')}
+                labelClassName="min-w-[80px]"
               />
               <DataRow
                 icon={<HugeiconsIcon icon={PackageDimensions01Icon} size={18} />}
                 label="Dimensions:"
                 value={<FormattedDimensions dimensions={artwork.dimensions} />}
+                labelClassName="min-w-[80px]"
               />
             </DataCol>
+            <Divider />
+            <div>{}</div>
           </Card>
         </div>
         <Card>
