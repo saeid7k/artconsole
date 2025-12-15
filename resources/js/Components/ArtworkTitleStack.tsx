@@ -1,26 +1,30 @@
 import { ArtworkProps } from "@/types/artwork";
 import { Link } from "@inertiajs/react";
 import { Tooltip } from "antd";
-import FormattedEdition from "./FormattedEdition";
 import { twMerge } from "tailwind-merge";
+import FormattedEdition from "./FormattedEdition";
 
 type Props = {
   artwork: ArtworkProps
   rootClassName?: string;
+  linkedTitle?: boolean;
+  serifTitle?: boolean;
   artistTooltipPlacement?: "top" | "left" | "right" | "bottom" | "topLeft" | "topRight" | "bottomLeft" | "bottomRight" | "leftTop" | "leftBottom" | "rightTop" | "rightBottom";
   showEdition?: boolean;
+  showYear?: boolean;
   size?: "medium" | "large";
-  serifTitle?: boolean;
   className?: string;
 }
 
 function ArtworkTitleStack({
   artwork,
   rootClassName,
+  linkedTitle = true,
+  serifTitle = false,
   artistTooltipPlacement = "bottom",
   showEdition = true,
+  showYear = true,
   size = "medium",
-  serifTitle = false,
   className = '',
 }: Props)
 {
@@ -29,7 +33,7 @@ function ArtworkTitleStack({
 
   const titleFontSizeClass = {
     medium: 'text-md',
-    large: 'text-2xl'
+    large: 'text-3xl'
   }
 
   const editionSize: any = {
@@ -46,7 +50,8 @@ function ArtworkTitleStack({
         className={twMerge(
           'text-body font-semibold',
           titleFontSizeClass[size],
-          serifTitle ? 'font-serif' : ''
+          serifTitle ? 'font-serif' : '',
+          linkedTitle ? '' : 'pointer-events-none'
         )}
         href={route('artworks.show', artwork.id)}
       >
@@ -82,6 +87,14 @@ function ArtworkTitleStack({
           />
         </div>
       )}
+
+      {/* Date */}
+      {showYear && artwork.year && (
+        <div className="text-muted">
+          {artwork.year}
+        </div>
+      )}
+
     </div>
   );
 }
