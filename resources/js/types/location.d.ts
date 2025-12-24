@@ -12,4 +12,5 @@ export interface LocationProps {
   is_active: boolean;
   created_at: string;
   updated_at: string;
+  formatted_address: string;
 }
