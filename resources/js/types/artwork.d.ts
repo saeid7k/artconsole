@@ -1,4 +1,5 @@
 import { ContactProps } from "./contact";
+import { LocationProps } from "./location";
 import { UserProps } from "./user";
 
 export interface ArtworkProps {
@@ -41,4 +42,5 @@ export interface ArtworkProps {
   main_image_url?: string | null;
   main_image_thumb_url?: string | null;
   images: Array<any>;
+  location: LocationProps;
 }
