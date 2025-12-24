@@ -109,8 +109,7 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
       filteredValue: filters?.location?.length > 0 ? filters.location : null,
       render: (location) => (location ? (
         <LocationStack
-          name={location.name}
-          address={location.formatted_address}
+          location={location}
         />
       ) : ''),
       // width: 250,
