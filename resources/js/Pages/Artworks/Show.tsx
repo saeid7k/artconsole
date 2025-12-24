@@ -1,12 +1,15 @@
+import ArtworkStatusTag from "@/Components/ArtworkStatusTag";
 import ArtworkTitleStack from "@/Components/ArtworkTitleStack";
 import DataCol from "@/Components/Containers/DataCol";
 import DataRow from "@/Components/Containers/DataRow";
 import FormattedDimensions from "@/Components/FormattedDimensions";
 import ImageGallery from "@/Components/ImageGallery";
+import LocationStack from "@/Components/LocationStack";
 import PageTitle from "@/Components/PageTitle";
 import AppLayout from "@/Layouts/AppLayout";
 import { ArtworkProps } from "@/types/artwork";
-import { BrushIcon, PackageDimensions01Icon, PaintBucketIcon } from "@hugeicons/core-free-icons";
+import { formatCurrency } from "@/utils/formatter";
+import { BrushIcon, MoneyBag01Icon, MoneyBag02Icon, PackageDimensions01Icon, PaintBucketIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "@inertiajs/react";
 import { Card, Divider, Tabs } from "antd";
@@ -49,12 +52,31 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
               />
               <DataRow
                 icon={<HugeiconsIcon icon={PackageDimensions01Icon} size={18} />}
-                label="Dimensions:"
+                label="Size:"
                 value={<FormattedDimensions dimensions={artwork.dimensions} />}
                 labelClassName="min-w-[80px]"
               />
             </DataCol>
             <Divider />
+            <DataCol gap={2} >
+              <div className="flex items-start gap-2">
+                {artwork.price ? (
+                  <div className="text-lg">
+                    {formatCurrency(artwork.price, 0)}
+                  </div>
+                ) : (
+                  <div>
+                    <em>Price on request</em>
+                  </div>
+                )}
+                <ArtworkStatusTag status={artwork.status} />
+              </div>
+              <LocationStack
+                location={artwork.location}
+                showAddress
+                clamped={false}
+              />
+            </DataCol>
             <div>{}</div>
           </Card>
         </div>
