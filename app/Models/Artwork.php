@@ -31,9 +31,11 @@ class Artwork extends Model implements HasMedia
     'medium',
     'styles',
     'collections',
+    'ownership',
+    'owner_contact_id',
+    'status',
     'details',
     'notes',
-    'status',
   ];
 
   protected $casts = [
@@ -103,9 +105,19 @@ class Artwork extends Model implements HasMedia
     return $this->belongsTo(Location::class);
   }
 
+  public function creator()
+  {
+    return $this->belongsTo(User::class, 'creator_id');
+  }
+
   public function artist()
   {
     return $this->belongsTo(Contact::class, 'artist_id');
+  }
+
+  public function owner()
+  {
+    return $this->belongsTo(Contact::class, 'owner_contact_id');
   }
 
   // Methods

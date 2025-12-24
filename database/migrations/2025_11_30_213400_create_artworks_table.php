@@ -36,10 +36,12 @@ return new class extends Migration
       $table->json('styles')->nullable(); // e.g., Abstract, Realism
       $table->json('collections')->nullable(); // e.g., Modern Art, Renaissance
 
+      $table->string('ownership', 50)->nullable(); // owned | consigned
+      $table->foreignId('owner_contact_id')->nullable()->constrained('contacts')->nullOnDelete();
+      $table->string('status', 50)->default('available'); // e.g., available, sold, on loan
+
       $table->json('details')->nullable(); // Additional metadata
       $table->text('notes')->nullable();
-
-      $table->string('status', 50)->default('available'); // e.g., available, sold, on loan
 
       $table->timestamps();
     });
