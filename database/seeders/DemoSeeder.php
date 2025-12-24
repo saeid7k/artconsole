@@ -156,8 +156,12 @@ class DemoSeeder extends Seeder
       // Assign an artist
       $gallery = $artwork->gallery;
       $artistIds = $gallery->artists()->inRandomOrder()->pluck('id')->toArray();
+      $vendorsIds = $gallery->contacts()->whereJsonContains('relationship', 'vendor')->inRandomOrder()->pluck('id')->toArray();
       if (!empty($artistIds)) {
         $artwork->artist_id = $this->faker->randomElement($artistIds);
+        if ($artwork->ownership === 'consigned' && !empty($vendorsIds)) {
+          $artwork->owner_contact_id = $this->faker->randomElement($vendorsIds);
+        }
         $artwork->saveQuietly();
       }
 
