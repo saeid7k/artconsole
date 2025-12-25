@@ -18,7 +18,7 @@ import dayjs from "dayjs";
 import { useRef, useState } from "react";
 import ContactFormDrawer from "./Partials/ContactFormDrawer";
 
-function View({ contact }: { contact: ContactProps }) {
+function Show({ contact }: { contact: ContactProps }) {
 
   // Picture Upload
 
@@ -214,7 +214,7 @@ function View({ contact }: { contact: ContactProps }) {
   )
 }
 
-View.layout = (page: any) => {
+Show.layout = (page: any) => {
   return (
     <AppLayout>
       {page}
@@ -222,4 +222,4 @@ View.layout = (page: any) => {
   )
 }
 
-export default View;
+export default Show;
