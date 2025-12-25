@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ContactCreateUpdateRequest;
+use App\Http\Requests\ContactStoreUpdateRequest;
 use App\Models\Contact;
 use App\Models\Media;
 use Illuminate\Http\Request;
@@ -103,7 +103,7 @@ class ContactController extends Controller
   /**
    * Update the specified resource in storage.
    */
-  public function createUpdate(ContactCreateUpdateRequest $request)
+  public function storeUpdate(ContactStoreUpdateRequest $request)
   {
     $user = auth()->user();
 
