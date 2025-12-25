@@ -9,9 +9,8 @@ enum ArtworkStatus: string
   case Available = 'available';
   case OnHold = 'on_hold';
   case Sold = 'sold';
-  case ConsignedOut = 'consigned_out';
-  case OnLoan = 'on_loan';
   case InTransit = 'in_transit';
+  case ConsignedOut = 'consigned_out';
 
   public function label(): string
   {
@@ -24,9 +23,8 @@ enum ArtworkStatus: string
       self::Available => 'green',
       self::OnHold => 'yellow',
       self::Sold => 'red',
-      self::ConsignedOut => 'teal',
-      self::OnLoan => 'blue',
       self::InTransit => 'purple',
+      self::ConsignedOut => 'teal',
     };
   }
 }
