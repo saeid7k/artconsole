@@ -6,6 +6,7 @@ import FormattedDimensions from "@/Components/FormattedDimensions";
 import ImageGallery from "@/Components/ImageGallery";
 import LocationStack from "@/Components/LocationStack";
 import PageTitle from "@/Components/PageTitle";
+import TextboxExpandable from "@/Components/TextboxExpandable";
 import { getArtworkCategoryLabel } from "@/constants/artworkCategories";
 import AppLayout from "@/Layouts/AppLayout";
 import { ArtworkProps } from "@/types/artwork";
@@ -26,10 +27,10 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
       />
       <div className="flex flex-col gap-3">
         <div className="flex flex-col lg:flex-row gap-3 w-full">
-          <Card className="lg:w-1/2">
+          <Card className="lg:w-1/2 lg:max-w-[600px]">
             <ImageGallery images={artwork.images} />
           </Card>
-          <Card className="lg:w-1/2">
+          <Card className="lg:w-1/2 grow max-h-[550px] overflow-y-auto">
             <ArtworkTitleStack
               artwork={artwork}
               linkedTitle={false}
@@ -37,6 +38,7 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
               serifTitle={true}
               className="mb-5"
             />
+            <TextboxExpandable content={artwork.description || 'No description.'} />
             <Divider />
             <DataCol>
               <DataRow
@@ -57,10 +59,8 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
                 value={<FormattedDimensions dimensions={artwork.dimensions} />}
                 labelClassName="min-w-[80px]"
               />
-            </DataCol>
-            <Divider />
-            <DataCol gap={2} >
-              <div className="flex gap-5 mb-3">
+              {/* Price & Location */}
+              <div className="flex flex-wrap gap-5 mt-3">
                 <div className="flex items-start gap-2">
                   {artwork.price ? (
                     <div className="text-lg">
@@ -80,6 +80,9 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
                   className="bg-light p-2"
                 />
               </div>
+            </DataCol>
+            <Divider />
+            <DataCol gap={2} >
               <DataRow
                 icon={<HugeiconsIcon icon={BarCode02Icon} size={18} />}
                 label="SKU:"
