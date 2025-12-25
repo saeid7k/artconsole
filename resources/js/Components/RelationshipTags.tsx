@@ -20,7 +20,12 @@ function RelationshipTags({ contact, manageButtonDelay = 2000 }: { contact: Cont
     let color = RELATIONSHIPS.find(rel => rel.value === relation)?.color || 'default';
 
     return (
-      <Tag color={color} className="capitalize" {...props}>
+      <Tag
+        color={color}
+        className="capitalize"
+        variant="solid"
+        {...props}
+      >
         {relation}
       </Tag>
     )
