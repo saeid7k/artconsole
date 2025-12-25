@@ -45,7 +45,7 @@ function ImageGallery({ images }: Props) {
       {images.length > 1 && (
         <div className="w-full mt-2 pb-1 overflow-x-auto flex gap-2 gallery-thumbnails">
           {images.map((image, index) => (
-            <div key={image.id} className="flex-shrink-0 w-20 h-20 border rounded overflow-hidden">
+            <div key={image.id} className="flex-shrink-0 w-10 h-10 sm:w-20 sm:h-20 border rounded overflow-hidden">
               <img
                 src={image.urls.thumb}
                 alt={image.file_name}
