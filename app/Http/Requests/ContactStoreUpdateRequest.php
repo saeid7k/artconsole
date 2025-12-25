@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Rules\Phone;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ContactCreateUpdateRequest extends FormRequest
+class ContactStoreUpdateRequest extends FormRequest
 {
   /**
    * Get the validation rules that apply to the request.

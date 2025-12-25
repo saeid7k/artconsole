@@ -30,7 +30,7 @@ function ContactFormDrawer({ mode = 'create', contact = null, show, onClose }: P
     form
       .validateFields()
       .then((values) => {
-        axios.post(route('contacts.create-update'), {
+        axios.post(route('contacts.store-update'), {
           ...values,
           mode: mode,
           contact_id: mode == 'update' ? contact?.id : null,
