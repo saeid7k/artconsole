@@ -8,11 +8,12 @@ type Props = {
   location: LocationProps;
   showAddress?: boolean;
   clamped?: boolean;
+  className?: string;
 }
 
-function LocationStack({ location, showAddress = false, clamped = true }: Props) {
+function LocationStack({ location, showAddress = false, clamped = true, className }: Props) {
   return(
-    <div className="flex items-start gap-1">
+    <div className={twMerge("flex items-start gap-1", className)}>
       <HugeiconsIcon icon={StoreLocation01Icon} color={colors.gray[400]} className="pt-0.5" />
       <div className="flex flex-col">
         <div>{location.name}</div>
