@@ -8,4 +8,9 @@ const ARTWORK_CATEGORIES = [
   { label: 'Mixed Media', value: 'mixed_media', color: colors.green },
 ];
 
-export default ARTWORK_CATEGORIES;
+function getArtworkCategoryLabel(value: string): string {
+  const category = ARTWORK_CATEGORIES.find(cat => cat.value === value);
+  return category ? category.label : value;
+}
+
+export { ARTWORK_CATEGORIES, getArtworkCategoryLabel };
