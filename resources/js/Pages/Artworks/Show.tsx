@@ -6,10 +6,11 @@ import FormattedDimensions from "@/Components/FormattedDimensions";
 import ImageGallery from "@/Components/ImageGallery";
 import LocationStack from "@/Components/LocationStack";
 import PageTitle from "@/Components/PageTitle";
+import { getArtworkCategoryLabel } from "@/constants/artworkCategories";
 import AppLayout from "@/Layouts/AppLayout";
 import { ArtworkProps } from "@/types/artwork";
 import { formatCurrency } from "@/utils/formatter";
-import { BrushIcon, MoneyBag01Icon, MoneyBag02Icon, PackageDimensions01Icon, PaintBucketIcon } from "@hugeicons/core-free-icons";
+import { BarCode02Icon, BrushIcon, Folder02Icon, GooglePhotosIcon, PackageDimensions01Icon, PaintBucketIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "@inertiajs/react";
 import { Card, Divider, Tabs } from "antd";
@@ -59,30 +60,61 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
             </DataCol>
             <Divider />
             <DataCol gap={2} >
-              <div className="flex items-start gap-2">
-                {artwork.price ? (
-                  <div className="text-lg">
-                    {formatCurrency(artwork.price, 0)}
-                  </div>
-                ) : (
-                  <div>
-                    <em>Price on request</em>
-                  </div>
-                )}
-                <ArtworkStatusTag status={artwork.status} />
+              <div className="flex gap-5 mb-3">
+                <div className="flex items-start gap-2">
+                  {artwork.price ? (
+                    <div className="text-lg">
+                      {formatCurrency(artwork.price, 0)}
+                    </div>
+                  ) : (
+                    <div>
+                      <em>Price on request</em>
+                    </div>
+                  )}
+                  <ArtworkStatusTag status={artwork.status} />
+                </div>
+                <LocationStack
+                  location={artwork.location}
+                  showAddress
+                  clamped={false}
+                  className="bg-light p-2"
+                />
               </div>
-              <LocationStack
-                location={artwork.location}
-                showAddress
-                clamped={false}
+              <DataRow
+                icon={<HugeiconsIcon icon={BarCode02Icon} size={18} />}
+                label="SKU:"
+                value={artwork.sku || 'N/A'}
+                labelClassName="min-w-[80px]"
+              />
+              <DataRow
+                icon={<HugeiconsIcon icon={Folder02Icon} size={18} />}
+                label="Category:"
+                value={getArtworkCategoryLabel(artwork.category)}
+                labelClassName="min-w-[80px]"
+              />
+              <DataRow
+                icon={<HugeiconsIcon icon={GooglePhotosIcon} size={18} />}
+                label="Subject:"
+                value={artwork.subject}
+                labelClassName="min-w-[80px]"
               />
             </DataCol>
             <div>{}</div>
           </Card>
         </div>
         <Card>
-          Tabs
-          <Tabs></Tabs>
+          <Tabs>
+            <Tabs.TabPane tab="Description" key="description">
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Images" key="images">
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Documents" key="documents">
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Financial" key="financial">
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="History" key="history">
+            </Tabs.TabPane>
+          </Tabs>
         </Card>
       </div>
     </div>
