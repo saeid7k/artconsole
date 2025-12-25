@@ -1,0 +1,46 @@
+import { Button } from "antd";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { twMerge } from "tailwind-merge";
+
+function TextboxExpandable({ content }: { content: string }) {
+
+  const isShortContent = content.length <= 100;
+
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  useEffect(() => {
+    if (isShortContent) {
+      setIsExpanded(true);
+    }
+  }, [isShortContent]);
+
+  return (
+    <div
+      className={twMerge("flex flex-nowrap gap-1",
+      isExpanded ? 'flex-col items-start' : ''
+    )}>
+      <div
+        className={twMerge("w-full",
+          isExpanded ? '' : 'line-clamp-1 max-w-[400px] text-muted'
+        )}
+      >
+        {content}
+      </div>
+      <motion.div layout>
+        <Button
+          size="small"
+          type="dashed"
+          className={twMerge("text-xs text-muted",
+            isShortContent ? 'hidden' : ''
+          )}
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          {isExpanded ? 'Less' : 'More'}
+        </Button>
+      </motion.div>
+    </div>
+  )
+}
+
+export default TextboxExpandable;
