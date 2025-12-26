@@ -27,8 +27,9 @@
 
 :root {
   --bg-light: theme('colors.gray.50');
-  --bg-gray: theme('colors.gray.100');
+  --bg-soft: theme('colors.gray.100');
   --border-light: theme('colors.gray.200');
+  --border-soft: theme('colors.gray.300');
   --text-label: theme('colors.gray.500');
   --text-muted: theme('colors.gray.400');
   --text-body: theme('colors.gray.800');
@@ -73,6 +74,7 @@
   --bg-light: theme('colors.slate.800');
   --bg-gray: theme('colors.slate.700');
   --border-light: theme('colors.slate.700');
+  --border-soft: theme('colors.slate.600');
   --text-label: theme('colors.gray.400');
   --text-muted: theme('colors.gray.500');
   --text-body: theme('colors.gray.200');
@@ -103,12 +105,16 @@ code {
   background-color: var(--bg-light);
 }
 
-.bg-gray {
-  background-color: var(--bg-gray);
+.bg-soft {
+  background-color: var(--bg-soft);
 }
 
 .border-light {
   border-color: var(--border-light);
+}
+
+.border-soft {
+  border-color: var(--border-soft);
 }
 
 .text-muted {
