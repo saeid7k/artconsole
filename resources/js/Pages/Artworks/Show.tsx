@@ -11,19 +11,40 @@ import { getArtworkCategoryLabel } from "@/constants/artworkCategories";
 import AppLayout from "@/Layouts/AppLayout";
 import { ArtworkProps } from "@/types/artwork";
 import { formatCurrency } from "@/utils/formatter";
-import { BarCode02Icon, BrushIcon, Folder02Icon, GooglePhotosIcon, PackageDimensions01Icon, PaintBucketIcon } from "@hugeicons/core-free-icons";
+import { BarCode02Icon, BrushIcon, Folder02Icon, GooglePhotosIcon, PackageDimensions01Icon, PaintBucketIcon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Link } from "@inertiajs/react";
-import { Card, Divider, Tabs } from "antd";
-import React from "react";
+import { Link, router } from "@inertiajs/react";
+import { Button, Card, Divider, Tabs, Tooltip } from "antd";
+import React, { useState } from "react";
+import ArtworkFormDrawer from "./Partials/ArtworkFormDrawer";
 
 function Show ({ artwork }: { artwork: ArtworkProps }) {
+
+  // Edit Drawer
+
+  const [showEditDrawer, setShowEditDrawer] = useState(false)
+
   return (
     <div>
       <PageTitle
         breadcrumbItems={[
           { title: <Link href={route('artworks.index')}>Artworks</Link> },
-          { title: artwork.title }]}
+          { title: artwork.title }
+        ]}
+        toolbar={
+          <div>
+            <Tooltip title="Edit Artwork" mouseEnterDelay={1} >
+              <Button
+                type="text"
+                shape="circle"
+                onClick={() => setShowEditDrawer(true)}
+                disabled={!artwork.abilities.update}
+              >
+                <HugeiconsIcon icon={PencilEdit02Icon} size={20} />
+              </Button>
+            </Tooltip>
+          </div>
+        }
       />
       <div className="flex flex-col gap-3">
         <div className="flex flex-col lg:flex-row gap-3 w-full">
@@ -120,6 +141,12 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
           </Tabs>
         </Card>
       </div>
+      <ArtworkFormDrawer
+        artwork={artwork}
+        show={showEditDrawer}
+        onClose={() => { setShowEditDrawer(false); router.reload() }}
+        mode="update"
+      />
     </div>
   )
 }
