@@ -185,4 +185,15 @@ class ContactController extends Controller
 
     return Response()->json(['message' => 'Contact relationships updated successfully']);
   }
+
+  public function getArtists(Request $request)
+  {
+    $user = auth()->user();
+    $gallery = $user->currentGallery();
+
+    $artists = $gallery->artists()
+      ->get();
+
+    return Response()->json($artists);
+  }
 }

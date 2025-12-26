@@ -21,13 +21,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::get('/interval-data', [AppLayoutController::class, 'intervalData'])->name('interval-data');
 
   Route::prefix('contacts')->name('contacts.')->group(function () {
-    Route::get('/', [ContactController::class, 'index'])->name('index');
-    Route::get('/{contact}', [ContactController::class, 'show'])->name('show');
-    Route::post('/update-photo', [ContactController::class, 'updatePhoto'])->name('update-photo');
-    Route::post('/store-update', [ContactController::class, 'storeUpdate'])->name('store-update');
-    Route::post('/{contact}/delete', [ContactController::class, 'destroy'])->name('delete');
-    Route::post('/{contact}/update-relationships', [ContactController::class, 'updateRelationships'])->name('update-relationships');
+    Route::get('/', [App\Http\Controllers\ContactController::class, 'index'])->name('index');
+    Route::get('/{contact}', [App\Http\Controllers\ContactController::class, 'show'])->name('show');
+    Route::post('/update-photo', [App\Http\Controllers\ContactController::class, 'updatePhoto'])->name('update-photo');
+    Route::post('/store-update', [App\Http\Controllers\ContactController::class, 'storeUpdate'])->name('store-update');
+    Route::post('/{contact}/delete', [App\Http\Controllers\ContactController::class, 'destroy'])->name('delete');
+    Route::post('/{contact}/update-relationships', [App\Http\Controllers\ContactController::class, 'updateRelationships'])->name('update-relationships');
   });
+
+  Route::get('/artists', [App\Http\Controllers\ContactController::class, 'getArtists'])->name('artists');
 
   Route::prefix('galleries')->name('galleries.')->group(function () {
     Route::post('/create', [App\Http\Controllers\GalleryController::class, 'create'])->name('create');
