@@ -7,11 +7,11 @@ import { useWindow } from "@/hooks/useWindow";
 import colors from "@/Themes/theme";
 import { ArrowLeftDoubleFreeIcons, ArrowRightDoubleFreeIcons } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { usePage } from "@inertiajs/react";
-import { Button, ConfigProvider, Layout, message, theme } from "antd";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Button, ConfigProvider, Layout, theme } from "antd";
 import { Content, Footer, Header } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
-import React, { PropsWithChildren, useEffect, useState } from "react";
+import React, { PropsWithChildren } from "react";
 
 interface AppProps extends PropsWithChildren {
   title?: string|React.ReactNode,
@@ -65,52 +65,54 @@ function App ({ children }: AppProps) {
         },
       }}
     >
-      <Layout className="fixed w-full h-full">
-        <Header
-          className={`flex justify-between items-center leading-normal sticky top-0 z-10 w-full transition-all ${
-            scrollY > 0 ? ' shadow-md' : ''
-          }`}
-        >
-          <div>
-            <GallerySwitch />
-          </div>
-          <TopbarActions />
-        </Header>
-        <Layout className="relative">
-          <Button
-            shape="circle"
-            type="default"
-            className={`absolute top-2 z-10`}
-            style={{ left: sidebarCollapsed ? collapsedWidth - 16 : expandedWidth - 16 }}
-            onClick={toggleSidebar}
+      <QueryClientProvider client={new QueryClient()} >
+        <Layout className="fixed w-full h-full">
+          <Header
+            className={`flex justify-between items-center leading-normal sticky top-0 z-10 w-full transition-all ${
+              scrollY > 0 ? ' shadow-md' : ''
+            }`}
           >
-            <HugeiconsIcon size={20} icon={ArrowLeftDoubleFreeIcons} altIcon={ArrowRightDoubleFreeIcons} showAlt={sidebarCollapsed} />
-          </Button>
-          <Sider
-            // theme="light"
-            className="h-full overflow-y-auto overflow-x-visible"
-            collapsed={sidebarCollapsed}
-            collapsedWidth={collapsedWidth}
-            width={expandedWidth}
-          >
-            <Sidebar />
-          </Sider>
-          {/* <div className="relative h-full">
-          </div> */}
-          <Layout
-            className="overflow-y-auto my-1"
-          >
-            <Content
-              className="p-3 w-full m-x-auto"
+            <div>
+              <GallerySwitch />
+            </div>
+            <TopbarActions />
+          </Header>
+          <Layout className="relative">
+            <Button
+              shape="circle"
+              type="default"
+              className={`absolute top-2 z-10`}
+              style={{ left: sidebarCollapsed ? collapsedWidth - 16 : expandedWidth - 16 }}
+              onClick={toggleSidebar}
             >
-              {children}
-            </Content>
+              <HugeiconsIcon size={20} icon={ArrowLeftDoubleFreeIcons} altIcon={ArrowRightDoubleFreeIcons} showAlt={sidebarCollapsed} />
+            </Button>
+            <Sider
+              // theme="light"
+              className="h-full overflow-y-auto overflow-x-visible"
+              collapsed={sidebarCollapsed}
+              collapsedWidth={collapsedWidth}
+              width={expandedWidth}
+            >
+              <Sidebar />
+            </Sider>
+            {/* <div className="relative h-full">
+            </div> */}
+            <Layout
+              className="overflow-y-auto my-1"
+            >
+              <Content
+                className="p-3 w-full m-x-auto"
+              >
+                {children}
+              </Content>
+            </Layout>
           </Layout>
+          <Footer className="py-2">
+            <div className="text-center">...footer...</div>
+          </Footer>
         </Layout>
-        <Footer className="py-2">
-          <div className="text-center">...footer...</div>
-        </Footer>
-      </Layout>
+      </QueryClientProvider>
       <ServerFlashMessage />
     </ConfigProvider>
   )
