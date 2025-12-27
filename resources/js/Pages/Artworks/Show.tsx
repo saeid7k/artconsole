@@ -36,11 +36,12 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
             <Tooltip title="Edit Artwork" mouseEnterDelay={1} >
               <Button
                 type="text"
-                shape="circle"
+                shape="square"
                 onClick={() => setShowEditDrawer(true)}
                 disabled={!artwork.abilities.update}
               >
                 <HugeiconsIcon icon={PencilEdit02Icon} size={20} />
+                Edit
               </Button>
             </Tooltip>
           </div>
