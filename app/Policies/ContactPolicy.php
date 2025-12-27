@@ -23,6 +23,12 @@ class ContactPolicy
     return $gallery ? $gallery->isMember($user) : false;
   }
 
+  public function viewAny(User $user): bool
+  {
+    $gallery = $user->currentGallery();
+    return $gallery ? $gallery->isMember($user) : false;
+  }
+
   public function delete(User $user, Contact $contact): bool
   {
     return $this->isEditorOrOwner($user);
