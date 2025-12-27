@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ArtworkStoreUpdateRequest;
 use App\Models\Artwork;
 use Illuminate\Http\Request;
 
@@ -64,5 +65,23 @@ class ArtworkController extends Controller
     return inertia('Artworks/Show', [
       'artwork' => $artwork,
     ]);
+  }
+
+  public function storeUpdate(ArtworkStoreUpdateRequest $request)
+  {
+
+    if ($request->mode == 'create') {
+      $user = auth()->user();
+
+    } elseif ($request->mode == 'update') {
+      $artwork = Artwork::find($request->artwork_id);
+      $this->authorize('update', $artwork);
+
+      $artwork->update($request->all());
+      return response()->json([
+        'message' => 'Artwork updated successfully.',
+        'artwork_id' => $artwork->id,
+      ]);
+    }
   }
 }
