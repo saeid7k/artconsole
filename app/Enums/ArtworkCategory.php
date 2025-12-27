@@ -38,4 +38,9 @@ enum ArtworkCategory: string
       self::MixedMedia => 'MMD',
     };
   }
+
+  public static function stringifyAll(): string
+  {
+    return implode(',', array_map(fn($case) => $case->value, self::cases()));
+  }
 }

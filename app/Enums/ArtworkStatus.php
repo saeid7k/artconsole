@@ -27,4 +27,9 @@ enum ArtworkStatus: string
       self::ConsignedOut => 'teal',
     };
   }
+
+  public static function stringifyAll(): string
+  {
+    return implode(',', array_map(fn($case) => $case->value, self::cases()));
+  }
 }

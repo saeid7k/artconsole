@@ -25,4 +25,9 @@ enum ArtworkEdition: string
       self::Open => 'green'
     };
   }
+
+  public static function stringifyAll(): string
+  {
+    return implode(',', array_map(fn($case) => $case->value, self::cases()));
+  }
 }
