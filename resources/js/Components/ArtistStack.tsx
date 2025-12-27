@@ -2,19 +2,21 @@ import { ContactProps } from '@/types/contact';
 import { LinkSquare02Icon, Unlink02Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Button, Tooltip } from 'antd';
+import ContactAvatar from './ContactAvatar';
 
 type Props = {
-  artist?: ContactProps;
+  artist: ContactProps;
   viewButton?: boolean;
-  clearFunction?: () => void;
+  unsetFunction?: () => void;
   className?: string;
 }
 
-function ArtistStack({ artist, viewButton = true, clearFunction, className }: Props) {
+function ArtistStack({ artist, viewButton = true, unsetFunction, className }: Props) {
   return (
     <div className={`flex gap-1 ${className}`}>
-      <div className="border border-dashed border-soft rounded py-1 px-2 w-max">
-        <div className="flex flex-col">
+      <div className="flex items-center gap-1 border border-dashed border-soft rounded py-1 px-2 w-max">
+        <ContactAvatar contact={artist} />
+        <div className="flex flex-col leading-tight">
           <label className=''>Artist</label>
           <div>{artist?.full_name}</div>
         </div>
@@ -32,14 +34,14 @@ function ArtistStack({ artist, viewButton = true, clearFunction, className }: Pr
             />
           </Tooltip>
         )}
-        {typeof clearFunction === 'function' && (
-          <Tooltip title="Clear Artist" placement="right">
+        {typeof unsetFunction === 'function' && (
+          <Tooltip title="Unset Artist" placement="right">
             <Button
               size='small'
               variant='text'
               color='red'
               icon={<HugeiconsIcon icon={Unlink02Icon} size={16} />}
-              onClick={clearFunction}
+              onClick={unsetFunction}
             />
           </Tooltip>
         )}
