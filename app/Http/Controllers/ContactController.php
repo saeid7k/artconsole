@@ -226,6 +226,8 @@ class ContactController extends Controller
 
     $artists = $gallery->artists()
       ->select('id', 'firstname', 'lastname')
+      ->orderBy('firstname', 'asc')
+      ->orderBy('lastname', 'asc')
       ->get();
 
     return Response()->json($artists);
