@@ -13,29 +13,38 @@ class AppSeeder extends Seeder
    */
   public function run(): void
   {
-    $mediums = Tag::factory()->createMany(
-      array_map(fn($medium) => [
+    $this->createDefaultTags();
+  }
+
+  private function createDefaultTags()
+  {
+    $this->command->comment('Creating default tags...');
+
+    foreach (self::MEDIUMS as $medium) {
+      Tag::create([
         'gallery_id' => null,
         'type' => 'medium',
         'value' => $medium,
-      ], self::MEDIUMS)
-    );
+      ]);
+    }
 
-    $styles = Tag::factory()->createMany(
-      array_map(fn($style) => [
+    foreach (self::STYLES as $style) {
+      Tag::create([
         'gallery_id' => null,
         'type' => 'style',
         'value' => $style,
-      ], self::STYLES)
-    );
+      ]);
+    }
 
-    $subjects = Tag::factory()->createMany(
-      array_map(fn($subject) => [
+    foreach (self::SUBJECTS as $subject) {
+      Tag::create([
         'gallery_id' => null,
         'type' => 'subject',
         'value' => $subject,
-      ], self::SUBJECTS)
-    );
+      ]);
+    }
+
+    $this->command->info('✅' . ' Default tags created.');
   }
 
   private const MEDIUMS = [
