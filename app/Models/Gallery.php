@@ -93,6 +93,17 @@ class Gallery extends Model implements HasMedia
     return $this->hasMany(Artwork::class);
   }
 
+  public function tags($type = null): HasMany
+  {
+    return $this->hasMany(Tag::class)
+      ->orWhere(function ($query) {
+        $query->whereNull('gallery_id');
+      })
+      ->when($type, function ($q) use ($type) {
+        $q->where('type', $type);
+      });
+  }
+
   // Methods
 
   public function isMember(User $user)
