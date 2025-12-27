@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\DataHelper;
 use App\Http\Requests\ContactStoreUpdateRequest;
 use App\Models\Contact;
 use App\Models\Media;
@@ -77,7 +78,37 @@ class ContactController extends Controller
    */
   public function store(Request $request)
   {
-    //
+    $this->authorize('create', Contact::class);
+
+    $user = auth()->user();
+    $gallery = $user->currentGallery();
+
+    $validated = $request->validate([
+      'name' => ['required_without_all:firstname,lastname', 'string', 'max:255'],
+      'firstname' => ['required_without_all:name,lastname', 'string', 'max:255'],
+      'lastname' => ['required_without_all:name,firstname', 'string', 'max:255'],
+      'email' => ['nullable', 'email', 'max:255'],
+      'phone' => ['nullable', 'string', 'max:50'],
+      'address' => ['nullable', 'array'],
+      'website' => ['nullable', 'url', 'max:255'],
+      'relationship' => ['nullable', 'array'],
+      'business' => ['nullable', 'array'],
+      'birthday' => ['nullable', 'date'],
+    ]);
+
+    if (isset($validated['name'])) {
+      [
+        'firstname' => $validated['firstname'],
+        'lastname' => $validated['lastname']
+      ] = DataHelper::fullnameExplode($validated['name']);
+    }
+
+    $entry = $gallery->contacts()->create($validated);
+
+    return Response()->json([
+      'message' => 'Contact created successfully',
+      'contact' => $entry
+    ]);
   }
 
   /**
