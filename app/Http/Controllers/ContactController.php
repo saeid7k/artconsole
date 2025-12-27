@@ -188,10 +188,13 @@ class ContactController extends Controller
 
   public function getArtists(Request $request)
   {
+    $this->authorize('viewAny', Contact::class);
+
     $user = auth()->user();
     $gallery = $user->currentGallery();
 
     $artists = $gallery->artists()
+      ->select('id', 'firstname', 'lastname')
       ->get();
 
     return Response()->json($artists);
