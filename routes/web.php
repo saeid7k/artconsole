@@ -44,6 +44,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::prefix('artworks')->name('artworks.')->group(function () {
     Route::get('/', [App\Http\Controllers\ArtworkController::class, 'index'])->name('index');
     Route::get('/{artwork}', [App\Http\Controllers\ArtworkController::class, 'show'])->name('show');
+    Route::post('/store-update', [App\Http\Controllers\ArtworkController::class, 'storeUpdate'])->name('store-update');
   });
 
   Route::prefix('members')->name('members.')->group(function () {
