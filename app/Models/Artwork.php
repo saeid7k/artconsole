@@ -93,6 +93,21 @@ class Artwork extends Model implements HasMedia
     $this->attributes['artist_data'] = json_encode($value);
   }
 
+  public function setEditionAttribute($value)
+  {
+    if ($value['type'] === 'unique') {
+      $value['number'] = 1;
+      $value['size'] = 1;
+    } elseif ($value['type'] === 'open') {
+      $value['size'] = null;
+      $value['number'] = (int) $value['number'];
+    } else {
+      $value['number'] = (int) $value['number'];
+      $value['size'] = (int) $value['size'];
+    }
+    $this->attributes['edition'] = json_encode($value);
+  }
+
   // Relationships
 
   public function gallery()
