@@ -22,23 +22,23 @@ return new class extends Migration
       $table->json('artist_data')->nullable(); // Store artist data when is not linked to a Contact
 
       $table->string('sku', 10)->nullable(); // PNT-25-001
-      $table->string('category', 100); // e.g., Painting, Sculpture, Photography
-      $table->json('edition', 100)->nullable(); // e.g., {type: (Unique | Limited Edition | Open Edition), number: 1, size: 50}
+      $table->string('category', 100);
+      $table->json('edition', 100)->nullable(); // {type: [unique|limited|open], number: 1, size: 50}
 
       $table->string('title', 255);
       $table->string('subject', 100)->nullable();
       $table->text('description')->nullable();
-      $table->string('year', 100)->nullable(); // e.g., 2023, Circa 19th Century
+      $table->string('year', 100)->nullable(); // 2023, Circa 19th Century
       $table->json('dimensions')->nullable();
       $table->decimal('price', 10, 2)->nullable();
 
-      $table->string('medium', 100)->nullable(); // e.g., Oil on Canvas
-      $table->json('styles')->nullable(); // e.g., Abstract, Realism
-      $table->json('collections')->nullable(); // e.g., Modern Art, Renaissance
+      $table->string('medium', 100)->nullable(); // Oil on Canvas
+      $table->json('styles')->nullable(); // Abstract, Realism
+      $table->json('collections')->nullable(); // Modern Art, Renaissance
 
       $table->string('ownership', 50)->nullable(); // owned | consigned
       $table->foreignId('owner_contact_id')->nullable()->constrained('contacts')->nullOnDelete();
-      $table->string('status', 50)->default('available'); // e.g., available, sold, on loan
+      $table->string('status', 50)->default('available');
 
       $table->json('details')->nullable(); // Additional metadata
       $table->text('notes')->nullable();
