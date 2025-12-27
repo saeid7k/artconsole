@@ -22,4 +22,15 @@ class DataHelper
     if (is_array($object)) return array_map([self::class, 'objectToArray'], $object);
     return $object;
   }
+
+  public static function fullnameExplode($fullname)
+  {
+    $parts = explode(' ', trim($fullname), 2);
+    $firstname = $parts[0];
+    $lastname = $parts[1] ?? '';
+    return [
+      'firstname' => $firstname,
+      'lastname' => $lastname,
+    ];
+  }
 }
