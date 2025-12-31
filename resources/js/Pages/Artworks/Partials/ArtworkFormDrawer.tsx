@@ -2,6 +2,7 @@ import ArtistStack from "@/Components/ArtistStack";
 import { ARTWORK_CATEGORIES } from "@/constants/artworkCategories";
 import ARTWORK_EDITIONS from "@/constants/artworkEditions";
 import { ArtworkProps } from "@/types/artwork";
+import { stringifyArray } from "@/utils/stringHelper";
 import { router } from "@inertiajs/react";
 import { useQuery } from "@tanstack/react-query";
 import { Button, Divider, Drawer, Form, Input, message, Select } from "antd";
@@ -127,6 +128,17 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
     }
   }
 
+  // Options fetching
+
+  const { data: groupedTags, isPending: isTagsLoading, isFetching: isTagsFetching } = useQuery({
+    queryKey: ['tags-grouped-query'],
+    queryFn: () =>
+      axios
+        .get(route('tags.get-grouped'))
+        .then(res => res.data),
+    enabled: show,
+  })
+
   // Watchers
 
   const watchArtistId = Form.useWatch('artist_id', form);
@@ -177,6 +189,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
         </Form.Item>
 
         {/* Artist Stack */}
+
         <AnimatePresence>
           {watchArtistId && artistSelected && (
             <motion.div
@@ -195,6 +208,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
         </AnimatePresence>
 
         {/* Artist Selector */}
+
         {!watchArtistId && (
           <div className="flex gap-1">
             <Form.Item
@@ -225,6 +239,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
         )}
 
         {/* Edition */}
+
         <div className="flex flex-col sm:flex-row gap-2">
           <Form.Item
             label="Edition"
@@ -266,6 +281,8 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
           </Form.Item>
         </div>
 
+        {/* Year & Description */}
+
         <Form.Item
           label="Year"
           name="year"
@@ -286,14 +303,27 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
 
         <Divider />
 
+        {/* Mediums */}
+
         <Form.Item
           label="Medium"
           name="medium"
         >
-          <Input />
+          <Select
+            mode="tags"
+            options={groupedTags ? groupedTags['medium']?.map((tag: string) => ({
+              label: tag,
+              value: tag,
+            })) : []}
+            placeholder="Select or type a medium"
+            maxCount={1}
+            onChange={(value) => form.setFieldValue('medium', stringifyArray(value))}
+            disabled={isTagsLoading || isTagsFetching}
+          />
         </Form.Item>
 
         <Divider />
+
         <Form.Item
           label="Category"
           name="category"
