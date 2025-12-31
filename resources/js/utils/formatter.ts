@@ -33,6 +33,7 @@ function formatCurrency(amount: number | string, maximumFractionDigits: number =
   return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: currency,
+    minimumFractionDigits: 0,
     maximumFractionDigits: maximumFractionDigits,
   }).format(num);
 }
