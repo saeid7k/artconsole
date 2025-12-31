@@ -121,7 +121,7 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
       sorter: (a, b) => a.price - b.price,
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
-      render: (text) => formatCurrency(text, 0),
+      render: (text) => formatCurrency(text, 2),
       // width: 250,
     },
     {
