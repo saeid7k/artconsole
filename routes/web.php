@@ -76,6 +76,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/mark-all-as-read', [App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('mark-all-as-read');
     Route::post('/{notification_id}/mark-as-unread', [App\Http\Controllers\NotificationController::class, 'markAsUnread'])->name('mark-as-unread');
   });
+
+  Route::prefix('tags')->name('tags.')->group(function () {
+    Route::get('/grouped', [App\Http\Controllers\TagController::class, 'getGroupedTags'])->name('get-grouped');
+  });
 });
 
 Route::middleware(['auth', Admin::class])->group(function () {
