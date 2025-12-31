@@ -78,7 +78,7 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
               <DataRow
                 icon={<HugeiconsIcon icon={PackageDimensions01Icon} size={18} />}
                 label="Size:"
-                value={<FormattedDimensions dimensions={artwork.dimensions} />}
+                value={<FormattedDimensions dimensions={artwork.dimensions} showDepth />}
                 labelClassName="min-w-[80px]"
               />
               {/* Price & Location */}
@@ -86,7 +86,7 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
                 <div className="flex items-start gap-2">
                   {artwork.price ? (
                     <div className="text-lg">
-                      {formatCurrency(artwork.price, 0)}
+                      {formatCurrency(artwork.price, 2)}
                     </div>
                   ) : (
                     <div>
