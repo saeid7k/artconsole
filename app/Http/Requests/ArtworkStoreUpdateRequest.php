@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Enums\ArtworkCategory;
 use App\Enums\ArtworkEdition;
 use App\Enums\ArtworkStatus;
+use App\Helpers\FormatHelper;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ArtworkStoreUpdateRequest extends FormRequest
@@ -47,13 +48,18 @@ class ArtworkStoreUpdateRequest extends FormRequest
     ];
   }
 
-  // public function messages(): array
-  // {
-  //   return [
-  //   ];
-  // }
+  public function messages(): array
+  {
+    return [
+      'price.decimal' => 'The price must be a valid monetary amount with up to two decimal places.',
+    ];
+  }
 
-  // public function prepareForValidation()
-  // {
-  // }
+  public function prepareForValidation()
+  {
+    $newPrice = FormatHelper::toFloat($this->input('price'));
+    $this->merge([
+      'price' => $newPrice,
+    ]);
+  }
 }
