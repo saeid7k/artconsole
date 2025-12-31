@@ -5,7 +5,7 @@ import { ArtworkProps } from "@/types/artwork";
 import { stringifyArray } from "@/utils/stringHelper";
 import { router } from "@inertiajs/react";
 import { useQuery } from "@tanstack/react-query";
-import { Button, Divider, Drawer, Form, Input, message, Select } from "antd";
+import { Button, Divider, Drawer, Form, Input, message, Radio, Select } from "antd";
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
@@ -238,13 +238,24 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
           </div>
         )}
 
-        {/* Edition */}
+        {/* Year & Edition */}
 
         <div className="flex flex-col sm:flex-row gap-2">
           <Form.Item
+            label="Year"
+            name="year"
+            rules={[
+              { required: false },
+              { pattern: /^\d{4}$/, message: 'Year must be a 4-digit number' }
+            ]}
+            className="sm:w-1/4"
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
             label="Edition"
             name={["edition", "type"]}
-            className="sm:w-1/3"
+            className="sm:w-1/4"
           >
             <Select
               options={ARTWORK_EDITIONS}
@@ -253,7 +264,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
           <Form.Item
             label="Work #"
             name={["edition", "number"]}
-            className="sm:w-1/3"
+            className="sm:w-1/4"
             hidden={watchEditionType === 'unique'}
           >
             <Input
@@ -265,7 +276,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
           <Form.Item
             label="Size"
             name={["edition", "size"]}
-            className="sm:w-1/3"
+            className="sm:w-1/4"
             hidden={['unique', 'open'].includes(watchEditionType)}
           >
             <Input
@@ -281,18 +292,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
           </Form.Item>
         </div>
 
-        {/* Year & Description */}
-
-        <Form.Item
-          label="Year"
-          name="year"
-          rules={[
-            { required: false },
-            { pattern: /^\d{4}$/, message: 'Year must be a 4-digit number' }
-          ]}
-        >
-          <Input />
-        </Form.Item>
+        {/* Description */}
 
         <Form.Item
           label='Description'
@@ -303,7 +303,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
 
         <Divider />
 
-        {/* Mediums */}
+        {/* Medium & Styles */}
 
         <Form.Item
           label="Medium"
@@ -321,6 +321,63 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
             disabled={isTagsLoading || isTagsFetching}
           />
         </Form.Item>
+
+        <Form.Item
+          label="Styles"
+          name="styles"
+        >
+          <Select
+            mode="tags"
+            options={groupedTags ? groupedTags['style']?.map((tag: string) => ({
+              label: tag,
+              value: tag,
+            })) : []}
+            placeholder="Select or type styles"
+            // maxCount={1}
+            // onChange={(value) => form.setFieldValue('styles', stringifyArray(value))}
+            disabled={isTagsLoading || isTagsFetching}
+          />
+        </Form.Item>
+
+        {/* Size */}
+
+        <div className="flex flex-col sm:flex-row gap-2">
+          <Form.Item
+            label="Width"
+            name={["dimensions", "width"]}
+            className="sm:w-1/4"
+          >
+            <Input type='number' min={1} />
+          </Form.Item>
+          <Form.Item
+            label="Height"
+            name={["dimensions", "height"]}
+            className="sm:w-1/4"
+          >
+            <Input type='number' min={1} />
+          </Form.Item>
+          <Form.Item
+            label="Depth"
+            name={["dimensions", "depth"]}
+            className="sm:w-1/4"
+          >
+            <Input type='number' min={1} />
+          </Form.Item>
+          <Form.Item
+            label="Unit"
+            name={["dimensions", "unit"]}
+            className="sm:w-1/4"
+          >
+            <Radio.Group
+              block
+              optionType="button"
+              options={[
+                { label: 'inches', value: 'inches' },
+                { label: 'cm', value: 'cm' },
+              ]}
+            />
+          </Form.Item>
+        </div>
 
         <Divider />
 
