@@ -33,4 +33,16 @@ function keyToTitle(key: string): string {
   return label;
 }
 
-export { ucFirst, getInitials, keyToTitle }
+function stringifyArray(arr: string[] | string | null | undefined): string {
+  if (Array.isArray(arr) && arr.length == 1) {
+    return String(arr[0]);
+  }
+
+  if (!Array.isArray(arr)) {
+    return String(arr || '');
+  }
+
+  return arr.map(item => String(item)).join(', ');
+}
+
+export { ucFirst, getInitials, keyToTitle, stringifyArray };
