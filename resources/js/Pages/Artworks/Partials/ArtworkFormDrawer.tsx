@@ -1,11 +1,13 @@
 import ArtistStack from "@/Components/ArtistStack";
 import { ARTWORK_CATEGORIES } from "@/constants/artworkCategories";
 import ARTWORK_EDITIONS from "@/constants/artworkEditions";
+import ARTWORK_STATUSES from "@/constants/artworkStatuses";
 import { ArtworkProps } from "@/types/artwork";
+import { formatCurrency } from "@/utils/formatter";
 import { stringifyArray } from "@/utils/stringHelper";
 import { router } from "@inertiajs/react";
 import { useQuery } from "@tanstack/react-query";
-import { Button, Divider, Drawer, Form, Input, message, Radio, Select } from "antd";
+import { Button, Divider, Drawer, Form, Input, InputNumber, message, Radio, Select, Space } from "antd";
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
@@ -162,17 +164,35 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
         initialValues={artwork ? artwork : {}}
         validateTrigger="onBlur"
       >
-        <Form.Item
-          label="Title"
-          name="title"
-          rules={[
-            { required: true, message: 'Title is required' },
-            { max: 255, message: 'Title cannot exceed 255 characters' }
-          ]}
-          className=""
-        >
-          <Input />
-        </Form.Item>
+        {/* Title & Status */}
+
+        <div className="flex flex-col sm:flex-row gap-x-2">
+          <Form.Item
+            label="Title"
+            name="title"
+            rules={[
+              { required: true, message: 'Title is required' },
+              { max: 255, message: 'Title cannot exceed 255 characters' }
+            ]}
+            className="sm:w-3/4"
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Status"
+            name="status"
+            rules={[{ required: true, message: 'Status is required' }]}
+            className="sm:w-1/4"
+          >
+            <Select
+              defaultValue="available"
+              options={ARTWORK_STATUSES}
+            />
+          </Form.Item>
+        </div>
+
+        {/* Artist Data */}
+
         <Form.Item
           label="Artist ID"
           name="artist_id"
@@ -347,21 +367,21 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
             name={["dimensions", "width"]}
             className="sm:w-1/4"
           >
-            <Input type='number' min={1} />
+            <InputNumber min={1} className="w-full" />
           </Form.Item>
           <Form.Item
             label="Height"
             name={["dimensions", "height"]}
             className="sm:w-1/4"
           >
-            <Input type='number' min={1} />
+            <InputNumber min={1} className="w-full" />
           </Form.Item>
           <Form.Item
             label="Depth"
             name={["dimensions", "depth"]}
             className="sm:w-1/4"
           >
-            <Input type='number' min={1} />
+            <InputNumber min={1} className="w-full" />
           </Form.Item>
           <Form.Item
             label="Unit"
@@ -378,6 +398,26 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
             />
           </Form.Item>
         </div>
+
+        {/* Price */}
+
+        <Form.Item
+          label="Price"
+          name="price"
+          className="sm:w-1/4"
+        >
+          <Space.Compact>
+            <Space.Addon>$</Space.Addon>
+            <InputNumber
+              min={0}
+              step={1}
+              className="w-full"
+              defaultValue={form.getFieldValue('price')}
+              onChange={(value) => form.setFieldValue('price', value)}
+              formatter={(value) => value ? Intl.NumberFormat('en-CA').format(value) : ''}
+            />
+          </Space.Compact>
+        </Form.Item>
 
         <Divider />
 
