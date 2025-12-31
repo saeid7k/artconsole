@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ArtworkCategory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
@@ -79,33 +80,50 @@ class Artwork extends Model implements HasMedia
 
   // Attributes
 
-  public function getArtistDataAttribute($value)
+  public function artistData(): Attribute
   {
-    if ($this->artist_id) {
-      return $this->artist;
-    } else {
-      return json_decode($value);
-    }
+    return new Attribute(
+      get: function ($value) {
+        if ($this->artist_id) {
+          return $this->artist;
+        } else {
+          return json_decode($value);
+        }
+      },
+      set: fn ($value) => json_encode($value),
+    );
   }
 
-  public function setArtistDataAttribute($value)
+  public function edition(): Attribute
   {
-    $this->attributes['artist_data'] = json_encode($value);
+    return new Attribute(
+      set: function ($value) {
+        $value['type'] = $value['type'] ?? 'unique';
+        if ($value['type'] === 'unique') {
+          $value['number'] = 1;
+          $value['size'] = 1;
+        } elseif ($value['type'] === 'open') {
+          $value['size'] = null;
+          $value['number'] = (int) $value['number'];
+        } else {
+          $value['number'] = (int) $value['number'];
+          $value['size'] = (int) $value['size'];
+        }
+        return json_encode($value);
+      },
+    );
   }
 
-  public function setEditionAttribute($value)
+  public function dimensions(): Attribute
   {
-    if ($value['type'] === 'unique') {
-      $value['number'] = 1;
-      $value['size'] = 1;
-    } elseif ($value['type'] === 'open') {
-      $value['size'] = null;
-      $value['number'] = (int) $value['number'];
-    } else {
-      $value['number'] = (int) $value['number'];
-      $value['size'] = (int) $value['size'];
-    }
-    $this->attributes['edition'] = json_encode($value);
+    return new Attribute(
+      set: function ($value) {
+        $value['height'] = isset($value['height']) ? (float) $value['height'] : null;
+        $value['width'] = isset($value['width']) ? (float) $value['width'] : null;
+        $value['depth'] = isset($value['depth']) ? (float) $value['depth'] : null;
+        return json_encode($value);
+      },
+    );
   }
 
   // Relationships
