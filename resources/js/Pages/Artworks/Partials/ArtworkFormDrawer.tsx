@@ -1,4 +1,5 @@
 import ArtistStack from "@/Components/ArtistStack";
+import StyledDivider from "@/Components/StyledDivider";
 import { ARTWORK_CATEGORIES } from "@/constants/artworkCategories";
 import ARTWORK_EDITIONS from "@/constants/artworkEditions";
 import ARTWORK_STATUSES from "@/constants/artworkStatuses";
@@ -8,7 +9,7 @@ import { MagicWand05Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Button, Divider, Drawer, Form, Input, InputNumber, message, Radio, Select, Space, Spin, Tooltip } from "antd";
+import { Button, Drawer, Form, Input, InputNumber, message, Radio, Select, Space, Spin, Tooltip } from "antd";
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
@@ -343,7 +344,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
           <Input.TextArea rows={4} />
         </Form.Item>
 
-        <Divider />
+        <StyledDivider variant="light" >Specifications</StyledDivider>
 
         {/* Medium & Styles */}
 
@@ -441,7 +442,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
           </Space.Compact>
         </Form.Item>
 
-        <Divider />
+        <StyledDivider variant="light" >Inventory</StyledDivider>
 
         {/* Category, Subject & SKU */}
 
