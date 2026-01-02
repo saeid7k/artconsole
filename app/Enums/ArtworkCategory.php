@@ -39,6 +39,11 @@ enum ArtworkCategory: string
     };
   }
 
+  public static function default(): self
+  {
+    return self::Painting;
+  }
+
   public static function stringifyAll(): string
   {
     return implode(',', array_map(fn($case) => $case->value, self::cases()));
