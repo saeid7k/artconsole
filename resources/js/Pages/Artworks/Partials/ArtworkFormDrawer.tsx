@@ -3,11 +3,12 @@ import { ARTWORK_CATEGORIES } from "@/constants/artworkCategories";
 import ARTWORK_EDITIONS from "@/constants/artworkEditions";
 import ARTWORK_STATUSES from "@/constants/artworkStatuses";
 import { ArtworkProps } from "@/types/artwork";
-import { formatCurrency } from "@/utils/formatter";
 import { stringifyArray } from "@/utils/stringHelper";
+import { MagicWand05Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
-import { useQuery } from "@tanstack/react-query";
-import { Button, Divider, Drawer, Form, Input, InputNumber, message, Radio, Select, Space } from "antd";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Button, Divider, Drawer, Form, Input, InputNumber, message, Radio, Select, Space, Spin, Tooltip } from "antd";
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
@@ -132,7 +133,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
 
   // Options fetching
 
-  const { data: groupedTags, isPending: isTagsLoading, isFetching: isTagsFetching } = useQuery({
+  const tagsQuery = useQuery({
     queryKey: ['tags-grouped-query'],
     queryFn: () =>
       axios
@@ -141,12 +142,33 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
     enabled: show,
   })
 
+  // SKU Auto Generation
+
+  const generateSkuMutation = useMutation({
+    mutationFn: () =>
+      axios
+        .post(route('artworks.generate-sku'), {
+          artwork: artwork ? artwork.id : null,
+          category: form.getFieldValue('category') || null,
+        })
+        .then(res => res.data)
+        .catch(e => e.response?.data),
+    onSuccess: (data) => {
+      form.setFieldValue('sku', data.sku);
+      message.success(data.message || 'SKU generated successfully');
+    },
+    onError: (error) => {
+      message.error(error.message || 'Failed to generate SKU');
+    },
+  });
+
   // Watchers
 
   const watchArtistId = Form.useWatch('artist_id', form);
   const watchArtistDataName = Form.useWatch(['artist_data', 'firstname'], form);
   const watchEditionType = Form.useWatch(['edition', 'type'], form);
   const watchEditionNumber = Form.useWatch(['edition', 'number'], form);
+  const watchSku = Form.useWatch('sku', form);
 
   return (
     <Drawer
@@ -331,14 +353,14 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
         >
           <Select
             mode="tags"
-            options={groupedTags ? groupedTags['medium']?.map((tag: string) => ({
+            options={tagsQuery.data ? tagsQuery.data['medium']?.map((tag: string) => ({
               label: tag,
               value: tag,
             })) : []}
             placeholder="Select or type a medium"
             maxCount={1}
-            onChange={(value) => form.setFieldValue('medium', stringifyArray(value))}
-            disabled={isTagsLoading || isTagsFetching}
+            onChange={(value) => form.setFieldValue('medium', value.length > 0 ? stringifyArray(value) : null)}
+            disabled={tagsQuery.isLoading || tagsQuery.isFetching}
           />
         </Form.Item>
 
@@ -348,14 +370,14 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
         >
           <Select
             mode="tags"
-            options={groupedTags ? groupedTags['style']?.map((tag: string) => ({
+            options={tagsQuery.data ? tagsQuery.data['style']?.map((tag: string) => ({
               label: tag,
               value: tag,
             })) : []}
             placeholder="Select or type styles"
             // maxCount={1}
             // onChange={(value) => form.setFieldValue('styles', stringifyArray(value))}
-            disabled={isTagsLoading || isTagsFetching}
+            disabled={tagsQuery.isLoading || tagsQuery.isFetching}
           />
         </Form.Item>
 
@@ -421,15 +443,72 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
 
         <Divider />
 
+        {/* Category, Subject & SKU */}
+
         <Form.Item
           label="Category"
           name="category"
+          rules={[{ required: true, message: 'Category is required' }]}
         >
           <Select
             defaultValue={ARTWORK_CATEGORIES[0].value}
             options={ARTWORK_CATEGORIES}
           />
         </Form.Item>
+
+        <Form.Item
+          label="Subject"
+          name="subject"
+        >
+          <Select
+            mode="tags"
+            options={tagsQuery.data ? tagsQuery.data['subject']?.map((tag: string) => ({
+              label: tag,
+              value: tag,
+            })) : []}
+            placeholder="Select or type a subject"
+            maxCount={1}
+            onChange={(value) => {form.setFieldValue('subject', value.length > 0 ? stringifyArray(value) : null)}}
+            disabled={tagsQuery.isLoading || tagsQuery.isFetching}
+          />
+        </Form.Item>
+
+        <Form.Item
+          label="SKU"
+          className="sm:w-1/2"
+          >
+          <Space.Compact>
+            <Form.Item
+              name="sku"
+              noStyle
+              rules={[{ max: 100, message: 'SKU cannot exceed 100 characters' }]}
+            >
+              <Input
+                defaultValue={form.getFieldValue('sku')}
+                allowClear
+                onClear={() => form.setFieldValue('sku', null)}
+                className="rounded-e-none"
+              />
+              {!watchSku && (
+                <Tooltip title="Auto Generate SKU">
+                  <Button
+                    color="primary"
+                    variant="outlined"
+                    onClick={() => generateSkuMutation.mutate()}
+                    className="rounded-s-none"
+                  >
+                    {generateSkuMutation.isPending ? (
+                      <Spin size="small" />
+                    ):(
+                      <HugeiconsIcon icon={MagicWand05Icon} size={20} />
+                    )}
+                  </Button>
+                </Tooltip>
+              )}
+            </Form.Item>
+          </Space.Compact>
+        </Form.Item>
+
       </Form>
     </Drawer>
   );
