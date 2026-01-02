@@ -19,7 +19,7 @@ class ArtworkStoreUpdateRequest extends FormRequest
   {
     return [
       'artist_data' => ['nullable', 'array'],
-      'sku' => ['nullable', 'string', 'max:10'],
+      'sku' => ['nullable', 'string', 'max:100'],
       'category' => ['required', 'string', 'in:' . ArtworkCategory::stringifyAll()],
       'edition' => ['nullable', 'array'],
       'edition.type' => ['nullable', 'string', 'in:' . ArtworkEdition::stringifyAll()],
