@@ -106,12 +106,6 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
             <Divider />
             <DataCol gap={2} >
               <DataRow
-                icon={<HugeiconsIcon icon={BarCode02Icon} size={18} />}
-                label="SKU:"
-                value={artwork.sku || 'N/A'}
-                labelClassName="min-w-[80px]"
-              />
-              <DataRow
                 icon={<HugeiconsIcon icon={Folder02Icon} size={18} />}
                 label="Category:"
                 value={getArtworkCategoryLabel(artwork.category)}
@@ -121,6 +115,12 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
                 icon={<HugeiconsIcon icon={GooglePhotosIcon} size={18} />}
                 label="Subject:"
                 value={artwork.subject}
+                labelClassName="min-w-[80px]"
+              />
+              <DataRow
+                icon={<HugeiconsIcon icon={BarCode02Icon} size={18} />}
+                label="SKU:"
+                value={artwork.sku || 'N/A'}
                 labelClassName="min-w-[80px]"
               />
             </DataCol>
