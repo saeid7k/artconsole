@@ -38,6 +38,10 @@ function stringifyArray(arr: string[] | string | null | undefined): string {
     return String(arr[0]);
   }
 
+  if (Array.isArray(arr) && arr.length == 0) {
+    return '';
+  }
+
   if (!Array.isArray(arr)) {
     return String(arr || '');
   }
