@@ -155,25 +155,6 @@ class Artwork extends Model implements HasMedia
 
   // Methods
 
-  public function newSku(string $category): string
-  {
-    $prefix = ArtworkCategory::from($category)->code();
-    $year = date('y');
-
-    $latestArtwork = self::where('gallery_id', $this->gallery_id)->where('sku', 'like', "{$prefix}-{$year}-%")
-      ->orderBy('sku', 'desc')
-      ->first();
-
-    if ($latestArtwork) {
-      $parts = explode('-', $latestArtwork->sku);
-      $number = (int) $parts[2] + 1;
-    } else {
-      $number = 1;
-    }
-
-    return sprintf("%s-%s-%03d", $prefix, $year, $number);
-  }
-
   public function registerMediaConversions(?Media $media = null): void
   {
     $this->addMediaConversion('thumb')

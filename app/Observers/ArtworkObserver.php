@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Artwork;
+use App\Services\ArtworkService;
 
 class ArtworkObserver
 {
@@ -13,7 +14,8 @@ class ArtworkObserver
   {
     // set SKU if not set
     if (!$artwork->sku) {
-      $artwork->sku = $artwork->newSku($artwork->category);
+      $artworkService = new ArtworkService($artwork);
+      $artwork->sku = $artworkService->newSku($artwork->category);
       $artwork->saveQuietly();
     }
   }
