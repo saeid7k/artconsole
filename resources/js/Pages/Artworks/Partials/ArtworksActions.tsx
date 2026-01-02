@@ -3,8 +3,14 @@ import { Delete02Icon, PencilEdit02Icon, ViewIcon } from "@hugeicons/core-free-i
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router } from "@inertiajs/react"
 import { Button, Popconfirm, Tooltip } from "antd"
+import { useState } from "react"
+import ArtworkFormDrawer from "./ArtworkFormDrawer"
 
 function ArtworksActions({ artwork }: { artwork: ArtworkProps }) {
+
+  // Edit Drawer
+
+  const [showEditDrawer, setShowEditDrawer] = useState(false)
 
   // function handleDelete() {
   //   axios.post(route('artworks.delete', artwork.id))
@@ -37,7 +43,7 @@ function ArtworksActions({ artwork }: { artwork: ArtworkProps }) {
             color='default'
             shape="circle"
             icon={<HugeiconsIcon icon={PencilEdit02Icon} size={20} />}
-            // onClick={() => setShowEditDrawer(true)}
+            onClick={() => setShowEditDrawer(true)}
             disabled={!artwork.abilities.update}
           />
         </Tooltip>
@@ -66,6 +72,12 @@ function ArtworksActions({ artwork }: { artwork: ArtworkProps }) {
           </Popconfirm>
         </Tooltip>
       </div>
+      <ArtworkFormDrawer
+        artwork={artwork}
+        show={showEditDrawer}
+        onClose={() => { setShowEditDrawer(false); router.reload() }}
+        mode="update"
+      />
     </>
   )
 }
