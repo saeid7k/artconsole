@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ArtworkCategory;
 use App\Http\Requests\ArtworkStoreUpdateRequest;
 use App\Models\Artwork;
+use App\Services\ArtworkService;
 use Illuminate\Http\Request;
 
 class ArtworkController extends Controller
@@ -83,5 +85,24 @@ class ArtworkController extends Controller
         'artwork_id' => $artwork->id,
       ]);
     }
+  }
+
+  public function generateSku(Request $request)
+  {
+    $this->authorize('viewAny', Artwork::class);
+
+    $request->validate([
+      'artwork' => ['nullable', 'exists:artworks,id'],
+      'category' => ['nullable', 'string', 'in:' . ArtworkCategory::stringifyAll()],
+    ]);
+
+    $artwork = $request->artwork ? Artwork::find($request->artwork) : null;
+    $artworkService = new ArtworkService($artwork);
+    $sku = $artworkService->newSku($request->category ?? ($artwork ? $artwork->category : null));
+
+    return response()->json([
+      'message' => 'SKU generated successfully.',
+      'sku' => $sku,
+    ]);
   }
 }
