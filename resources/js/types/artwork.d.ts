@@ -43,4 +43,5 @@ export interface ArtworkProps {
   main_image_thumb_url?: string | null;
   images: Array<any>;
   location: LocationProps;
+  owner?: ContactProps | null;
 }
