@@ -12,6 +12,7 @@ import Search from "antd/es/input/Search"
 import { useState } from "react"
 import ArtworksGrids from "./Partials/ArtworksGrids"
 import ArtworksTable from "./Partials/ArtworksTable"
+import ArtworkFormDrawer from "./Partials/ArtworkFormDrawer"
 
 function Index({ artworks, locations }: { artworks: PageProps, locations: Array<LocationProps> }) {
 
@@ -60,12 +61,16 @@ function Index({ artworks, locations }: { artworks: PageProps, locations: Array<
     router.get(route('artworks.index'), paramsObject, { preserveState: true });
   }
 
+  // Create Drawer
+
+  const [showCreateDrawer, setShowCreateDrawer] = useState(false)
+
   return (
     <ArtworkIndexProvider value={{ filters: urlFilters }}>
       <PageTitle
         title="Artworks Inventory"
         counter={artworks.total}
-        // onCreateButtonClick={() => {}}
+        onCreateButtonClick={() => setShowCreateDrawer(true)}
         toolbar={
           <div className="flex gap-2">
             {isFiltered && (
@@ -114,6 +119,11 @@ function Index({ artworks, locations }: { artworks: PageProps, locations: Array<
       ) : (
         <ArtworksGrids artworks={artworks} />
       )}
+      <ArtworkFormDrawer
+        mode="create"
+        show={showCreateDrawer}
+        onClose={() => setShowCreateDrawer(false)}
+      />
     </ArtworkIndexProvider>
   )
 }
