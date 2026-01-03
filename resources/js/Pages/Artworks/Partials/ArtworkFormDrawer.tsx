@@ -1,8 +1,8 @@
 import ArtistStack from "@/Components/ArtistStack";
 import StyledDivider from "@/Components/StyledDivider";
-import { ARTWORK_CATEGORIES } from "@/constants/artworkCategories";
+import { ARTWORK_CATEGORIES, DEFAULT_ARTWORK_CATEGORY } from "@/constants/artworkCategories";
 import ARTWORK_EDITIONS from "@/constants/artworkEditions";
-import ARTWORK_STATUSES from "@/constants/artworkStatuses";
+import ARTWORK_STATUSES, { DEFAULT_ARTWORK_STATUS } from "@/constants/artworkStatuses";
 import { ArtworkProps } from "@/types/artwork";
 import { stringifyArray } from "@/utils/stringHelper";
 import { MagicWand05Icon } from "@hugeicons/core-free-icons";
@@ -152,24 +152,17 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
           artwork: artwork ? artwork.id : null,
           category: form.getFieldValue('category') || null,
         })
-        .then(res => res.data)
-        .catch(e => e.response?.data),
-    onSuccess: (data) => {
-      form.setFieldValue('sku', data.sku);
-      message.success(data.message || 'SKU generated successfully');
-    },
-    onError: (error) => {
-      message.error(error.message || 'Failed to generate SKU');
-    },
+        .then(res => {
+          message.success('SKU generated successfully')
+          form.setFieldValue('sku', res.data.sku)
+          return res.data
+        })
+        .catch(e => {message.error(e.response?.data?.message || 'Failed to generate SKU')}),
   });
 
   // Watchers
 
-  const watchArtistId = Form.useWatch('artist_id', form);
-  const watchArtistDataName = Form.useWatch(['artist_data', 'firstname'], form);
-  const watchEditionType = Form.useWatch(['edition', 'type'], form);
-  const watchEditionNumber = Form.useWatch(['edition', 'number'], form);
-  const watchSku = Form.useWatch('sku', form);
+  const watchForm = Form.useWatch([], form)
 
   return (
     <Drawer
@@ -184,7 +177,11 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
       <Form
         layout="vertical"
         form={form}
-        initialValues={artwork ? artwork : {}}
+        initialValues={artwork ? artwork : {
+          status: DEFAULT_ARTWORK_STATUS.value,
+          category: DEFAULT_ARTWORK_CATEGORY.value,
+          ownership: 'owned',
+        }}
         validateTrigger="onBlur"
       >
         {/* Title & Status */}
@@ -234,7 +231,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
         {/* Artist Stack */}
 
         <AnimatePresence>
-          {watchArtistId && artistSelected && (
+          {watchForm?.artist_id && artistSelected && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
@@ -252,7 +249,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
 
         {/* Artist Selector */}
 
-        {!watchArtistId && (
+        {!watchForm?.artist_id && (
           <div className="flex gap-1">
             <Form.Item
               label='Artist Name'
@@ -268,7 +265,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                 onDeselect={() => clearArtist()}
               />
             </Form.Item>
-            {watchArtistDataName?.length > 0 && (
+            {watchForm?.artist_data?.firstname?.length > 0 && (
               <Button
                 type="dashed"
                 size="small"
@@ -308,7 +305,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
             label="Work #"
             name={["edition", "number"]}
             className="sm:w-1/4"
-            hidden={watchEditionType === 'unique'}
+            hidden={watchForm?.edition?.type === 'unique'}
           >
             <Input
               type="number"
@@ -320,14 +317,14 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
             label="Size"
             name={["edition", "size"]}
             className="sm:w-1/4"
-            hidden={['unique', 'open'].includes(watchEditionType)}
+            hidden={['unique', 'open'].includes(watchForm?.edition?.type)}
           >
             <Input
               type="number"
-              min={watchEditionNumber || 1}
+              min={watchForm?.edition?.number || 1}
               onChange={(e) => {
                 let timer = setTimeout(() => {
-                  adjustSizeValue(Number(watchEditionNumber))
+                  adjustSizeValue(Number(watchForm?.edition?.number))
                   clearTimeout(timer);
                 }, 2000);
               }}
@@ -447,6 +444,19 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
         {/* Category, Subject & SKU */}
 
         <Form.Item
+          label='Ownership'
+          name="ownership"
+        >
+          <Radio.Group
+            optionType="button"
+            options={[
+              { label: 'Owned', value: 'owned' },
+              { label: 'Consigned', value: 'consigned' },
+            ]}
+          />
+        </Form.Item>
+
+        <Form.Item
           label="Category"
           name="category"
           rules={[{ required: true, message: 'Category is required' }]}
@@ -490,7 +500,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                 onClear={() => form.setFieldValue('sku', null)}
                 className="rounded-e-none"
               />
-              {!watchSku && (
+              {!watchForm?.sku && (
                 <Tooltip title="Auto Generate SKU">
                   <Button
                     color="primary"
