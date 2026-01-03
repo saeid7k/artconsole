@@ -1,6 +1,7 @@
 import { Carousel, Image } from "antd";
 import { CarouselRef } from "antd/es/carousel";
 import { useRef, useState } from "react";
+import imagePlaceholder from '~/resources/images/image-placeholder.svg'
 
 type Props = {
   images: Array<{
@@ -24,21 +25,26 @@ function ImageGallery({ images }: Props) {
 
       {/* Image carousel */}
 
-      <Carousel
-        ref={carouselRef}
-        dots={false}
-      >
-        {images.map((image, index) => (
-          <div key={image.id} className="[&_.ant-image-cover]:!opacity-0"
-          >
-            <img
-              src={image.urls.original}
-              className="max-h-[400px] !w-auto max-w-full mx-auto cursor-pointer"
-              onClick={() => setOpenImageIndex(index)}
-            />
-          </div>
-        ))}
-      </Carousel>
+      {images.length > 0 && (
+        <Carousel
+          ref={carouselRef}
+          dots={false}
+        >
+          {images.map((image, index) => (
+            <div key={image.id} className="[&_.ant-image-cover]:!opacity-0"
+            >
+              <img
+                src={image.urls.original}
+                className="max-h-[400px] !w-auto max-w-full mx-auto cursor-pointer"
+                onClick={() => setOpenImageIndex(index)}
+              />
+            </div>
+          ))}
+        </Carousel>
+      )}
+      {images.length === 0 && (
+        <img src={imagePlaceholder} alt="No image available" className="block max-h-[300px] !w-auto max-w-full mx-auto opacity-50" />
+      )}
 
       {/* Thumbnail */}
 
