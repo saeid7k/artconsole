@@ -217,6 +217,22 @@ class ContactController extends Controller
     return Response()->json(['message' => 'Contact relationships updated successfully']);
   }
 
+  public function getContacts(Request $request)
+  {
+    $this->authorize('viewAny', Contact::class);
+
+    $user = auth()->user();
+    $gallery = $user->currentGallery();
+
+    $contacts = $gallery->contacts()
+      ->select('id', 'firstname', 'lastname')
+      ->orderBy('firstname', 'asc')
+      ->orderBy('lastname', 'asc')
+      ->get();
+
+    return Response()->json($contacts);
+  }
+
   public function getArtists(Request $request)
   {
     $this->authorize('viewAny', Contact::class);
