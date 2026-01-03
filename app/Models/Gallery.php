@@ -88,6 +88,11 @@ class Gallery extends Model implements HasMedia
     return $this->hasMany(Location::class);
   }
 
+  public function primaryLocation()
+  {
+    return $this->hasOne(Location::class)->where('is_primary', true);
+  }
+
   public function artworks(): HasMany
   {
     return $this->hasMany(Artwork::class);
