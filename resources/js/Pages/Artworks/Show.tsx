@@ -18,6 +18,7 @@ import { Button, Card, Divider, Tabs, Tooltip } from "antd";
 import React, { useState } from "react";
 import ArtworkFormDrawer from "./Partials/ArtworkFormDrawer";
 import { twMerge } from "tailwind-merge";
+import ActivityLogs from "@/Components/ActivityLogs";
 
 function Show ({ artwork }: { artwork: ArtworkProps }) {
 
@@ -49,6 +50,9 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
         }
       />
       <div className="flex flex-col gap-3">
+
+        {/* Main Content */}
+
         <div className="flex flex-col lg:flex-row gap-3 w-full">
           <Card
             className={twMerge("lg:w-1/2 lg:max-w-[600px]",
@@ -132,6 +136,9 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
             <div>{}</div>
           </Card>
         </div>
+
+        {/* Tabs */}
+
         <Card>
           <Tabs>
             <Tabs.TabPane tab="Description" key="description">
@@ -143,6 +150,9 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
             <Tabs.TabPane tab="Financial" key="financial">
             </Tabs.TabPane>
             <Tabs.TabPane tab="History" key="history">
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Logs" key="logs">
+              <ActivityLogs modelType="artwork" modelId={artwork.id} key={artwork.updated_at} />
             </Tabs.TabPane>
           </Tabs>
         </Card>

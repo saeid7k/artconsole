@@ -2,17 +2,18 @@
 
 namespace App\Models;
 
-use App\Enums\ArtworkCategory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Artwork extends Model implements HasMedia
 {
-  use HasFactory, InteractsWithMedia;
+  use HasFactory, InteractsWithMedia, LogsActivity;
 
   protected $fillable = [
     'creator_id',
@@ -169,5 +170,27 @@ class Artwork extends Model implements HasMedia
     return $this->media()
       ->where('collection_name', 'artwork-images')
       ->get();
+  }
+
+  // Activity Log
+
+  public function getActivitylogOptions(): LogOptions
+  {
+    return LogOptions::defaults()
+      ->logFillable()
+      ->logOnlyDirty()
+      ->dontSubmitEmptyLogs()
+      ->setDescriptionForEvent(function (string $event) {
+        switch ($event) {
+          case 'created':
+            return "created the artwork";
+          case 'updated':
+            return "updated artwork details";
+          case 'deleted':
+            return "deleted the artwork";
+          default:
+            return $event;
+        }
+      });
   }
 }
