@@ -7,9 +7,20 @@ use App\Services\ArtworkService;
 
 class ArtworkObserver
 {
-  /**
-   * Handle the User "created" event.
-   */
+  public function creating(Artwork $artwork): void
+  {
+    // assign creator if not set
+    if (!$artwork->creator_id) {
+      $user = auth()->user();
+      $gallery = $artwork->gallery ?? $user->currentGallery();
+
+      $artwork->creator()->associate($user);
+      $artwork->location()->associate(
+        $gallery->primaryLocation()->first()
+      );
+    }
+  }
+
   public function created(Artwork $artwork): void
   {
     // set SKU if not set
