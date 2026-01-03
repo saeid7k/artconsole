@@ -17,6 +17,7 @@ import { Link, router } from "@inertiajs/react";
 import { Button, Card, Divider, Tabs, Tooltip } from "antd";
 import React, { useState } from "react";
 import ArtworkFormDrawer from "./Partials/ArtworkFormDrawer";
+import { twMerge } from "tailwind-merge";
 
 function Show ({ artwork }: { artwork: ArtworkProps }) {
 
@@ -49,7 +50,11 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
       />
       <div className="flex flex-col gap-3">
         <div className="flex flex-col lg:flex-row gap-3 w-full">
-          <Card className="lg:w-1/2 lg:max-w-[600px]">
+          <Card
+            className={twMerge("lg:w-1/2 lg:max-w-[600px]",
+              artwork.images.length === 0 ? 'hidden lg:block' : ''
+            )}
+          >
             <ImageGallery images={artwork.images} />
           </Card>
           <Card className="lg:w-1/2 grow max-h-[550px] overflow-y-auto">

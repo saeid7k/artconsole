@@ -17,6 +17,7 @@ import { Link, router } from '@inertiajs/react';
 import type { TableProps } from 'antd';
 import { Image, Table } from 'antd';
 import ArtworksActions from './ArtworksActions';
+import imagePlaceholder from '~/resources/images/image-placeholder.svg'
 
 type LocationsProps = Array<{
   id: number;
@@ -55,11 +56,11 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
       key: 'image',
       render: (_, record) => (
         <Image
-          src={record.main_image_thumb_url}
+          src={record.main_image_thumb_url || imagePlaceholder}
           alt={record.title}
           height={60}
           style={{ aspectRatio: '1 / 1', objectFit: 'cover' }}
-          preview={{
+          preview={record.main_image_thumb_url ? {
             mask: (
               <div className='flex flex-col items-center'>
                 <div>Preview</div>
@@ -67,7 +68,7 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
               </div>
             ),
             src: record.main_image_url,
-          }}
+          } : false}
         />
       ),
       width: 80,
