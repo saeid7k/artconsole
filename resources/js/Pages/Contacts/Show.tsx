@@ -188,10 +188,7 @@ function Show({ contact }: { contact: ContactProps }) {
         <Card
           className="grow overflow-x-auto"
         >
-          <Tabs defaultActiveKey="activities">
-            <Tabs.TabPane tab="Activities" key="activities">
-              <ActivityLogs key={contact.updated_at} modelType="contact" modelId={contact.id} />
-            </Tabs.TabPane>
+          <Tabs defaultActiveKey="logs">
             <Tabs.TabPane tab="Purchase History" key="purchase-history">
               <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No purchase history found" />
             </Tabs.TabPane>
@@ -200,6 +197,9 @@ function Show({ contact }: { contact: ContactProps }) {
             </Tabs.TabPane>
             <Tabs.TabPane tab="Emails" key="emails">
               <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No emails found" />
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Logs" key="logs">
+              <ActivityLogs key={contact.updated_at} modelType="contact" modelId={contact.id} />
             </Tabs.TabPane>
           </Tabs>
         </Card>
