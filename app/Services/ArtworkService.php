@@ -15,7 +15,7 @@ class ArtworkService
   {
     $this->user = auth()->user();
     $this->artwork = $artwork;
-    $this->gallery = $artwork ? $artwork->gallery : $this->user->currentGallery;
+    $this->gallery = $artwork ? $artwork->gallery : $this->user->currentGallery();
   }
 
   public function newSku(?string $category): string
