@@ -73,8 +73,14 @@ class ArtworkController extends Controller
   {
 
     if ($request->mode == 'create') {
+      $this->authorize('create', Artwork::class);
       $user = auth()->user();
-
+      $gallery = $user->currentGallery();
+      $artwork = $gallery->artworks()->create($request->all());
+      return response()->json([
+        'message' => 'Artwork created successfully.',
+        'artwork_id' => $artwork->id,
+      ]);
     } elseif ($request->mode == 'update') {
       $artwork = Artwork::find($request->artwork_id);
       $this->authorize('update', $artwork);
