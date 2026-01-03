@@ -1,4 +1,4 @@
-import ArtistStack from "@/Components/ArtistStack";
+import ContactWidget from "@/Components/ContactWidget";
 import StyledDivider from "@/Components/StyledDivider";
 import { ARTWORK_CATEGORIES, DEFAULT_ARTWORK_CATEGORY } from "@/constants/artworkCategories";
 import ARTWORK_EDITIONS from "@/constants/artworkEditions";
@@ -160,6 +160,38 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
         .catch(e => {message.error(e.response?.data?.message || 'Failed to generate SKU')}),
   });
 
+  // Owner selection
+
+  const [ownerSelected, setOwnerSelected] = useState(artwork?.owner);
+  const [allContacts, setAllContacts] = useState([]);
+  const [contactsOptions, setContactsOptions] = useState([]);
+
+  function clearOwner() {
+    form.setFieldValue('owner_id', null);
+    setOwnerSelected(null);
+  }
+
+  function onChangeOwner(value: string | number) {
+    form.setFieldValue('owner_id', value);
+    setOwnerSelected(prev => allContacts.find((contact: any) => contact.id === value) || prev);
+  }
+
+  const contactsQuery = useQuery({
+    queryKey: ['all-contacts-query'],
+    queryFn: () =>
+      axios
+        .get(route('all-contacts'))
+        .then(res =>{
+          let contacts = res.data;
+          setAllContacts(contacts);
+          setContactsOptions(contacts.map((contact: any) => ({
+            label: contact.full_name,
+            value: contact.id,
+          })));
+        }),
+    enabled: show,
+  })
+
   // Watchers
 
   const watchForm = Form.useWatch([], form)
@@ -238,8 +270,9 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <ArtistStack
-                artist={artistSelected}
+              <ContactWidget
+                contact={artistSelected}
+                title="Artist"
                 unsetFunction={clearArtist}
                 className="mb-3"
               />
@@ -443,18 +476,51 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
 
         {/* Category, Subject & SKU */}
 
-        <Form.Item
-          label='Ownership'
-          name="ownership"
-        >
-          <Radio.Group
-            optionType="button"
-            options={[
-              { label: 'Owned', value: 'owned' },
-              { label: 'Consigned', value: 'consigned' },
-            ]}
-          />
-        </Form.Item>
+        <div className="flex items-center gap-3">
+          <Form.Item
+            label='Ownership'
+            name="ownership"
+          >
+            <Radio.Group
+              optionType="button"
+              options={[
+                { label: 'Owned', value: 'owned' },
+                { label: 'Consigned', value: 'consigned' },
+              ]}
+            />
+          </Form.Item>
+          {ownerSelected && watchForm?.ownership === 'consigned' && (
+            <ContactWidget
+              contact={ownerSelected}
+              title="Owner"
+              className="mb-3"
+              unsetFunction={clearOwner}
+            />
+          )}
+          {watchForm?.ownership === 'consigned' && !ownerSelected && (
+            <Form.Item
+              label='Owner'
+              className="lg:w-1/3"
+            >
+              <Select
+                options={contactsOptions}
+                maxCount={1}
+                placeholder="Select owner from contacts"
+                showSearch={{ optionFilterProp: ['label', 'value'] }}
+                onChange={(value: string) => onChangeOwner(value)}
+              />
+            </Form.Item>
+          )}
+          <Form.Item
+            label=""
+            name="owner_id"
+            hidden
+          >
+            <Input />
+          </Form.Item>
+        </div>
+
+
 
         <Form.Item
           label="Category"
