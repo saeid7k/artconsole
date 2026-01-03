@@ -1,5 +1,6 @@
 import LoadingSpinner from "@/Components/LoadingSpinner";
 import { ActivityLogProps } from "@/types/activityLog";
+import { getInitials } from "@/utils/stringHelper";
 import { Time04Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Avatar, Empty } from "antd";
@@ -40,6 +41,11 @@ function ActivityLogs({ modelType, modelId }: { modelType: string; modelId: numb
     );
   }
 
+  const causerName = (causer: ActivityLogProps['causer']) => {
+    if (!causer) return 'System';
+    return causer.firstname;
+  }
+
   return (
     <div className="flex flex-col gap-2 overflow-x-auto">
       {logs.map(log => (
@@ -51,8 +57,10 @@ function ActivityLogs({ modelType, modelId }: { modelType: string; modelId: numb
             <Avatar
               size={24}
               src={log.causer?.photo}
-            />
-            <div className="text-muted">{log.causer?.firstname}</div>
+            >
+              {getInitials(causerName(log.causer))}
+            </Avatar>
+            <div className="text-muted">{causerName(log.causer)}</div>
             <div>{log.description}</div>
           </div>
           <div className="flex items-center gap-1">
