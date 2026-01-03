@@ -30,6 +30,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/{contact}/update-relationships', [App\Http\Controllers\ContactController::class, 'updateRelationships'])->name('update-relationships');
   });
 
+  Route::get('/all-contacts', [App\Http\Controllers\ContactController::class, 'getContacts'])->name('all-contacts');
   Route::get('/artists', [App\Http\Controllers\ContactController::class, 'getArtists'])->name('artists');
 
   Route::prefix('galleries')->name('galleries.')->group(function () {
