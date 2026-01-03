@@ -172,7 +172,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
   }
 
   function onChangeOwner(value: string | number) {
-    form.setFieldValue('owner_id', value);
+    form.setFieldValue('owner_contact_id', value);
     setOwnerSelected(prev => allContacts.find((contact: any) => contact.id === value) || prev);
   }
 
@@ -513,7 +513,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
           )}
           <Form.Item
             label=""
-            name="owner_id"
+            name="owner_contact_id"
             hidden
           >
             <Input />
