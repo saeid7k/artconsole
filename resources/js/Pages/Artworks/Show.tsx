@@ -54,6 +54,8 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
         {/* Main Content */}
 
         <div className="flex flex-col lg:flex-row gap-3 w-full">
+          {/* Gallery */}
+
           <Card
             className={twMerge("lg:w-1/2 lg:max-w-[600px]",
               artwork.images.length === 0 ? 'hidden lg:block' : ''
@@ -61,6 +63,9 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
           >
             <ImageGallery images={artwork.images} />
           </Card>
+
+          {/* Details */}
+
           <Card className="lg:w-1/2 grow max-h-[550px] overflow-y-auto">
             <ArtworkTitleStack
               artwork={artwork}
@@ -150,8 +155,6 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
             <Tabs.TabPane tab="Financial" key="financial">
             </Tabs.TabPane>
             <Tabs.TabPane tab="History" key="history">
-            </Tabs.TabPane>
-            <Tabs.TabPane tab="Logs" key="logs">
               <ActivityLogs modelType="artwork" modelId={artwork.id} key={artwork.updated_at} />
             </Tabs.TabPane>
           </Tabs>
