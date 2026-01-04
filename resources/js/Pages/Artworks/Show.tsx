@@ -113,7 +113,7 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
                   location={artwork.location}
                   showAddress
                   clamped={false}
-                  className="bg-light p-2"
+                  boxed
                 />
               </div>
             </DataCol>

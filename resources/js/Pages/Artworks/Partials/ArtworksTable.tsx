@@ -111,6 +111,7 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
       render: (location) => (location ? (
         <LocationStack
           location={location}
+          showActions={false}
         />
       ) : ''),
       // width: 250,
