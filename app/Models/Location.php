@@ -66,4 +66,11 @@ class Location extends Model
   {
     return $this->hasMany(Artwork::class);
   }
+
+  // Scopes
+
+  public function scopeActive($query)
+  {
+    return $query->where('is_active', true);
+  }
 }
