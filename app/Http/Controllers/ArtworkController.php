@@ -112,4 +112,20 @@ class ArtworkController extends Controller
       'sku' => $sku,
     ]);
   }
+
+  public function moveLocation(Request $request, Artwork $artwork)
+  {
+    $this->authorize('update', $artwork);
+
+    $request->validate([
+      'location_id' => ['required', 'exists:locations,id'],
+    ]);
+
+    $artwork->location_id = $request->location_id;
+    $artwork->save();
+
+    return response()->json([
+      'message' => 'Artwork moved successfully.',
+    ]);
+  }
 }
