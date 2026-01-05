@@ -82,6 +82,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::prefix('tags')->name('tags.')->group(function () {
     Route::get('/grouped', [App\Http\Controllers\TagController::class, 'getGroupedTags'])->name('get-grouped');
   });
+
+  Route::prefix('locations')->name('locations.')->group(function () {
+    Route::get('/options', [App\Http\Controllers\LocationController::class, 'options'])->name('options');
+  });
 });
 
 Route::middleware(['auth', Admin::class])->group(function () {
