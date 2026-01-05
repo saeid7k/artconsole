@@ -19,6 +19,7 @@ import React, { useState } from "react";
 import ArtworkFormDrawer from "./Partials/ArtworkFormDrawer";
 import { twMerge } from "tailwind-merge";
 import ActivityLogs from "@/Components/ActivityLogs";
+import { ArtworkShowProvider } from "@/contexts/ArtworkShowContext";
 
 function Show ({ artwork }: { artwork: ArtworkProps }) {
 
@@ -27,7 +28,7 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
   const [showEditDrawer, setShowEditDrawer] = useState(false)
 
   return (
-    <div>
+    <ArtworkShowProvider value={{ artwork }}>
       <PageTitle
         breadcrumbItems={[
           { title: <Link href={route('artworks.index')}>Artworks</Link> },
@@ -166,7 +167,7 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
         onClose={() => { setShowEditDrawer(false); router.reload() }}
         mode="update"
       />
-    </div>
+    </ArtworkShowProvider>
   )
 }
 
