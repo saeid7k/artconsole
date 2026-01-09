@@ -85,6 +85,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
   });
 
   Route::prefix('locations')->name('locations.')->group(function () {
+    Route::get('/', [App\Http\Controllers\LocationController::class, 'index'])->name('index');
     Route::get('/options', [App\Http\Controllers\LocationController::class, 'options'])->name('options');
   });
 });
