@@ -65,54 +65,57 @@ function Index({ artworks, locations }: { artworks: PageProps, locations: Array<
 
   const [showCreateDrawer, setShowCreateDrawer] = useState(false)
 
+  // Render
+
+  const renderToolbar = () => (
+    <div className="flex gap-2">
+      {isFiltered && (
+        <Tooltip title="Clear Filters">
+          <Button
+            type="text"
+            shape="circle"
+            icon={<HugeiconsIcon icon={FilterRemoveIcon} size={20} />}
+            onClick={clearFilters}
+          />
+        </Tooltip>
+      )}
+      <Segmented
+        options={[
+          {
+            label: (
+              <Tooltip title="Table View" mouseEnterDelay={1}>
+                <div className="flex h-[28px] items-center"><HugeiconsIcon icon={TableIcon} size={20} /></div>
+              </Tooltip>
+            ),
+            value: 'table'
+          },
+          {
+            label: (
+              <Tooltip title="Grid View" mouseEnterDelay={1}>
+                <div className="flex h-[28px] items-center"><HugeiconsIcon icon={GridViewIcon} size={20} /></div>
+              </Tooltip>
+            ),
+            value: 'grid'
+          },
+        ]}
+        onChange={(value) => switchViewMode(value as 'table' | 'grid')}
+      />
+      <Search
+        placeholder="search artworks..."
+        style={{ width: 200 }}
+        size="middle"
+        allowClear
+        onSearch={handleSearch}
+      />
+    </div>
+  )
+
   return (
     <ArtworkIndexProvider value={{ filters: urlFilters }}>
-      <PageTitle
-        title="Artworks Inventory"
+      <PageTitle title="Artworks Inventory"
         counter={artworks.total}
         onCreateButtonClick={() => setShowCreateDrawer(true)}
-        toolbar={
-          <div className="flex gap-2">
-            {isFiltered && (
-              <Tooltip title="Clear Filters">
-                <Button
-                  type="text"
-                  shape="circle"
-                  icon={<HugeiconsIcon icon={FilterRemoveIcon} size={20} />}
-                  onClick={clearFilters}
-                />
-              </Tooltip>
-            )}
-            <Segmented
-              options={[
-                {
-                  label: (
-                    <Tooltip title="Table View" mouseEnterDelay={1}>
-                      <div className="flex h-[28px] items-center"><HugeiconsIcon icon={TableIcon} size={20} /></div>
-                    </Tooltip>
-                  ),
-                  value: 'table'
-                },
-                {
-                  label: (
-                    <Tooltip title="Grid View" mouseEnterDelay={1}>
-                      <div className="flex h-[28px] items-center"><HugeiconsIcon icon={GridViewIcon} size={20} /></div>
-                    </Tooltip>
-                  ),
-                  value: 'grid'
-                },
-              ]}
-              onChange={(value) => switchViewMode(value as 'table' | 'grid')}
-            />
-            <Search
-              placeholder="search artworks..."
-              style={{ width: 200 }}
-              size="middle"
-              allowClear
-              onSearch={handleSearch}
-            />
-          </div>
-        }
+        toolbar={renderToolbar()}
       />
       {viewMode === 'table' ? (
         <ArtworksTable artworks={artworks} locations={locations} />
