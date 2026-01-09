@@ -16,7 +16,12 @@ function Sidebar() {
   const items = [
     { key: 'dashboard', icon: <HugeiconsIcon icon={DashboardBrowsingIcon} />, label: 'Dashboard', route: 'dashboard' },
     { key: 'exhibitions', icon: <HugeiconsIcon icon={PresentationLineChart01Icon} />, label: 'Exhibitions', route: 'exhibitions.index' },
-    { key: 'artworks', icon: <HugeiconsIcon icon={Image02Icon} />, label: 'Artworks Inventory', route: 'artworks.index' },
+    { key: 'inventory', icon: <HugeiconsIcon icon={Image02Icon} />, label: 'Inventory',
+      children: [
+        { key: 'artworks', label: 'Artworks', route: 'artworks.index' },
+        { key: 'locations', label: 'Locations', route: 'locations.index' },
+      ]
+    },
     { key: 'invoices', icon: <HugeiconsIcon icon={InvoiceIcon} />, label: 'Sales & Invoices', route: 'invoices.index' },
     { key: 'contacts', icon: <HugeiconsIcon icon={ContactIcon} />, label: 'Contacts', route: 'contacts.index' },
   ]
@@ -36,11 +41,19 @@ function Sidebar() {
   }
 
   const allItems = [...items, ...adminItems, ...lowerItems];
+  const flattenItems = () => {
+    return allItems.reduce((acc: any[], item: any) => {
+      acc.push(item);
+      if (item.children) {
+        acc = acc.concat(item.children);
+      }
+      return acc;
+    }, []);
+  }
 
   function handleMenuClick(key: string) {
-
-    let selected = allItems.find(item => item.key === key);
-    if (selected) {
+    let selected = flattenItems().find(item => item.key === key);
+    if (selected?.route) {
       if (key === 'log-back') {
         router.get(route(selected.route), {}, {
           onSuccess: () => {
@@ -58,8 +71,8 @@ function Sidebar() {
       return 'dashboard';
     }
 
-    return allItems.find(item => {
-      return url.includes(item.route.split('.')[0])
+    return flattenItems().find(item => {
+      return item.route && url.includes(item?.route?.split('.')[0])
     })?.key || ''
   }
 

@@ -129,9 +129,16 @@ code {
   height: 100%;
 }
 
-.ant-layout-sider-collapsed li.ant-menu-item {
-  padding: 0 8px;
+.ant-layout-sider-collapsed {
+  & li.ant-menu-item {
+    padding: 0 8px;
+  }
+
+  & li.ant-menu-submenu > .ant-menu-submenu-title {
+    padding: 0 8px;
+  }
 }
+
 
 .ant-form-item-label > label {
   color: var(--text-label) !important;
