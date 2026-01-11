@@ -9,7 +9,7 @@ class Location extends Model
 {
   protected $fillable = [
     'gallery_id',
-    'type', // Internal | External | Venue | Client
+    'type', // internal | external | venue | contact
     'contact_id',
     'name',
     'description',
