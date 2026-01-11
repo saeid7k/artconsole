@@ -1,10 +1,11 @@
+import LocationCard from "@/Components/Locations/LocationCard";
 import PageTitle from "@/Components/PageTitle";
 import { useSearch } from "@/hooks/useSearch";
 import AppLayout from "@/Layouts/AppLayout";
-import { LocationProps } from "@/types/location";
+import { PageProps } from "@/types";
 import Search from "antd/es/input/Search";
 
-function Index({ locations }: { locations: LocationProps[] }) {
+function Index({ locations }: { locations: PageProps }) {
 
   const { handleSearch } = useSearch('locations.index');
 
@@ -25,10 +26,18 @@ function Index({ locations }: { locations: LocationProps[] }) {
   return (
     <div>
       <PageTitle title="Locations"
-        counter={locations.length}
+        counter={locations.data.length}
         toolbar={renderToolbar()}
       />
-      Locations Index Page {locations.length}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3">
+        {locations.data.length > 0 && (
+          <>
+            {[...locations.data].map((location: any) => (
+              <LocationCard key={location.id} location={location} />
+            ))}
+          </>
+        )}
+      </div>
     </div>
   )
 }
