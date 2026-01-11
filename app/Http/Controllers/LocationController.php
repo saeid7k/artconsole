@@ -11,6 +11,7 @@ class LocationController extends Controller
     $user = auth()->user();
     $gallery = $user->currentGallery();
     $locations = $gallery->locations()
+      ->withCount('artworks')
       ->orderBy('name')
       ->paginate($request->per_page ?? 10)->withQueryString();
 
