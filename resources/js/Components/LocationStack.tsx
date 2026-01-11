@@ -2,28 +2,40 @@ import colors from "@/Themes/theme";
 import { LocationProps } from "@/types/location";
 import { ArrowDataTransferHorizontalIcon, StoreLocation01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Button, Tooltip } from "antd";
+import { Badge, Button, Tag, Tooltip } from "antd";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import MoveModal from "./MoveModal";
+import CopyToClipboard from "./CopyToClipboard";
+import FlexBox from "./Containers/FlexBox";
 
 type Props = {
   location: LocationProps;
   showActions?: boolean;
   showAddress?: boolean;
+  showPrimaryTag?: boolean;
   clamped?: boolean;
   boxed?: boolean;
   bordered?: boolean;
   className?: string;
 }
 
-function LocationStack({ location, showActions = true, showAddress = false, clamped = true, boxed = false, bordered = false, className }: Props) {
+function LocationStack({
+  location,
+  showActions = true,
+  showAddress = false,
+  showPrimaryTag = false,
+  clamped = true,
+  boxed = false,
+  bordered = false,
+  className
+}: Props) {
 
   const [openMoveModal, setOpenMoveModal] = useState(false);
 
   return(
     <>
-      <div className="flex gap-1">
+      <FlexBox>
         <div
           className={twMerge(
             "flex items-start gap-1",
@@ -36,16 +48,26 @@ function LocationStack({ location, showActions = true, showAddress = false, clam
           <div className="flex flex-col">
             <div>{location.name}</div>
             { showAddress && (
-              <div
-                className={twMerge(
-                  'text-muted',
-                  clamped ? 'max-w-[200px] line-clamp-1' : ''
-                )}
-                title={clamped ? location.formatted_address : undefined}
-              >{location.formatted_address}</div>
+              <FlexBox>
+                <div
+                  className={twMerge(
+                    'text-muted',
+                    clamped ? 'max-w-[200px] line-clamp-1' : ''
+                  )}
+                  title={clamped ? location.formatted_address : undefined}
+                >{location.formatted_address}</div>
+                <CopyToClipboard content={location.formatted_address} title="Address" />
+              </FlexBox>
             )}
           </div>
         </div>
+        { showPrimaryTag && location.is_primary && (
+          <Tag
+            variant="solid"
+            color="blue"
+            className="ms-1"
+          >Primary</Tag>
+        )}
         {showActions && (
           <div className="flex flex-col">
             <Tooltip title="Move" placement="right">
@@ -59,7 +81,7 @@ function LocationStack({ location, showActions = true, showAddress = false, clam
             </Tooltip>
           </div>
         )}
-      </div>
+      </FlexBox>
       {showActions && (
         <MoveModal
           open={openMoveModal}
