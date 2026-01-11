@@ -14,7 +14,7 @@ return new class extends Migration
     Schema::create('locations', function (Blueprint $table) {
       $table->id();
       $table->foreignId('gallery_id')->constrained()->cascadeOnDelete();
-      $table->string('type', 100); // Internal | External | Venue | Client
+      $table->string('type', 100);
       $table->foreignId('contact_id')->nullable()->nullOnDelete();
       $table->string('name');
       $table->text('description')->nullable();
