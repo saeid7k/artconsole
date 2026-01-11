@@ -13,4 +13,5 @@ export interface LocationProps {
   created_at: string;
   updated_at: string;
   formatted_address: string;
+  artworks_count: number;
 }
