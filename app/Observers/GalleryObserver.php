@@ -21,7 +21,7 @@ class GalleryObserver
 
     // Create default Location
     $gallery->locations()->create([
-      'type' => 'Internal',
+      'type' => 'internal',
       'name' => 'Main Location',
       'is_primary' => true,
       'is_active' => true,
