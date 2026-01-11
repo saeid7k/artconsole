@@ -163,6 +163,12 @@ class Artwork extends Model implements HasMedia
       ->height(200)
       ->sharpen(10)
       ->nonQueued();
+
+    $this->addMediaConversion('small')
+      ->width(40)
+      ->height(40)
+      ->sharpen(10)
+      ->nonQueued();
   }
 
   public function getImagesAttribute()
