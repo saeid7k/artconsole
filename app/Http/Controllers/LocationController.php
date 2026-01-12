@@ -15,6 +15,10 @@ class LocationController extends Controller
       ->orderBy('name')
       ->paginate($request->per_page ?? 10)->withQueryString();
 
+    foreach ($locations as $location) {
+      $location->artworks_images_urls = $location->artworksImagesUrls('thumb', 10);
+    }
+
     return inertia('Locations/Index', [
       'locations' => $locations,
     ]);

@@ -67,6 +67,22 @@ class Location extends Model
     return $this->hasMany(Artwork::class);
   }
 
+  // Methods
+
+  public function artworksImagesUrls($conversionName = null, $limit = null): array
+  {
+    $artworks = $this->artworks()->limit($limit)->get();
+    $images = $artworks->map(function ($artwork) use ($conversionName) {
+      $media = $artwork->mainImage;
+      if ($media) {
+        return $media->getUrl($conversionName);
+      }
+      return null;
+    });
+
+    return $images->toArray();
+  }
+
   // Scopes
 
   public function scopeActive($query)
