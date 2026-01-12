@@ -3,9 +3,14 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
-function TextboxExpandable({ content }: { content: string }) {
+type Props = {
+  content: string;
+  lines?: number;
+}
 
-  const isShortContent = content.length <= 100;
+function TextboxExpandable({ content, lines = 1 }: Props) {
+
+  const isShortContent = content?.length <= 100;
 
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -17,12 +22,12 @@ function TextboxExpandable({ content }: { content: string }) {
 
   return (
     <div
-      className={twMerge("flex flex-nowrap gap-1",
+      className={twMerge("flex items-end flex-nowrap gap-1",
       isExpanded ? 'flex-col items-start' : ''
     )}>
       <div
         className={twMerge("w-full",
-          isExpanded ? '' : 'line-clamp-1 max-w-[400px] text-muted'
+          isExpanded ? '' : `line-clamp-${lines} max-w-[400px]`
         )}
       >
         {content}
