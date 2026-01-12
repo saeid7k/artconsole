@@ -6,9 +6,10 @@ type Props = {
   content: string | number | null;
   title?: string | null;
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  className?: string;
 }
 
-function CopyToClipboard({ content, title = null, size = 'md' }: Props) {
+function CopyToClipboard({ content, title = null, size = 'md', className = '' }: Props) {
 
   function copyText(text: any) {
     let titleToUse = title || 'Text';
@@ -32,7 +33,7 @@ function CopyToClipboard({ content, title = null, size = 'md' }: Props) {
       <HugeiconsIcon
         icon={Copy01Icon}
         size={iconSizeMap[size]}
-        className="cursor-pointer text-muted hover:text-primary"
+        className={`cursor-pointer text-muted hover:text-primary ${className}`}
         onClick={() => copyText(content)}
       />
     </Tooltip>
