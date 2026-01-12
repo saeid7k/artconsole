@@ -6,9 +6,10 @@ import { twMerge } from "tailwind-merge";
 type Props = {
   content: string;
   lines?: number;
+  className?: string;
 }
 
-function TextboxExpandable({ content, lines = 1 }: Props) {
+function TextboxExpandable({ content, lines = 1, className }: Props) {
 
   const isShortContent = content?.length <= 100;
 
@@ -23,7 +24,8 @@ function TextboxExpandable({ content, lines = 1 }: Props) {
   return (
     <div
       className={twMerge("flex items-end flex-nowrap gap-1",
-      isExpanded ? 'flex-col items-start' : ''
+      isExpanded ? 'flex-col items-start' : '',
+      className
     )}>
       <div
         className={twMerge("w-full",
