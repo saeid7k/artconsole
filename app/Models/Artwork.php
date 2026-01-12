@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
@@ -152,6 +153,14 @@ class Artwork extends Model implements HasMedia
   public function owner()
   {
     return $this->belongsTo(Contact::class, 'owner_contact_id');
+  }
+
+  public function mainImage(): HasOne
+  {
+    return $this->hasOne(Media::class, 'model_id')
+      ->where('model_type', Artwork::class)
+      ->where('collection_name', 'artwork-images')
+      ->where('custom_properties->is_main', true);
   }
 
   // Methods
