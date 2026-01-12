@@ -18,10 +18,11 @@ function FlexBox({
   children,
   ...props
 }: Props) {
+
   return (
     <div
       className={twMerge(
-        'flex items-center gap-1',
+        'flex items-center gap-1 w-full',
         `flex-${direction}`,
         `justify-${justifyContent}`,
         `items-${alignItems}`,
