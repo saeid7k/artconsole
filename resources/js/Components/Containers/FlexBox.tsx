@@ -5,6 +5,7 @@ type Props = {
   gap?: number;
   justifyContent?: 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
   alignItems?: 'start' | 'center' | 'end' | 'baseline' | 'stretch';
+  wrapping?: 'wrap' | 'nowrap' | 'wrap-reverse';
   className?: string;
   children: React.ReactNode;
 }
@@ -14,6 +15,7 @@ function FlexBox({
   gap = 1,
   justifyContent = 'start',
   alignItems = 'center',
+  wrapping = 'nowrap',
   className,
   children,
   ...props
@@ -26,6 +28,7 @@ function FlexBox({
         `flex-${direction}`,
         `justify-${justifyContent}`,
         `items-${alignItems}`,
+        `flex-${wrapping}`,
         `gap-${gap}`,
         className
       )}
