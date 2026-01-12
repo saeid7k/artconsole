@@ -6,6 +6,7 @@ import DataRow from "../Containers/DataRow";
 import FlexBox from "../Containers/FlexBox";
 import ImageGroup from "../ImageGroup";
 import TextboxExpandable from "../TextboxExpandable";
+import { router } from "@inertiajs/react";
 
 function LocationCard({ location }: { location: LocationProps }) {
   return (
@@ -74,6 +75,7 @@ function LocationCard({ location }: { location: LocationProps }) {
           <Button
             size="small"
             type="link"
+            onClick={() => router.visit(route('artworks.index', { location: location.id }))}
           >
             View Artworks
           </Button>
