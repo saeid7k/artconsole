@@ -1,7 +1,7 @@
 import { LocationProps } from "@/types/location";
-import { Location01Icon } from "@hugeicons/core-free-icons";
+import { Delete02Icon, Location01Icon, MoreHorizontalSquare01Icon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Card, Tag } from "antd";
+import { Button, Card, Tag } from "antd";
 import DataRow from "../Containers/DataRow";
 import FlexBox from "../Containers/FlexBox";
 import ImageGroup from "../ImageGroup";
@@ -11,9 +11,32 @@ function LocationCard({ location }: { location: LocationProps }) {
   return (
     <Card
       title={
-        <FlexBox gap={3}><div>{location.name}</div><Tag color="blue">Primary</Tag></FlexBox>
+        <FlexBox justifyContent="between" gap={3}><div>{location.name}</div><Tag color="blue">Primary</Tag></FlexBox>
       }
       className="w-full"
+      actions={[
+        <Button
+          variant="text"
+          color="blue"
+          shape="circle"
+        >
+          <HugeiconsIcon icon={PencilEdit02Icon} size={20} />
+        </Button>,
+        <Button
+          variant="text"
+          color="red"
+          shape="circle"
+        >
+          <HugeiconsIcon icon={Delete02Icon} size={20} />
+        </Button>,
+        <Button
+          variant="text"
+          color="default"
+          shape="circle"
+        >
+          <HugeiconsIcon icon={MoreHorizontalSquare01Icon} size={20} />
+        </Button>,
+      ]}
     >
       <FlexBox gap={6} direction="col" alignItems="start">
         {location.description && (
@@ -28,6 +51,7 @@ function LocationCard({ location }: { location: LocationProps }) {
           value={location.formatted_address}
           wrapping={false}
           align="start"
+          showCopyToClipboard
         />
         <FlexBox gap={3} >
           <FlexBox direction="col" alignItems="start" className="!w-max" >
