@@ -12,6 +12,12 @@ export default {
         './resources/js/**/*.tsx',
     ],
 
+    safelist: [
+      {
+        pattern: /gap-(0|([1-9][0-9]?))/,
+      }
+    ],
+
     theme: {
     	extend: {
     		fontFamily: {
