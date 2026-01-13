@@ -2,7 +2,7 @@ import ArtworkSpecificationsStack from '@/Components/ArtworkSpecificationsStack'
 import ArtworkStatusTag from '@/Components/ArtworkStatusTag';
 import ArtworkTitleStack from '@/Components/ArtworkTitleStack';
 import CopyToClipboard from '@/Components/CopyToClipboard';
-import LocationStack from '@/Components/LocationStack';
+import LocationStack from '@/Components/Locations/LocationStack';
 import { ARTWORK_CATEGORIES } from '@/constants/artworkCategories';
 import ARTWORK_STATUSES from '@/constants/artworkStatuses';
 import { useArtworksIndex } from '@/contexts/ArtworksIndexContext';
@@ -16,8 +16,8 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { Link, router } from '@inertiajs/react';
 import type { TableProps } from 'antd';
 import { Image, Table } from 'antd';
+import imagePlaceholder from '~/resources/images/image-placeholder.svg';
 import ArtworksActions from './ArtworksActions';
-import imagePlaceholder from '~/resources/images/image-placeholder.svg'
 
 type LocationsProps = Array<{
   id: number;

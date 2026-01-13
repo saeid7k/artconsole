@@ -1,13 +1,15 @@
+import ActivityLogs from "@/Components/ActivityLogs";
 import ArtworkStatusTag from "@/Components/ArtworkStatusTag";
 import ArtworkTitleStack from "@/Components/ArtworkTitleStack";
 import DataCol from "@/Components/Containers/DataCol";
 import DataRow from "@/Components/Containers/DataRow";
 import FormattedDimensions from "@/Components/FormattedDimensions";
 import ImageGallery from "@/Components/ImageGallery";
-import LocationStack from "@/Components/LocationStack";
+import LocationStack from "@/Components/Locations/LocationStack";
 import PageTitle from "@/Components/PageTitle";
 import TextboxExpandable from "@/Components/TextboxExpandable";
 import { getArtworkCategoryLabel } from "@/constants/artworkCategories";
+import { ArtworkShowProvider } from "@/contexts/ArtworkShowContext";
 import AppLayout from "@/Layouts/AppLayout";
 import { ArtworkProps } from "@/types/artwork";
 import { formatCurrency } from "@/utils/formatter";
@@ -16,10 +18,8 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { Link, router } from "@inertiajs/react";
 import { Button, Card, Divider, Tabs, Tooltip } from "antd";
 import React, { useState } from "react";
-import ArtworkFormDrawer from "./Partials/ArtworkFormDrawer";
 import { twMerge } from "tailwind-merge";
-import ActivityLogs from "@/Components/ActivityLogs";
-import { ArtworkShowProvider } from "@/contexts/ArtworkShowContext";
+import ArtworkFormDrawer from "./Partials/ArtworkFormDrawer";
 
 function Show ({ artwork }: { artwork: ArtworkProps }) {
 
