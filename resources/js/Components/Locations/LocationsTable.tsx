@@ -6,7 +6,7 @@ import { keyToTitle } from '@/utils/stringHelper';
 import { router } from '@inertiajs/react';
 import type { TableProps } from 'antd';
 import { Table } from 'antd';
-import LocationStack from '../LocationStack';
+import LocationStack from './LocationStack';
 
 function LocationsTable({ locations }: {locations: PageProps}) {
 

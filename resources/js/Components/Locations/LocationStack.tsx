@@ -2,12 +2,12 @@ import colors from "@/Themes/theme";
 import { LocationProps } from "@/types/location";
 import { ArrowDataTransferHorizontalIcon, StoreLocation01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Badge, Button, Tag, Tooltip } from "antd";
+import { Button, Tag, Tooltip } from "antd";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
-import MoveModal from "./MoveModal";
-import CopyToClipboard from "./CopyToClipboard";
-import FlexBox from "./Containers/FlexBox";
+import FlexBox from "../Containers/FlexBox";
+import CopyToClipboard from "../CopyToClipboard";
+import MoveModal from "../MoveModal";
 
 type Props = {
   location: LocationProps;
@@ -35,7 +35,7 @@ function LocationStack({
 
   return(
     <>
-      <FlexBox>
+      <FlexBox alignItems="start" >
         <div
           className={twMerge(
             "flex items-start gap-1",
