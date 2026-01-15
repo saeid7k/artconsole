@@ -28,7 +28,7 @@ function DataRow({
 
   return (
     <div className={twMerge(
-        'flex items-center gap-0',
+        'flex gap-0',
         wrapping ? 'flex-wrap' : 'flex-nowrap',
         `items-${align}`,
         rootClassName
@@ -42,8 +42,8 @@ function DataRow({
         <CopyToClipboard
           title={typeof label === 'string' ? label : null}
           content={value}
-          size="lg"
-          className="ms-1"
+          size="md"
+          className="ms-1 shrink-0"
         />
       )}
     </div>
