@@ -2,7 +2,9 @@ import { LOCATION_TYPES } from "@/constants/locationTypes";
 import { LocationProps } from "@/types/location";
 import { Cancel01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Checkbox, Divider, Form, Input, Modal, Select } from "antd";
+import { router } from "@inertiajs/react";
+import { Checkbox, Divider, Form, Input, message, Modal, Select } from "antd";
+import axios from "axios";
 import AddressFields from "../Fields/AddressFields";
 import StyledDivider from "../StyledDivider";
 
@@ -23,7 +25,23 @@ function LocationCreateEditModal({ open, setOpen, mode = 'create', location }: P
   }
 
   function handleSave() {
-    // Save logic here
+    form.validateFields().then((values) => {
+      axios.post(route('locations.store-update'), {
+        ...values,
+        id: location ? location.id : undefined,
+        mode: mode,
+      })
+        .then(() => {
+          message.success(`Location ${mode === 'create' ? 'created' : 'updated'} successfully`);
+          handleClose();
+          router.reload();
+        })
+        .catch((error) => {
+          message.error(error.response?.data?.message || 'An error occurred while saving the location');
+        })
+    })
+
+
     setOpen(false)
   }
 

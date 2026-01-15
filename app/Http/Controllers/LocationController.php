@@ -24,6 +24,34 @@ class LocationController extends Controller
     ]);
   }
 
+  public function storeUpdate(Request $request)
+  {
+    $user = auth()->user();
+    $gallery = $user->currentGallery();
+
+    $data = $request->validate([
+      'id' => ['sometimes', 'integer', 'exists:locations,id'],
+      'type' => ['required', 'string', 'in:internal,external,venue,contact'],
+      'contact_id' => ['nullable', 'integer', 'exists:contacts,id'],
+      'name' => ['required', 'string', 'max:255'],
+      'description' => ['nullable', 'string'],
+      'address' => ['nullable', 'array'],
+      'address_same_as_gallery' => ['required', 'boolean'],
+      'is_primary' => ['required', 'boolean'],
+      // 'is_active' => ['required', 'boolean'],
+    ]);
+
+    $location = $gallery->locations()->updateOrCreate(
+      ['id' => $request->id],
+      $data
+    );
+
+    return response()->json([
+      'location' => $location,
+      'message' => 'Location saved successfully.',
+    ]);
+  }
+
   public function options()
   {
     $user = auth()->user();
