@@ -9,6 +9,7 @@ import FlexBox from "../Containers/FlexBox";
 import ImageGroup from "../ImageGroup";
 import TextboxExpandable from "../TextboxExpandable";
 import LocationCreateEditModal from "./LocationCreateEditModal";
+import { twMerge } from "tailwind-merge";
 
 function LocationCard({ location }: { location: LocationProps }) {
 
@@ -25,7 +26,10 @@ function LocationCard({ location }: { location: LocationProps }) {
             )}
           </FlexBox>
         }
-        className="w-full"
+        className={twMerge(
+          "w-full",
+          location.is_primary ? 'border-blue-500/50' : ''
+        )}
         actions={[
           <Tooltip title="Edit Location" placement="bottom" mouseEnterDelay={1} >
             <Button
