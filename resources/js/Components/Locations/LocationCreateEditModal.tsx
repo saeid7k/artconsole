@@ -1,7 +1,10 @@
+import { LOCATION_TYPES } from "@/constants/locationTypes";
 import { LocationProps } from "@/types/location";
 import { Cancel01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Form, Modal } from "antd";
+import { Checkbox, Divider, Form, Input, Modal, Select } from "antd";
+import AddressFields from "../Fields/AddressFields";
+import StyledDivider from "../StyledDivider";
 
 type Props = {
   open: boolean;
@@ -15,6 +18,7 @@ function LocationCreateEditModal({ open, setOpen, mode = 'create', location }: P
   const [form] = Form.useForm();
 
   function handleClose() {
+    form.resetFields()
     setOpen(false)
   }
 
@@ -23,26 +27,84 @@ function LocationCreateEditModal({ open, setOpen, mode = 'create', location }: P
     setOpen(false)
   }
 
+  const watchForm = Form.useWatch([], form);
+
   return (
     <Modal
       title={mode === 'create' ? "Create Location" : "Edit Location"}
       open={open}
       onCancel={handleClose}
       closeIcon={<HugeiconsIcon icon={Cancel01Icon} size={32} />}
-      // footer={null}
-      // width={800}
       okText="Save"
       onOk={handleSave}
       afterClose={handleClose}
-      // afterOpenChange={() => form.resetFields()}
+      afterOpenChange={() => form.resetFields()}
     >
       <Form
         layout="vertical"
         form={form}
-        initialValues={location ? location : {}}
-        // validateTrigger="onBlur"
+        initialValues={location ? location : {
+          address_same_as_gallery: true,
+          is_primary: false,
+        }}
+        validateTrigger="onBlur"
+        className="mt-5"
       >
-        I am an {mode} location form.
+        <Form.Item
+          label="Name"
+          name="name"
+          rules={[{ required: true, message: 'Please enter the location name' }]}
+        >
+          <Input placeholder="Enter location name" />
+        </Form.Item>
+
+        <Form.Item
+          label="Type"
+          name="type"
+          rules={[{ required: true, message: 'Please select a location type' }]}
+        >
+          <Select
+            options={LOCATION_TYPES}
+            defaultValue={LOCATION_TYPES.find(l => l.default)?.value}
+          />
+        </Form.Item>
+
+        <Form.Item
+          label="Description"
+          name="description"
+        >
+          <Input.TextArea
+            rows={4}
+            placeholder="Enter location description"
+          />
+        </Form.Item>
+
+        <Form.Item
+          name="address_same_as_gallery"
+          valuePropName="checked"
+        >
+          <Checkbox defaultChecked >
+            Same address as Gallery
+          </Checkbox>
+        </Form.Item>
+
+        {!watchForm?.address_same_as_gallery && (
+          <>
+            <StyledDivider variant="light" >Address</StyledDivider>
+            <AddressFields />
+            <Divider />
+          </>
+        )}
+
+        <Form.Item
+          name="is_primary"
+          valuePropName="checked"
+        >
+          <Checkbox defaultChecked={location ? location.is_primary : false}>
+            Set as Primary Location
+          </Checkbox>
+        </Form.Item>
+
       </Form>
     </Modal>
   )
