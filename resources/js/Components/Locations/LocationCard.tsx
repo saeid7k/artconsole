@@ -18,7 +18,12 @@ function LocationCard({ location }: { location: LocationProps }) {
     <>
       <Card
         title={
-          <FlexBox justifyContent="between" gap={3}><div>{location.name}</div><Tag color="blue">Primary</Tag></FlexBox>
+          <FlexBox justifyContent="between" gap={3}>
+            <div>{location.name}</div>
+            {location.is_primary && (
+              <Tag color="blue">Primary</Tag>
+            )}
+          </FlexBox>
         }
         className="w-full"
         actions={[
@@ -79,13 +84,15 @@ function LocationCard({ location }: { location: LocationProps }) {
                 // className="grow"
               />
             </FlexBox>
-            <Button
-              size="small"
-              type="link"
-              onClick={() => router.visit(route('artworks.index', { location: location.id }))}
-            >
-              View Artworks
-            </Button>
+            {location.artworks_count > 0 && (
+              <Button
+                size="small"
+                type="link"
+                onClick={() => router.visit(route('artworks.index', { location: location.id }))}
+              >
+                View Artworks
+              </Button>
+            )}
           </FlexBox>
         </FlexBox>
       </Card>
