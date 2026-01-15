@@ -1,4 +1,5 @@
-import COUNTRIES from "@/constants/Countries.json";
+import CONFIGS from "@/constants/configs.json";
+import COUNTRIES from "@/constants/countries.json";
 import { Form, Input, Select } from "antd";
 
 type Props = {
@@ -66,6 +67,7 @@ function AddressFields({ namePathPrefix = [] }: Props) {
           <Select
             options={countryOptions}
             showSearch
+            defaultValue={CONFIGS.defaults.country}
           />
         </Form.Item>
       </div>

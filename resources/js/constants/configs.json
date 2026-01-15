@@ -1,0 +1,6 @@
+{
+  "defaults": {
+    "country": "Canada",
+    "access_level": "viewer"
+  }
+}

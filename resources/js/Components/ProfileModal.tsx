@@ -1,4 +1,4 @@
-import COUNTRIES from "@/constants/Countries.json"
+import COUNTRIES from "@/constants/countries.json"
 import { AuthProps } from "@/types/auth"
 import { getInitials } from "@/utils/stringHelper"
 import { Cancel01Icon, Edit03Icon } from "@hugeicons/core-free-icons"
