@@ -94,6 +94,7 @@ function LocationCard({ location }: { location: LocationProps }) {
         open={openEditModal}
         setOpen={setOpenEditModal}
         mode="edit"
+        location={location}
       />
     </>
   );
