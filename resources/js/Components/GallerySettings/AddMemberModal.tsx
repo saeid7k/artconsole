@@ -1,5 +1,5 @@
 import ACCESS_LEVELS from "@/constants/accessLevels";
-import { CONFIGS } from "@/constants/appConstants";
+import CONFIGS from "@/constants/configs.json";
 import { GalleryProps } from "@/types/gallery";
 import { ucFirst } from "@/utils/stringHelper";
 import { AddMaleIcon, Cancel01Icon } from "@hugeicons/core-free-icons";
@@ -71,7 +71,7 @@ function AddMemberModal({ open = false, setOpen, gallery }: Props) {
         layout="vertical"
         validateTrigger="onSubmit"
         initialValues={{
-          access: CONFIGS.defaultAccessLevel
+          access: CONFIGS.defaults.access_level
         }}
         disabled={processing}
       >
@@ -92,7 +92,7 @@ function AddMemberModal({ open = false, setOpen, gallery }: Props) {
         >
           <Select
             placeholder="Select access level"
-            defaultValue={CONFIGS.defaultAccessLevel}
+            defaultValue={CONFIGS.defaults.access_level}
           >
             {ACCESS_LEVELS.map(level => (
               <Select.Option key={level.name} value={level.name}>

@@ -1,5 +1,5 @@
 import AddressFields from "@/Components/Fields/AddressFields";
-import COUNTRIES from "@/constants/Countries.json";
+import COUNTRIES from "@/constants/countries.json";
 import RELATIONSHIPS from "@/constants/relationships";
 import { ContactProps } from "@/types/contact";
 import { router } from "@inertiajs/react";
