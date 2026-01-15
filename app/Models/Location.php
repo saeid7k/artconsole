@@ -47,7 +47,7 @@ class Location extends Model
 
   public function setAddressAttribute(object|array|null $value)
   {
-    $this->attributes['address'] = json_encode($value);
+    $this->attributes['address'] = $value ? json_encode($value) : null;
   }
 
   // Relationships
