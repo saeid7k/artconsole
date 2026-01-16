@@ -118,7 +118,10 @@ function LocationCreateEditModal({ open, setOpen, mode = 'create', location }: P
           name="is_primary"
           valuePropName="checked"
         >
-          <Checkbox defaultChecked={location ? location.is_primary : false}>
+          <Checkbox
+            defaultChecked={location ? location.is_primary : false}
+            disabled={location ? !location.is_active : false}
+          >
             Set as Primary Location
           </Checkbox>
         </Form.Item>
