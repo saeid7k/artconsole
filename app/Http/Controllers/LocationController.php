@@ -32,7 +32,12 @@ class LocationController extends Controller
     $user = auth()->user();
     $gallery = $user->currentGallery();
 
-    $this->authorize('update', $gallery);
+    if ($request->has('id')) {
+      $location = Location::findOrFail($request->id);
+      $this->authorize('update', $location);
+    } else {
+      $this->authorize('create', Location::class);
+    }
 
     $data = $request->validate([
       'id' => ['sometimes', 'integer', 'exists:locations,id'],
@@ -75,7 +80,7 @@ class LocationController extends Controller
   }
 
   public function setPrimary(Request $request)
-  { 
+  {
     $validated = $request->validate([
       'location_id' => ['required', 'integer', 'exists:locations,id'],
     ]);
@@ -83,7 +88,7 @@ class LocationController extends Controller
     $location = Location::find($validated['location_id']);
     $gallery = $location->gallery;
 
-    $this->authorize('update', $gallery);
+    $this->authorize('update', $location);
 
     // Unset previous primary location
     $gallery->locations()->where('is_primary', true)->update(['is_primary' => false]);
