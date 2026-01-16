@@ -62,6 +62,23 @@ class LocationController extends Controller
     ]);
   }
 
+  public function destroy(Request $request, Location $location)
+  {
+    $this->authorize('delete', $location);
+
+    if ($location->artworks()->count() > 0) {
+      return response()->json([
+        'message' => 'Cannot delete location with associated artworks.',
+      ], 403);
+    }
+
+    $location->delete();
+
+    return response()->json([
+      'message' => 'Location deleted successfully.',
+    ]);
+  }
+
   public function options()
   {
     $this->authorize('viewAny', Location::class);
