@@ -33,7 +33,7 @@ function Index({ locations }: { locations: PageProps }) {
         onCreateButtonClick={() => setOpenCreateModal(true)}
         toolbar={renderToolbar()}
       />
-      <div className="grid items-start grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3">
+      <div className="grid items-start grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
         {locations.data.length > 0 && (
           <>
             {[...locations.data].map((location: any) => (
