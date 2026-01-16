@@ -118,4 +118,29 @@ class LocationController extends Controller
       'message' => 'Primary location updated successfully.',
     ]);
   }
+
+  public function toggleActive(Request $request)
+  {
+    $validated = $request->validate([
+      'location_id' => ['required', 'integer', 'exists:locations,id'],
+    ]);
+
+    $location = Location::find($validated['location_id']);
+
+    $this->authorize('update', $location);
+
+    if ($location->is_active && $location->isTheOnlyActiveLocation()) {
+      return response()->json([
+        'message' => 'Cannot deactivate the only active location of the gallery.',
+      ], 403);
+    }
+
+    $location->is_active = !$location->is_active;
+    $location->save();
+
+    return response()->json([
+      'location' => $location,
+      'message' => 'Location ' . ($location->is_active ? 'activated' : 'deactivated') . ' successfully.',
+    ]);
+  }
 }

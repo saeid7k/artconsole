@@ -90,6 +90,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/{location}', [App\Http\Controllers\LocationController::class, 'destroy'])->name('destroy');
     Route::get('/options', [App\Http\Controllers\LocationController::class, 'options'])->name('options');
     Route::post('/set-primary', [App\Http\Controllers\LocationController::class, 'setPrimary'])->name('set-primary');
+    Route::post('/toggle-active', [App\Http\Controllers\LocationController::class, 'toggleActive'])->name('toggle-active');
   });
 });
 
