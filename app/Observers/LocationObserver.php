@@ -34,5 +34,19 @@ class LocationObserver
         }
       }
     }
+
+    // Change primary if current primary is deactivated
+    if (!$location->is_active && $location->is_primary) {
+      $anotherActiveLocation = Location::where('gallery_id', $location->gallery_id)
+        ->where('is_active', true)
+        ->where('id', '!=', $location->id)
+        ->first();
+      if ($anotherActiveLocation) {
+        $anotherActiveLocation->updateQuietly(['is_primary' => true]);
+        $location->updateQuietly(['is_primary' => false]);
+      } else {
+        $location->updateQuietly(['is_active' => true]);
+      }
+    }
   }
 }
