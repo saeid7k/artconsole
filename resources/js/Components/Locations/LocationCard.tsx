@@ -16,6 +16,7 @@ function LocationCard({ location }: { location: LocationProps }) {
 
   const [openEditModal, setOpenEditModal] = useState(false);
   const [notificationApi, notificationContextHolder] = notification.useNotification();
+  // const isTheOnlyActivated = location.is_active && ;
 
   function handleSetAsPrimary() {
     axios.post(route('locations.set-primary'), {
@@ -48,6 +49,17 @@ function LocationCard({ location }: { location: LocationProps }) {
       });
   }
 
+  function handleToggleActive() {
+    axios.post(route('locations.toggle-active'), {
+      location_id: location.id,
+    }).then(() => {
+      message.success(`Location ${location.is_active ? 'deactivated' : 'activated'} successfully`);
+      router.reload({ only: ['locations']})
+    }).catch((error) => {
+      message.error(error.response?.data?.message || 'Failed to toggle location active status');
+    });
+  }
+
   return (
     <>
       <Card
@@ -57,7 +69,7 @@ function LocationCard({ location }: { location: LocationProps }) {
             {location.is_primary && (
               <Tag color="blue">Primary</Tag>
             )}
-            {!location.is_primary && (
+            {!location.is_primary && location.is_active && (
               <Button
                 size="small"
                 variant="filled"
@@ -68,11 +80,13 @@ function LocationCard({ location }: { location: LocationProps }) {
                 Set as Primary
               </Button>
             )}
+            {!location.is_active && (<Tag variant="outlined">Inactive</Tag>) }
           </FlexBox>
         }
         className={twMerge(
           "w-full group",
-          location.is_primary ? 'border-blue-500/50' : ''
+          location.is_primary ? 'border-blue-500/50' : '',
+          location.is_active ? '' : 'bg-soft'
         )}
         actions={[
           <Tooltip title="Edit" placement="bottom" mouseEnterDelay={1} >
@@ -109,7 +123,7 @@ function LocationCard({ location }: { location: LocationProps }) {
                 <Menu>
                   <Menu.Item key="set-primary"
                     onClick={handleSetAsPrimary}
-                    disabled={location.is_primary}
+                    disabled={location.is_primary || !location.is_active}
                   >
                     <FlexBox>
                       <HugeiconsIcon icon={StarIcon} size={20} />
@@ -117,6 +131,7 @@ function LocationCard({ location }: { location: LocationProps }) {
                     </FlexBox>
                   </Menu.Item>
                   <Menu.Item key="activate"
+                    onClick={handleToggleActive}
                   >
                     {location.is_active ? (
                       <FlexBox>
