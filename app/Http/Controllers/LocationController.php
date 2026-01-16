@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Location;
 use Illuminate\Http\Request;
 
 class LocationController extends Controller
 {
   public function index(Request $request)
   {
+    $this->authorize('viewAny', Location::class);
+
     $user = auth()->user();
     $gallery = $user->currentGallery();
     $locations = $gallery->locations()
@@ -28,6 +31,8 @@ class LocationController extends Controller
   {
     $user = auth()->user();
     $gallery = $user->currentGallery();
+
+    $this->authorize('update', $gallery);
 
     $data = $request->validate([
       'id' => ['sometimes', 'integer', 'exists:locations,id'],
@@ -54,6 +59,8 @@ class LocationController extends Controller
 
   public function options()
   {
+    $this->authorize('viewAny', Location::class);
+
     $user = auth()->user();
     $gallery = $user->currentGallery();
     $locations = $gallery->locations()
@@ -64,6 +71,29 @@ class LocationController extends Controller
     return response()->json([
       'locations' => $locations,
       'message' => 'Locations fetched successfully.',
+    ]);
+  }
+
+  public function setPrimary(Request $request)
+  { 
+    $validated = $request->validate([
+      'location_id' => ['required', 'integer', 'exists:locations,id'],
+    ]);
+
+    $location = Location::find($validated['location_id']);
+    $gallery = $location->gallery;
+
+    $this->authorize('update', $gallery);
+
+    // Unset previous primary location
+    $gallery->locations()->where('is_primary', true)->update(['is_primary' => false]);
+
+    // Set new primary location
+    $location->is_primary = true;
+    $location->save();
+
+    return response()->json([
+      'message' => 'Primary location updated successfully.',
     ]);
   }
 }

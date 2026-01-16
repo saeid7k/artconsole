@@ -88,6 +88,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [App\Http\Controllers\LocationController::class, 'index'])->name('index');
     Route::post('/store-update', [App\Http\Controllers\LocationController::class, 'storeUpdate'])->name('store-update');
     Route::get('/options', [App\Http\Controllers\LocationController::class, 'options'])->name('options');
+    Route::post('/set-primary', [App\Http\Controllers\LocationController::class, 'setPrimary'])->name('set-primary');
   });
 });
 
