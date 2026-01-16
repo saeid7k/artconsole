@@ -67,7 +67,7 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
 
           {/* Details */}
 
-          <Card className="lg:w-1/2 grow max-h-[550px] overflow-y-auto">
+          <Card className="lg:w-1/2 grow max-h-[580px] overflow-y-auto">
             <ArtworkTitleStack
               artwork={artwork}
               linkedTitle={false}
