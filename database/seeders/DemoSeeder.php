@@ -152,6 +152,7 @@ class DemoSeeder extends Seeder
     $this->command->info('✅' . ' 25 Artworks created per location.');
 
     // Add artist and images to artworks
+    $this->command->comment('Assigning artists and adding images to artworks...');
     foreach ($artworks as &$artwork) {
       // Assign an artist
       $gallery = $artwork->gallery;
