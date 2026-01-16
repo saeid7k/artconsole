@@ -88,6 +88,7 @@ function LocationCard({ location }: { location: LocationProps }) {
           <Tooltip title="Delete Location" placement="bottom" mouseEnterDelay={1} >
             <Popconfirm
               title="Are you sure to delete this location?"
+              placement="bottom"
               okType="danger"
               okText="Yes"
               onConfirm={handleDelete}
