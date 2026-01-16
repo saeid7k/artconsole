@@ -35,7 +35,7 @@ function ImageGallery({ images }: Props) {
             >
               <img
                 src={image.urls.original}
-                className="max-h-[400px] !w-auto max-w-full mx-auto cursor-pointer"
+                className="max-h-[440px] !w-auto max-w-full mx-auto cursor-pointer"
                 onClick={() => setOpenImageIndex(index)}
               />
             </div>
