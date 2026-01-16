@@ -17,7 +17,7 @@ class InviteLinkPolicy
 
   public function delete(User $user, InviteLink $inviteLink)
   {
-    return $inviteLink->gallery->isEditorOrOwner($user);
+    return $inviteLink->gallery->hasEditAccess($user);
   }
 
   public function accept(User $user, InviteLink $inviteLink)
