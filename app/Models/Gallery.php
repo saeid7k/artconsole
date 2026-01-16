@@ -122,7 +122,7 @@ class Gallery extends Model implements HasMedia
     return $member?->pivot->access ?? null;
   }
 
-  public function isEditorOrOwner(User $user): bool
+  public function hasEditAccess(User $user): bool
   {
     $accessLevel = $this->accessLevel($user);
     return in_array($accessLevel, ['owner', 'editor']);
