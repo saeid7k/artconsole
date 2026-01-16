@@ -83,6 +83,15 @@ class Location extends Model
     return $images->toArray();
   }
 
+  public function isTheOnlyActiveLocation(): bool
+  {
+    $activeLocationsCount = Location::where('gallery_id', $this->gallery_id)
+      ->where('is_active', true)
+      ->count();
+
+    return $activeLocationsCount === 1 && $this->is_active;
+  }
+
   // Scopes
 
   public function scopeActive($query)
