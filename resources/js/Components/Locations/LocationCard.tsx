@@ -1,8 +1,8 @@
 import { LocationProps } from "@/types/location";
-import { Delete02Icon, Location01Icon, MoreHorizontalSquare01Icon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
+import { Delete02Icon, Location01Icon, MoreHorizontalSquare01Icon, PencilEdit02Icon, StarCircleIcon, StarIcon, ViewIcon, ViewOffSlashIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
-import { Button, Card, Divider, message, notification, Popconfirm, Tag, Tooltip } from "antd";
+import { Button, Card, Divider, Dropdown, Menu, message, notification, Popconfirm, Tag, Tooltip } from "antd";
 import axios from "axios";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
@@ -75,7 +75,7 @@ function LocationCard({ location }: { location: LocationProps }) {
           location.is_primary ? 'border-blue-500/50' : ''
         )}
         actions={[
-          <Tooltip title="Edit Location" placement="bottom" mouseEnterDelay={1} >
+          <Tooltip title="Edit" placement="bottom" mouseEnterDelay={1} >
             <Button
               variant="text"
               color="default"
@@ -85,7 +85,7 @@ function LocationCard({ location }: { location: LocationProps }) {
               <HugeiconsIcon icon={PencilEdit02Icon} size={20} />
             </Button>
           </Tooltip>,
-          <Tooltip title="Delete Location" placement="bottom" mouseEnterDelay={1} >
+          <Tooltip title="Delete" placement="bottom" mouseEnterDelay={1} >
             <Popconfirm
               title="Are you sure to delete this location?"
               placement="bottom"
@@ -103,13 +103,44 @@ function LocationCard({ location }: { location: LocationProps }) {
             </Popconfirm>
           </Tooltip>,
           <Tooltip title="More" placement="bottom" mouseEnterDelay={0.5} >
-            <Button
-              variant="text"
-              color="purple"
-              shape="circle"
+            <Dropdown
+              trigger={['click']}
+              popupRender={() => (
+                <Menu>
+                  <Menu.Item key="set-primary"
+                    onClick={handleSetAsPrimary}
+                    disabled={location.is_primary}
+                  >
+                    <FlexBox>
+                      <HugeiconsIcon icon={StarIcon} size={20} />
+                      <div>Set as Primary</div>
+                    </FlexBox>
+                  </Menu.Item>
+                  <Menu.Item key="activate"
+                  >
+                    {location.is_active ? (
+                      <FlexBox>
+                        <HugeiconsIcon icon={ViewOffSlashIcon} size={20} />
+                        <div>Deactivate</div>
+                      </FlexBox>
+                    ) : (
+                      <FlexBox>
+                        <HugeiconsIcon icon={ViewIcon} size={20} />
+                        <div>Activate</div>
+                      </FlexBox>
+                    )}
+                  </Menu.Item>
+                </Menu>
+              )}
             >
-              <HugeiconsIcon icon={MoreHorizontalSquare01Icon} size={20} />
-            </Button>
+              <Button
+                variant="text"
+                color="purple"
+                shape="circle"
+              >
+                <HugeiconsIcon icon={MoreHorizontalSquare01Icon} size={20} />
+              </Button>
+            </Dropdown>
           </Tooltip>,
         ]}
       >
