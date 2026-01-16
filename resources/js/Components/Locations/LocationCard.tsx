@@ -2,7 +2,7 @@ import { LocationProps } from "@/types/location";
 import { Delete02Icon, Location01Icon, MoreHorizontalSquare01Icon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
-import { Button, Card, Divider, Tag, Tooltip } from "antd";
+import { Button, Card, Divider, message, Tag, Tooltip } from "antd";
 import { useState } from "react";
 import DataRow from "../Containers/DataRow";
 import FlexBox from "../Containers/FlexBox";
@@ -10,24 +10,47 @@ import ImageGroup from "../ImageGroup";
 import TextboxExpandable from "../TextboxExpandable";
 import LocationCreateEditModal from "./LocationCreateEditModal";
 import { twMerge } from "tailwind-merge";
+import axios from "axios";
 
 function LocationCard({ location }: { location: LocationProps }) {
 
   const [openEditModal, setOpenEditModal] = useState(false);
 
+  function handleSetAsPrimary() {
+    axios.post(route('locations.set-primary'), {
+      location_id: location.id,
+    }).then(() => {
+      message.success('Location set as primary');
+      router.reload({ only: ['locations']})
+    }).catch((error) => {
+      message.error(error.response?.data?.message || 'Failed to set location as primary');
+    });
+  }
+
   return (
     <>
       <Card
         title={
-          <FlexBox justifyContent="between" gap={3}>
+          <FlexBox justifyContent="between" gap={3} >
             <div>{location.name}</div>
             {location.is_primary && (
               <Tag color="blue">Primary</Tag>
             )}
+            {!location.is_primary && (
+              <Button
+                size="small"
+                variant="filled"
+                color="default"
+                className="opacity-0 group-hover:opacity-100"
+                onClick={handleSetAsPrimary}
+              >
+                Set as Primary
+              </Button>
+            )}
           </FlexBox>
         }
         className={twMerge(
-          "w-full",
+          "w-full group",
           location.is_primary ? 'border-blue-500/50' : ''
         )}
         actions={[
