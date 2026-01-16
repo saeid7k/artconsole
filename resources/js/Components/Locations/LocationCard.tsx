@@ -2,19 +2,20 @@ import { LocationProps } from "@/types/location";
 import { Delete02Icon, Location01Icon, MoreHorizontalSquare01Icon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
-import { Button, Card, Divider, message, Tag, Tooltip } from "antd";
+import { Button, Card, Divider, message, notification, Popconfirm, Tag, Tooltip } from "antd";
+import axios from "axios";
 import { useState } from "react";
+import { twMerge } from "tailwind-merge";
 import DataRow from "../Containers/DataRow";
 import FlexBox from "../Containers/FlexBox";
 import ImageGroup from "../ImageGroup";
 import TextboxExpandable from "../TextboxExpandable";
 import LocationCreateEditModal from "./LocationCreateEditModal";
-import { twMerge } from "tailwind-merge";
-import axios from "axios";
 
 function LocationCard({ location }: { location: LocationProps }) {
 
   const [openEditModal, setOpenEditModal] = useState(false);
+  const [notificationApi, notificationContextHolder] = notification.useNotification();
 
   function handleSetAsPrimary() {
     axios.post(route('locations.set-primary'), {
@@ -25,6 +26,26 @@ function LocationCard({ location }: { location: LocationProps }) {
     }).catch((error) => {
       message.error(error.response?.data?.message || 'Failed to set location as primary');
     });
+  }
+
+  function handleDelete() {
+    if (location.artworks_count > 0) {
+      notificationApi.error({
+        title: 'Cannot Delete Location',
+        description: 'This location has artworks associated with it. Please move or delete the artworks before deleting this location.',
+        duration: 10,
+        showProgress: true,
+      });
+      return;
+    }
+    axios.delete(route('locations.destroy', location.id))
+      .then(() => {
+        message.success('Location deleted successfully');
+        router.reload({ only: ['locations']});
+      })
+      .catch((error) => {
+        message.error(error.response?.data?.message || 'Failed to delete location');
+      });
   }
 
   return (
@@ -65,13 +86,20 @@ function LocationCard({ location }: { location: LocationProps }) {
             </Button>
           </Tooltip>,
           <Tooltip title="Delete Location" placement="bottom" mouseEnterDelay={1} >
-            <Button
-              variant="text"
-              color="red"
-              shape="circle"
+            <Popconfirm
+              title="Are you sure to delete this location?"
+              okType="danger"
+              okText="Yes"
+              onConfirm={handleDelete}
             >
-              <HugeiconsIcon icon={Delete02Icon} size={20} />
-            </Button>
+              <Button
+                variant="text"
+                color="red"
+                shape="circle"
+              >
+                <HugeiconsIcon icon={Delete02Icon} size={20} />
+              </Button>
+            </Popconfirm>
           </Tooltip>,
           <Tooltip title="More" placement="bottom" mouseEnterDelay={0.5} >
             <Button
@@ -130,6 +158,8 @@ function LocationCard({ location }: { location: LocationProps }) {
         mode="edit"
         location={location}
       />
+
+      {notificationContextHolder}
     </>
   );
 }
