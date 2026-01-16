@@ -19,8 +19,18 @@ class LocationPolicy
     return true;
   }
 
-  public function update(User $user, Gallery $gallery)
+  public function create(User $user): bool
   {
-    return $gallery->hasEditAccess($user);
+    return $user->currentGallery()->hasEditAccess($user);
+  }
+
+  public function update(User $user, Location $location): bool
+  {
+    return $location->gallery->hasEditAccess($user);
+  }
+
+  public function delete(User $user, Location $location): bool
+  {
+    return $location->gallery->hasEditAccess($user);
   }
 }
