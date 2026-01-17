@@ -1,14 +1,15 @@
-import { ActivityLogProps } from "@/types/activityLog";
-import FlexBox from "./Containers/FlexBox";
-import { Avatar, Button, Tooltip } from "antd";
-import { getInitials, keyToTitle } from "@/utils/stringHelper";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { ArrowDown01Icon, ArrowRight04Icon, Time04Icon } from "@hugeicons/core-free-icons";
-import { twMerge } from "tailwind-merge";
-import { useState } from "react";
 import colors from "@/Themes/theme";
-import { motion } from "framer-motion";
+import { ActivityLogProps } from "@/types/activityLog";
+import { formatByKey } from "@/utils/formatHelper";
+import { getInitials, keyToTitle } from "@/utils/stringHelper";
+import { ArrowDown01Icon, ArrowRight04Icon, Time04Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Avatar, Button, Tooltip } from "antd";
 import dayjs from "dayjs";
+import { motion } from "framer-motion";
+import { useState } from "react";
+import { twMerge } from "tailwind-merge";
+import FlexBox from "./Containers/FlexBox";
 
 function LogStack({ log }: { log: ActivityLogProps }) {
 
@@ -56,9 +57,9 @@ function LogStack({ log }: { log: ActivityLogProps }) {
     return (
       <>
         {Object.entries(log.properties?.attributes || {}).map(([key, value]) => (
-          <div key={key}>
-            <label>{keyToTitle(key)}: </label>{keyToTitle(String(value))}
-          </div>
+          <FlexBox key={key} gap={2}>
+            <label>{keyToTitle(key)}:</label><div className="line-clamp-2 truncate whitespace-normal !max-w-[400px]">{formatByKey(key, value)}</div>
+          </FlexBox>
         ))}
       </>
     )
@@ -67,9 +68,9 @@ function LogStack({ log }: { log: ActivityLogProps }) {
   return (
     <div
       key={log.id}
-      className="flex items-center justify-between gap-2 px-2 py-1 bg-light border border-solid border-light rounded min-w-[500px]"
+      className="flex items-center justify-between flex-wrap gap-2 px-2 py-1 bg-light border border-solid border-light rounded min-w-[500px]"
     >
-      <FlexBox direction="col" gap={0} alignItems="start" >
+      <FlexBox direction="col" gap={0} alignItems="start">
         <FlexBox>
           <Avatar
             size={24}
@@ -94,21 +95,20 @@ function LogStack({ log }: { log: ActivityLogProps }) {
         <motion.div
           initial={{ height: 0, opacity: 0 }}
           animate={showProperties ? { height: 'auto', opacity: 1 } : { height: 0, opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          style={{ overflow: 'hidden', width: '100%' }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+          style={{ overflow: 'hidden' }}
         >
           <FlexBox
             direction="col"
             alignItems="start"
             gap={0}
-            className="w-max ps-3 mt-2"
+            className="ps-3 mt-2 pt-1"
             style={{ borderTop: `1px dashed ${colors.gray[300]}` }}
           >
             {log.log_name == 'artwork-move' && renderMoveDetails()}
             {log.event == 'updated' && renderUpdatedDetails()}
           </FlexBox>
         </motion.div>
-
       </FlexBox>
       <FlexBox className="w-max whitespace-nowrap">
         <HugeiconsIcon icon={Time04Icon} size={16} className="text-muted" />
