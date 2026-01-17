@@ -1,13 +1,12 @@
+import PageTitle from "@/Components/PageTitle";
+import { useSearch } from "@/hooks/useSearch";
 import AppLayout from "@/Layouts/AppLayout";
 import { PageProps } from "@/types";
-import { router } from "@inertiajs/react";
+import { deleteQueryParam, getQueryParam } from "@/utils/urlHelper";
 import Search from "antd/es/input/Search";
-import ContactsTable from "./Partials/ContactsTable";
-import PageTitle from "@/Components/PageTitle";
 import { useEffect, useState } from "react";
 import ContactFormDrawer from "./Partials/ContactFormDrawer";
-import { deleteQueryParam, getQueryParam } from "@/utils/urlHelper";
-import { useSearch } from "@/hooks/useSearch";
+import ContactsTable from "./Partials/ContactsTable";
 
 function Index({ contacts }: { contacts: PageProps }) {
 
