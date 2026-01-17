@@ -9,7 +9,7 @@ import { useArtworksIndex } from '@/contexts/ArtworksIndexContext';
 import { useWindow } from '@/hooks/useWindow';
 import { PageProps } from '@/types';
 import { ArtworkProps } from '@/types/artwork';
-import { formatCurrency } from '@/utils/formatter';
+import { formatCurrency } from '@/utils/formatHelper';
 import { keyToTitle } from '@/utils/stringHelper';
 import { ViewIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';

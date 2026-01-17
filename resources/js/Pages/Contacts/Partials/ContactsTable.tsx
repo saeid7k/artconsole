@@ -1,16 +1,16 @@
 import ContactStack from '@/Components/ContactStack';
 import RelationshipTags from '@/Components/RelationshipTags';
+import RELATIONSHIPS from '@/constants/relationships';
 import { useWindow } from '@/hooks/useWindow';
 import { PageProps } from '@/types';
 import { ContactProps } from '@/types/contact';
-import { formatPhoneNumber } from '@/utils/formatter';
+import { formatPhoneNumber } from '@/utils/formatHelper';
 import { Call02Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { router } from '@inertiajs/react';
 import type { TableProps } from 'antd';
 import { Table } from 'antd';
 import ContactsActions from './ContactsActions';
-import RELATIONSHIPS from '@/constants/relationships';
 
 function ContactsTable({ contacts }: { contacts: PageProps }) {
 

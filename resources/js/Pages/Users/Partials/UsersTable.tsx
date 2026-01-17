@@ -1,15 +1,14 @@
+import UserStack from '@/Components/UserStack';
 import { useWindow } from '@/hooks/useWindow';
 import { PageProps } from '@/types';
-import { formatPhoneNumber } from '@/utils/formatter';
-import { getInitials } from '@/utils/stringHelper';
+import { UserProps } from '@/types/user';
+import { formatPhoneNumber } from '@/utils/formatHelper';
 import { Call02Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { router } from '@inertiajs/react';
 import type { TableProps } from 'antd';
-import { Avatar, Table } from 'antd';
+import { Table } from 'antd';
 import UsersActions from './UsersActions';
-import { UserProps } from '@/types/user';
-import UserStack from '@/Components/UserStack';
 
 function UsersTable({ users }: { users: PageProps }) {
 

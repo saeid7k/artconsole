@@ -12,7 +12,7 @@ import { getArtworkCategoryLabel } from "@/constants/artworkCategories";
 import { ArtworkShowProvider } from "@/contexts/ArtworkShowContext";
 import AppLayout from "@/Layouts/AppLayout";
 import { ArtworkProps } from "@/types/artwork";
-import { formatCurrency } from "@/utils/formatter";
+import { formatCurrency } from "@/utils/formatHelper";
 import { BarCode02Icon, BrushIcon, Folder02Icon, GooglePhotosIcon, PackageDimensions01Icon, PaintBucketIcon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link, router } from "@inertiajs/react";
