@@ -14,7 +14,7 @@ class ActivityLogController extends Controller
     $activities = Activity::where('subject_type', 'App\\Models\\' . $model)
       ->where('subject_id', $modelId)
       ->with('causer')
-      ->orderBy('created_at', 'desc')
+      ->orderBy('created_at', 'asc')
       ->get();
 
     return response()->json($activities);
