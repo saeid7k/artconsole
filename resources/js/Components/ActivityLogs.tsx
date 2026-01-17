@@ -1,15 +1,12 @@
 import LoadingSpinner from "@/Components/LoadingSpinner";
 import { ActivityLogProps } from "@/types/activityLog";
-import { getInitials } from "@/utils/stringHelper";
-import { Time04Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Avatar, Empty } from "antd";
+import { Empty } from "antd";
 import axios from "axios";
-import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import LogStack from "./LogStack";
+
 
 function ActivityLogs({ modelType, modelId }: { modelType: string; modelId: number }) {
-
   const [logs, setLogs] = useState<Array<ActivityLogProps>>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -41,34 +38,9 @@ function ActivityLogs({ modelType, modelId }: { modelType: string; modelId: numb
     );
   }
 
-  const causerName = (causer: ActivityLogProps['causer']) => {
-    if (!causer) return 'System';
-    return causer.firstname;
-  }
-
   return (
     <div className="flex flex-col gap-2 overflow-x-auto">
-      {logs.map(log => (
-        <div
-          key={log.id}
-          className="flex items-center justify-between gap-2 px-2 py-1 bg-light border border-solid border-light rounded min-w-[500px]"
-        >
-          <div className="flex items-center gap-1">
-            <Avatar
-              size={24}
-              src={log.causer?.photo}
-            >
-              {getInitials(causerName(log.causer))}
-            </Avatar>
-            <div className="text-muted">{causerName(log.causer)}</div>
-            <div>{log.description}</div>
-          </div>
-          <div className="flex items-center gap-1">
-            <HugeiconsIcon icon={Time04Icon} size={16} className="text-muted" />
-            {dayjs(log.created_at).format('MMM D, YYYY h:mm A')}
-          </div>
-        </div>
-      ))}
+      {logs.map(log => <LogStack key={log.id} log={log} />)}
     </div>
   );
 }
