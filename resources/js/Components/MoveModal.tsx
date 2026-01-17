@@ -50,7 +50,7 @@ function MoveModal({ open = false, setOpen }: Props) {
         reason: moveForm.getFieldValue('reason'),
       })
       .then(() => {
-        message.success('Location moved successfully.');
+        message.success('Location changed successfully.');
         moveForm.resetFields();
         setOpen(false);
         router.reload();
