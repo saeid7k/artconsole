@@ -80,11 +80,10 @@ function LocationCard({ location }: { location: LocationProps }) {
                 Set as Primary
               </Button>
             )}
-            {!location.is_active && (<Tag variant="outlined">Inactive</Tag>) }
           </FlexBox>
         }
         className={twMerge(
-          "w-full group",
+          "w-full group overflow-hidden",
           location.is_primary ? 'border-blue-500/50' : '',
           location.is_active ? '' : 'bg-soft'
         )}
@@ -197,6 +196,15 @@ function LocationCard({ location }: { location: LocationProps }) {
             )}
           </FlexBox>
         </FlexBox>
+
+        {!location.is_active && (
+          <div
+            className="absolute top-[20px] -right-[44px] rotate-45 border border-solid border-gray-500/50
+            bg-light text-muted text-center px-10 uppercase tracking-widest"
+          >
+            Inactive
+          </div>
+        )}
       </Card>
 
       <LocationCreateEditModal
