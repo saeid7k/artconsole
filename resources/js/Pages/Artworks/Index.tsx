@@ -9,10 +9,11 @@ import { HugeiconsIcon } from "@hugeicons/react"
 import { router } from "@inertiajs/react"
 import { Button, Segmented, Tooltip } from "antd"
 import Search from "antd/es/input/Search"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import ArtworksGrids from "./Partials/ArtworksGrids"
 import ArtworksTable from "./Partials/ArtworksTable"
 import ArtworkFormDrawer from "./Partials/ArtworkFormDrawer"
+import { deleteQueryParam, getQueryParam } from "@/utils/urlHelper"
 
 function Index({ artworks, locations }: { artworks: PageProps, locations: Array<LocationProps> }) {
 
@@ -64,6 +65,14 @@ function Index({ artworks, locations }: { artworks: PageProps, locations: Array<
   // Create Drawer
 
   const [showCreateDrawer, setShowCreateDrawer] = useState(false)
+
+  useEffect(() => {
+    let action = getQueryParam('action');
+    if (action === 'create') {
+      setShowCreateDrawer(true);
+      deleteQueryParam('action');
+    }
+  }, [])
 
   // Render
 
