@@ -26,7 +26,7 @@ function FlexBox({
   return (
     <div
       className={twMerge(
-        'flex items-center gap-1 w-full',
+        'flex items-center gap-1',
         `flex-${direction}`,
         `justify-${justifyContent}`,
         `items-${alignItems}`,
