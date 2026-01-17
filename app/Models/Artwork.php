@@ -194,6 +194,7 @@ class Artwork extends Model implements HasMedia
     return LogOptions::defaults()
       ->logFillable()
       ->logOnlyDirty()
+      ->logExcept(['location_id'])
       ->dontSubmitEmptyLogs()
       ->setDescriptionForEvent(function (string $event) {
         switch ($event) {
