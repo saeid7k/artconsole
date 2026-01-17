@@ -49,4 +49,14 @@ function stringifyArray(arr: string[] | string | null | undefined): string {
   return arr.map(item => String(item)).join(', ');
 }
 
-export { ucFirst, getInitials, keyToTitle, stringifyArray };
+function stringifyObject(obj: Record<string, any> | null | undefined): string {
+  if (!obj) {
+    return '';
+  }
+
+  return Object.entries(obj)
+    .map(([key, value]) => `${key}: ${String(value)}`)
+    .join(', ');
+}
+
+export { ucFirst, getInitials, keyToTitle, stringifyArray, stringifyObject };
