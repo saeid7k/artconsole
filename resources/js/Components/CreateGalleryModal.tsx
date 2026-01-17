@@ -1,4 +1,4 @@
-import { trimWebsite } from "@/utils/formatter";
+import { trimWebsite } from "@/utils/formatHelper";
 import { Add01Icon, Cancel01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";

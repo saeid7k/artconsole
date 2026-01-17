@@ -1,12 +1,12 @@
 import { ArtworkProps } from "@/types/artwork";
-import { formatCurrency } from "@/utils/formatter";
+import { formatCurrency } from "@/utils/formatHelper";
 import { router } from "@inertiajs/react";
 import { useState } from "react";
+import { twMerge } from "tailwind-merge";
+import imagePlaceholder from '~/resources/images/image-placeholder.svg';
 import ArtworkStatusTag from "./ArtworkStatusTag";
 import ArtworkTitleStack from "./ArtworkTitleStack";
 import FormattedDimensions from "./FormattedDimensions";
-import imagePlaceholder from '~/resources/images/image-placeholder.svg'
-import { twMerge } from "tailwind-merge";
 
 function ArtworkCard({ artwork }: { artwork: ArtworkProps }) {
 

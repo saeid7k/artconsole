@@ -1,5 +1,5 @@
 import { useGallerySettings } from "@/contexts/GallerySettingsContext"
-import { trimWebsite } from "@/utils/formatter"
+import { trimWebsite } from "@/utils/formatHelper"
 import { Add01Icon, Delete02Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router } from "@inertiajs/react"

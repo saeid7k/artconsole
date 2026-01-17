@@ -7,7 +7,7 @@ import { ContactProvider } from "@/contexts/ContactContext";
 import AppLayout from "@/Layouts/AppLayout";
 import { ContactProps } from "@/types/contact";
 import { stringToColor } from "@/utils/colorHelper";
-import { formatPhoneNumber } from "@/utils/formatter";
+import { formatPhoneNumber } from "@/utils/formatHelper";
 import { getInitials } from "@/utils/stringHelper";
 import { BirthdayCakeIcon, Briefcase01Icon, Call02Icon, City03Icon, EarthIcon, Edit03Icon, Location06Icon, Mail01Icon, MapingIcon, OfficeIcon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
