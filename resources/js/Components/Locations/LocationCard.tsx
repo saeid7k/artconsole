@@ -158,7 +158,7 @@ function LocationCard({ location }: { location: LocationProps }) {
           </Tooltip>,
         ]}
       >
-        <FlexBox direction="col" alignItems="start">
+        <FlexBox direction="col" alignItems="start" className="min-h-[200px]" >
           {location.description && (
             <TextboxExpandable
               content={location.description ?? ''}
