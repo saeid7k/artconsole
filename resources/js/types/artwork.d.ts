@@ -1,4 +1,5 @@
 import { ContactProps } from "./contact";
+import { DimensionsProps } from "./dimensions";
 import { LocationProps } from "./location";
 import { UserProps } from "./user";
 
@@ -20,12 +21,7 @@ export interface ArtworkProps {
   subject?: string | null;
   description?: string | null;
   year?: string | null;
-  dimensions: {
-    width: number;
-    height: number;
-    depth: number;
-    unit: string;
-  } | null;
+  dimensions?: DimensionsProps | null;
   price: number;
   medium?: string | null;
   styles: string[];
