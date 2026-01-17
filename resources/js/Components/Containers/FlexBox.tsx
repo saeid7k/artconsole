@@ -7,6 +7,7 @@ type Props = {
   alignItems?: 'start' | 'center' | 'end' | 'baseline' | 'stretch';
   wrapping?: 'wrap' | 'nowrap' | 'wrap-reverse';
   className?: string;
+  style?: React.CSSProperties;
   children: React.ReactNode;
 }
 
@@ -17,6 +18,7 @@ function FlexBox({
   alignItems = 'center',
   wrapping = 'nowrap',
   className,
+  style,
   children,
   ...props
 }: Props) {
@@ -32,6 +34,7 @@ function FlexBox({
         `gap-${gap}`,
         className
       )}
+      style={style}
       {...props}
     >
       {children}
