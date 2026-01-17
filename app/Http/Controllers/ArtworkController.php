@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ArtworkCategory;
 use App\Http\Requests\ArtworkStoreUpdateRequest;
 use App\Models\Artwork;
+use App\Models\Location;
 use App\Services\ArtworkService;
 use Illuminate\Http\Request;
 
@@ -119,10 +120,25 @@ class ArtworkController extends Controller
 
     $request->validate([
       'location_id' => ['required', 'exists:locations,id'],
+      'reason' => ['nullable', 'string', 'max:200'],
     ]);
 
+    $prevLocationId = $artwork->location_id;
+
     $artwork->location_id = $request->location_id;
-    $artwork->save();
+    activity()->withoutLogs(function () use ($artwork) {
+      $artwork->save();
+    });
+
+    activity('artwork-move')
+      ->causedBy(auth()->user())
+      ->performedOn($artwork)
+      ->withProperties([
+          'prev_location' => Location::find($prevLocationId)->name ?? null,
+          'new_location' => Location::find($request->location_id)->name ?? null,
+          'reason' => $request->reason,
+        ])
+      ->log('moved the artwork to new location');
 
     return response()->json([
       'message' => 'Artwork moved successfully.',
