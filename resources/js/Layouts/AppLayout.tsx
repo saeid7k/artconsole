@@ -38,6 +38,7 @@ function App ({ children }: AppProps) {
           colorBgLayout: darkMode ? colors.gray['900'] : colors.gray['50'],
           colorBgContainer: darkMode ? colors.gray['900'] : colors.white,
           colorBgElevated: darkMode ? colors.gray['900'] : colors.white,
+          colorLinkHover: darkMode ? colors.blue['300'] : colors.blue['500'],
           // boxShadow: darkMode ? '0 1px 3px rgba(0, 0, 0, 0.9)' : '0 1px 3px rgba(0, 0, 0, 0.1)',
           boxShadowSecondary: darkMode ? '0 6px 16px 4px rgba(0, 0, 0, 0.9)' : '0 6px 16px 4px rgba(0, 0, 0, 0.1)',
           fontFamily: `'Segoe UI', sans-serif`,
