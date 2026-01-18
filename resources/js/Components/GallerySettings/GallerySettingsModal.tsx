@@ -6,8 +6,8 @@ import { HugeiconsIcon } from "@hugeicons/react"
 import { router, usePage } from "@inertiajs/react"
 import { Divider, Modal, Tabs } from "antd"
 import General from "./General"
-import Location from "./Location"
 import Members from "./Members"
+import Address from "./Address"
 
 function GallerySettingsModal({ open, setOpen }: { open: boolean, setOpen: (open: boolean) => void }) {
 
@@ -31,9 +31,9 @@ function GallerySettingsModal({ open, setOpen }: { open: boolean, setOpen: (open
       children: <Members />
     },
     {
-      key: 'location',
-      label: <div className="flex items-center gap-1"><HugeiconsIcon icon={Location03Icon} size={20} />Location</div>,
-      children: <Location />
+      key: 'address',
+      label: <div className="flex items-center gap-1"><HugeiconsIcon icon={Location03Icon} size={20} />Address</div>,
+      children: <Address />
     },
     {
       key: 'accounting',
