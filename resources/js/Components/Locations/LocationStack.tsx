@@ -65,7 +65,7 @@ function LocationStack({
 
   return(
     <>
-      <FlexBox alignItems="start" >
+      <FlexBox alignItems="start" className="max-w-full">
 
         {/* Body */}
 
@@ -73,6 +73,7 @@ function LocationStack({
           direction="col"
           alignItems="start"
           className={twMerge(
+            'max-w-full overflow-x-auto',
             boxed ? 'p-2 bg-light rounded' : '',
             bordered ? 'border border-solid border-light' : '',
             className
@@ -102,13 +103,14 @@ function LocationStack({
             animate={openHistory ? { height: 'auto', opacity: 1 } : { height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
             style={{ overflow: 'hidden', borderTop: `1px dashed ${colors.gray[300]}` }}
-            className="w-full min-w-[400px] pt-1 mt-1"
+            className="pt-1 mt-1"
           >
             {logQuery.isSuccess && logQuery.data.length > 0 && (
               <>
                 <Timeline
                   mode="start"
-                  titleSpan={8}
+                  titleSpan={6}
+                  className="w-[500px] pt-2"
                 >
                 {logQuery.data.map((log: any) => (
                     <Timeline.Item
@@ -116,15 +118,17 @@ function LocationStack({
                       placement="start"
                     >
                       <FlexBox>
-                        <div>{log.properties?.prev_location}</div>
-                        <HugeiconsIcon icon={ArrowRight04Icon} size={20} />
-                        <div>{log.properties?.new_location}</div>
+                        <div className="grid grid-cols-12 gap-1 grow">
+                          <div className="col-span-5">{log.properties?.prev_location}</div>
+                          <HugeiconsIcon icon={ArrowRight04Icon} size={20} color={colors.gray[400]} />
+                          <div className="col-span-5">{log.properties?.new_location}</div>
+                        </div>
                         <Popover
                           placement="right"
                           content={
                             <>
                               <DataRow
-                                label="User:"
+                                label="Submitted by:"
                                 value={log.causer?.full_name || 'System'}
                               />
                               <DataRow
