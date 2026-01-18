@@ -8,7 +8,7 @@ import AddressFields from "../Fields/AddressFields"
 import GoogleMap from "../GoogleMap"
 import { formatAddress } from "@/utils/addressHelper"
 
-function Location() {
+function Address() {
 
   // Constants
 
@@ -20,9 +20,9 @@ function Location() {
 
   const watchAddress = Form.useWatch('address', form)
 
-  const [coordinates, setCoordinates] = useState<{ lat: number; lng: number } | null>({
-    lat: gallery.address?.coordinates?.lat || 0,
-    lng: gallery.address?.coordinates?.lng || 0
+  const [coordinates, setCoordinates] = useState<{ lat: number | null; lng: number | null }>({
+    lat: gallery.address?.coordinates?.lat || null,
+    lng: gallery.address?.coordinates?.lng || null
   });
 
   function getCoordinates(address: string) {
@@ -108,8 +108,7 @@ function Location() {
         <AddressFields />
       </Form>
       <GoogleMap
-        lat={coordinates?.lat || 0}
-        lng={coordinates?.lng || 0}
+        coordinates={coordinates}
       />
       <ActionFooter
         isProcessing={processing}
@@ -119,4 +118,4 @@ function Location() {
   )
 }
 
-export default Location
+export default Address
