@@ -41,8 +41,9 @@ class GalleryObserver
     // Fill coordinates
     $address = $gallery->address;
     $coordinates = $address?->coordinates ?? null;
+    $coordinatesIsNotFilled = empty($coordinates?->lat) || empty($coordinates?->lng);
 
-    if (($address?->street ?? false) && (empty($coordinates?->lat) || empty($coordinates?->lng))) {
+    if (($address?->street && $coordinatesIsNotFilled) || $gallery->wasChanged('address')) {
       $coordinates = AddressHelper::addressToCoordinates($gallery->formatted_address);
 
       if ($coordinates) {
