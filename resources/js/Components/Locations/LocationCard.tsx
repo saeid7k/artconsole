@@ -11,6 +11,7 @@ import FlexBox from "../Containers/FlexBox";
 import ImageGroup from "../ImageGroup";
 import TextboxExpandable from "../TextboxExpandable";
 import LocationCreateEditModal from "./LocationCreateEditModal";
+import GoogleMap from "../GoogleMap";
 
 function LocationCard({ location }: { location: LocationProps }) {
 
@@ -173,27 +174,27 @@ function LocationCard({ location }: { location: LocationProps }) {
             align="start"
             showCopyToClipboard
           />
+          <GoogleMap
+            coordinates={location.address?.coordinates}
+            height={250}
+            hideIfNotFound
+            className="mt-1"
+          />
           <Divider />
-          <FlexBox direction="col" gap={0} alignItems="center" >
-            <FlexBox gap={3} alignItems="end" >
-              <FlexBox direction="col" alignItems="start" className="!w-max" >
-                <div className="text-5xl font-light">{location.artworks_count}</div>
-                <div>Artworks</div>
-              </FlexBox>
-              <ImageGroup
-                images={location.artworks_images_urls ?? []}
-                // className="grow"
-              />
+          <FlexBox gap={3} alignItems="end" >
+            <FlexBox
+              direction="col"
+              alignItems="start"
+              className="!w-max cursor-pointer hover:text-link"
+              onClick={() => router.visit(route('artworks.index', { location: location.id }))}
+            >
+              <div className="text-5xl font-light">{location.artworks_count}</div>
+              <div>Artworks</div>
             </FlexBox>
-            {location.artworks_count > 0 && (
-              <Button
-                size="small"
-                type="link"
-                onClick={() => router.visit(route('artworks.index', { location: location.id }))}
-              >
-                View Artworks
-              </Button>
-            )}
+            <ImageGroup
+              images={location.artworks_images_urls ?? []}
+              // className="grow"
+            />
           </FlexBox>
         </FlexBox>
 
