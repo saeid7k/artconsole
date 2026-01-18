@@ -1,6 +1,7 @@
+import { HTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
 
-type Props = {
+type Props = HTMLAttributes<HTMLDivElement> & {
   direction?: 'row' | 'col';
   gap?: number;
   justifyContent?: 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
