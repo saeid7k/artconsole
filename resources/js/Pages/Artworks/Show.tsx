@@ -112,6 +112,7 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
                 </div>
                 <LocationStack
                   location={artwork.location}
+                  showTitle
                   showAddress
                   clamped={false}
                   boxed
