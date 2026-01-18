@@ -93,7 +93,7 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
               <DataRow
                 icon={<HugeiconsIcon icon={PackageDimensions01Icon} size={18} />}
                 label="Size:"
-                value={<FormattedDimensions dimensions={artwork.dimensions} showDepth />}
+                value={<FormattedDimensions dimensions={artwork.dimensions || null} showDepth />}
                 labelClassName="min-w-[80px]"
               />
               {/* Price & Location */}
