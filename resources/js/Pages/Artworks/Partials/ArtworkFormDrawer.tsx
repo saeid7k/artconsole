@@ -335,7 +335,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
             />
           </Form.Item>
           <Form.Item
-            label="Work #"
+            label="Edition Work #"
             name={["edition", "number"]}
             className="sm:w-1/4"
             hidden={watchForm?.edition?.type === 'unique'}
@@ -347,7 +347,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
             />
           </Form.Item>
           <Form.Item
-            label="Size"
+            label="Edition Total Size"
             name={["edition", "size"]}
             className="sm:w-1/4"
             hidden={['unique', 'open'].includes(watchForm?.edition?.type)}
@@ -434,7 +434,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
             name={["dimensions", "depth"]}
             className="sm:w-1/4"
           >
-            <InputNumber min={1} className="w-full" />
+            <InputNumber min={0} className="w-full" />
           </Form.Item>
           <Form.Item
             label="Unit"
