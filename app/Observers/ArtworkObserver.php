@@ -9,12 +9,15 @@ class ArtworkObserver
 {
   public function creating(Artwork $artwork): void
   {
+    $user = auth()->user();
+    $gallery = $artwork->gallery ?? $user->currentGallery();
+
     // assign creator if not set
     if (!$artwork->creator_id) {
-      $user = auth()->user();
-      $gallery = $artwork->gallery ?? $user->currentGallery();
-
       $artwork->creator()->associate($user);
+    }
+    // assign location if not set
+    if (!$artwork->location_id) {
       $artwork->location()->associate(
         $gallery->primaryLocation()->first()
       );
