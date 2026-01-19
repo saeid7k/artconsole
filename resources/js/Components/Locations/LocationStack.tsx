@@ -103,7 +103,7 @@ function LocationStack({
             animate={openHistory ? { height: 'auto', opacity: 1 } : { height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
             style={{ overflow: 'hidden', borderTop: `1px dashed ${colors.gray[300]}` }}
-            className="pt-1 mt-1"
+            className="pt-1 mt-1 w-full"
           >
             {logQuery.isSuccess && logQuery.data.length > 0 && (
               <>
