@@ -1,5 +1,5 @@
 import { LocationProps } from "@/types/location";
-import { Delete02Icon, Location01Icon, MoreHorizontalSquare01Icon, PencilEdit02Icon, StarCircleIcon, StarIcon, ViewIcon, ViewOffSlashIcon } from "@hugeicons/core-free-icons";
+import { Delete02Icon, Image02Icon, Location01Icon, MoreHorizontalSquare01Icon, PencilEdit02Icon, StarIcon, ViewIcon, ViewOffSlashIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
 import { Button, Card, Divider, Dropdown, Menu, message, notification, Popconfirm, Tag, Tooltip } from "antd";
@@ -8,10 +8,10 @@ import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import DataRow from "../Containers/DataRow";
 import FlexBox from "../Containers/FlexBox";
+import GoogleMap from "../GoogleMap";
 import ImageGroup from "../ImageGroup";
 import TextboxExpandable from "../TextboxExpandable";
 import LocationCreateEditModal from "./LocationCreateEditModal";
-import GoogleMap from "../GoogleMap";
 
 function LocationCard({ location }: { location: LocationProps }) {
 
@@ -121,6 +121,14 @@ function LocationCard({ location }: { location: LocationProps }) {
               trigger={['click']}
               popupRender={() => (
                 <Menu>
+                  <Menu.Item key="artworks"
+                    onClick={() => router.visit(route('artworks.index', { location: location.id }))}
+                  >
+                    <FlexBox>
+                      <HugeiconsIcon icon={Image02Icon} size={20} />
+                      <div>View Artworks</div>
+                    </FlexBox>
+                  </Menu.Item>
                   <Menu.Item key="set-primary"
                     onClick={handleSetAsPrimary}
                     disabled={location.is_primary || !location.is_active}
