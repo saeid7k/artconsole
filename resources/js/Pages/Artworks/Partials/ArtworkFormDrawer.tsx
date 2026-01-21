@@ -3,6 +3,7 @@ import StyledDivider from "@/Components/StyledDivider";
 import { ARTWORK_CATEGORIES, DEFAULT_ARTWORK_CATEGORY } from "@/constants/artworkCategories";
 import ARTWORK_EDITIONS from "@/constants/artworkEditions";
 import ARTWORK_STATUSES, { DEFAULT_ARTWORK_STATUS } from "@/constants/artworkStatuses";
+import useLocations from "@/hooks/useLocations";
 import { ArtworkProps } from "@/types/artwork";
 import { stringifyArray } from "@/utils/stringHelper";
 import { MagicWand05Icon } from "@hugeicons/core-free-icons";
@@ -192,6 +193,10 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
     enabled: show,
   })
 
+  // Locations
+
+  const { locationsOptions, defaultLocationValue } = useLocations({ enableQuery: show });
+
   // Watchers
 
   const watchForm = Form.useWatch([], form)
@@ -218,7 +223,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
       >
         {/* Title & Status */}
 
-        <div className="flex flex-col sm:flex-row gap-x-2">
+        <div className="flex flex-col sm:flex-row gap-x-4">
           <Form.Item
             label="Title"
             name="title"
@@ -321,7 +326,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
               { required: false },
               { pattern: /^\d{4}$/, message: 'Year must be a 4-digit number' }
             ]}
-            className="sm:w-1/4"
+            className="sm:w-1/4 sm:me-2"
           >
             <Input />
           </Form.Item>
@@ -378,39 +383,73 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
 
         {/* Medium & Styles */}
 
-        <Form.Item
-          label="Medium"
-          name="medium"
-        >
-          <Select
-            mode="tags"
-            options={tagsQuery.data ? tagsQuery.data['medium']?.map((tag: string) => ({
-              label: tag,
-              value: tag,
-            })) : []}
-            placeholder="Select or type a medium"
-            maxCount={1}
-            onChange={(value) => form.setFieldValue('medium', value.length > 0 ? stringifyArray(value) : null)}
-            disabled={tagsQuery.isLoading || tagsQuery.isFetching}
-          />
-        </Form.Item>
+        <div className="flex flex-col sm:flex-row gap-4">
+          <Form.Item
+            label="Category"
+            name="category"
+            rules={[{ required: true, message: 'Category is required' }]}
+            className="sm:w-1/2"
+          >
+            <Select
+              defaultValue={ARTWORK_CATEGORIES[0].value}
+              options={ARTWORK_CATEGORIES}
+            />
+          </Form.Item>
+          <Form.Item
+            label="Subject"
+            name="subject"
+            className="sm:w-1/2"
+          >
+            <Select
+              mode="tags"
+              options={tagsQuery.data ? tagsQuery.data['subject']?.map((tag: string) => ({
+                label: tag,
+                value: tag,
+              })) : []}
+              placeholder="Select or type a subject"
+              maxCount={1}
+              onChange={(value) => {form.setFieldValue('subject', value.length > 0 ? stringifyArray(value) : null)}}
+              disabled={tagsQuery.isLoading || tagsQuery.isFetching}
+            />
+          </Form.Item>
+        </div>
 
-        <Form.Item
-          label="Styles"
-          name="styles"
-        >
-          <Select
-            mode="tags"
-            options={tagsQuery.data ? tagsQuery.data['style']?.map((tag: string) => ({
-              label: tag,
-              value: tag,
-            })) : []}
-            placeholder="Select or type styles"
-            // maxCount={1}
-            // onChange={(value) => form.setFieldValue('styles', stringifyArray(value))}
-            disabled={tagsQuery.isLoading || tagsQuery.isFetching}
-          />
-        </Form.Item>
+        <div className="flex flex-col sm:flex-row gap-4">
+          <Form.Item
+            label="Medium"
+            name="medium"
+            className="sm:w-1/2"
+          >
+            <Select
+              mode="tags"
+              options={tagsQuery.data ? tagsQuery.data['medium']?.map((tag: string) => ({
+                label: tag,
+                value: tag,
+              })) : []}
+              placeholder="Select or type a medium"
+              maxCount={1}
+              onChange={(value) => form.setFieldValue('medium', value.length > 0 ? stringifyArray(value) : null)}
+              disabled={tagsQuery.isLoading || tagsQuery.isFetching}
+            />
+          </Form.Item>
+          <Form.Item
+            label="Styles"
+            name="styles"
+            className="sm:w-1/2"
+          >
+            <Select
+              mode="tags"
+              options={tagsQuery.data ? tagsQuery.data['style']?.map((tag: string) => ({
+                label: tag,
+                value: tag,
+              })) : []}
+              placeholder="Select or type styles"
+              // maxCount={1}
+              // onChange={(value) => form.setFieldValue('styles', stringifyArray(value))}
+              disabled={tagsQuery.isLoading || tagsQuery.isFetching}
+            />
+          </Form.Item>
+        </div>
 
         {/* Size */}
 
@@ -474,7 +513,22 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
 
         <StyledDivider variant="light" >Inventory</StyledDivider>
 
-        {/* Category, Subject & SKU */}
+        {/* Location, Ownership & SKU */}
+
+        {mode === 'create' && (
+          <Form.Item
+            label="Location"
+            name="location_id"
+            className="sm:w-1/2"
+          >
+            <Select
+              options={locationsOptions}
+              defaultValue={defaultLocationValue}
+              placeholder="Select a location"
+              showSearch={{ optionFilterProp: ['label', 'value'] }}
+            />
+          </Form.Item>
+        )}
 
         <div className="flex items-center gap-3">
           <Form.Item
@@ -519,36 +573,6 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
             <Input />
           </Form.Item>
         </div>
-
-
-
-        <Form.Item
-          label="Category"
-          name="category"
-          rules={[{ required: true, message: 'Category is required' }]}
-        >
-          <Select
-            defaultValue={ARTWORK_CATEGORIES[0].value}
-            options={ARTWORK_CATEGORIES}
-          />
-        </Form.Item>
-
-        <Form.Item
-          label="Subject"
-          name="subject"
-        >
-          <Select
-            mode="tags"
-            options={tagsQuery.data ? tagsQuery.data['subject']?.map((tag: string) => ({
-              label: tag,
-              value: tag,
-            })) : []}
-            placeholder="Select or type a subject"
-            maxCount={1}
-            onChange={(value) => {form.setFieldValue('subject', value.length > 0 ? stringifyArray(value) : null)}}
-            disabled={tagsQuery.isLoading || tagsQuery.isFetching}
-          />
-        </Form.Item>
 
         <Form.Item
           label="SKU"
