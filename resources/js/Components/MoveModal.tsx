@@ -1,7 +1,6 @@
 import { useArtworkShow } from "@/contexts/ArtworkShowContext";
-import { LocationProps } from "@/types/location";
+import useLocations from "@/hooks/useLocations";
 import { router } from "@inertiajs/react";
-import { useQuery } from "@tanstack/react-query";
 import { Form, Input, message, Modal, Select } from "antd";
 import axios from "axios";
 import { useEffect } from "react";
@@ -18,27 +17,15 @@ function MoveModal({ open = false, setOpen }: Props) {
 
   // Fetch Locations & Options
 
-  const { data: locations } = useQuery<LocationProps[]>({
-    queryKey: ['locations-query'],
-    queryFn: () =>
-      axios.get(route('locations.options'))
-        .then(response => response.data.locations),
-    enabled: open,
-  });
-
-  const locationsOptions = locations?.map((loc) => ({
-    label: loc.name + (loc.is_primary ? ' (Primary)' : ''),
-    value: loc.id,
-  })) || [];
-  const defaultLocationValue = locations?.find(l => l.is_primary)?.id;
+  const {  locationsOptions, defaultLocationValue } = useLocations({ enableQuery: open });
 
   useEffect(() => {
-    if (open && locations && locations.length > 0) {
+    if (open && locationsOptions && locationsOptions.length > 0) {
       moveForm.setFieldsValue({
         new_location: defaultLocationValue,
       });
     }
-  }, [open, locations]);
+  }, [open, locationsOptions]);
 
   // Handle Move
 
