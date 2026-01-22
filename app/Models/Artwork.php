@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -194,22 +195,36 @@ class Artwork extends Model implements HasMedia
 
   public function getActivitylogOptions(): LogOptions
   {
-    return LogOptions::defaults()
+    $options = LogOptions::defaults()
       ->logFillable()
-      ->logOnlyDirty()
       ->logExcept(['location_id'])
-      ->dontSubmitEmptyLogs()
-      ->setDescriptionForEvent(function (string $event) {
-        switch ($event) {
-          case 'created':
-            return "created the artwork";
-          case 'updated':
-            return "updated artwork details";
-          case 'deleted':
-            return "deleted the artwork";
-          default:
-            return $event;
-        }
-      });
+      ->dontSubmitEmptyLogs();
+
+    if (!$this->wasRecentlyCreated) {
+      $options->logOnlyDirty();
+    }
+
+    return $options->setDescriptionForEvent(function (string $event) {
+      switch ($event) {
+        case 'created':
+          return "created the artwork";
+        case 'updated':
+          return "updated artwork details";
+        case 'deleted':
+          return "deleted the artwork";
+        default:
+          return $event;
+      }
+    });
+  }
+
+  public function tapActivity(Activity $activity, string $eventName)
+  {
+    if ($eventName === 'created') {
+      $activity->properties = $activity->properties->merge([
+        'location' => $this->location ? $this->location->name : null,
+      ]);
+      return;
+    }
   }
 }
