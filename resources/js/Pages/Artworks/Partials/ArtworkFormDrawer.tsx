@@ -10,7 +10,7 @@ import { MagicWand05Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Button, Drawer, Form, Input, InputNumber, message, Radio, Select, Space, Spin, Tooltip } from "antd";
+import { Button, Drawer, Form, Input, InputNumber, message, Radio, Segmented, Select, Space, Spin, Tooltip } from "antd";
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
@@ -201,6 +201,8 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
 
   const watchForm = Form.useWatch([], form)
 
+  const defaultArtistMode = watchForm?.artist_selection_mode ? watchForm?.artist_selection_mode : (artwork?.artist_id ? 'select' : 'add');
+
   return (
     <Drawer
       title={`${mode === 'update' ? 'Edit' : 'Create'} Artwork`}
@@ -257,13 +259,6 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
         >
           <Input type="number" />
         </Form.Item>
-        <Form.Item
-          label="Artist Name"
-          name={["artist_data", "firstname"]}
-          hidden
-        >
-          <Input />
-        </Form.Item>
 
         {/* Artist Stack */}
 
@@ -275,6 +270,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
             >
+              <label>Artist</label>
               <ContactWidget
                 contact={artistSelected}
                 title="Artist"
@@ -288,32 +284,54 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
         {/* Artist Selector */}
 
         {!watchForm?.artist_id && (
-          <div className="flex gap-1">
+          <>
             <Form.Item
-              label='Artist Name'
-              className="lg:w-1/2"
+              label="Artist"
+              name='artist_selection_mode'
+              className="mb-2"
             >
-              <Select
-                mode="tags"
-                options={artistsOptions}
-                maxCount={1}
-                placeholder="Select from contacts or type a new artist name"
-                showSearch={{ optionFilterProp: ['label', 'value'] }}
-                onChange={(value: string[]) => onChangeArtist(value[0])}
-                onDeselect={() => clearArtist()}
+              <Segmented
+                options={[
+                  { label: 'Select from Contacts', value: 'select' },
+                  { label: 'Type Name', value: 'add' },
+                ]}
+                defaultValue={defaultArtistMode}
               />
             </Form.Item>
-            {watchForm?.artist_data?.firstname?.length > 0 && (
-              <Button
-                type="dashed"
-                size="small"
-                className="self-center text-xs"
-                onClick={addToContacts}
-              >
-                Add to Contacts
-              </Button>
-            )}
-          </div>
+            <div className="flex gap-1">
+              {defaultArtistMode == 'select' && (
+                <Form.Item
+                  className="w-full sm:w-1/2"
+                >
+                  <Select
+                    options={artistsOptions}
+                    placeholder="Select"
+                    showSearch={{ optionFilterProp: ['label', 'value'] }}
+                    onChange={(value: string) => onChangeArtist(value)}
+                    onDeselect={() => clearArtist()}
+                  />
+                </Form.Item>
+              )}
+              {defaultArtistMode === 'add' && (
+                <Form.Item
+                  name={["artist_data", "firstname"]}
+                  className="w-full sm:w-1/2"
+                >
+                  <Input placeholder="Type" />
+                </Form.Item>
+              )}
+              {watchForm?.artist_data?.firstname?.length > 0 && (
+                <Button
+                  type="dashed"
+                  size="middle"
+                  className="text-xs"
+                  onClick={addToContacts}
+                >
+                  Add to Contacts
+                </Button>
+              )}
+            </div>
+          </>
         )}
 
         {/* Year & Edition */}
