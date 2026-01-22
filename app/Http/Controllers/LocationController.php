@@ -90,10 +90,7 @@ class LocationController extends Controller
       ->active()
       ->orderBy('name')->get();
 
-    return response()->json([
-      'locations' => $locations,
-      'message' => 'Locations fetched successfully.',
-    ]);
+    return response()->json($locations);
   }
 
   public function setPrimary(Request $request)
