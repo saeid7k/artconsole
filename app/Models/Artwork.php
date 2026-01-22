@@ -89,7 +89,10 @@ class Artwork extends Model implements HasMedia
         if ($this->artist_id) {
           return $this->artist;
         } else {
-          return json_decode($value);
+          $value = json_decode($value ?? '{}');
+          $value = (array) $value;
+          $value['full_name'] = trim(($value['firstname'] ?? '') . ' ' . ($value['lastname'] ?? ''));
+          return (object) $value;
         }
       },
       set: fn ($value) => json_encode($value),
