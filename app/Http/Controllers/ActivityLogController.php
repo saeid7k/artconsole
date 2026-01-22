@@ -11,7 +11,7 @@ class ActivityLogController extends Controller
     $validated = $request->validate([
       'model_type' => ['required', 'string'],
       'model_id' => ['required', 'integer'],
-      'name' => ['sometimes', 'string'],
+      'names' => ['sometimes', 'array'],
     ]);
 
     $model = ucfirst($request->input('model_type'));
@@ -20,8 +20,8 @@ class ActivityLogController extends Controller
     $activities = Activity::where('subject_type', 'App\\Models\\' . $model)
       ->where('subject_id', $modelId)
       ->where(function ($q) use ($request) {
-        if ($request->has('name')) {
-          $q->where('log_name', $request->input('name'));
+        if ($request->has('names')) {
+          $q->whereIn('log_name', $request->input('names'));
         }
       })
       ->with(['causer' => function ($q) {
