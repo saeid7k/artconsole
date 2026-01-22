@@ -1,5 +1,6 @@
 import { useArtworkShow } from "@/contexts/ArtworkShowContext";
 import colors from "@/Themes/theme";
+import { ActivityLogProps } from "@/types/activityLog";
 import { LocationProps } from "@/types/location";
 import { ArrowDataTransferHorizontalIcon, ArrowRight04Icon, InformationCircleIcon, StoreLocation01Icon, TimeQuarterIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -8,7 +9,7 @@ import { Button, Empty, Popover, Tag, Timeline, Tooltip } from "antd";
 import axios from "axios";
 import dayjs from "dayjs";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import DataRow from "../Containers/DataRow";
 import FlexBox from "../Containers/FlexBox";
@@ -52,7 +53,7 @@ function LocationStack({
       return axios.get(route('activity-logs.model-activities', {
         model_type: 'artwork',
         model_id: artwork?.id,
-        name: 'artwork-move'
+        names: ['default', 'artwork-move']
       }))
       .then(res => res.data)
       .catch(err => {
@@ -62,6 +63,13 @@ function LocationStack({
     enabled: (artwork && openHistory) ? true : false,
     retry: false,
   })
+
+  useEffect(() => {
+    logQuery.refetch();
+  }, [location])
+
+  const createdLog = logQuery.data?.filter((log: ActivityLogProps) => log.event === 'created' && log.log_name === 'default' && log.properties.location);
+  const moveLogs = logQuery.data?.filter((log: ActivityLogProps) => log.log_name === 'artwork-move');
 
   return(
     <>
@@ -112,7 +120,17 @@ function LocationStack({
                   titleSpan={6}
                   className="w-[500px] pt-2"
                 >
-                {logQuery.data.map((log: any) => (
+                {createdLog.length > 0 && (
+                  createdLog.map((log: ActivityLogProps) => (
+                    <Timeline.Item
+                      title={dayjs(log.created_at).format('MMM D, YYYY')}
+                      placement="start"
+                    >
+                      added to {log.properties.location}
+                    </Timeline.Item>
+                  ))
+                )}
+                {moveLogs.map((log: ActivityLogProps) => (
                     <Timeline.Item
                       title={dayjs(log.created_at).format('MMM D, YYYY')}
                       placement="start"
