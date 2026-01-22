@@ -8,7 +8,7 @@ function useLocations({ enableQuery = true }) {
     queryKey: ['locations-query'],
     queryFn: () =>
       axios.get(route('locations.options'))
-        .then(response => response.data.locations),
+        .then(response => response.data),
     enabled: enableQuery,
   });
 
