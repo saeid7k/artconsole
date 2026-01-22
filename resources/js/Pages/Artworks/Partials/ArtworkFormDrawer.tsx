@@ -73,6 +73,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
             label: artist.full_name,
             value: artist.id,
           })));
+          return artists;
         }),
     enabled: show,
   })
@@ -189,6 +190,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
             label: contact.full_name,
             value: contact.id,
           })));
+          return contacts;
         }),
     enabled: show,
   })
