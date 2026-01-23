@@ -46,6 +46,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [App\Http\Controllers\ArtworkController::class, 'index'])->name('index');
     Route::get('/{artwork}', [App\Http\Controllers\ArtworkController::class, 'show'])->name('show');
     Route::post('/store-update', [App\Http\Controllers\ArtworkController::class, 'storeUpdate'])->name('store-update');
+    Route::delete('/{artwork}', [App\Http\Controllers\ArtworkController::class, 'destroy'])->name('destroy');
     Route::post('/generate-sku', [App\Http\Controllers\ArtworkController::class, 'generateSku'])->name('generate-sku');
     Route::post('/{artwork}/move', [App\Http\Controllers\ArtworkController::class, 'moveLocation'])->name('move');
   });
