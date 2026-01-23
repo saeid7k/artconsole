@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Location;
+use App\Rules\Phone;
 use Illuminate\Http\Request;
 
 class LocationController extends Controller
@@ -45,6 +46,8 @@ class LocationController extends Controller
       'contact_id' => ['nullable', 'integer', 'exists:contacts,id'],
       'name' => ['required', 'string', 'max:255'],
       'description' => ['nullable', 'string'],
+      'phone' => ['nullable', new Phone()],
+      'email' => ['nullable', 'string', 'max:255', 'email'],
       'address' => ['nullable', 'array'],
       'address_same_as_gallery' => ['required', 'boolean'],
       'is_primary' => ['required', 'boolean'],
