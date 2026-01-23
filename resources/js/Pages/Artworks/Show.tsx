@@ -3,11 +3,9 @@ import ArtworkStatusTag from "@/Components/ArtworkStatusTag";
 import ArtworkTitleStack from "@/Components/ArtworkTitleStack";
 import DataCol from "@/Components/Containers/DataCol";
 import DataRow from "@/Components/Containers/DataRow";
-import FlexBox from "@/Components/Containers/FlexBox";
 import FormattedDimensions from "@/Components/FormattedDimensions";
 import ImageGallery from "@/Components/ImageGallery";
 import LocationStack from "@/Components/Locations/LocationStack";
-import MoveModal from "@/Components/MoveModal";
 import PageTitle from "@/Components/PageTitle";
 import TextboxExpandable from "@/Components/TextboxExpandable";
 import { getArtworkCategoryLabel } from "@/constants/artworkCategories";
@@ -15,36 +13,15 @@ import { ArtworkShowProvider } from "@/contexts/ArtworkShowContext";
 import AppLayout from "@/Layouts/AppLayout";
 import { ArtworkProps } from "@/types/artwork";
 import { formatCurrency } from "@/utils/formatHelper";
-import { ArrowDataTransferHorizontalIcon, BarCode02Icon, BrushIcon, Delete02Icon, Folder02Icon, GooglePhotosIcon, PackageDimensions01Icon, PaintBucketIcon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
+import { BarCode02Icon, BrushIcon, Folder02Icon, GooglePhotosIcon, PackageDimensions01Icon, PaintBucketIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Link, router } from "@inertiajs/react";
-import { useMutation } from "@tanstack/react-query";
-import { Button, Card, Divider, message, Popconfirm, Tabs, Tooltip } from "antd";
-import axios from "axios";
-import React, { useState } from "react";
+import { Link } from "@inertiajs/react";
+import { Card, Divider, Tabs } from "antd";
+import React from "react";
 import { twMerge } from "tailwind-merge";
-import ArtworkFormDrawer from "./Partials/ArtworkFormDrawer";
+import ArtworkToolbar from "./Partials/ArtworkToolbar";
 
 function Show ({ artwork }: { artwork: ArtworkProps }) {
-
-  // Edit Drawer
-
-  const [showEditDrawer, setShowEditDrawer] = useState(false)
-  const [openMoveModal, setOpenMoveModal] = useState(false);
-
-  // Delete
-
-  const deleteMutation = useMutation({
-    mutationFn: (artworkId: number) => axios.delete(route('artworks.destroy', artworkId)),
-    onSuccess: () => {
-      message.success('Artwork deleted successfully')
-      router.visit(route('artworks.index'))
-    },
-    onError: (error: any) => {
-      message.error(error.response?.data?.message || 'Failed to delete artwork')
-    },
-  })
-
   return (
     <ArtworkShowProvider value={{ artwork }}>
       <PageTitle
@@ -52,57 +29,7 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
           { title: <Link href={route('artworks.index')}>Artworks</Link> },
           { title: artwork.title }
         ]}
-        toolbar={
-          <FlexBox>
-            <Tooltip title="Edit Artwork" mouseEnterDelay={1} >
-              <Button
-                type="text"
-                shape="square"
-                onClick={() => setShowEditDrawer(true)}
-                disabled={!artwork.abilities.update}
-              >
-                <HugeiconsIcon icon={PencilEdit02Icon} size={20} />
-                Edit
-              </Button>
-            </Tooltip>
-            <Tooltip title="Move to new Location" mouseEnterDelay={1} >
-              <Button
-                type="text"
-                shape="square"
-                onClick={() => setOpenMoveModal(true)}
-                disabled={!artwork.abilities.update}
-              >
-                <HugeiconsIcon icon={ArrowDataTransferHorizontalIcon} size={20} />
-                Move
-              </Button>
-            </Tooltip>
-            <Tooltip title="Delete Artwork" mouseEnterDelay={1} >
-              <Popconfirm
-                title="Delete the artwork"
-                description={
-                  <div>
-                    Are you sure to delete this artwork?
-                    <div className="italic text-red-500">{artwork.title}</div>
-                  </div>
-                }
-                onConfirm={() => deleteMutation.mutate(artwork.id)}
-                okText="Yes"
-                cancelText="No"
-                placement="left"
-                okType="danger"
-              >
-                <Button
-                  type="text"
-                  shape="square"
-                  disabled={!artwork.abilities.delete}
-                >
-                  <HugeiconsIcon icon={Delete02Icon} size={20} />
-                  Delete
-                </Button>
-              </Popconfirm>
-            </Tooltip>
-          </FlexBox>
-        }
+        toolbar={<ArtworkToolbar artwork={artwork} />}
       />
       <div className="flex flex-col gap-3">
 
@@ -216,16 +143,6 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
           </Tabs>
         </Card>
       </div>
-      <ArtworkFormDrawer
-        artwork={artwork}
-        show={showEditDrawer}
-        onClose={() => { setShowEditDrawer(false); router.reload() }}
-        mode="update"
-      />
-      <MoveModal
-        open={openMoveModal}
-        setOpen={setOpenMoveModal}
-      />
     </ArtworkShowProvider>
   )
 }
