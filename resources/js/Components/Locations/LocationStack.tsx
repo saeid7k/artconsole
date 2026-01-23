@@ -66,7 +66,9 @@ function LocationStack({
   })
 
   useEffect(() => {
-    logQuery.refetch();
+    if (openHistory) {
+      logQuery.refetch();
+    }
   }, [location])
 
   const createdLog = logQuery.data?.filter((log: ActivityLogProps) => log.event === 'created' && log.log_name === 'default' && log.properties.location);
