@@ -7,6 +7,7 @@ import { Checkbox, Divider, Form, Input, message, Modal, Select } from "antd";
 import axios from "axios";
 import AddressFields from "../Fields/AddressFields";
 import StyledDivider from "../StyledDivider";
+import { FORM_RULES } from "@/constants/formRules";
 
 type Props = {
   open: boolean;
@@ -40,8 +41,6 @@ function LocationCreateEditModal({ open, setOpen, mode = 'create', location }: P
           message.error(error.response?.data?.message || 'An error occurred while saving the location');
         })
     })
-
-
     setOpen(false)
   }
 
@@ -95,6 +94,25 @@ function LocationCreateEditModal({ open, setOpen, mode = 'create', location }: P
             rows={4}
             placeholder="Enter location description"
           />
+        </Form.Item>
+
+        <Form.Item
+          label="Phone"
+          name="phone"
+          rules={FORM_RULES.phone}
+        >
+          <Input placeholder="Enter phone number" />
+        </Form.Item>
+
+        <Form.Item
+          label="Email"
+          name="email"
+          rules={[
+            { type: 'email', message: 'Please enter a valid email address' },
+            { max: 255, message: 'Email cannot exceed 255 characters' }
+          ]}
+        >
+          <Input placeholder="Enter email address" />
         </Form.Item>
 
         <Form.Item
