@@ -16,6 +16,7 @@ import FlexBox from "../Containers/FlexBox";
 import CopyToClipboard from "../CopyToClipboard";
 import LoadingSpinner from "../LoadingSpinner";
 import MoveModal from "../MoveModal";
+import StyledDivider from "../StyledDivider";
 
 type Props = {
   location: LocationProps;
@@ -110,15 +111,16 @@ function LocationStack({
             initial={{ height: 0, opacity: 0 }}
             animate={openHistory ? { height: 'auto', opacity: 1 } : { height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
-            style={{ overflow: 'hidden', borderTop: `1px dashed ${colors.gray[300]}` }}
-            className="pt-1 mt-1 w-full"
+            style={{ overflow: 'hidden' }}
+            className="w-full"
           >
+            <StyledDivider variant="light" >Location History</StyledDivider>
             {logQuery.isSuccess && logQuery.data.length > 0 && (
               <>
                 <Timeline
                   mode="start"
                   titleSpan={6}
-                  className="w-[500px] pt-2"
+                  className="w-[500px] pt-2 max-h-[400px] overflow-y-auto"
                 >
                 {createdLog.length > 0 && (
                   createdLog.map((log: ActivityLogProps) => (
