@@ -15,10 +15,12 @@ import { ArtworkShowProvider } from "@/contexts/ArtworkShowContext";
 import AppLayout from "@/Layouts/AppLayout";
 import { ArtworkProps } from "@/types/artwork";
 import { formatCurrency } from "@/utils/formatHelper";
-import { ArrowDataTransferHorizontalIcon, BarCode02Icon, BrushIcon, Folder02Icon, GooglePhotosIcon, PackageDimensions01Icon, PaintBucketIcon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
+import { ArrowDataTransferHorizontalIcon, BarCode02Icon, BrushIcon, Delete02Icon, Folder02Icon, GooglePhotosIcon, PackageDimensions01Icon, PaintBucketIcon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link, router } from "@inertiajs/react";
-import { Button, Card, Divider, Tabs, Tooltip } from "antd";
+import { useMutation } from "@tanstack/react-query";
+import { Button, Card, Divider, message, Popconfirm, Tabs, Tooltip } from "antd";
+import axios from "axios";
 import React, { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import ArtworkFormDrawer from "./Partials/ArtworkFormDrawer";
@@ -29,6 +31,19 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
 
   const [showEditDrawer, setShowEditDrawer] = useState(false)
   const [openMoveModal, setOpenMoveModal] = useState(false);
+
+  // Delete
+
+  const deleteMutation = useMutation({
+    mutationFn: (artworkId: number) => axios.delete(route('artworks.destroy', artworkId)),
+    onSuccess: () => {
+      message.success('Artwork deleted successfully')
+      router.visit(route('artworks.index'))
+    },
+    onError: (error: any) => {
+      message.error(error.response?.data?.message || 'Failed to delete artwork')
+    },
+  })
 
   return (
     <ArtworkShowProvider value={{ artwork }}>
@@ -60,6 +75,31 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
                 <HugeiconsIcon icon={ArrowDataTransferHorizontalIcon} size={20} />
                 Move
               </Button>
+            </Tooltip>
+            <Tooltip title="Delete Artwork" mouseEnterDelay={1} >
+              <Popconfirm
+                title="Delete the artwork"
+                description={
+                  <div>
+                    Are you sure to delete this artwork?
+                    <div className="italic text-red-500">{artwork.title}</div>
+                  </div>
+                }
+                onConfirm={() => deleteMutation.mutate(artwork.id)}
+                okText="Yes"
+                cancelText="No"
+                placement="left"
+                okType="danger"
+              >
+                <Button
+                  type="text"
+                  shape="square"
+                  disabled={!artwork.abilities.delete}
+                >
+                  <HugeiconsIcon icon={Delete02Icon} size={20} />
+                  Delete
+                </Button>
+              </Popconfirm>
             </Tooltip>
           </FlexBox>
         }
