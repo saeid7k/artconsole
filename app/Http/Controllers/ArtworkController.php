@@ -95,6 +95,17 @@ class ArtworkController extends Controller
     }
   }
 
+  public function destroy(Artwork $artwork)
+  {
+    $this->authorize('delete', $artwork);
+
+    $artwork->delete();
+
+    return response()->json([
+      'message' => 'Artwork deleted successfully.',
+    ]);
+  }
+
   public function generateSku(Request $request)
   {
     $this->authorize('viewAny', Artwork::class);
