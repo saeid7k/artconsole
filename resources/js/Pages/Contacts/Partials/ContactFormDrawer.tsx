@@ -1,5 +1,6 @@
 import AddressFields from "@/Components/Fields/AddressFields";
 import COUNTRIES from "@/constants/countries.json";
+import { FORM_RULES } from "@/constants/formRules";
 import RELATIONSHIPS from "@/constants/relationships";
 import { ContactProps } from "@/types/contact";
 import { router } from "@inertiajs/react";
@@ -105,10 +106,7 @@ function ContactFormDrawer({ mode = 'create', contact = null, show, onClose }: P
               <Form.Item
                 name="phone"
                 label="Phone"
-                rules={[
-                  { pattern: /^\d+$/, message: 'Phone number must be digits only' },
-                  { max: 20, message: 'Phone number cannot exceed 20 characters' }
-                ]}
+                rules={FORM_RULES.phone}
                 className="sm:w-1/2"
               >
                 <Input
@@ -174,10 +172,7 @@ function ContactFormDrawer({ mode = 'create', contact = null, show, onClose }: P
               <Form.Item
                 name={['business', 'phone']}
                 label="Business Phone"
-                rules={[
-                  { pattern: /^\d+$/, message: 'Phone number must be digits only' },
-                  { max: 20, message: 'Phone number cannot exceed 20 characters' },
-                ]}
+                rules={FORM_RULES.phone}
                 className="sm:w-1/3"
               >
                 <Input
