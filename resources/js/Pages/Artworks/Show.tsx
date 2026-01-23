@@ -3,9 +3,11 @@ import ArtworkStatusTag from "@/Components/ArtworkStatusTag";
 import ArtworkTitleStack from "@/Components/ArtworkTitleStack";
 import DataCol from "@/Components/Containers/DataCol";
 import DataRow from "@/Components/Containers/DataRow";
+import FlexBox from "@/Components/Containers/FlexBox";
 import FormattedDimensions from "@/Components/FormattedDimensions";
 import ImageGallery from "@/Components/ImageGallery";
 import LocationStack from "@/Components/Locations/LocationStack";
+import MoveModal from "@/Components/MoveModal";
 import PageTitle from "@/Components/PageTitle";
 import TextboxExpandable from "@/Components/TextboxExpandable";
 import { getArtworkCategoryLabel } from "@/constants/artworkCategories";
@@ -13,7 +15,7 @@ import { ArtworkShowProvider } from "@/contexts/ArtworkShowContext";
 import AppLayout from "@/Layouts/AppLayout";
 import { ArtworkProps } from "@/types/artwork";
 import { formatCurrency } from "@/utils/formatHelper";
-import { BarCode02Icon, BrushIcon, Folder02Icon, GooglePhotosIcon, PackageDimensions01Icon, PaintBucketIcon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
+import { ArrowDataTransferHorizontalIcon, BarCode02Icon, BrushIcon, Folder02Icon, GooglePhotosIcon, PackageDimensions01Icon, PaintBucketIcon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link, router } from "@inertiajs/react";
 import { Button, Card, Divider, Tabs, Tooltip } from "antd";
@@ -26,6 +28,7 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
   // Edit Drawer
 
   const [showEditDrawer, setShowEditDrawer] = useState(false)
+  const [openMoveModal, setOpenMoveModal] = useState(false);
 
   return (
     <ArtworkShowProvider value={{ artwork }}>
@@ -35,7 +38,7 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
           { title: artwork.title }
         ]}
         toolbar={
-          <div>
+          <FlexBox>
             <Tooltip title="Edit Artwork" mouseEnterDelay={1} >
               <Button
                 type="text"
@@ -47,7 +50,18 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
                 Edit
               </Button>
             </Tooltip>
-          </div>
+            <Tooltip title="Move to new Location" mouseEnterDelay={1} >
+              <Button
+                type="text"
+                shape="square"
+                onClick={() => setOpenMoveModal(true)}
+                disabled={!artwork.abilities.update}
+              >
+                <HugeiconsIcon icon={ArrowDataTransferHorizontalIcon} size={20} />
+                Move
+              </Button>
+            </Tooltip>
+          </FlexBox>
         }
       />
       <div className="flex flex-col gap-3">
@@ -167,6 +181,10 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
         show={showEditDrawer}
         onClose={() => { setShowEditDrawer(false); router.reload() }}
         mode="update"
+      />
+      <MoveModal
+        open={openMoveModal}
+        setOpen={setOpenMoveModal}
       />
     </ArtworkShowProvider>
   )
