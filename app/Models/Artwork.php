@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -15,7 +16,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Artwork extends Model implements HasMedia
 {
-  use HasFactory, InteractsWithMedia, LogsActivity;
+  use HasFactory, InteractsWithMedia, LogsActivity, SoftDeletes;
 
   protected $fillable = [
     'creator_id',
