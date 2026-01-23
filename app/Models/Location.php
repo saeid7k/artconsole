@@ -13,6 +13,8 @@ class Location extends Model
     'contact_id',
     'name',
     'description',
+    'phone',
+    'email',
     'address',
     'address_same_as_gallery',
     'is_primary',

@@ -18,6 +18,8 @@ return new class extends Migration
       $table->foreignId('contact_id')->nullable()->nullOnDelete();
       $table->string('name');
       $table->text('description')->nullable();
+      $table->string('phone')->nullable();
+      $table->string('email')->nullable();
       $table->json('address')->nullable();
       $table->boolean('address_same_as_gallery')->default(true);
       $table->boolean('is_primary')->default(false);
