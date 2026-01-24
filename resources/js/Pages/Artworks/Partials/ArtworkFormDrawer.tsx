@@ -1,3 +1,4 @@
+import ArtworkImages from "@/Components/Artworks/ArtworkImages";
 import ContactWidget from "@/Components/Contacts/ContactWidget";
 import { ARTWORK_CATEGORIES, DEFAULT_ARTWORK_CATEGORY } from "@/constants/artworkCategories";
 import ARTWORK_EDITIONS from "@/constants/artworkEditions";
@@ -402,6 +403,9 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
 
           </Tabs.TabPane>
           <Tabs.TabPane tab="Images" key="images">
+            {artwork && (
+              <ArtworkImages artwork={artwork} />
+            )}
           </Tabs.TabPane>
           <Tabs.TabPane tab="Specifications" key="specifications">
             {/* <StyledDivider variant="light" >Specifications</StyledDivider> */}
@@ -632,9 +636,6 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
             </Form.Item>
           </Tabs.TabPane>
         </Tabs>
-
-
-
       </Form>
     </Drawer>
   );
