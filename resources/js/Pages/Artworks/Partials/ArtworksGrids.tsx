@@ -1,4 +1,4 @@
-import ArtworkCard from "@/Components/ArtworkCard";
+import ArtworkCard from "@/Components/Artworks/ArtworkCard";
 import { PageProps } from "@/types";
 import { ArtworkProps } from "@/types/artwork";
 import { router } from "@inertiajs/react";

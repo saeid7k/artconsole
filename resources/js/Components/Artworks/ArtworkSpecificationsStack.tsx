@@ -1,5 +1,5 @@
 import { ArtworkProps } from "@/types/artwork";
-import FormattedDimensions from "./FormattedDimensions";
+import FormattedDimensions from "../FormattedDimensions";
 
 type Props = {
   artwork: ArtworkProps
@@ -23,7 +23,7 @@ function ArtworkSpecificationsStack({artwork}: Props) {
       </div>
       <div className="flex gap-1">
         {styledLabel("Size:")}
-        <FormattedDimensions dimensions={artwork.dimensions} />
+        <FormattedDimensions dimensions={artwork?.dimensions || null} />
       </div>
     </div>
   );

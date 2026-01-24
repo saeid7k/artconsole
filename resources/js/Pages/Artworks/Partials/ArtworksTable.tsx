@@ -1,6 +1,6 @@
-import ArtworkSpecificationsStack from '@/Components/ArtworkSpecificationsStack';
-import ArtworkStatusTag from '@/Components/ArtworkStatusTag';
-import ArtworkTitleStack from '@/Components/ArtworkTitleStack';
+import ArtworkSpecificationsStack from '@/Components/Artworks/ArtworkSpecificationsStack';
+import ArtworkStatusTag from '@/Components/Artworks/ArtworkStatusTag';
+import ArtworkTitleStack from '@/Components/Artworks/ArtworkTitleStack';
 import CopyToClipboard from '@/Components/CopyToClipboard';
 import LocationStack from '@/Components/Locations/LocationStack';
 import { ARTWORK_CATEGORIES } from '@/constants/artworkCategories';

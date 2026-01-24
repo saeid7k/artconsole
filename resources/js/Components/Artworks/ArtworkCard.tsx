@@ -4,9 +4,9 @@ import { router } from "@inertiajs/react";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import imagePlaceholder from '~/resources/images/image-placeholder.svg';
-import ArtworkStatusTag from "./ArtworkStatusTag";
+import FormattedDimensions from "../FormattedDimensions";
 import ArtworkTitleStack from "./ArtworkTitleStack";
-import FormattedDimensions from "./FormattedDimensions";
+import ArtworkStatusTag from "./ArtworkStatusTag";
 
 function ArtworkCard({ artwork }: { artwork: ArtworkProps }) {
 
@@ -28,7 +28,7 @@ function ArtworkCard({ artwork }: { artwork: ArtworkProps }) {
             onClick={() => {router.visit(route('artworks.show', artwork.id))}}
           />
           <FormattedDimensions
-            dimensions={artwork.dimensions}
+            dimensions={artwork?.dimensions || null}
             className="absolute bottom-0 left-0 bg-white dark:bg-black !bg-opacity-60 px-1 text-xs"
           />
         </div>
