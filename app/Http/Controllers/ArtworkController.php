@@ -155,4 +155,15 @@ class ArtworkController extends Controller
       'message' => 'Artwork moved successfully.',
     ]);
   }
+
+  public function images(Artwork $artwork)
+  {
+    $this->authorize('view', $artwork);
+
+    $images = $artwork->images->toArray();
+
+    return response()->json([
+      'images' => $images,
+    ]);
+  }
 }
