@@ -9,7 +9,7 @@ import { Form, Input, message, Modal, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
 import axios from "axios";
 import { useState } from "react";
-import GalleryAvatar from "../GalleryAvatar";
+import GalleryAvatar from "../Galleries/GalleryAvatar";
 
 type Props = {
   open?: boolean;
