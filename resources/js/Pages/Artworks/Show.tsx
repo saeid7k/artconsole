@@ -20,6 +20,7 @@ import { Card, Divider, Tabs } from "antd";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 import ArtworkToolbar from "./Partials/ArtworkToolbar";
+import ArtworkImages from "@/Components/Artworks/ArtworkImages";
 
 function Show ({ artwork }: { artwork: ArtworkProps }) {
   return (
@@ -130,6 +131,7 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
         <Card>
           <Tabs>
             <Tabs.TabPane tab="Images" key="images">
+              <ArtworkImages artwork={artwork} />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Documents" key="documents">
             </Tabs.TabPane>
