@@ -29,7 +29,7 @@ function CopyToClipboard({ content, title = null, size = 'md', className = '' }:
   }
 
   return (
-    <Tooltip title={`Copy to Clipboard`} mouseEnterDelay={1} placement="right" >
+    <Tooltip title={`Copy to Clipboard`} mouseEnterDelay={0.5} placement="right" >
       <HugeiconsIcon
         icon={Copy01Icon}
         size={iconSizeMap[size]}
