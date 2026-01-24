@@ -129,8 +129,6 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
 
         <Card>
           <Tabs>
-            <Tabs.TabPane tab="Description" key="description">
-            </Tabs.TabPane>
             <Tabs.TabPane tab="Images" key="images">
             </Tabs.TabPane>
             <Tabs.TabPane tab="Documents" key="documents">
