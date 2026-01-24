@@ -1,4 +1,4 @@
-import ContactWidget from "@/Components/ContactWidget";
+import ContactWidget from "@/Components/Contacts/ContactWidget";
 import { ARTWORK_CATEGORIES, DEFAULT_ARTWORK_CATEGORY } from "@/constants/artworkCategories";
 import ARTWORK_EDITIONS from "@/constants/artworkEditions";
 import ARTWORK_STATUSES, { DEFAULT_ARTWORK_STATUS } from "@/constants/artworkStatuses";

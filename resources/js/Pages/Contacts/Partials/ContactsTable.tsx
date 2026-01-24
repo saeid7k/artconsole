@@ -1,4 +1,4 @@
-import ContactStack from '@/Components/ContactStack';
+import ContactStack from '@/Components/Contacts/ContactStack';
 import RelationshipTags from '@/Components/RelationshipTags';
 import RELATIONSHIPS from '@/constants/relationships';
 import { useWindow } from '@/hooks/useWindow';
