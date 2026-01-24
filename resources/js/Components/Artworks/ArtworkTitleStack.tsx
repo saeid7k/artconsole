@@ -2,7 +2,7 @@ import { ArtworkProps } from "@/types/artwork";
 import { Link } from "@inertiajs/react";
 import { Tooltip } from "antd";
 import { twMerge } from "tailwind-merge";
-import FormattedEdition from "./FormattedEdition";
+import FormattedEdition from "../FormattedEdition";
 
 type Props = {
   artwork: ArtworkProps
