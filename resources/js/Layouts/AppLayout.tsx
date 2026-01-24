@@ -1,4 +1,4 @@
-import GallerySwitch from "@/Components/GallerySwitch";
+import GallerySwitch from "@/Components/Galleries/GallerySwitch";
 import ServerFlashMessage from "@/Components/ServerFlashMessage";
 import Sidebar from "@/Components/Sidebar";
 import TopbarActions from "@/Components/TopbarActions";

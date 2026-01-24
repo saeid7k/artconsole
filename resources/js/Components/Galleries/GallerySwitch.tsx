@@ -3,18 +3,18 @@ import colors from "@/Themes/theme";
 import { GalleryProps } from "@/types/gallery";
 import { InviteLinkProps } from "@/types/inviteLink";
 import { UsePageProps } from "@/types/usePage";
+import { getInitials } from "@/utils/stringHelper";
 import { AddIcon, AddMaleIcon, ArrowDown01Icon, Cancel01Icon, CheckmarkCircle01Icon, CircleIcon, SettingsFreeIcons, Tick02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
 import { Avatar, Badge, Button, Card, Divider, Dropdown, message, Tooltip } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import CreateGalleryModal from "../CreateGalleryModal";
+import AddMemberModal from "../GallerySettings/AddMemberModal";
+import GallerySettingsModal from "../GallerySettings/GallerySettingsModal";
 import GalleryAccessTag from "./GalleryAccessTag";
 import GalleryAvatar from "./GalleryAvatar";
-import AddMemberModal from "./GallerySettings/AddMemberModal";
-import GallerySettingsModal from "./GallerySettings/GallerySettingsModal";
-import { getInitials } from "@/utils/stringHelper";
-import CreateGalleryModal from "./CreateGalleryModal";
 
 function GallerySwitch() {
 
