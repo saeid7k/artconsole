@@ -21,6 +21,7 @@ import React from "react";
 import { twMerge } from "tailwind-merge";
 import ArtworkToolbar from "./Partials/ArtworkToolbar";
 import ArtworkImages from "@/Components/Artworks/ArtworkImages";
+import ArtworkImageUpload from "@/Components/Artworks/ArtworkImageUpload";
 
 function Show ({ artwork }: { artwork: ArtworkProps }) {
   return (
@@ -132,6 +133,7 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
           <Tabs>
             <Tabs.TabPane tab="Images" key="images">
               <ArtworkImages artwork={artwork} />
+              <ArtworkImageUpload artwork={artwork} />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Documents" key="documents">
             </Tabs.TabPane>
