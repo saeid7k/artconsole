@@ -402,11 +402,10 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
             </Form.Item>
 
           </Tabs.TabPane>
-          <Tabs.TabPane tab="Images" key="images">
-            {artwork && (
-              <ArtworkImages artwork={artwork} />
-            )}
-          </Tabs.TabPane>
+          {mode === 'create' && (
+            <Tabs.TabPane tab="Images" key="images">
+            </Tabs.TabPane>
+          )}
           <Tabs.TabPane tab="Specifications" key="specifications">
             {/* <StyledDivider variant="light" >Specifications</StyledDivider> */}
 

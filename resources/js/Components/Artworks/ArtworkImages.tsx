@@ -56,8 +56,13 @@ function ArtworkImages({ artwork }: { artwork: ArtworkProps }) {
       title: 'Uploaded At',
       dataIndex: 'created_at',
       key: 'created_at',
-      render: (text) => dayjs(text).format('MMM D, YYYY h:mm A'),
-      width: 150,
+      render: (text) => (
+        <FlexBox direction="col" gap={0} alignItems="start" >
+          <div>{dayjs(text).format('MMM D, YYYY')}</div>
+          <div className="text-muted">{dayjs(text).format('h:mm A')}</div>
+        </FlexBox>
+      ),
+      width: 1,
       className: 'whitespace-nowrap',
     },
     {

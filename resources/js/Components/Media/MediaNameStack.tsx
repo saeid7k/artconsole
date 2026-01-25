@@ -7,7 +7,12 @@ import CopyToClipboard from "../CopyToClipboard";
 function MediaNameStack({ media }: { media: any }) {
   return (
     <FlexBox gap={2} >
-      <div>{media.file_name}</div>
+      <div
+        className="max-w-[200px] truncate"
+        title={media.file_name}
+      >
+        {media.file_name}
+      </div>
       <Tooltip title='Rename' mouseEnterDelay={0.5} >
         <HugeiconsIcon
           icon={Edit02Icon}
