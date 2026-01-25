@@ -50,6 +50,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/generate-sku', [App\Http\Controllers\ArtworkController::class, 'generateSku'])->name('generate-sku');
     Route::post('/{artwork}/move', [App\Http\Controllers\ArtworkController::class, 'moveLocation'])->name('move');
     Route::get('/{artwork}/images', [App\Http\Controllers\ArtworkController::class, 'images'])->name('images');
+    Route::post('/{artwork}/upload-images', [App\Http\Controllers\ArtworkController::class, 'uploadImages'])->name('upload-images');
   });
 
   Route::prefix('members')->name('members.')->group(function () {
