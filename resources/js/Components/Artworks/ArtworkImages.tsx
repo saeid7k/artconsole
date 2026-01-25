@@ -42,11 +42,17 @@ function ArtworkImages({ artwork }: { artwork: ArtworkProps }) {
       render: (_, record) => (<MediaNameStack media={record} />)
     },
     {
+      title: 'Dimensions',
+      dataIndex: 'dimensions',
+      key: 'dimensions',
+      render: (text, record) => text
+    },
+    {
       title: 'Uploaded At',
       dataIndex: 'created_at',
       key: 'created_at',
       render: (text) => dayjs(text).format('MMM D, YYYY h:mm A'),
-      width: 200,
+      width: 150,
       className: 'whitespace-nowrap',
     },
     {
