@@ -22,6 +22,7 @@ import { twMerge } from "tailwind-merge";
 import ArtworkToolbar from "./Partials/ArtworkToolbar";
 import ArtworkImages from "@/Components/Artworks/ArtworkImages";
 import ArtworkImageUpload from "@/Components/Artworks/ArtworkImageUpload";
+import FlexBox from "@/Components/Containers/FlexBox";
 
 function Show ({ artwork }: { artwork: ArtworkProps }) {
   return (
@@ -44,6 +45,11 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
             className={twMerge("lg:w-1/2 lg:max-w-[600px]",
               artwork.images.length === 0 ? 'hidden lg:block' : ''
             )}
+            styles={{
+              body:{
+                padding: '16px'
+              }
+            }}
           >
             <ImageGallery images={artwork.images} />
           </Card>
@@ -51,16 +57,42 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
           {/* Details */}
 
           <Card className="lg:w-1/2 grow max-h-[580px] overflow-y-auto">
-            <ArtworkTitleStack
-              artwork={artwork}
-              linkedTitle={false}
-              size="large"
-              serifTitle={true}
-              className="mb-5"
-            />
+            <FlexBox justifyContent="between" alignItems="start" >
+              <ArtworkTitleStack
+                artwork={artwork}
+                linkedTitle={false}
+                size="large"
+                serifTitle={true}
+                className="mb-5"
+              />
+              <div className="flex items-start gap-2">
+                {artwork.price ? (
+                  <div className="text-lg">
+                    {formatCurrency(artwork.price, 2)}
+                  </div>
+                ) : (
+                  <div>
+                    <em>Price on request</em>
+                  </div>
+                )}
+                <ArtworkStatusTag status={artwork.status} />
+              </div>
+            </FlexBox>
             <TextboxExpandable content={artwork.description || 'No description.'} />
             <Divider />
             <DataCol>
+              <DataRow
+                icon={<HugeiconsIcon icon={Folder02Icon} size={18} />}
+                label="Category:"
+                value={getArtworkCategoryLabel(artwork.category)}
+                labelClassName="min-w-[80px]"
+              />
+              <DataRow
+                icon={<HugeiconsIcon icon={GooglePhotosIcon} size={18} />}
+                label="Subject:"
+                value={artwork.subject}
+                labelClassName="min-w-[80px]"
+              />
               <DataRow
                 icon={<HugeiconsIcon icon={PaintBucketIcon} size={18} />}
                 label="Medium:"
@@ -80,19 +112,7 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
                 labelClassName="min-w-[80px]"
               />
               {/* Price & Location */}
-              <div className="flex flex-wrap gap-5 mt-3">
-                <div className="flex items-start gap-2">
-                  {artwork.price ? (
-                    <div className="text-lg">
-                      {formatCurrency(artwork.price, 2)}
-                    </div>
-                  ) : (
-                    <div>
-                      <em>Price on request</em>
-                    </div>
-                  )}
-                  <ArtworkStatusTag status={artwork.status} />
-                </div>
+              <div className="my-3">
                 <LocationStack
                   location={artwork.location}
                   showTitle
@@ -101,21 +121,6 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
                   boxed
                 />
               </div>
-            </DataCol>
-            <Divider />
-            <DataCol gap={2} >
-              <DataRow
-                icon={<HugeiconsIcon icon={Folder02Icon} size={18} />}
-                label="Category:"
-                value={getArtworkCategoryLabel(artwork.category)}
-                labelClassName="min-w-[80px]"
-              />
-              <DataRow
-                icon={<HugeiconsIcon icon={GooglePhotosIcon} size={18} />}
-                label="Subject:"
-                value={artwork.subject}
-                labelClassName="min-w-[80px]"
-              />
               <DataRow
                 icon={<HugeiconsIcon icon={BarCode02Icon} size={18} />}
                 label="SKU:"
@@ -123,7 +128,6 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
                 labelClassName="min-w-[80px]"
               />
             </DataCol>
-            <div>{}</div>
           </Card>
         </div>
 
