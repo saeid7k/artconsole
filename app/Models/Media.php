@@ -7,7 +7,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 
 class Media extends BaseMedia
 {
-  protected $appends = ['urls', 'is_main'];
+  protected $appends = ['urls', 'is_main', 'dimensions'];
 
   public function getUrl(?string $conversionName = ''): string
   {
@@ -43,5 +43,15 @@ class Media extends BaseMedia
   public function getIsMainAttribute(): bool
   {
     return $this->custom_properties['is_main'] ?? false;
+  }
+
+  public function getDimensionsAttribute(): string | null
+  {
+    if (($this->custom_properties['width'] ?? false) && ($this->custom_properties['height'] ?? false)) {
+      $result = $this->custom_properties['width'] . ' x ' . $this->custom_properties['height'];
+    } else {
+      $result = null;
+    }
+    return $result;
   }
 }
