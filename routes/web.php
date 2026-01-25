@@ -51,6 +51,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/{artwork}/move', [App\Http\Controllers\ArtworkController::class, 'moveLocation'])->name('move');
     Route::get('/{artwork}/images', [App\Http\Controllers\ArtworkController::class, 'images'])->name('images');
     Route::post('/{artwork}/upload-images', [App\Http\Controllers\ArtworkController::class, 'uploadImages'])->name('upload-images');
+    Route::post('/{artwork}/rename-image', [App\Http\Controllers\ArtworkController::class, 'renameImage'])->name('rename-image');
   });
 
   Route::prefix('members')->name('members.')->group(function () {

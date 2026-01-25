@@ -185,4 +185,24 @@ class ArtworkController extends Controller
       'message' => 'Images uploaded successfully.',
     ]);
   }
+
+  public function renameImage(Request $request, Artwork $artwork)
+  {
+    $this->authorize('update', $artwork);
+
+    $request->validate([
+      'media_id' => ['required', 'exists:media,id'],
+      'new_name' => ['required', 'string', 'max:255'],
+    ]);
+
+    $mediaItem = $artwork->getMedia('artwork-images')->where('id', $request->media_id)->first();
+    if ($mediaItem) {
+      $mediaItem->file_name = $request->new_name;
+      $mediaItem->save();
+    }
+
+    return response()->json([
+      'message' => 'Image renamed successfully.',
+    ]);
+  }
 }
