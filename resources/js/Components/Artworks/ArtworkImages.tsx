@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Button, Table, TableProps, Tooltip } from "antd";
 import axios from "axios";
 import dayjs from "dayjs";
+import { useEffect } from "react";
 import FlexBox from "../Containers/FlexBox";
 import MediaNameStack from "../Media/MediaNameStack";
 
@@ -21,6 +22,10 @@ function ArtworkImages({ artwork }: { artwork: ArtworkProps }) {
     },
     enabled: artwork.id ? true : false,
   });
+
+  useEffect(() => {
+    imagesQuery.refetch();
+  }, [artwork.images, artwork.id]);
 
   const columns: TableProps<any>['columns'] = [
     {
