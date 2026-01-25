@@ -166,4 +166,23 @@ class ArtworkController extends Controller
       'images' => $images,
     ]);
   }
+
+  public function uploadImages(Request $request, Artwork $artwork)
+  {
+    $this->authorize('update', $artwork);
+
+    $request->validate([
+      'files.*' => ['required', 'file', 'mimes:jpeg,png,jpg,gif,svg,webp,heic,heif', 'max:10240'],
+    ]);
+
+    if ($request->hasFile('files')) {
+      foreach ($request->file('files') as $image) {
+        $artwork->addMedia($image)->toMediaCollection('artwork-images');
+      }
+    }
+
+    return response()->json([
+      'message' => 'Images uploaded successfully.',
+    ]);
+  }
 }
