@@ -7,7 +7,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { useEffect } from "react";
 import FlexBox from "../Containers/FlexBox";
-import MediaNameStack from "../Media/MediaNameStack";
+import ArtworkImageNameStack from "./ArtworkImageNameStack";
 
 function ArtworkImages({ artwork }: { artwork: ArtworkProps }) {
 
@@ -44,7 +44,7 @@ function ArtworkImages({ artwork }: { artwork: ArtworkProps }) {
       title: 'File Name',
       dataIndex: 'file_name',
       key: 'file_name',
-      render: (_, record) => (<MediaNameStack media={record} />)
+      render: (_, record) => (<ArtworkImageNameStack media={record} />)
     },
     {
       title: 'Dimensions',
