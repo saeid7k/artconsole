@@ -63,18 +63,31 @@ function ArtworkImages({ artwork }: { artwork: ArtworkProps }) {
       title: 'File Name',
       dataIndex: 'file_name',
       key: 'file_name',
+      sorter: (a, b) => a.file_name.localeCompare(b.file_name),
+      showSorterTooltip: false,
       render: (_, record) => (<ArtworkImageNameStack media={record} />)
     },
     {
       title: 'Dimensions',
       dataIndex: 'dimensions',
       key: 'dimensions',
-      render: (text, record) => text
+      sorter: (a, b) => {
+        const [aWidth, aHeight] = a.dimensions.split('x').map((dim: string) => parseInt(dim.trim()));
+        const [bWidth, bHeight] = b.dimensions.split('x').map((dim: string) => parseInt(dim.trim()));
+        if (aWidth === bWidth) {
+          return aHeight - bHeight;
+        }
+        return aWidth - bWidth;
+      },
+      showSorterTooltip: false,
+      render: (text) => text
     },
     {
       title: 'Uploaded At',
       dataIndex: 'created_at',
       key: 'created_at',
+      sorter: (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
+      showSorterTooltip: false,
       render: (text) => (
         <FlexBox direction="col" gap={0} alignItems="start" >
           <div>{dayjs(text).format('MMM D, YYYY')}</div>
