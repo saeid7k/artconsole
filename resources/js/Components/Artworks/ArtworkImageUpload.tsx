@@ -45,9 +45,9 @@ function ArtworkImageUpload({ artwork }: { artwork?: ArtworkProps }) {
           showRemoveIcon: false,
         }}
       >
-        <FlexBox direction="col" className="font-light" >
+        <FlexBox direction="col" className="font-light p-5" >
           <HugeiconsIcon icon={InboxUploadIcon} size={48} strokeWidth={0.5} />
-          <div className="text-xl text-gray-500" >Click or drag files here to upload</div>
+          <div className="text-xl text-gray-500 mt-3" >Click or drag files here to upload</div>
           <div className="text-sm text-gray-400" >All image types are supported</div>
         </FlexBox>
       </Dragger>

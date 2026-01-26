@@ -147,8 +147,12 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
         <Card>
           <Tabs>
             <Tabs.TabPane tab="Images" key="images">
-              <ArtworkImages artwork={artwork} />
-              <ArtworkImageUpload artwork={artwork} />
+              <div className="flex flex-col lg:flex-row gap-5 items-start flex-wrap">
+                <div className="grow">
+                  <ArtworkImages artwork={artwork} />
+                </div>
+                <ArtworkImageUpload artwork={artwork} />
+              </div>
             </Tabs.TabPane>
             <Tabs.TabPane tab="Documents" key="documents">
             </Tabs.TabPane>
