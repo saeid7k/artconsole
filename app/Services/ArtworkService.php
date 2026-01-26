@@ -38,4 +38,23 @@ class ArtworkService
 
     return sprintf("%s-%s-%03d", $prefix, $year, $number);
   }
+
+  public function setMainImage(int $mediaId): void
+  {
+    // Unset previous main image
+    $this->artwork->media()->where('collection_name', 'artwork-images')
+      ->where('custom_properties->is_main', true)
+      ->get()
+      ->each(function ($media) {
+        $media->setCustomProperty('is_main', false);
+        $media->saveQuietly();
+      });
+
+    // Set new main image
+    $media = $this->artwork->media()->where('id', $mediaId)->first();
+    if ($media) {
+      $media->setCustomProperty('is_main', true);
+      $media->saveQuietly();
+    }
+  }
 }

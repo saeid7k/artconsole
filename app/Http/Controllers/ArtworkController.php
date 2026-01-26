@@ -205,4 +205,19 @@ class ArtworkController extends Controller
       'message' => 'Image renamed successfully.',
     ]);
   }
+
+  public function setAsMainImage(Request $request, Artwork $artwork)
+  {
+    $this->authorize('update', $artwork);
+
+    $request->validate([
+      'media_id' => ['required', 'exists:media,id'],
+    ]);
+
+    (new ArtworkService($artwork))->setMainImage($request->media_id);
+
+    return response()->json([
+      'message' => 'Main image set successfully.',
+    ]);
+  }
 }
