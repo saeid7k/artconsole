@@ -172,7 +172,10 @@ class ArtworkController extends Controller
     $this->authorize('update', $artwork);
 
     $request->validate([
-      'files.*' => ['required', 'file', 'mimes:jpeg,png,jpg,gif,svg,webp,heic,heif', 'max:10240'],
+      'files.*' => ['required', 'file', 'mimetypes:image/*', 'max:10240'],
+    ], [
+      'files.*.mimetypes' => 'Only image files are allowed.',
+      'files.*.max' => 'Each image must not exceed 10 MB in size.',
     ]);
 
     if ($request->hasFile('files')) {
