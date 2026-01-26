@@ -5,6 +5,7 @@ import { router } from "@inertiajs/react";
 import Dragger from "antd/es/upload/Dragger";
 import axios from "axios";
 import FlexBox from "../Containers/FlexBox";
+import { message } from "antd";
 
 function ArtworkImageUpload({ artwork }: { artwork?: ArtworkProps }) {
 
@@ -26,6 +27,7 @@ function ArtworkImageUpload({ artwork }: { artwork?: ArtworkProps }) {
         router.reload();
       })
       .catch((err) => {
+        message.error(err.response?.data?.message || "Failed to upload image.");
         onError({ err });
       });
   }
