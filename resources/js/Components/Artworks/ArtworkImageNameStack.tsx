@@ -62,7 +62,6 @@ function ArtworkImageNameStack({ media }: { media: any }) {
             defaultValue={media.file_name}
             className="max-w-[200px]"
             onChange={(e) => setNewName(e.target.value)}
-            onBlur={() => setShowRenameInput(false)}
             onPressEnter={() => renameMutation.mutate(newName)}
           />
           <Tooltip title='Save Name' mouseEnterDelay={0.5} >
