@@ -25,6 +25,17 @@ import ArtworkImageUpload from "@/Components/Artworks/ArtworkImageUpload";
 import FlexBox from "@/Components/Containers/FlexBox";
 
 function Show ({ artwork }: { artwork: ArtworkProps }) {
+
+  const images = () => {
+    let imgs = artwork.images || [];
+    let mainImage = imgs.find((img: any) => img.is_main);
+    let sortedImages = [
+      mainImage ? mainImage : null,
+      ...imgs.filter((img: any) => !img.is_main)
+    ];
+    return sortedImages;
+  };
+
   return (
     <ArtworkShowProvider value={{ artwork }}>
       <PageTitle
@@ -51,7 +62,7 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
               }
             }}
           >
-            <ImageGallery images={artwork.images} />
+            <ImageGallery images={images()} />
           </Card>
 
           {/* Details */}
