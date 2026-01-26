@@ -1,8 +1,9 @@
 import { ArtworkProps } from "@/types/artwork";
 import { Delete02Icon, Download01Icon, StarIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { useQuery } from "@tanstack/react-query";
-import { Button, Table, TableProps, Tooltip } from "antd";
+import { router } from "@inertiajs/react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Button, message, Table, TableProps, Tooltip } from "antd";
 import axios from "axios";
 import dayjs from "dayjs";
 import { useEffect } from "react";
@@ -26,6 +27,24 @@ function ArtworkImages({ artwork }: { artwork: ArtworkProps }) {
   useEffect(() => {
     imagesQuery.refetch();
   }, [artwork.images, artwork.id]);
+
+  // set as main image
+
+  const setAsMainImageMutation = useMutation({
+    mutationFn: (mediaId: number) => {
+      return axios.post(route('artworks.set-main-image', { artwork: artwork.id }), {
+        media_id: mediaId,
+      });
+    },
+    onSuccess: () => {
+      message.success('Set as main image successfully');
+      router.reload();
+      // imagesQuery.refetch();
+    },
+    onError: (err: any) => {
+      message.error(err?.response?.data?.message || 'Failed to set as main image');
+    }
+  });
 
   const columns: TableProps<any>['columns'] = [
     {
@@ -77,6 +96,7 @@ function ArtworkImages({ artwork }: { artwork: ArtworkProps }) {
               color="blue"
               shape="circle"
               disabled={record?.is_main}
+              onClick={() => setAsMainImageMutation.mutate(record.id)}
             >
               <HugeiconsIcon icon={StarIcon} size={20} />
             </Button>
