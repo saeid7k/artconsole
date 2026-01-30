@@ -8,6 +8,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { useEffect } from "react";
 import FlexBox from "../Containers/FlexBox";
+import LoadingSpinner from "../LoadingSpinner";
 import ArtworkImageNameStack from "./ArtworkImageNameStack";
 
 function ArtworkImages({ artwork }: { artwork: ArtworkProps }) {
@@ -21,12 +22,14 @@ function ArtworkImages({ artwork }: { artwork: ArtworkProps }) {
           throw err;
         })
     },
-    enabled: artwork.id ? true : false,
+    enabled: (artwork.id && !artwork.images) ? true : false,
   });
 
   useEffect(() => {
-    imagesQuery.refetch();
-  }, [artwork.images, artwork.id]);
+    if (imagesQuery.isEnabled) {
+      imagesQuery.refetch();
+    }
+  }, [artwork.id]);
 
   // set as main image
 
@@ -138,13 +141,22 @@ function ArtworkImages({ artwork }: { artwork: ArtworkProps }) {
     }
   ]
 
+  const images = artwork.images ? artwork.images : (imagesQuery.data || []);
+
   return (
-    <Table
-      dataSource={imagesQuery.data || []}
-      columns={columns}
-      size="small"
-      scroll={{ x: 'max-content' }}
-    />
+    <>
+      {imagesQuery.isLoading && (
+        <LoadingSpinner />
+      )}
+      {images.length > 0 && (
+        <Table
+          dataSource={images}
+          columns={columns}
+          size="small"
+          scroll={{ x: 'max-content' }}
+        />
+      )}
+    </>
   )
 }
 
