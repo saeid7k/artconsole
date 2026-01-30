@@ -29,10 +29,11 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
   const images = () => {
     let imgs = artwork.images || [];
     let mainImage = imgs.find((img: any) => img.is_main);
-    let sortedImages = [
-      mainImage ? mainImage : null,
-      ...imgs.filter((img: any) => !img.is_main)
-    ];
+    let sortedImages = [];
+    if (mainImage) {
+      sortedImages.push(mainImage);
+    }
+    sortedImages.push(...imgs.filter((img: any) => !img.is_main));
     return sortedImages;
   };
 
@@ -54,7 +55,7 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
 
           <Card
             className={twMerge("lg:w-1/2 lg:max-w-[600px]",
-              artwork.images.length === 0 ? 'hidden lg:block' : ''
+              artwork.images?.length === 0 ? 'hidden lg:block' : ''
             )}
             styles={{
               body:{
