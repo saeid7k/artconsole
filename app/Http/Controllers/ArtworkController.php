@@ -64,7 +64,7 @@ class ArtworkController extends Controller
     $this->authorize('view', $artwork);
 
     $artwork->load(['location', 'owner']);
-    $artwork->images = $artwork->getImagesAttribute();
+    $artwork->setRelation('images', $artwork->images);
 
     return inertia('Artworks/Show', [
       'artwork' => $artwork,
