@@ -248,4 +248,26 @@ class ArtworkController extends Controller
       ['Content-Type' => $media->mime_type]
     );
   }
+
+  public function deleteImage(Artwork $artwork, $media_id)
+  {
+    $this->authorize('update', $artwork);
+
+    $mediaItem = $artwork->getMedia('artwork-images')->where('id', $media_id)->first();
+    if ($mediaItem) {
+      $isMainImage = $mediaItem->getCustomProperty('is_main', false);
+      $mediaItem->delete();
+      if ($isMainImage) {
+        (new ArtworkService($artwork))->ensureHasMainImage();
+      }
+    } else {
+      return response()->json([
+        'message' => 'Image not found.',
+      ], 404);
+    }
+
+    return response()->json([
+      'message' => 'Image deleted successfully.',
+    ]);
+  }
 }
