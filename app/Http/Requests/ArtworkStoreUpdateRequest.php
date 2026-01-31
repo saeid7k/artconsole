@@ -64,6 +64,7 @@ class ArtworkStoreUpdateRequest extends FormRequest
     $newPrice = FormatHelper::toFloat($this->input('price'));
     $this->merge([
       'price' => $newPrice,
+      'category' => $this->input('category') ?? ArtworkCategory::default()->value,
     ]);
   }
 }
