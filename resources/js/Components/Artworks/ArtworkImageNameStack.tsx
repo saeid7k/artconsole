@@ -3,7 +3,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
 import { useMutation } from "@tanstack/react-query";
 import type { InputRef } from "antd";
-import { Input, message, Tag, Tooltip } from "antd";
+import { Input, message, Space, Tag, Tooltip } from "antd";
 import axios from "axios";
 import { useRef, useState } from "react";
 import FlexBox from "../Containers/FlexBox";
@@ -18,7 +18,7 @@ function ArtworkImageNameStack({ media }: { media: any }) {
     mutationFn: (newName: string) => {
       return axios.post(`/artworks/${media.model_id}/rename-image`, {
         media_id: media.id,
-        new_name: newName,
+        new_name: newName + '.' + media.file_name.split('.').pop(),
       });
     },
     onSuccess: () => {
@@ -57,13 +57,22 @@ function ArtworkImageNameStack({ media }: { media: any }) {
         </>
       ):(
         <>
-          <Input
-            ref={inputRef}
-            defaultValue={media.file_name}
-            className="max-w-[200px]"
-            onChange={(e) => setNewName(e.target.value)}
-            onPressEnter={() => renameMutation.mutate(newName)}
-          />
+          <Space.Compact>
+            <Input
+              ref={inputRef}
+              defaultValue={media.file_name.indexOf('.') > 0 ? media.file_name.split('.').slice(0, -1).join('.') : media.file_name}
+              className="max-w-[200px]"
+              onChange={(e) => setNewName(e.target.value)}
+              onPressEnter={() => renameMutation.mutate(newName)}
+              onBlur={() => setShowRenameInput(false)}
+            />
+            <Input
+              disabled
+              className="pointer-events-none"
+              value={media.file_name.indexOf('.') > 0 ? '.' + media.file_name.split('.').pop() : ''}
+              style={{ width: '50px', padding: '0 4px' }}
+            />
+          </Space.Compact>
           <Tooltip title='Save Name' mouseEnterDelay={0.5} >
             <HugeiconsIcon
               icon={FloppyDiskIcon}
