@@ -8,6 +8,7 @@ use App\Models\Artwork;
 use App\Models\Location;
 use App\Services\ArtworkService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ArtworkController extends Controller
 {
@@ -228,5 +229,23 @@ class ArtworkController extends Controller
     return response()->json([
       'message' => 'Main image set successfully.',
     ]);
+  }
+
+  public function downloadImage(Artwork $artwork, $media_id)
+  {
+    $this->authorize('view', $artwork);
+
+    $media = $artwork->getMedia('artwork-images')->where('id', $media_id)->first();
+    $fileExists = $media ? Storage::disk($media->disk)->exists($media->getPathRelativeToRoot()) : false;
+
+    if (!$media || !$fileExists) {
+      return abort(404, 'Image not found.');
+    }
+
+    return Storage::disk($media->disk)->download(
+      $media->getPathRelativeToRoot(),
+      $media->file_name,
+      ['Content-Type' => $media->mime_type]
+    );
   }
 }

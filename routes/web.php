@@ -53,6 +53,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/{artwork}/upload-images', [App\Http\Controllers\ArtworkController::class, 'uploadImages'])->name('upload-images');
     Route::post('/{artwork}/rename-image', [App\Http\Controllers\ArtworkController::class, 'renameImage'])->name('rename-image');
     Route::post('/{artwork}/set-main-image', [App\Http\Controllers\ArtworkController::class, 'setAsMainImage'])->name('set-main-image');
+    Route::get('/{artwork}/download-image/{media_id}', [App\Http\Controllers\ArtworkController::class, 'downloadImage'])->name('download-image');
   });
 
   Route::prefix('members')->name('members.')->group(function () {
