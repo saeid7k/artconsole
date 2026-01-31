@@ -45,6 +45,8 @@ class ArtworkStoreUpdateRequest extends FormRequest
       'status' => ['nullable', 'string', 'in:' . ArtworkStatus::stringifyAll()],
       'details' => ['nullable', 'array'],
       'notes' => ['nullable', 'string'],
+      'images' => ['nullable', 'array'],
+      'images.*' => ['file', 'mimetypes:image/*', 'max:10240'],
     ];
   }
 
@@ -52,6 +54,8 @@ class ArtworkStoreUpdateRequest extends FormRequest
   {
     return [
       'price.decimal' => 'The price must be a valid monetary amount with up to two decimal places.',
+      'images.*.mimetypes' => 'Only image files are allowed.',
+      'images.*.max' => 'Each image must not exceed 10 MB in size.',
     ];
   }
 

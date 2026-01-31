@@ -73,12 +73,18 @@ class ArtworkController extends Controller
 
   public function storeUpdate(ArtworkStoreUpdateRequest $request)
   {
-
     if ($request->mode == 'create') {
       $this->authorize('create', Artwork::class);
       $user = auth()->user();
       $gallery = $user->currentGallery();
       $artwork = $gallery->artworks()->create($request->all());
+
+      if ($request->hasFile('images')) {
+        foreach ($request->file('images') as $image) {
+          $artwork->addMedia($image)->toMediaCollection('artwork-images');
+        }
+      }
+
       return response()->json([
         'message' => 'Artwork created successfully.',
         'artwork_id' => $artwork->id,
