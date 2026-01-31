@@ -347,20 +347,43 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
               </>
             )}
 
-            {/* Year & Edition */}
+            {/* Year */}
+
+            <Form.Item
+              label="Year"
+              name="year"
+              rules={[
+                { required: false },
+                { pattern: /^\d{4}$/, message: 'Year must be a 4-digit number' }
+              ]}
+              className="sm:w-1/4 sm:me-2"
+            >
+              <Input />
+            </Form.Item>
+
+            {/* Price */}
+
+            <Form.Item
+              label="Price"
+              name="price"
+              className="sm:w-1/4"
+            >
+              <Space.Compact>
+                <Space.Addon>$</Space.Addon>
+                <InputNumber
+                  min={0}
+                  step={1}
+                  className="w-full"
+                  defaultValue={form.getFieldValue('price')}
+                  onChange={(value) => form.setFieldValue('price', value)}
+                  formatter={(value) => value ? Intl.NumberFormat('en-CA').format(value) : ''}
+                />
+              </Space.Compact>
+            </Form.Item>
+
+            {/* Edition */}
 
             <div className="flex flex-col sm:flex-row gap-2">
-              <Form.Item
-                label="Year"
-                name="year"
-                rules={[
-                  { required: false },
-                  { pattern: /^\d{4}$/, message: 'Year must be a 4-digit number' }
-                ]}
-                className="sm:w-1/4 sm:me-2"
-              >
-                <Input />
-              </Form.Item>
               <Form.Item
                 label="Edition"
                 name={["edition", "type"]}
@@ -508,6 +531,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
 
             {/* Size */}
 
+            <label className="block mb-1">Dimensions</label>
             <div className="flex flex-col sm:flex-row gap-2">
               <Form.Item
                 label="Width"
@@ -546,25 +570,6 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
               </Form.Item>
             </div>
 
-            {/* Price */}
-
-            <Form.Item
-              label="Price"
-              name="price"
-              className="sm:w-1/4"
-            >
-              <Space.Compact>
-                <Space.Addon>$</Space.Addon>
-                <InputNumber
-                  min={0}
-                  step={1}
-                  className="w-full"
-                  defaultValue={form.getFieldValue('price')}
-                  onChange={(value) => form.setFieldValue('price', value)}
-                  formatter={(value) => value ? Intl.NumberFormat('en-CA').format(value) : ''}
-                />
-              </Space.Compact>
-            </Form.Item>
           </Tabs.TabPane>
           <Tabs.TabPane tab="Inventory" key="inventory">
             {/* <StyledDivider variant="light" >Inventory</StyledDivider> */}
