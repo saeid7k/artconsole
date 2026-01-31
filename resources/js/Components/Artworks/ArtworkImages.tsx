@@ -50,6 +50,19 @@ function ArtworkImages({ artwork }: { artwork: ArtworkProps }) {
     }
   });
 
+  // Delete image mutation
+
+  const deleteImageMutation = useMutation({
+    mutationFn: (mediaId: number) => axios.delete(route('artworks.delete-image', { artwork: artwork.id, media_id: mediaId })),
+    onSuccess: () => {
+      message.success('Image deleted successfully');
+      router.reload();
+    },
+    onError: (err: any) => {
+      message.error(err?.response?.data?.message || 'Failed to delete image');
+    }
+  });
+
   const columns: TableProps<any>['columns'] = [
     {
       title: '',
@@ -136,6 +149,7 @@ function ArtworkImages({ artwork }: { artwork: ArtworkProps }) {
               variant="text"
               color="red"
               shape="circle"
+              onClick={() => deleteImageMutation.mutate(record.id)}
             >
               <HugeiconsIcon icon={Delete02Icon} size={20} />
             </Button>
