@@ -34,6 +34,12 @@ class ArtworkObserver
     }
   }
 
+  public function saved(Artwork $artwork): void
+  {
+    $artworkService = new ArtworkService($artwork);
+    $artworkService->ensureHasMainImage();
+  }
+
   public function updated(Artwork $artwork): void
   {
     //

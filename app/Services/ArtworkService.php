@@ -57,4 +57,19 @@ class ArtworkService
       $media->saveQuietly();
     }
   }
+
+  public function ensureHasMainImage(): void
+  {
+    $hasMainImage = $this->artwork->media()->where('collection_name', 'artwork-images')
+      ->where('custom_properties->is_main', true)
+      ->exists();
+
+    if (!$hasMainImage) {
+      $firstImage = $this->artwork->media()->where('collection_name', 'artwork-images')->first();
+      if ($firstImage) {
+        $firstImage->setCustomProperty('is_main', true);
+        $firstImage->saveQuietly();
+      }
+    }
+  }
 }
