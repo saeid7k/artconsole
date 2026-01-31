@@ -1,18 +1,20 @@
-import ArtworkImages from "@/Components/Artworks/ArtworkImages";
 import ContactWidget from "@/Components/Contacts/ContactWidget";
+import FlexBox from "@/Components/Containers/FlexBox";
 import { ARTWORK_CATEGORIES, DEFAULT_ARTWORK_CATEGORY } from "@/constants/artworkCategories";
 import ARTWORK_EDITIONS from "@/constants/artworkEditions";
 import ARTWORK_STATUSES, { DEFAULT_ARTWORK_STATUS } from "@/constants/artworkStatuses";
 import useLocations from "@/hooks/useLocations";
 import { ArtworkProps } from "@/types/artwork";
 import { stringifyArray } from "@/utils/stringHelper";
-import { MagicWand05Icon } from "@hugeicons/core-free-icons";
+import { InboxUploadIcon, MagicWand05Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Button, Drawer, Form, Input, InputNumber, message, Radio, Segmented, Select, Space, Spin, Tabs, Tooltip } from "antd";
+import Dragger from "antd/es/upload/Dragger";
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
+import { serialize } from "object-to-formdata";
 import { useState } from "react";
 
 type Props = {
@@ -37,11 +39,17 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
     form
     .validateFields()
     .then((values) => {
-        axios.post(route('artworks.store-update'), {
+        const imageList = values.images?.map((image: any) => image.originFileObj) || [];
+
+        const payload = {
           ...values,
           mode: mode,
           artwork_id: mode == 'update' ? artwork?.id : null,
-        })
+          images: imageList,
+        }
+        const formData = serialize(payload, { indices: true, booleansAsIntegers: true });
+
+        axios.post(route('artworks.store-update'), formData)
           .then((res) => {
             message.success(res.data.message || `Artwork ${mode === 'update' ? 'updated' : 'created'} successfully`)
             router.reload()
@@ -221,6 +229,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
         initialValues={artwork ? artwork : {
           status: DEFAULT_ARTWORK_STATUS.value,
           category: DEFAULT_ARTWORK_CATEGORY.value,
+          location_id: defaultLocationValue,
           ownership: 'owned',
         }}
         validateTrigger="onBlur"
@@ -404,6 +413,29 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
           </Tabs.TabPane>
           {mode === 'create' && (
             <Tabs.TabPane tab="Images" key="images">
+              <Form.Item
+                // label="Upload Files"
+                name="images"
+                valuePropName="fileList"
+                getValueFromEvent={(e) => {
+                  if (Array.isArray(e)) {
+                    return e;
+                  }
+                  return e?.fileList;
+                }}
+              >
+                <Dragger
+                  multiple
+                  beforeUpload={() => false}
+                  listType="picture"
+                >
+                  <FlexBox direction="col" className="font-light p-5" >
+                    <HugeiconsIcon icon={InboxUploadIcon} size={48} strokeWidth={0.5} />
+                    <div className="text-xl text-gray-500 mt-3" >Click or drag files here to upload</div>
+                    <div className="text-sm text-gray-400" >All image types are supported</div>
+                  </FlexBox>
+                </Dragger>
+              </Form.Item>
             </Tabs.TabPane>
           )}
           <Tabs.TabPane tab="Specifications" key="specifications">
