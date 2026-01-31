@@ -39,6 +39,7 @@
         "clsx": "^2.1.1",
         "dayjs": "^1.11.19",
         "framer-motion": "^12.23.26",
+        "object-to-formdata": "^4.5.1",
         "tailwind-merge": "^3.3.0",
         "tailwindcss-animate": "^1.0.7"
     }
