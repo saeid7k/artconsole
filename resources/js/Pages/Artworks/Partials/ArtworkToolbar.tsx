@@ -1,8 +1,9 @@
 import FlexBox from "@/Components/Containers/FlexBox";
 import MoveModal from "@/Components/MoveModal";
+import useFilesUpload from "@/hooks/useFilesUpload";
 import { useWindow } from "@/hooks/useWindow";
 import { ArtworkProps } from "@/types/artwork";
-import { ArrowDataTransferHorizontalIcon, Delete02Icon, MoreHorizontalCircle01Icon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
+import { ArrowDataTransferHorizontalIcon, Delete02Icon, ImageAddIcon, MoreHorizontalCircle01Icon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
 import { useMutation } from "@tanstack/react-query";
@@ -18,6 +19,13 @@ type Props = {
 function ArtworkToolbar({ artwork }: Props) {
 
   const { windowWidth } = useWindow();
+
+  // Upload Images
+
+  const { triggerFilesSelect, FilesInput } = useFilesUpload({
+    url: route('artworks.upload-images', { artwork: artwork.id }),
+    reloadOnSuccess: true
+  });
 
   // Edit Drawer & Move Modal
 
@@ -42,6 +50,16 @@ function ArtworkToolbar({ artwork }: Props) {
   const renderMoreActionsMenu = () => {
     return (
       <Menu>
+        <Menu.Item
+          key="add-images"
+          disabled={!artwork.abilities.update}
+          onClick={() => triggerFilesSelect()}
+        >
+          <FlexBox>
+            <HugeiconsIcon icon={ImageAddIcon} size={20} />
+            Add Images
+          </FlexBox>
+        </Menu.Item>
         <Menu.Item
           key="edit"
           disabled={!artwork.abilities.update}
@@ -84,7 +102,18 @@ function ArtworkToolbar({ artwork }: Props) {
     <>
       {windowWidth >= 1024 && (
         <FlexBox>
-          <Tooltip title="Edit Artwork" mouseEnterDelay={1} >
+          <Tooltip title="Add Images" mouseEnterDelay={0.5} >
+            <Button
+              type="text"
+              shape="square"
+              onClick={() => triggerFilesSelect()}
+              disabled={!artwork.abilities.update}
+            >
+              <HugeiconsIcon icon={ImageAddIcon} size={20} />
+              {windowWidth >= 1280 && <div>Add Images</div>}
+            </Button>
+          </Tooltip>
+          <Tooltip title="Edit Artwork" mouseEnterDelay={0.5} >
             <Button
               type="text"
               shape="square"
@@ -92,10 +121,10 @@ function ArtworkToolbar({ artwork }: Props) {
               disabled={!artwork.abilities.update}
             >
               <HugeiconsIcon icon={PencilEdit02Icon} size={20} />
-              Edit
+              {windowWidth >= 1280 && <div>Edit</div>}
             </Button>
           </Tooltip>
-          <Tooltip title="Move to new Location" mouseEnterDelay={1} >
+          <Tooltip title="Move to new Location" mouseEnterDelay={0.5} >
             <Button
               type="text"
               shape="square"
@@ -103,10 +132,10 @@ function ArtworkToolbar({ artwork }: Props) {
               disabled={!artwork.abilities.update}
             >
               <HugeiconsIcon icon={ArrowDataTransferHorizontalIcon} size={20} />
-              Move
+              {windowWidth >= 1280 && <div>Move</div>}
             </Button>
           </Tooltip>
-          <Tooltip title="Delete Artwork" mouseEnterDelay={1} >
+          <Tooltip title="Delete Artwork" mouseEnterDelay={0.5} >
             <Popconfirm
               title="Delete the artwork"
               description={
@@ -127,7 +156,7 @@ function ArtworkToolbar({ artwork }: Props) {
                 disabled={!artwork.abilities.delete}
               >
                 <HugeiconsIcon icon={Delete02Icon} size={20} />
-                Delete
+                {windowWidth >= 1280 && <div>Delete</div>}
               </Button>
             </Popconfirm>
           </Tooltip>
@@ -148,12 +177,15 @@ function ArtworkToolbar({ artwork }: Props) {
         </Dropdown>
       )}
 
+      {FilesInput}
+
       <ArtworkFormDrawer
         artwork={artwork}
         show={showEditDrawer}
         onClose={() => { setShowEditDrawer(false); router.reload() }}
         mode="update"
       />
+
       <MoveModal
         open={openMoveModal}
         setOpen={setOpenMoveModal}
