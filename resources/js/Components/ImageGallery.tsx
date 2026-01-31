@@ -36,6 +36,7 @@ function ImageGallery({ images }: Props) {
             ref={carouselRef}
             dots={false}
             afterChange={(current) => setCurrentImageIndex(current)}
+            className="h-[440px]"
           >
             {images.map((image, index) => (
               <div key={image.id} className="[&_.ant-image-cover]:!opacity-0"
