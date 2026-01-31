@@ -1,8 +1,11 @@
 import ActivityLogs from "@/Components/ActivityLogs";
+import ArtworkImages from "@/Components/Artworks/ArtworkImages";
+import ArtworkImageUpload from "@/Components/Artworks/ArtworkImageUpload";
 import ArtworkStatusTag from "@/Components/Artworks/ArtworkStatusTag";
 import ArtworkTitleStack from "@/Components/Artworks/ArtworkTitleStack";
 import DataCol from "@/Components/Containers/DataCol";
 import DataRow from "@/Components/Containers/DataRow";
+import FlexBox from "@/Components/Containers/FlexBox";
 import FormattedDimensions from "@/Components/FormattedDimensions";
 import ImageGallery from "@/Components/ImageGallery";
 import LocationStack from "@/Components/Locations/LocationStack";
@@ -16,13 +19,10 @@ import { formatCurrency } from "@/utils/formatHelper";
 import { BarCode02Icon, BrushIcon, Folder02Icon, GooglePhotosIcon, PackageDimensions01Icon, PaintBucketIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "@inertiajs/react";
-import { Card, Divider, Tabs } from "antd";
+import { Card, Divider, Empty, Tabs } from "antd";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 import ArtworkToolbar from "./Partials/ArtworkToolbar";
-import ArtworkImages from "@/Components/Artworks/ArtworkImages";
-import ArtworkImageUpload from "@/Components/Artworks/ArtworkImageUpload";
-import FlexBox from "@/Components/Containers/FlexBox";
 
 function Show ({ artwork }: { artwork: ArtworkProps }) {
 
@@ -149,13 +149,16 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
           <Tabs>
             <Tabs.TabPane tab="Images" key="images">
               <div className="flex flex-col lg:flex-row gap-5 items-start flex-wrap">
-                <div className="grow">
-                  <ArtworkImages artwork={artwork} />
-                </div>
+                {artwork.images?.length > 0 && (
+                  <div className="grow">
+                    <ArtworkImages artwork={artwork} />
+                  </div>
+                )}
                 <ArtworkImageUpload artwork={artwork} />
               </div>
             </Tabs.TabPane>
             <Tabs.TabPane tab="Documents" key="documents">
+              <Empty description="No documents available." />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Financial" key="financial">
             </Tabs.TabPane>
