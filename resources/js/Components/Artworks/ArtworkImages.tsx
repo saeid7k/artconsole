@@ -1,4 +1,5 @@
 import { ArtworkProps } from "@/types/artwork";
+import { downloadFile } from "@/utils/downloadHelper";
 import { Delete02Icon, Download01Icon, StarIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
@@ -122,6 +123,10 @@ function ArtworkImages({ artwork }: { artwork: ArtworkProps }) {
               variant="text"
               color="purple"
               shape="circle"
+              onClick={() => downloadFile({
+                url: route('artworks.download-image', { artwork: artwork.id, media_id: record.id }),
+                fileName: record.file_name,
+              })}
             >
               <HugeiconsIcon icon={Download01Icon} size={20} />
             </Button>
