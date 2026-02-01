@@ -3,6 +3,7 @@ import FlexBox from "@/Components/Containers/FlexBox";
 import { ARTWORK_CATEGORIES, DEFAULT_ARTWORK_CATEGORY } from "@/constants/artworkCategories";
 import ARTWORK_EDITIONS from "@/constants/artworkEditions";
 import ARTWORK_STATUSES, { DEFAULT_ARTWORK_STATUS } from "@/constants/artworkStatuses";
+import { FORM_RULES } from "@/constants/formRules";
 import useLocations from "@/hooks/useLocations";
 import { ArtworkProps } from "@/types/artwork";
 import { stringifyArray } from "@/utils/stringHelper";
@@ -10,7 +11,7 @@ import { InboxUploadIcon, MagicWand05Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Button, Drawer, Form, Input, InputNumber, message, Radio, Segmented, Select, Space, Spin, Tabs, Tooltip } from "antd";
+import { Button, Checkbox, Drawer, Form, Input, InputNumber, message, Radio, Segmented, Select, Space, Spin, Tabs, Tooltip } from "antd";
 import Dragger from "antd/es/upload/Dragger";
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
@@ -242,10 +243,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
               <Form.Item
                 label="Title"
                 name="title"
-                rules={[
-                  { required: true, message: 'Title is required' },
-                  { max: 255, message: 'Title cannot exceed 255 characters' }
-                ]}
+                rules={FORM_RULES.title}
                 className="sm:w-3/4"
               >
                 <Input />
@@ -424,11 +422,34 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
               </Form.Item>
             </div>
 
+            {/* Signed */}
+
+            <div className="flex flex-col sm:flex-row gap-x-2">
+              <Form.Item
+                label="Signed"
+                name="signed"
+                valuePropName="checked"
+              >
+                <Checkbox>Artwork is signed</Checkbox>
+              </Form.Item>
+              <Form.Item
+                label="Signature Note"
+                name="signature_note"
+                className="grow"
+                rules={[
+                  { max: 1000, message: 'Signature note cannot exceed 1000 characters'}
+                ]}
+              >
+                <Input.TextArea rows={1} />
+              </Form.Item>
+            </div>
+
             {/* Description */}
 
             <Form.Item
               label='Description'
               name="description"
+              rules={FORM_RULES.description}
             >
               <Input.TextArea rows={10} />
             </Form.Item>
