@@ -169,6 +169,7 @@ function ArtworkImages({ artwork }: { artwork: ArtworkProps }) {
       )}
       {images.length > 0 && (
         <Table
+          rowKey="id"
           dataSource={images}
           columns={columns}
           size="small"
