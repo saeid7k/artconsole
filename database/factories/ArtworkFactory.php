@@ -51,7 +51,9 @@ class ArtworkFactory extends Factory
       'ownership' => $this->faker->randomElement(['owned', 'consigned']),
       'status' => $this->faker->randomElement(ArtworkStatus::cases())->value,
       'details' => null,
-      'notes' => $this->faker->optional(0.3)->paragraph,
+      'signed' => $this->faker->boolean(70),
+      'signature_note' => $this->faker->optional(0.5, null)->sentence,
+      'provenance' => $this->faker->optional(0.8, null)->paragraph,
     ];
   }
 
