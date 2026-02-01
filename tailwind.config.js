@@ -36,6 +36,7 @@ export default {
     		// 	sm: 'calc(var(--radius) - 4px)'
     		// },
     		colors: {
+          body: 'var(--text-body)',
     			background: 'hsl(var(--background))',
     			foreground: 'hsl(var(--foreground))',
     			card: {
@@ -65,7 +66,7 @@ export default {
     				foreground: 'hsl(var(--secondary-foreground))'
     			},
     			muted: {
-    				DEFAULT: 'hsl(var(--muted))',
+    				DEFAULT: 'var(--text-muted)',
     				foreground: 'hsl(var(--muted-foreground))'
     			},
     			accent: {
