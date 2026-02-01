@@ -104,10 +104,10 @@ function ImageGallery({ images }: Props) {
         <Image.PreviewGroup
           items={imagesUrl}
           preview={{
-            visible: openImageIndex !== null,
+            open: openImageIndex !== null,
             current: openImageIndex ?? 0,
-            onVisibleChange: (visible) => {
-              if (!visible) setOpenImageIndex(null);
+            onOpenChange: (open) => {
+              if (!open) setOpenImageIndex(null);
             },
             onChange: (current) => {
               setOpenImageIndex(current);
