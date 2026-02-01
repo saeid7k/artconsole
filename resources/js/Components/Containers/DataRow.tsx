@@ -5,7 +5,7 @@ import CopyToClipboard from "../CopyToClipboard"
 type Props = {
   icon?: ReactNode | null
   label?: string | ReactNode | null
-  value: string | ReactNode
+  value: string | ReactNode | null
   wrapping?: boolean
   align?: 'center' | 'start' | 'end'
   showCopyToClipboard?: boolean
@@ -16,7 +16,7 @@ type Props = {
 function DataRow({
   icon = null,
   label = null,
-  value,
+  value = null,
   wrapping = true,
   align = 'center',
   showCopyToClipboard = false,
@@ -37,7 +37,13 @@ function DataRow({
       {label && (
         <label className={`ms-1 whitespace-nowrap ${labelClassName}`}>{label}</label>
       )}
-      <span className="ms-2">{value}</span>
+      <span
+        className={twMerge("ms-2",
+          !value ? 'text-muted font-light' : '',
+        )}
+      >
+        {value || 'N/A'}
+      </span>
       {isCopyToClipboardAvailable && (
         <CopyToClipboard
           title={typeof label === 'string' ? label : null}
