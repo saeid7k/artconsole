@@ -61,7 +61,7 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
           height={60}
           style={{ aspectRatio: '1 / 1', objectFit: 'cover' }}
           preview={record.main_image_thumb_url ? {
-            mask: (
+            cover: (
               <div className='flex flex-col items-center'>
                 <div>Preview</div>
                 <HugeiconsIcon icon={ViewIcon} />
