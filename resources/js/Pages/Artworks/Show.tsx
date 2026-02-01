@@ -23,6 +23,7 @@ import { Card, Divider, Empty, Tabs } from "antd";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 import ArtworkToolbar from "./Partials/ArtworkToolbar";
+import ArtworkTabs from "@/Components/Artworks/ArtworkTabs";
 
 function Show ({ artwork }: { artwork: ArtworkProps }) {
 
@@ -146,26 +147,7 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
         {/* Tabs */}
 
         <Card>
-          <Tabs>
-            <Tabs.TabPane tab="Images" key="images">
-              <div className="flex flex-col lg:flex-row gap-5 items-start flex-wrap">
-                {artwork.images?.length > 0 && (
-                  <div className="grow">
-                    <ArtworkImages artwork={artwork} />
-                  </div>
-                )}
-                <ArtworkImageUpload artwork={artwork} />
-              </div>
-            </Tabs.TabPane>
-            <Tabs.TabPane tab="Documents" key="documents">
-              <Empty description="No documents available." />
-            </Tabs.TabPane>
-            <Tabs.TabPane tab="Financial" key="financial">
-            </Tabs.TabPane>
-            <Tabs.TabPane tab="History" key="history">
-              <ActivityLogs modelType="artwork" modelId={artwork.id} key={artwork.updated_at} />
-            </Tabs.TabPane>
-          </Tabs>
+          <ArtworkTabs artwork={artwork} />
         </Card>
       </div>
     </ArtworkShowProvider>
