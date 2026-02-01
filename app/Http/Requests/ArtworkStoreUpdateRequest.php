@@ -44,7 +44,6 @@ class ArtworkStoreUpdateRequest extends FormRequest
       'owner_contact_id' => ['nullable', 'integer', 'exists:contacts,id'],
       'status' => ['nullable', 'string', 'in:' . ArtworkStatus::stringifyAll()],
       'details' => ['nullable', 'array'],
-      'notes' => ['nullable', 'string'],
       'images' => ['nullable', 'array'],
       'images.*' => ['file', 'mimetypes:image/*', 'max:10240'],
     ];
