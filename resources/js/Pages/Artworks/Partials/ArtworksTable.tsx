@@ -149,11 +149,11 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
 
   return (
     <Table
+      rowKey="id"
       columns={columns}
       dataSource={artworks.data}
       size='small'
       scroll={{ x: 'max-content', y: windowWidth < 640 ? '60vh' : '70vh' }}
-
       pagination={{
         current: artworks.current_page,
         total: artworks.total,
