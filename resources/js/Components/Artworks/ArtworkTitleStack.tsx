@@ -1,7 +1,11 @@
+import colors from "@/Themes/theme";
 import { ArtworkProps } from "@/types/artwork";
+import { SignatureIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "@inertiajs/react";
-import { Tooltip } from "antd";
+import { Popover, Tooltip } from "antd";
 import { twMerge } from "tailwind-merge";
+import FlexBox from "../Containers/FlexBox";
 import FormattedEdition from "../FormattedEdition";
 
 type Props = {
@@ -11,6 +15,7 @@ type Props = {
   serifTitle?: boolean;
   artistTooltipPlacement?: "top" | "left" | "right" | "bottom" | "topLeft" | "topRight" | "bottomLeft" | "bottomRight" | "leftTop" | "leftBottom" | "rightTop" | "rightBottom";
   showEdition?: boolean;
+  showSigned?: boolean;
   showYear?: boolean;
   size?: "medium" | "large";
   className?: string;
@@ -23,6 +28,7 @@ function ArtworkTitleStack({
   serifTitle = false,
   artistTooltipPlacement = "bottom",
   showEdition = true,
+  showSigned = true,
   showYear = true,
   size = "medium",
   className = '',
@@ -80,12 +86,25 @@ function ArtworkTitleStack({
       {/* Edition */}
 
       {showEdition && (
-        <div>
+        <FlexBox gap={2}>
           <FormattedEdition
             edition={artwork.edition}
             size={editionSize[size]}
           />
-        </div>
+          {showSigned && (
+            <Popover
+              title={artwork.signed ? "Signed Artwork" : "Not Signed Artwork"}
+              content={artwork.signature_note || null}
+              placement="right"
+            >
+              <HugeiconsIcon
+                icon={SignatureIcon}
+                size={16}
+                color={artwork.signed ? colors.accent.DEFAULT : colors.muted.DEFAULT}
+              />
+            </Popover>
+          )}
+        </FlexBox>
       )}
 
       {/* Date */}
