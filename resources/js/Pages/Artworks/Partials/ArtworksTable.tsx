@@ -80,7 +80,7 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
       sorter: (a, b) => a.title.localeCompare(b.title),
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
-      render: (_, record) => <ArtworkTitleStack artwork={record as ArtworkProps} showYear={false} />,
+      render: (_, record) => <ArtworkTitleStack artwork={record as ArtworkProps} showYear={false} showSigned={false} />,
       // width: 250,
     },
     {
