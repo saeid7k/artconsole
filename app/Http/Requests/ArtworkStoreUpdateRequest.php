@@ -19,31 +19,38 @@ class ArtworkStoreUpdateRequest extends FormRequest
   {
     return [
       'artist_data' => ['nullable', 'array'],
+
       'sku' => ['nullable', 'string', 'max:100'],
-      'category' => ['required', 'string', 'in:' . ArtworkCategory::stringifyAll()],
+      'title' => ['required', 'string', 'max:255'],
+      'year' => ['nullable', 'string', 'max:100'],
+      'price' => ['nullable', 'numeric', 'decimal:0,2'],
       'edition' => ['nullable', 'array'],
       'edition.type' => ['nullable', 'string', 'in:' . ArtworkEdition::stringifyAll()],
       'edition.number' => ['nullable', 'integer', 'min:1'],
       'edition.size' => ['nullable', 'integer', 'min:1'],
-      'title' => ['required', 'string', 'max:255'],
+      'signed' => ['nullable', 'boolean'],
+      'signature_note' => ['nullable', 'string', 'max:1000'],
+      'description' => ['nullable', 'string', 'max:20000'],
+
+      'category' => ['required', 'string', 'in:' . ArtworkCategory::stringifyAll()],
       'subject' => ['nullable', 'string', 'max:100'],
-      'description' => ['nullable', 'string'],
-      'year' => ['nullable', 'string', 'max:100'],
+      'medium' => ['nullable', 'string', 'max:100'],
+      'styles' => ['nullable', 'array'],
+      'styles.*' => ['string', 'max:100'],
       'dimensions' => ['nullable', 'array'],
       'dimensions.width' => ['nullable', 'numeric', 'min:0'],
       'dimensions.height' => ['nullable', 'numeric', 'min:0'],
       'dimensions.depth' => ['nullable', 'numeric', 'min:0'],
       'dimensions.unit' => ['nullable', 'string', 'in:cm,inches'],
-      'price' => ['nullable', 'numeric', 'decimal:0,2'],
-      'medium' => ['nullable', 'string', 'max:100'],
-      'styles' => ['nullable', 'array'],
-      'styles.*' => ['string', 'max:100'],
       'collections' => ['nullable', 'array'],
       'collections.*' => ['string', 'max:100'],
+
       'ownership' => ['nullable', 'string', 'in:owned,consigned'],
       'owner_contact_id' => ['nullable', 'integer', 'exists:contacts,id'],
-      'status' => ['nullable', 'string', 'in:' . ArtworkStatus::stringifyAll()],
+
       'details' => ['nullable', 'array'],
+      'status' => ['nullable', 'string', 'in:' . ArtworkStatus::stringifyAll()],
+
       'images' => ['nullable', 'array'],
       'images.*' => ['file', 'mimetypes:image/*', 'max:10240'],
     ];
