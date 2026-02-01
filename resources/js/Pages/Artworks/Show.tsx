@@ -1,7 +1,5 @@
-import ActivityLogs from "@/Components/ActivityLogs";
-import ArtworkImages from "@/Components/Artworks/ArtworkImages";
-import ArtworkImageUpload from "@/Components/Artworks/ArtworkImageUpload";
 import ArtworkStatusTag from "@/Components/Artworks/ArtworkStatusTag";
+import ArtworkTabs from "@/Components/Artworks/ArtworkTabs";
 import ArtworkTitleStack from "@/Components/Artworks/ArtworkTitleStack";
 import DataCol from "@/Components/Containers/DataCol";
 import DataRow from "@/Components/Containers/DataRow";
@@ -16,14 +14,13 @@ import { ArtworkShowProvider } from "@/contexts/ArtworkShowContext";
 import AppLayout from "@/Layouts/AppLayout";
 import { ArtworkProps } from "@/types/artwork";
 import { formatCurrency } from "@/utils/formatHelper";
-import { BarCode02Icon, BrushIcon, Folder02Icon, GooglePhotosIcon, PackageDimensions01Icon, PaintBucketIcon } from "@hugeicons/core-free-icons";
+import { BarCode02Icon, BrushIcon, Folder02Icon, GooglePhotosIcon, PackageDimensions01Icon, PaintBucketIcon, Stamp01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "@inertiajs/react";
-import { Card, Divider, Empty, Tabs } from "antd";
+import { Card, Divider } from "antd";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 import ArtworkToolbar from "./Partials/ArtworkToolbar";
-import ArtworkTabs from "@/Components/Artworks/ArtworkTabs";
 
 function Show ({ artwork }: { artwork: ArtworkProps }) {
 
@@ -93,54 +90,64 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
             </FlexBox>
             <TextboxExpandable content={artwork.description || 'No description.'} />
             <Divider />
-            <DataCol>
-              <DataRow
-                icon={<HugeiconsIcon icon={Folder02Icon} size={18} />}
-                label="Category:"
-                value={getArtworkCategoryLabel(artwork.category)}
-                labelClassName="min-w-[80px]"
-              />
-              <DataRow
-                icon={<HugeiconsIcon icon={GooglePhotosIcon} size={18} />}
-                label="Subject:"
-                value={artwork.subject}
-                labelClassName="min-w-[80px]"
-              />
-              <DataRow
-                icon={<HugeiconsIcon icon={PaintBucketIcon} size={18} />}
-                label="Medium:"
-                value={artwork.medium}
-                labelClassName="min-w-[80px]"
-              />
-              <DataRow
-                icon={<HugeiconsIcon icon={BrushIcon} size={18} />}
-                label="Styles:"
-                value={artwork.styles.join(', ')}
-                labelClassName="min-w-[80px]"
-              />
-              <DataRow
-                icon={<HugeiconsIcon icon={PackageDimensions01Icon} size={18} />}
-                label="Size:"
-                value={<FormattedDimensions dimensions={artwork.dimensions || null} showDepth />}
-                labelClassName="min-w-[80px]"
-              />
-              {/* Price & Location */}
-              <div className="my-3">
-                <LocationStack
-                  location={artwork.location}
-                  showTitle
-                  showAddress
-                  clamped={false}
-                  boxed
+            <div className="flex flex-col 2xl:flex-row gap-2">
+              <DataCol className="2xl:w-1/2">
+                <DataRow
+                  icon={<HugeiconsIcon icon={Folder02Icon} size={18} />}
+                  label="Category:"
+                  value={getArtworkCategoryLabel(artwork.category)}
+                  labelClassName="min-w-[80px]"
                 />
-              </div>
-              <DataRow
-                icon={<HugeiconsIcon icon={BarCode02Icon} size={18} />}
-                label="SKU:"
-                value={artwork.sku || 'N/A'}
-                labelClassName="min-w-[80px]"
-              />
-            </DataCol>
+                <DataRow
+                  icon={<HugeiconsIcon icon={GooglePhotosIcon} size={18} />}
+                  label="Subject:"
+                  value={artwork.subject}
+                  labelClassName="min-w-[80px]"
+                />
+                <DataRow
+                  icon={<HugeiconsIcon icon={PaintBucketIcon} size={18} />}
+                  label="Medium:"
+                  value={artwork.medium}
+                  labelClassName="min-w-[80px]"
+                />
+                <DataRow
+                  icon={<HugeiconsIcon icon={BrushIcon} size={18} />}
+                  label="Styles:"
+                  value={artwork.styles.join(', ')}
+                  labelClassName="min-w-[80px]"
+                />
+                <DataRow
+                  icon={<HugeiconsIcon icon={PackageDimensions01Icon} size={18} />}
+                  label="Size:"
+                  value={<FormattedDimensions dimensions={artwork.dimensions || null} showDepth />}
+                  labelClassName="min-w-[80px]"
+                />
+                {/* Price & Location */}
+                <div className="my-3">
+                  <LocationStack
+                    location={artwork.location}
+                    showTitle
+                    showAddress
+                    clamped={false}
+                    boxed
+                  />
+                </div>
+              </DataCol>
+              <DataCol className="2xl:w-1/2">
+                <DataRow
+                  icon={<HugeiconsIcon icon={BarCode02Icon} size={18} />}
+                  label="SKU:"
+                  value={artwork.sku}
+                  labelClassName="min-w-[80px]"
+                />
+                <DataRow
+                  icon={<HugeiconsIcon icon={Stamp01Icon} size={18} />}
+                  label="Provenance:"
+                  value={artwork.provenance}
+                  labelClassName="min-w-[80px]"
+                />
+              </DataCol>
+            </div>
           </Card>
         </div>
 
