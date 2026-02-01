@@ -10,7 +10,7 @@ import ContactsTable from "./Partials/ContactsTable";
 
 function Index({ contacts }: { contacts: PageProps }) {
 
-  const { handleSearch } = useSearch('contacts.index');
+  const { handleSearch, debouncedSearch } = useSearch('contacts.index');
 
   const [showCreateDrawer, setShowCreateDrawer] = useState(false)
 
@@ -34,6 +34,7 @@ function Index({ contacts }: { contacts: PageProps }) {
             style={{ width: 200 }}
             allowClear
             onSearch={handleSearch}
+            onChange={(e) => debouncedSearch(e.target.value, 1000)}
           />
         }
       />

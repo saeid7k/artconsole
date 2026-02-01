@@ -17,7 +17,7 @@ import { deleteQueryParam, getQueryParam } from "@/utils/urlHelper"
 
 function Index({ artworks, locations }: { artworks: PageProps, locations: Array<LocationProps> }) {
 
-  const { handleSearch } = useSearch('artworks.index');
+  const { handleSearch, debouncedSearch } = useSearch('artworks.index');
 
   // Switch Mode
 
@@ -115,6 +115,7 @@ function Index({ artworks, locations }: { artworks: PageProps, locations: Array<
         size="middle"
         allowClear
         onSearch={handleSearch}
+        onChange={(e) => debouncedSearch(e.target.value, 1000)}
       />
     </div>
   )
