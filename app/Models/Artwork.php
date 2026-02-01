@@ -171,6 +171,12 @@ class Artwork extends Model implements HasMedia
       ->where('custom_properties->is_main', true);
   }
 
+  public function notes()
+  {
+    return $this->belongsToMany(Note::class, 'artwork_note')
+      ->withTimestamps();
+  }
+
   // Methods
 
   public function registerMediaConversions(?Media $media = null): void
