@@ -9,7 +9,7 @@ import { useState } from "react";
 
 function Index({ locations }: { locations: PageProps }) {
 
-  const { handleSearch } = useSearch('locations.index');
+  const { handleSearch, debouncedSearch } = useSearch('locations.index');
   const [openCreateModal, setOpenCreateModal] = useState(false);
 
   // Render
@@ -22,6 +22,7 @@ function Index({ locations }: { locations: PageProps }) {
         size="middle"
         allowClear
         onSearch={handleSearch}
+        onChange={(e) => debouncedSearch(e.target.value, 1000)}
       />
     </div>
   )
