@@ -691,6 +691,14 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                 </Form.Item>
               </Space.Compact>
             </Form.Item>
+
+            <Form.Item
+              label="Provenance"
+              name="provenance"
+              rules={[{ max: 20000, message: 'Provenance cannot exceed 20000 characters'}]}
+            >
+              <Input.TextArea rows={4} />
+            </Form.Item>
           </Tabs.TabPane>
         </Tabs>
       </Form>
