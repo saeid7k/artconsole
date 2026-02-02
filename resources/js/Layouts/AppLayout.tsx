@@ -103,7 +103,7 @@ function App ({ children }: AppProps) {
               className="overflow-y-auto my-1"
             >
               <Content
-                className="p-3 w-full m-x-auto"
+                className="p-3 w-full m-x-auto min-h-max"
               >
                 {children}
               </Content>
