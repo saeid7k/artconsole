@@ -22,7 +22,7 @@ trait HasNotes
     ]);
   }
 
-  public function updateNote(int $noteId, string $newContent): bool
+  public function updateNote(int $noteId, string|null $newContent): bool
   {
     $note = $this->notes()->find($noteId);
     $collaborators = array_unique([...$note?->collaborators_ids, Auth::id()]);
