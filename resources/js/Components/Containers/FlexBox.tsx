@@ -33,6 +33,7 @@ function FlexBox({
         `items-${alignItems}`,
         `flex-${wrapping}`,
         `gap-${gap}`,
+        justifyContent !== 'start' ? 'w-full' : '',
         className
       )}
       style={style}
