@@ -1,8 +1,9 @@
-import { Avatar, Card, Input, Popover } from "antd";
-import { twMerge } from "tailwind-merge";
-import FlexBox from "../Containers/FlexBox";
-import { getInitials } from "@/utils/stringHelper";
 import { NoteProps } from "@/types/note";
+import { getInitials } from "@/utils/stringHelper";
+import { useQuery } from "@tanstack/react-query";
+import { Avatar, Card, Input, Popover } from "antd";
+import axios from "axios";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   index: number;
@@ -12,9 +13,20 @@ type Props = {
 
 function Note({ index, note, onChange }: Props) {
 
+  // Handle content change
+
   const handleChange = (newContent: string|null) => {
     onChange(index, newContent);
   }
+
+  // Get Collaborators
+
+  const CollaboratorsQuery = useQuery({
+    queryKey: ['note-collaborators', note.id],
+    queryFn: () => axios.get(route('notes.collaborators', {note: note.id}))
+      .then(res => res.data.collaborators),
+    enabled: !!note.id,
+  });
 
   return (
     <Card
@@ -33,19 +45,22 @@ function Note({ index, note, onChange }: Props) {
         defaultValue={note.content}
       />
       {note.id && (
-        <FlexBox className="cursor-default">
-          <Popover
-            content={note.creator?.full_name}
-            placement="bottomLeft"
-          >
-            <Avatar
-              src={note.creator?.photo}
-              size='small'
+        <Avatar.Group>
+          {CollaboratorsQuery.data?.map((item: any) => (
+            <Popover
+              key={item.id}
+              content={item.full_name}
+              placement="bottomLeft"
             >
-              {getInitials(note.creator?.full_name || '')}
-            </Avatar>
-          </Popover>
-        </FlexBox>
+              <Avatar
+                src={item.photo}
+                size='small'
+              >
+                {getInitials(item.full_name || '')}
+              </Avatar>
+            </Popover>
+          ))}
+        </Avatar.Group>
       )}
     </Card>
   );
