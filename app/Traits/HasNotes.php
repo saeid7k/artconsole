@@ -13,7 +13,7 @@ trait HasNotes
     return $this->morphMany(Note::class, 'noteable');
   }
 
-  public function addNote(string $content, ?int $userId = null): Note
+  public function addNote(string|null $content, ?int $userId = null): Note
   {
     return $this->notes()->create([
       'content' => $content,
