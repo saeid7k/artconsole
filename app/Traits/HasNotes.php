@@ -18,13 +18,22 @@ trait HasNotes
     return $this->notes()->create([
       'content' => $content,
       'user_id' => $userId ?? Auth::id(),
+      'collaborators_ids' => [$userId ?? Auth::id()],
     ]);
   }
 
   public function updateNote(int $noteId, string $newContent): bool
   {
     $note = $this->notes()->find($noteId);
-    return $note ? $note->update(['content' => $newContent]) : false;
+    $collaborators = array_unique([...$note?->collaborators_ids, Auth::id()]);
+
+    return $note ?
+      $note->update([
+        'content' => $newContent,
+        'collaborators_ids' => $collaborators,
+        ])
+      :
+      false;
   }
 
   public function deleteNote(int $noteId): bool
