@@ -25,8 +25,17 @@ function formatByKey(key: string, value: any): any {
     default:
       return typeof value === 'object' ?
         stringifyObject(value)
-        :
-        typeof value === 'string' ? keyToTitle(value) : value;
+        : (
+          typeof value === 'string' ?
+            keyToTitle(value)
+            :
+            (
+              typeof value === 'boolean' ?
+                value ? 'Yes' : 'No'
+                :
+                value
+            )
+        )
   }
 }
 
