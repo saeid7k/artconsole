@@ -65,7 +65,11 @@ class ArtworkController extends Controller
   {
     $this->authorize('view', $artwork);
 
-    $artwork->load(['location', 'owner']);
+    $artwork->load([
+      'location',
+      'owner',
+      'notes.creator:id,firstname,lastname'
+    ]);
     $artwork->setRelation('images', $artwork->images);
 
     return inertia('Artworks/Show', [
@@ -269,6 +273,35 @@ class ArtworkController extends Controller
 
     return response()->json([
       'message' => 'Image deleted successfully.',
+    ]);
+  }
+
+  public function saveNote(Request $request, Artwork $artwork)
+  {
+    $this->authorize('update', $artwork);
+
+    $request->validate([
+      'note_id' => ['nullable', 'exists:notes,id'],
+      'content' => ['nullable', 'string', 'max:1000'],
+    ]);
+
+    if ($request->note_id) {
+      $updated = $artwork->updateNote($request->note_id, $request->content);
+      if ($updated) {
+        return response()->json([
+          'message' => 'Note updated successfully.'
+        ]);
+      } else {
+        return response()->json([
+          'message' => 'Note not found.'
+        ], 404);
+      }
+    }
+
+    $note = $artwork->addNote($request->content);
+
+    return response()->json([
+      'message' => 'Note added successfully.'
     ]);
   }
 }
