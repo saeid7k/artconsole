@@ -11,7 +11,7 @@ return new class extends Migration {
       $table->id();
       $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
       $table->morphs('noteable');
-      $table->text('content');
+      $table->text('content')->nullable();
       $table->json('collaborators_ids')->nullable();
       $table->timestamps();
     });

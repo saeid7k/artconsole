@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Traits\HasNotes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
@@ -17,7 +17,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Artwork extends Model implements HasMedia
 {
-  use HasFactory, InteractsWithMedia, LogsActivity, SoftDeletes;
+  use HasFactory, InteractsWithMedia, LogsActivity, SoftDeletes, HasNotes;
 
   protected $fillable = [
     'creator_id',
@@ -170,12 +170,6 @@ class Artwork extends Model implements HasMedia
       ->where('model_type', Artwork::class)
       ->where('collection_name', 'artwork-images')
       ->where('custom_properties->is_main', true);
-  }
-
-  public function notes(): BelongsToMany
-  {
-    return $this->belongsToMany(Note::class, 'artwork_note')
-      ->withTimestamps();
   }
 
   // Methods
