@@ -1,15 +1,14 @@
 import colors from "@/Themes/theme";
 import { ArtworkProps } from "@/types/artwork";
-import { getInitials } from "@/utils/stringHelper";
 import { AddCircleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
 import { useMutation } from "@tanstack/react-query";
-import { Avatar, Card, Empty, Input, message, Popover } from "antd";
+import { message } from "antd";
 import axios from "axios";
+import { useRef, useState } from "react";
 import FlexBox from "../Containers/FlexBox";
-import { useEffect, useRef, useState } from "react";
-import { twMerge } from "tailwind-merge";
+import Note from "../Notes/Note";
 
 function ArtworkNotes({ artwork }: { artwork: ArtworkProps }) {
 
@@ -68,38 +67,13 @@ function ArtworkNotes({ artwork }: { artwork: ArtworkProps }) {
       className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3"
     >
       {notes.map((item, index) => (
-        <Card
-          key={item.id || `new-${index}`}
-          className="bg-yellow-500/20 hover:shadow-lg transition-all h-max"
-          styles={{
-            body: {padding: '1rem'},
-          }}
-        >
-          <Input.TextArea
-            className={twMerge(
-              "mb-2 p-1 border-none focus:!shadow-none focus:!bg-transparent hover:!bg-transparent",
-              item.content ? "!bg-transparent" : "bg-yellow-500/10"
-            )}
-            autoSize={{ minRows: 3 }}
-            onChange={(e) => handleNoteChange(index, e.target.value)}
-            defaultValue={item.content}
+        <div key={item.id || `new-${index}`} >
+          <Note
+            index={index}
+            note={item}
+            onChange={handleNoteChange}
           />
-          {item.id && (
-            <FlexBox className="cursor-default">
-              <Popover
-                content={item.creator?.full_name}
-                placement="bottomLeft"
-              >
-                <Avatar
-                  src={item.creator?.photo}
-                  size='small'
-                >
-                  {getInitials(item.creator?.full_name || '')}
-                </Avatar>
-              </Popover>
-            </FlexBox>
-          )}
-        </Card>
+        </div>
       ))}
 
       <div
@@ -107,7 +81,7 @@ function ArtworkNotes({ artwork }: { artwork: ArtworkProps }) {
         onClick={addNote}
       >
         <FlexBox direction="col" className="text-muted" >
-          <HugeiconsIcon icon={AddCircleIcon} size={64} strokeWidth={0.75} color={colors.muted.DEFAULT} />
+          <HugeiconsIcon icon={AddCircleIcon} size={64} strokeWidth={0.5} color={colors.muted.DEFAULT} />
           <div className="text-lg">Add Note</div>
         </FlexBox>
       </div>
