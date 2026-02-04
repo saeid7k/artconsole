@@ -9,10 +9,11 @@ return new class extends Migration {
   {
     Schema::create('notes', function (Blueprint $table) {
       $table->id();
-      $table->foreignId('user_id')->constrained()->onDelete('cascade');
-      $table->text('note');
+      $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+      $table->morphs('noteable');
+      $table->text('content');
+      $table->json('collaborators_ids')->nullable();
       $table->timestamps();
-      $table->softDeletes();
     });
   }
 
