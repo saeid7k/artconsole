@@ -100,6 +100,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/set-primary', [App\Http\Controllers\LocationController::class, 'setPrimary'])->name('set-primary');
     Route::post('/toggle-active', [App\Http\Controllers\LocationController::class, 'toggleActive'])->name('toggle-active');
   });
+
+  Route::prefix('notes')->name('notes.')->group(function () {
+    Route::get('/{note}/collaborators', [App\Http\Controllers\NoteController::class, 'getCollaborators'])->name('collaborators');
+  });
 });
 
 Route::middleware(['auth', Admin::class])->group(function () {
