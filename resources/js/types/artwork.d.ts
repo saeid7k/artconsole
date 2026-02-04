@@ -56,4 +56,5 @@ export interface ArtworkProps {
   artist: ContactProps;
   location: LocationProps;
   owner?: ContactProps | null;
+  notes: Array<NoteProps>;
 }
