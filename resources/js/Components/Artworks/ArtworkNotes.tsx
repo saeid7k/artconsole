@@ -4,7 +4,7 @@ import { AddCircleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import FlexBox from "../Containers/FlexBox";
 import Note from "../Notes/Note";
 
@@ -60,6 +60,10 @@ function ArtworkNotes({ artwork }: { artwork: ArtworkProps }) {
         })
     }
   });
+
+  useEffect(() => {
+    setNotes(artwork.notes || []);
+  }, [artwork.notes]);
 
   return (
     <div
