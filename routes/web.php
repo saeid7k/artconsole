@@ -55,6 +55,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/{artwork}/set-main-image', [App\Http\Controllers\ArtworkController::class, 'setAsMainImage'])->name('set-main-image');
     Route::get('/{artwork}/download-image/{media_id}', [App\Http\Controllers\ArtworkController::class, 'downloadImage'])->name('download-image');
     Route::delete('/{artwork}/delete-image/{media_id}', [App\Http\Controllers\ArtworkController::class, 'deleteImage'])->name('delete-image');
+    Route::post('/{artwork}/save-note', [App\Http\Controllers\ArtworkController::class, 'saveNote'])->name('save-note');
   });
 
   Route::prefix('members')->name('members.')->group(function () {
