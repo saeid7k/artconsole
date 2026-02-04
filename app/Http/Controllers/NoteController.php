@@ -21,4 +21,13 @@ class NoteController extends Controller
       'collaborators' => $collaborators,
     ]);
   }
+
+  public function destroy(Request $request, Note $note)
+  {
+    $note->delete();
+
+    return response()->json([
+      'message' => 'Note deleted successfully',
+    ]);
+  }
 }
