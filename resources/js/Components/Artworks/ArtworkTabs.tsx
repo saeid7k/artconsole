@@ -30,12 +30,12 @@ function ArtworkTabs({ artwork }: { artwork: ArtworkProps }) {
     {
       key: 'documents',
       label: 'Documents',
-      children: <Empty description="No documents available." />,
+      children: <Empty description="No documents available." className="py-10" />,
     },
     {
       key: 'financial',
       label: 'Financial',
-      children: null,
+      children: <Empty description="No financial data available." className="py-10" />,
     },
     {
       key: 'history',
@@ -47,6 +47,7 @@ function ArtworkTabs({ artwork }: { artwork: ArtworkProps }) {
   return (
     <Tabs
       items={items}
+      className="min-h-[300px]"
     />
   );
 }
