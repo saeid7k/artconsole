@@ -4,6 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Avatar, Card, Input, Popover } from "antd";
 import axios from "axios";
 import { twMerge } from "tailwind-merge";
+import FlexBox from "../Containers/FlexBox";
+import dayjs from "dayjs";
 
 type Props = {
   index: number;
@@ -45,22 +47,27 @@ function Note({ index, note, onChange }: Props) {
         defaultValue={note.content}
       />
       {note.id && (
-        <Avatar.Group>
-          {CollaboratorsQuery.data?.map((item: any) => (
-            <Popover
-              key={item.id}
-              content={item.full_name}
-              placement="bottomLeft"
-            >
-              <Avatar
-                src={item.photo}
-                size='small'
+        <FlexBox justifyContent="between" >
+          <Avatar.Group max={{count: 5}} size="small">
+            {CollaboratorsQuery.data?.map((item: any) => (
+              <Popover
+                key={item.id}
+                content={item.full_name}
+                placement="bottomLeft"
               >
-                {getInitials(item.full_name || '')}
-              </Avatar>
-            </Popover>
-          ))}
-        </Avatar.Group>
+                <Avatar
+                  src={item.photo}
+                  size='small'
+                >
+                  {getInitials(item.full_name || '')}
+                </Avatar>
+              </Popover>
+            ))}
+          </Avatar.Group>
+          <div className="text-ghost">
+            {note.updated_at && dayjs(note.updated_at).format('MMM D, YYYY h:mm A')}
+          </div>
+        </FlexBox>
       )}
     </Card>
   );
