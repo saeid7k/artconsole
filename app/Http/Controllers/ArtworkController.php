@@ -289,7 +289,8 @@ class ArtworkController extends Controller
       $updated = $artwork->updateNote($request->note_id, $request->content);
       if ($updated) {
         return response()->json([
-          'message' => 'Note updated successfully.'
+          'message' => 'Note updated successfully.',
+          'note_id' => $request->note_id,
         ]);
       } else {
         return response()->json([
@@ -301,7 +302,8 @@ class ArtworkController extends Controller
     $note = $artwork->addNote($request->content);
 
     return response()->json([
-      'message' => 'Note added successfully.'
+      'message' => 'Note added successfully.',
+      'note_id' => $note->id,
     ]);
   }
 }
