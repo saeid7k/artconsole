@@ -50,6 +50,14 @@ function ArtworkNotes({ artwork }: { artwork: ArtworkProps }) {
         note_id: noteId,
         content: newContent,
       })
+        .then(res => {
+          // Update note ID if it's a new note
+          if (!noteId) {
+            const updatedNotes = [...notes];
+            updatedNotes.find(n => n.id === null && n.content === newContent)!.id = res.data.note_id;
+            setNotes(updatedNotes);
+          }
+        })
     }
   });
 
