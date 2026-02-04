@@ -2,9 +2,7 @@ import colors from "@/Themes/theme";
 import { ArtworkProps } from "@/types/artwork";
 import { AddCircleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { router } from "@inertiajs/react";
 import { useMutation } from "@tanstack/react-query";
-import { message } from "antd";
 import axios from "axios";
 import { useRef, useState } from "react";
 import FlexBox from "../Containers/FlexBox";
@@ -52,14 +50,7 @@ function ArtworkNotes({ artwork }: { artwork: ArtworkProps }) {
         note_id: noteId,
         content: newContent,
       })
-    },
-    onSuccess: () => {
-      message.success('Note added successfully.');
-      router.reload();
-    },
-    onError: (error: any) => {
-      // message.error(error.response?.data?.message || 'Failed to add note.');
-    },
+    }
   });
 
   return (
