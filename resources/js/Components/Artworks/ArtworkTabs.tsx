@@ -1,8 +1,9 @@
 import { ArtworkProps } from "@/types/artwork";
 import { Empty, Tabs } from "antd";
+import ActivityLogs from "../ActivityLogs";
 import ArtworkImages from "./ArtworkImages";
 import ArtworkImageUpload from "./ArtworkImageUpload";
-import ActivityLogs from "../ActivityLogs";
+import ArtworkNotes from "./ArtworkNotes";
 
 function ArtworkTabs({ artwork }: { artwork: ArtworkProps }) {
 
@@ -20,6 +21,11 @@ function ArtworkTabs({ artwork }: { artwork: ArtworkProps }) {
           <ArtworkImageUpload artwork={artwork} />
         </div>
       ),
+    },
+    {
+      key: 'notes',
+      label: 'Notes',
+      children: <ArtworkNotes artwork={artwork} />,
     },
     {
       key: 'documents',
