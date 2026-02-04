@@ -1,11 +1,14 @@
 import { NoteProps } from "@/types/note";
 import { getInitials } from "@/utils/stringHelper";
-import { useQuery } from "@tanstack/react-query";
-import { Avatar, Card, Input, Popover } from "antd";
+import { Delete02Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { router } from "@inertiajs/react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Avatar, Button, Card, Input, Popover } from "antd";
 import axios from "axios";
+import dayjs from "dayjs";
 import { twMerge } from "tailwind-merge";
 import FlexBox from "../Containers/FlexBox";
-import dayjs from "dayjs";
 
 type Props = {
   index: number;
@@ -30,6 +33,15 @@ function Note({ index, note, onChange }: Props) {
     enabled: !!note.id,
   });
 
+  // Delete Note
+
+  const deleteNoteMutation = useMutation({
+    mutationFn: () => axios.delete(route('notes.destroy', {note: note.id})),
+    onSuccess: () => {
+      router.reload();
+    },
+  });
+
   return (
     <Card
       className="bg-yellow-500/20 hover:shadow-lg transition-all h-max"
@@ -47,26 +59,38 @@ function Note({ index, note, onChange }: Props) {
         defaultValue={note.content}
       />
       {note.id && (
-        <FlexBox justifyContent="between" >
-          <Avatar.Group max={{count: 5}} size="small">
-            {CollaboratorsQuery.data?.map((item: any) => (
-              <Popover
-                key={item.id}
-                content={item.full_name}
-                placement="bottomLeft"
-              >
-                <Avatar
-                  src={item.photo}
-                  size='small'
+        <FlexBox direction="col" alignItems="start" >
+          <FlexBox justifyContent="between" >
+            <Avatar.Group max={{count: 5}} size="small">
+              {CollaboratorsQuery.data?.map((item: any) => (
+                <Popover
+                  key={item.id}
+                  content={item.full_name}
+                  placement="bottomLeft"
                 >
-                  {getInitials(item.full_name || '')}
-                </Avatar>
-              </Popover>
-            ))}
-          </Avatar.Group>
-          <div className="text-ghost">
-            {note.updated_at && dayjs(note.updated_at).format('MMM D, YYYY h:mm A')}
-          </div>
+                  <Avatar
+                    src={item.photo}
+                    size='small'
+                  >
+                    {getInitials(item.full_name || '')}
+                  </Avatar>
+                </Popover>
+              ))}
+            </Avatar.Group>
+            <div className="text-ghost">
+              {note.updated_at && dayjs(note.updated_at).format('MMM D, YYYY h:mm A')}
+            </div>
+          </FlexBox>
+          <FlexBox justifyContent="end" >
+            <Button
+              type="text"
+              shape="circle"
+              size="small"
+              onClick={() => deleteNoteMutation.mutate()}
+            >
+              <HugeiconsIcon icon={Delete02Icon} size={16} />
+            </Button>
+          </FlexBox>
         </FlexBox>
       )}
     </Card>
