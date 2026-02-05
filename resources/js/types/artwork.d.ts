@@ -45,6 +45,7 @@ export interface ArtworkProps {
 
   // Attributes not in database
   abilities: {
+    create: boolean;
     update: boolean;
     delete: boolean;
   };
