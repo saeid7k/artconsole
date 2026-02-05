@@ -56,6 +56,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/{artwork}/download-image/{media_id}', [App\Http\Controllers\ArtworkController::class, 'downloadImage'])->name('download-image');
     Route::delete('/{artwork}/delete-image/{media_id}', [App\Http\Controllers\ArtworkController::class, 'deleteImage'])->name('delete-image');
     Route::post('/{artwork}/save-note', [App\Http\Controllers\ArtworkController::class, 'saveNote'])->name('save-note');
+    Route::post('/{artwork}/copy', [App\Http\Controllers\ArtworkController::class, 'copy'])->name('copy');
   });
 
   Route::prefix('members')->name('members.')->group(function () {

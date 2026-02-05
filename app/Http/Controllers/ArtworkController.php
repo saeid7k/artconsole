@@ -306,4 +306,30 @@ class ArtworkController extends Controller
       'note_id' => $note->id,
     ]);
   }
+
+  public function copy(Artwork $artwork)
+  {
+    $this->authorize('create', Artwork::class);
+
+    $newArtwork = $artwork->replicate([
+      'sku', 'title', 'created_at', 'updated_at'
+    ]);
+    $newArtwork->title = $artwork->title . ' (Copy)';
+    $newArtwork->save();
+
+    foreach ($artwork->getMedia('artwork-images') as $mediaItem) {
+      $isMain = $mediaItem->getCustomProperty('is_main', false);
+
+      $fileContents = file_get_contents($mediaItem->getPath());
+      $newArtwork->addMediaFromString($fileContents)
+        ->usingFileName($mediaItem->file_name)
+        ->withCustomProperties(['is_main' => $isMain])
+        ->toMediaCollection('artwork-images');
+    }
+
+    return response()->json([
+      'message' => 'Artwork copied successfully.',
+      'artwork_id' => $newArtwork->id,
+    ]);
+  }
 }

@@ -25,6 +25,19 @@ function ArtworksActions({ artwork }: { artwork: ArtworkProps }) {
     },
   })
 
+  // Copy Mutation
+
+  const copyMutation = useMutation({
+    mutationFn: (artworkId: number) => axios.post(route('artworks.copy', artworkId)),
+    onSuccess: () => {
+      message.success('Artwork copied successfully')
+      router.reload()
+    },
+    onError: (error: any) => {
+      message.error(error.response?.data?.message || 'Failed to copy artwork')
+    },
+  })
+
 
   return (
     <>
@@ -84,6 +97,7 @@ function ArtworksActions({ artwork }: { artwork: ArtworkProps }) {
                   icon: <HugeiconsIcon icon={Copy01Icon} size={16} />,
                   label: 'Copy Artwork',
                   disabled: !artwork.abilities.update,
+                  onClick: () => copyMutation.mutate(artwork.id),
                 },
               ]}
             />
