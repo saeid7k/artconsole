@@ -6,6 +6,7 @@ const ARTWORK_CATEGORIES = [
   { label: 'Photography', value: 'photography', color: colors.cyan },
   { label: 'Digital Art', value: 'digital_art', color: colors.purple },
   { label: 'Mixed Media', value: 'mixed_media', color: colors.green },
+  { label: 'Miscellaneous', value: 'miscellaneous', color: colors.gray },
 ];
 
 function getArtworkCategoryLabel(value: string): string {

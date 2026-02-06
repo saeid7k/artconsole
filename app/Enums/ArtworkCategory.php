@@ -11,6 +11,7 @@ enum ArtworkCategory: string
   case Photography = 'photography';
   case DigitalArt = 'digital_art';
   case MixedMedia = 'mixed_media';
+  case Miscellaneous = 'miscellaneous';
 
   public function label(): string
   {
@@ -25,6 +26,7 @@ enum ArtworkCategory: string
       self::Photography => 'cyan',
       self::DigitalArt => 'purple',
       self::MixedMedia => 'green',
+      self::Miscellaneous => 'gray',
     };
   }
 
@@ -36,6 +38,7 @@ enum ArtworkCategory: string
       self::Photography => 'PHT',
       self::DigitalArt => 'DGT',
       self::MixedMedia => 'MMD',
+      self::Miscellaneous => 'MSC',
     };
   }
 
