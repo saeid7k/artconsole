@@ -25,9 +25,9 @@ export interface ArtworkProps {
   description?: string | null;
 
   category: string;
-  subject?: string | null;
-  medium?: string | null;
-  styles: string[];
+  subjects?: string[] | null;
+  mediums?: string[] | null;
+  styles?: string[] | null;
   dimensions?: DimensionsProps | null;
   collections: string[];
 

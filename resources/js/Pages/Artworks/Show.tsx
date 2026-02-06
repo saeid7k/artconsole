@@ -101,19 +101,19 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
                 <DataRow
                   icon={<HugeiconsIcon icon={GooglePhotosIcon} size={18} />}
                   label="Subject:"
-                  value={artwork.subject}
+                  value={artwork.subjects?.join(', ')}
                   labelClassName="min-w-[80px]"
                 />
                 <DataRow
                   icon={<HugeiconsIcon icon={PaintBucketIcon} size={18} />}
-                  label="Medium:"
-                  value={artwork.medium}
+                  label="Mediums:"
+                  value={artwork.mediums?.join(', ')}
                   labelClassName="min-w-[80px]"
                 />
                 <DataRow
                   icon={<HugeiconsIcon icon={BrushIcon} size={18} />}
                   label="Styles:"
-                  value={artwork.styles.join(', ')}
+                  value={artwork.styles?.join(', ')}
                   labelClassName="min-w-[80px]"
                 />
                 <DataRow

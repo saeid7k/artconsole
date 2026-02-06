@@ -35,7 +35,6 @@ class ArtworkFactory extends Factory
         'size' => $editionType === 'unique' ? 1 : ($editionType === 'limited' ? $this->faker->randomElement([10, 100, 500]) : null),
       ],
       'title' => $this->faker->randomElement(self::TITLES),
-      'subject' => $this->faker->randomElement(self::SUBJECTS),
       'description' => $this->faker->paragraph,
       'year' => (string) $this->faker->year,
       'dimensions' => [
@@ -45,7 +44,8 @@ class ArtworkFactory extends Factory
         'unit' => $this->faker->randomElement(['inches', 'cm']),
       ],
       'price' => $this->faker->numberBetween(1, 100) * 100,
-      'medium' => $this->faker->randomElement(self::MEDIUMS),
+      'subjects' => $this->faker->randomElement(self::SUBJECTS),
+      'mediums' => $this->faker->randomElement(self::MEDIUMS,),
       'styles' => $this->faker->randomElements(self::STYLES, $this->faker->numberBetween(1, 3), false),
       'collections' => null,
       'ownership' => $this->faker->randomElement(['owned', 'consigned']),

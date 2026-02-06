@@ -31,8 +31,8 @@ return new class extends Migration
       $table->text('description')->nullable();
 
       $table->string('category', 100);
-      $table->string('subject', 100)->nullable();
-      $table->string('medium', 100)->nullable();
+      $table->json('subjects')->nullable();
+      $table->json('mediums')->nullable();
       $table->json('styles')->nullable();
       $table->json('dimensions')->nullable();
       $table->json('collections')->nullable();
