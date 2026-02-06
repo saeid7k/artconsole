@@ -485,7 +485,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
           <Tabs.TabPane tab="Specifications" key="specifications">
             {/* <StyledDivider variant="light" >Specifications</StyledDivider> */}
 
-            {/* Medium & Styles */}
+            {/* Mediums & Styles */}
 
             <Form.Item
               label="Category"
@@ -499,37 +499,37 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
               />
             </Form.Item>
             <Form.Item
-              label="Subject"
-              name="subject"
+              label="Subjects"
+              name="subjects"
               className="sm:w-1/2"
             >
               <Select
-                mode="tags"
+                mode="multiple"
                 options={tagsQuery.data ? tagsQuery.data['subject']?.map((tag: string) => ({
                   label: tag,
                   value: tag,
                 })) : []}
-                placeholder="Select or type a subject"
-                maxCount={1}
-                onChange={(value) => {form.setFieldValue('subject', value.length > 0 ? stringifyArray(value) : null)}}
-                disabled={tagsQuery.isLoading || tagsQuery.isFetching}
+                placeholder="Select subjects"
+                maxCount={10}
+                // onChange={(value) => {form.setFieldValue('subject', value.length > 0 ? stringifyArray(value) : null)}}
+                disabled={tagsQuery.isLoading}
               />
             </Form.Item>
             <Form.Item
-              label="Medium"
-              name="medium"
+              label="Mediums"
+              name="mediums"
               className="sm:w-1/2"
             >
               <Select
-                mode="tags"
+                mode="multiple"
                 options={tagsQuery.data ? tagsQuery.data['medium']?.map((tag: string) => ({
                   label: tag,
                   value: tag,
                 })) : []}
-                placeholder="Select or type a medium"
-                maxCount={1}
-                onChange={(value) => form.setFieldValue('medium', value.length > 0 ? stringifyArray(value) : null)}
-                disabled={tagsQuery.isLoading || tagsQuery.isFetching}
+                placeholder="Select mediums"
+                maxCount={10}
+                // onChange={(value) => form.setFieldValue('medium', value.length > 0 ? stringifyArray(value) : null)}
+                disabled={tagsQuery.isLoading}
               />
             </Form.Item>
             <Form.Item
@@ -538,15 +538,15 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
               className="sm:w-1/2"
             >
               <Select
-                mode="tags"
+                mode="multiple"
                 options={tagsQuery.data ? tagsQuery.data['style']?.map((tag: string) => ({
                   label: tag,
                   value: tag,
                 })) : []}
                 placeholder="Select or type styles"
-                // maxCount={1}
+                maxCount={10}
                 // onChange={(value) => form.setFieldValue('styles', stringifyArray(value))}
-                disabled={tagsQuery.isLoading || tagsQuery.isFetching}
+                disabled={tagsQuery.isLoading}
               />
             </Form.Item>
 

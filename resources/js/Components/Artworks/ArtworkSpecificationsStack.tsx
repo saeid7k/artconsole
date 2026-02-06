@@ -14,12 +14,16 @@ function ArtworkSpecificationsStack({artwork}: Props) {
   return (
     <div className="flex flex-col">
       <div className="flex gap-1">
-        {styledLabel("Medium:")}
-        <div>{artwork.medium}</div>
+        {styledLabel("Mediums:")}
+        <div className="max-w-[200px] line-clamp-1" title={artwork.mediums?.join(', ')}>
+          {artwork.mediums?.join(', ')}
+        </div>
       </div>
       <div className="flex gap-1">
         {styledLabel("Styles:")}
-        <div className="max-w-[200px] line-clamp-1" title={artwork.styles.join(', ')}>{artwork.styles.join(', ')}</div>
+        <div className="max-w-[200px] line-clamp-1" title={artwork.styles?.join(', ')}>
+          {artwork.styles?.join(', ')}
+        </div>
       </div>
       <div className="flex gap-1">
         {styledLabel("Size:")}

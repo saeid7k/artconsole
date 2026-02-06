@@ -33,8 +33,10 @@ class ArtworkStoreUpdateRequest extends FormRequest
       'description' => ['nullable', 'string', 'max:20000'],
 
       'category' => ['required', 'string', 'in:' . ArtworkCategory::stringifyAll()],
-      'subject' => ['nullable', 'string', 'max:100'],
-      'medium' => ['nullable', 'string', 'max:100'],
+      'subjects' => ['nullable', 'array'],
+      'subjects.*' => ['string', 'max:100'],
+      'mediums' => ['nullable', 'array'],
+      'mediums.*' => ['string', 'max:100'],
       'styles' => ['nullable', 'array'],
       'styles.*' => ['string', 'max:100'],
       'dimensions' => ['nullable', 'array'],
