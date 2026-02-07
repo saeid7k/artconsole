@@ -451,18 +451,6 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                 </Form.Item>
               </div>
 
-              {/* Description */}
-
-              <Form.Item
-                label='Description'
-                name="description"
-                rules={FORM_RULES.description}
-              >
-                <HtmlEditor
-                  showMediaToolbar={false}
-                />
-              </Form.Item>
-
             </Tabs.TabPane>
             {mode === 'create' && (
               <Tabs.TabPane tab="Images" key="images">
@@ -491,6 +479,17 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                 </Form.Item>
               </Tabs.TabPane>
             )}
+            <Tabs.TabPane tab="Description" key="description">
+              <Form.Item
+                label='Description'
+                name="description"
+                rules={FORM_RULES.description}
+              >
+                <HtmlEditor
+                  showMediaToolbar={false}
+                />
+              </Form.Item>
+            </Tabs.TabPane>
             <Tabs.TabPane tab="Specifications" key="specifications">
               {/* <StyledDivider variant="light" >Specifications</StyledDivider> */}
 
