@@ -4,9 +4,12 @@ import 'react-quill/dist/quill.snow.css';
 type Props = {
   value?: string;
   onChange?: (content: string) => void;
+  showMediaToolbar?: boolean;
 };
 
-const HtmlEditor = ({ value, onChange }: Props) => {
+const HtmlEditor = ({ value, onChange, showMediaToolbar = true }: Props) => {
+
+  const mediaToolbar = showMediaToolbar ? ['link', 'image', 'video'] : ['link'];
 
   const modules = {
     clipboard: {
@@ -16,15 +19,12 @@ const HtmlEditor = ({ value, onChange }: Props) => {
       // [{ 'header': [1, 2, 3, 4, 5, 6, false] }], // Headings
       [{ 'font': [] }], // Font Family
       [{ 'size': ['small', false, 'large', 'huge'] }], // Font Size
-      ['bold', 'italic', 'underline', 'strike'], // Toggles
-      ['blockquote', 'code-block'], // Blocks
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }], // Lists
-      [{ 'script': 'sub'}, { 'script': 'super' }], // Superscript/Subscript
-      [{ 'indent': '-1'}, { 'indent': '+1' }], // Indent
-      [{ 'direction': 'rtl' }], // Text Direction
       [{ 'color': [] }, { 'background': [] }], // Dropdowns for color
-      [{ 'align': [] }], // Text Align
-      ['link', 'image', 'video'], // Media
+      ['bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block'], // Toggles
+      [{ 'script': 'sub'}, { 'script': 'super' }], // Superscript/Subscript
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }], // Lists
+      [{ 'direction': 'rtl' }, { 'align': [] }, { 'indent': '-1'}, { 'indent': '+1' }], // Text Direction, Align and Indent
+      mediaToolbar, // Media buttons
       ['clean'] // Remove formatting button
     ]
   }
