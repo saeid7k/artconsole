@@ -86,6 +86,7 @@ function ManageTagsModal({ open , setOpen, type = 'tag' }: Props) {
                       type="text"
                       danger
                       shape="circle"
+                      size="small"
                       onClick={() => deleteTagMutation.mutate(tag.id)}
                     >
                       <HugeiconsIcon icon={Delete02Icon} size={16} />
