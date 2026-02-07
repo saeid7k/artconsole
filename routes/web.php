@@ -91,6 +91,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
   Route::prefix('tags')->name('tags.')->group(function () {
     Route::get('/grouped', [App\Http\Controllers\TagController::class, 'getGroupedTags'])->name('get-grouped');
+    Route::get('/all/{type}', [App\Http\Controllers\TagController::class, 'getAllTags'])->name('get-all');
   });
 
   Route::prefix('locations')->name('locations.')->group(function () {

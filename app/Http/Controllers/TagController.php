@@ -76,4 +76,13 @@ class TagController extends Controller
 
     return response()->json($tags);
   }
+
+  public function getAllTags(?string $type)
+  {
+    $user = auth()->user();
+    $gallery = $user->currentGallery();
+    $tags = $gallery->tags($type ?? null)->get();
+
+    return response()->json($tags);
+  }
 }
