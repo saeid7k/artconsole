@@ -1,5 +1,6 @@
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import '@css/htmlEditor.css';
 
 type Props = {
   value?: string;
@@ -38,14 +39,17 @@ const HtmlEditor = ({ value, onChange, showMediaToolbar = true }: Props) => {
   ];
 
   return (
-    <div className="quill-wrapper">
+    <div
+      className="quill-wrapper h-[400px] mb-[70px]" /* Margin bottom accounts for the toolbar */
+    >
       <ReactQuill
         theme="snow"
         value={value?.trim()}
         onChange={onChange}
         modules={modules}
         formats={formats}
-        style={{ height: '200px', marginBottom: '50px' }} // marginBottom accounts for the toolbar
+        style={{ height: '100%' }}
+        className="full-height-html-editor"
       />
     </div>
   );
