@@ -29,13 +29,15 @@ class TagController extends Controller
    */
   public function store(Request $request)
   {
+    $user = auth()->user();
+    $gallery = $user->currentGallery();
+
+    $this->authorize('create', Tag::class);
+
     $request->validate([
       'type' => 'required|string',
       'value' => 'required|string',
     ]);
-
-    $user = auth()->user();
-    $gallery = $user->currentGallery();
 
     $tag = new Tag([
       'gallery_id' => $gallery->id,
@@ -76,6 +78,8 @@ class TagController extends Controller
    */
   public function destroy(Tag $tag)
   {
+    $this->authorize('delete', $tag);
+
     $tag->delete();
     return response()->json(['message' => 'Tag deleted successfully']);
   }
