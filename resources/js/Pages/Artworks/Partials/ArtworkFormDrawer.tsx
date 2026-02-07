@@ -1,5 +1,6 @@
 import ContactWidget from "@/Components/Contacts/ContactWidget";
 import FlexBox from "@/Components/Containers/FlexBox";
+import HtmlEditor from "@/Components/HtmlEditor";
 import ManageTagsModal from "@/Components/ManageTagsModal";
 import { ARTWORK_CATEGORIES, DEFAULT_ARTWORK_CATEGORY } from "@/constants/artworkCategories";
 import ARTWORK_EDITIONS from "@/constants/artworkEditions";
@@ -457,7 +458,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                 name="description"
                 rules={FORM_RULES.description}
               >
-                <Input.TextArea rows={10} />
+                <HtmlEditor />
               </Form.Item>
 
             </Tabs.TabPane>
