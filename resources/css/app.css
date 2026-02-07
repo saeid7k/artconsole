@@ -141,6 +141,11 @@ code {
   border-color: var(--border-soft);
 }
 
+.border {
+  border-color: var(--border-light);
+  border-style: solid;
+}
+
 .text-muted {
   color: var(--text-muted);
 }
