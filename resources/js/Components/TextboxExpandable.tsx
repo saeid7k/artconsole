@@ -2,6 +2,7 @@ import { Button } from "antd";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
+import HtmlRenderer from "./HtmlRenderer";
 
 type Props = {
   content: string;
@@ -32,7 +33,7 @@ function TextboxExpandable({ content, lines = 1, className }: Props) {
           isExpanded ? '' : `line-clamp-${lines} max-w-[400px]`
         )}
       >
-        {content}
+        <HtmlRenderer htmlContent={content} />
       </div>
       <motion.div layout>
         <Button
