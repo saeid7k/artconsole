@@ -7,7 +7,7 @@ import ARTWORK_STATUSES, { DEFAULT_ARTWORK_STATUS } from "@/constants/artworkSta
 import { FORM_RULES } from "@/constants/formRules";
 import useLocations from "@/hooks/useLocations";
 import { ArtworkProps } from "@/types/artwork";
-import { InboxUploadIcon, MagicWand05Icon } from "@hugeicons/core-free-icons";
+import { InboxUploadIcon, MagicWand05Icon, Settings01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -522,16 +522,19 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                     disabled={tagsQuery.isLoading}
                   />
                 </Form.Item>
-                <Button
-                  type="dashed"
-                  className="text-ghost"
-                  onClick={() => {
-                    setManageTagsType('subject');
-                    setShowManageTags(true);
-                  }}
-                >
-                  Manage Subjects
-                </Button>
+                <Tooltip title="Manage Subjects">
+                  <Button
+                    type="text"
+                    className="text-ghost"
+                    shape="circle"
+                    onClick={() => {
+                      setManageTagsType('subject');
+                      setShowManageTags(true);
+                    }}
+                  >
+                    <HugeiconsIcon icon={Settings01Icon} size={16} />
+                  </Button>
+                </Tooltip>
               </FlexBox>
               <FlexBox>
                 <Form.Item
@@ -551,16 +554,19 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                     disabled={tagsQuery.isLoading}
                   />
                 </Form.Item>
-                <Button
-                  type="dashed"
-                  className="text-ghost"
-                  onClick={() => {
-                    setManageTagsType('medium');
-                    setShowManageTags(true);
-                  }}
-                >
-                  Manage Mediums
-                </Button>
+                <Tooltip title="Manage Mediums">
+                  <Button
+                    type="text"
+                    className="text-ghost"
+                    shape="circle"
+                    onClick={() => {
+                      setManageTagsType('medium');
+                      setShowManageTags(true);
+                    }}
+                  >
+                    <HugeiconsIcon icon={Settings01Icon} size={16} />
+                  </Button>
+                </Tooltip>
               </FlexBox>
               <FlexBox>
                 <Form.Item
@@ -580,16 +586,19 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                     disabled={tagsQuery.isLoading}
                   />
                 </Form.Item>
-                <Button
-                  type="dashed"
-                  className="text-ghost"
-                  onClick={() => {
-                    setManageTagsType('style');
-                    setShowManageTags(true);
-                  }}
-                >
-                  Manage Styles
-                </Button>
+                <Tooltip title="Manage Styles">
+                  <Button
+                    type="text"
+                    className="text-ghost"
+                    shape="circle"
+                    onClick={() => {
+                      setManageTagsType('style');
+                      setShowManageTags(true);
+                    }}
+                  >
+                    <HugeiconsIcon icon={Settings01Icon} size={16} />
+                  </Button>
+                </Tooltip>
               </FlexBox>
 
               {/* Size */}
