@@ -458,7 +458,9 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                 name="description"
                 rules={FORM_RULES.description}
               >
-                <HtmlEditor />
+                <HtmlEditor
+                  showMediaToolbar={false}
+                />
               </Form.Item>
 
             </Tabs.TabPane>
