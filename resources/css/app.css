@@ -111,6 +111,10 @@ body {
   margin: 0;
 }
 
+p {
+  margin: 0.5rem 0;
+}
+
 label {
   color: var(--text-label)
 }
