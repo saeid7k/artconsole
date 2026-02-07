@@ -1,12 +1,12 @@
 import ContactWidget from "@/Components/Contacts/ContactWidget";
 import FlexBox from "@/Components/Containers/FlexBox";
+import ManageTagsModal from "@/Components/ManageTagsModal";
 import { ARTWORK_CATEGORIES, DEFAULT_ARTWORK_CATEGORY } from "@/constants/artworkCategories";
 import ARTWORK_EDITIONS from "@/constants/artworkEditions";
 import ARTWORK_STATUSES, { DEFAULT_ARTWORK_STATUS } from "@/constants/artworkStatuses";
 import { FORM_RULES } from "@/constants/formRules";
 import useLocations from "@/hooks/useLocations";
 import { ArtworkProps } from "@/types/artwork";
-import { stringifyArray } from "@/utils/stringHelper";
 import { InboxUploadIcon, MagicWand05Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
@@ -208,6 +208,11 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
 
   const { locationsOptions, defaultLocationValue } = useLocations({ enableQuery: show });
 
+  // Manage Tags
+
+  const [showManageTags, setShowManageTags] = useState(false);
+  const [manageTagsType, setManageTagsType] = useState<'tag' | 'subject' | 'medium' | 'style'>('tag');
+
   // Watchers
 
   const watchForm = Form.useWatch([], form)
@@ -215,494 +220,527 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
   const defaultArtistMode = watchForm?.artist_selection_mode ? watchForm?.artist_selection_mode : (artwork?.artist_id ? 'select' : 'add');
 
   return (
-    <Drawer
-      title={`${mode === 'update' ? 'Edit' : 'Create'} Artwork`}
-      placement="right"
-      size="large"
-      onClose={handleClose}
-      open={show}
-      extra={<Button type="primary" onClick={handleSave}>Save</Button>}
-      afterOpenChange={() => form.resetFields()}
-    >
-      <Form
-        layout="vertical"
-        form={form}
-        initialValues={artwork ? artwork : {
-          status: DEFAULT_ARTWORK_STATUS.value,
-          category: DEFAULT_ARTWORK_CATEGORY.value,
-          location_id: defaultLocationValue,
-          ownership: 'owned',
-        }}
-        validateTrigger="onBlur"
+    <>
+      <Drawer
+        title={`${mode === 'update' ? 'Edit' : 'Create'} Artwork`}
+        placement="right"
+        size="large"
+        onClose={handleClose}
+        open={show}
+        extra={<Button type="primary" onClick={handleSave}>Save</Button>}
+        afterOpenChange={() => form.resetFields()}
       >
-        <Tabs type="card" >
-          <Tabs.TabPane tab="General" key="general">
-            {/* Title & Status */}
+        <Form
+          layout="vertical"
+          form={form}
+          initialValues={artwork ? artwork : {
+            status: DEFAULT_ARTWORK_STATUS.value,
+            category: DEFAULT_ARTWORK_CATEGORY.value,
+            location_id: defaultLocationValue,
+            ownership: 'owned',
+          }}
+          validateTrigger="onBlur"
+        >
+          <Tabs type="card" >
+            <Tabs.TabPane tab="General" key="general">
+              {/* Title & Status */}
 
-            <div className="flex flex-col sm:flex-row gap-x-4">
+              <div className="flex flex-col sm:flex-row gap-x-4">
+                <Form.Item
+                  label="Title"
+                  name="title"
+                  rules={FORM_RULES.title}
+                  className="sm:w-3/4"
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item
+                  label="Status"
+                  name="status"
+                  rules={[{ required: true, message: 'Status is required' }]}
+                  className="sm:w-1/4"
+                >
+                  <Select
+                    defaultValue="available"
+                    options={ARTWORK_STATUSES}
+                  />
+                </Form.Item>
+              </div>
+
+              {/* Artist Data */}
+
               <Form.Item
-                label="Title"
-                name="title"
-                rules={FORM_RULES.title}
-                className="sm:w-3/4"
+                label="Artist ID"
+                name="artist_id"
+                hidden
+              >
+                <Input type="number" />
+              </Form.Item>
+
+              {/* Artist Stack */}
+
+              <AnimatePresence>
+                {watchForm?.artist_id && artistSelected && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <label>Artist</label>
+                    <ContactWidget
+                      contact={artistSelected}
+                      title="Artist"
+                      unsetFunction={clearArtist}
+                      className="mb-3"
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Artist Selector */}
+
+              {!watchForm?.artist_id && (
+                <>
+                  <Form.Item
+                    label="Artist"
+                    name='artist_selection_mode'
+                    className="mb-2"
+                  >
+                    <Segmented
+                      options={[
+                        { label: 'Select from Contacts', value: 'select' },
+                        { label: 'Type Name', value: 'add' },
+                      ]}
+                      defaultValue={defaultArtistMode}
+                    />
+                  </Form.Item>
+                  <div className="flex gap-1">
+                    {defaultArtistMode == 'select' && (
+                      <Form.Item
+                        className="w-full sm:w-1/2"
+                      >
+                        <Select
+                          options={artistsOptions}
+                          placeholder="Select"
+                          showSearch={{ optionFilterProp: ['label', 'value'] }}
+                          onChange={(value: string) => onChangeArtist(value)}
+                          onDeselect={() => clearArtist()}
+                        />
+                      </Form.Item>
+                    )}
+                    {defaultArtistMode === 'add' && (
+                      <Form.Item
+                        name={["artist_data", "firstname"]}
+                        className="w-full sm:w-1/2"
+                      >
+                        <Input placeholder="Type" />
+                      </Form.Item>
+                    )}
+                    {watchForm?.artist_data?.firstname?.length > 0 && (
+                      <Button
+                        type="dashed"
+                        size="middle"
+                        className="text-xs"
+                        onClick={addToContacts}
+                      >
+                        Add to Contacts
+                      </Button>
+                    )}
+                  </div>
+                </>
+              )}
+
+              {/* Year */}
+
+              <Form.Item
+                label="Year"
+                name="year"
+                rules={[
+                  { required: false },
+                  { pattern: /^\d{4}$/, message: 'Year must be a 4-digit number' }
+                ]}
+                className="sm:w-1/4 sm:me-2"
               >
                 <Input />
               </Form.Item>
+
+              {/* Price */}
+
               <Form.Item
-                label="Status"
-                name="status"
-                rules={[{ required: true, message: 'Status is required' }]}
+                label="Price"
+                name="price"
                 className="sm:w-1/4"
               >
-                <Select
-                  defaultValue="available"
-                  options={ARTWORK_STATUSES}
-                />
-              </Form.Item>
-            </div>
-
-            {/* Artist Data */}
-
-            <Form.Item
-              label="Artist ID"
-              name="artist_id"
-              hidden
-            >
-              <Input type="number" />
-            </Form.Item>
-
-            {/* Artist Stack */}
-
-            <AnimatePresence>
-              {watchForm?.artist_id && artistSelected && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <label>Artist</label>
-                  <ContactWidget
-                    contact={artistSelected}
-                    title="Artist"
-                    unsetFunction={clearArtist}
-                    className="mb-3"
+                <Space.Compact>
+                  <Space.Addon>$</Space.Addon>
+                  <InputNumber
+                    min={0}
+                    step={1}
+                    className="w-full"
+                    defaultValue={form.getFieldValue('price')}
+                    onChange={(value) => form.setFieldValue('price', value)}
+                    formatter={(value) => value ? Intl.NumberFormat('en-CA').format(value) : ''}
                   />
-                </motion.div>
-              )}
-            </AnimatePresence>
+                </Space.Compact>
+              </Form.Item>
 
-            {/* Artist Selector */}
+              {/* Edition */}
 
-            {!watchForm?.artist_id && (
-              <>
+              <div className="flex flex-col sm:flex-row gap-2">
                 <Form.Item
-                  label="Artist"
-                  name='artist_selection_mode'
-                  className="mb-2"
+                  label="Edition"
+                  name={["edition", "type"]}
+                  className="sm:w-1/4"
                 >
-                  <Segmented
-                    options={[
-                      { label: 'Select from Contacts', value: 'select' },
-                      { label: 'Type Name', value: 'add' },
-                    ]}
-                    defaultValue={defaultArtistMode}
+                  <Select
+                    options={ARTWORK_EDITIONS}
                   />
                 </Form.Item>
-                <div className="flex gap-1">
-                  {defaultArtistMode == 'select' && (
-                    <Form.Item
-                      className="w-full sm:w-1/2"
-                    >
-                      <Select
-                        options={artistsOptions}
-                        placeholder="Select"
-                        showSearch={{ optionFilterProp: ['label', 'value'] }}
-                        onChange={(value: string) => onChangeArtist(value)}
-                        onDeselect={() => clearArtist()}
-                      />
-                    </Form.Item>
-                  )}
-                  {defaultArtistMode === 'add' && (
-                    <Form.Item
-                      name={["artist_data", "firstname"]}
-                      className="w-full sm:w-1/2"
-                    >
-                      <Input placeholder="Type" />
-                    </Form.Item>
-                  )}
-                  {watchForm?.artist_data?.firstname?.length > 0 && (
-                    <Button
-                      type="dashed"
-                      size="middle"
-                      className="text-xs"
-                      onClick={addToContacts}
-                    >
-                      Add to Contacts
-                    </Button>
-                  )}
-                </div>
-              </>
-            )}
-
-            {/* Year */}
-
-            <Form.Item
-              label="Year"
-              name="year"
-              rules={[
-                { required: false },
-                { pattern: /^\d{4}$/, message: 'Year must be a 4-digit number' }
-              ]}
-              className="sm:w-1/4 sm:me-2"
-            >
-              <Input />
-            </Form.Item>
-
-            {/* Price */}
-
-            <Form.Item
-              label="Price"
-              name="price"
-              className="sm:w-1/4"
-            >
-              <Space.Compact>
-                <Space.Addon>$</Space.Addon>
-                <InputNumber
-                  min={0}
-                  step={1}
-                  className="w-full"
-                  defaultValue={form.getFieldValue('price')}
-                  onChange={(value) => form.setFieldValue('price', value)}
-                  formatter={(value) => value ? Intl.NumberFormat('en-CA').format(value) : ''}
-                />
-              </Space.Compact>
-            </Form.Item>
-
-            {/* Edition */}
-
-            <div className="flex flex-col sm:flex-row gap-2">
-              <Form.Item
-                label="Edition"
-                name={["edition", "type"]}
-                className="sm:w-1/4"
-              >
-                <Select
-                  options={ARTWORK_EDITIONS}
-                />
-              </Form.Item>
-              <Form.Item
-                label="Edition Work #"
-                name={["edition", "number"]}
-                className="sm:w-1/4"
-                hidden={watchForm?.edition?.type === 'unique'}
-              >
-                <Input
-                  type="number"
-                  min={1}
-                  onChange={(e) => {adjustSizeValue(Number(e.target.value))}}
-                />
-              </Form.Item>
-              <Form.Item
-                label="Edition Total Size"
-                name={["edition", "size"]}
-                className="sm:w-1/4"
-                hidden={['unique', 'open'].includes(watchForm?.edition?.type)}
-              >
-                <Input
-                  type="number"
-                  min={watchForm?.edition?.number || 1}
-                  onChange={(e) => {
-                    let timer = setTimeout(() => {
-                      adjustSizeValue(Number(watchForm?.edition?.number))
-                      clearTimeout(timer);
-                    }, 2000);
-                  }}
-                />
-              </Form.Item>
-            </div>
-
-            {/* Signed */}
-
-            <div className="flex flex-col sm:flex-row gap-x-2">
-              <Form.Item
-                label="Signed"
-                name="signed"
-                valuePropName="checked"
-              >
-                <Checkbox>Artwork is signed</Checkbox>
-              </Form.Item>
-              <Form.Item
-                label="Signature Note"
-                name="signature_note"
-                className="grow"
-                rules={[
-                  { max: 1000, message: 'Signature note cannot exceed 1000 characters'}
-                ]}
-              >
-                <Input.TextArea rows={1} />
-              </Form.Item>
-            </div>
-
-            {/* Description */}
-
-            <Form.Item
-              label='Description'
-              name="description"
-              rules={FORM_RULES.description}
-            >
-              <Input.TextArea rows={10} />
-            </Form.Item>
-
-          </Tabs.TabPane>
-          {mode === 'create' && (
-            <Tabs.TabPane tab="Images" key="images">
-              <Form.Item
-                // label="Upload Files"
-                name="images"
-                valuePropName="fileList"
-                getValueFromEvent={(e) => {
-                  if (Array.isArray(e)) {
-                    return e;
-                  }
-                  return e?.fileList;
-                }}
-              >
-                <Dragger
-                  multiple
-                  beforeUpload={() => false}
-                  listType="picture"
+                <Form.Item
+                  label="Edition Work #"
+                  name={["edition", "number"]}
+                  className="sm:w-1/4"
+                  hidden={watchForm?.edition?.type === 'unique'}
                 >
-                  <FlexBox direction="col" className="font-light p-5" >
-                    <HugeiconsIcon icon={InboxUploadIcon} size={48} strokeWidth={0.5} />
-                    <div className="text-xl text-gray-500 mt-3" >Click or drag files here to upload</div>
-                    <div className="text-sm text-gray-400" >All image types are supported</div>
-                  </FlexBox>
-                </Dragger>
-              </Form.Item>
-            </Tabs.TabPane>
-          )}
-          <Tabs.TabPane tab="Specifications" key="specifications">
-            {/* <StyledDivider variant="light" >Specifications</StyledDivider> */}
+                  <Input
+                    type="number"
+                    min={1}
+                    onChange={(e) => {adjustSizeValue(Number(e.target.value))}}
+                  />
+                </Form.Item>
+                <Form.Item
+                  label="Edition Total Size"
+                  name={["edition", "size"]}
+                  className="sm:w-1/4"
+                  hidden={['unique', 'open'].includes(watchForm?.edition?.type)}
+                >
+                  <Input
+                    type="number"
+                    min={watchForm?.edition?.number || 1}
+                    onChange={(e) => {
+                      let timer = setTimeout(() => {
+                        adjustSizeValue(Number(watchForm?.edition?.number))
+                        clearTimeout(timer);
+                      }, 2000);
+                    }}
+                  />
+                </Form.Item>
+              </div>
 
-            {/* Mediums & Styles */}
+              {/* Signed */}
 
-            <Form.Item
-              label="Category"
-              name="category"
-              rules={[{ required: true, message: 'Category is required' }]}
-              className="sm:w-1/2"
-            >
-              <Select
-                defaultValue={ARTWORK_CATEGORIES[0].value}
-                options={ARTWORK_CATEGORIES}
-              />
-            </Form.Item>
-            <Form.Item
-              label="Subjects"
-              name="subjects"
-              className="sm:w-1/2"
-            >
-              <Select
-                mode="multiple"
-                options={tagsQuery.data ? tagsQuery.data['subject']?.map((tag: string) => ({
-                  label: tag,
-                  value: tag,
-                })) : []}
-                placeholder="Select subjects"
-                maxCount={10}
-                // onChange={(value) => {form.setFieldValue('subject', value.length > 0 ? stringifyArray(value) : null)}}
-                disabled={tagsQuery.isLoading}
-              />
-            </Form.Item>
-            <Form.Item
-              label="Mediums"
-              name="mediums"
-              className="sm:w-1/2"
-            >
-              <Select
-                mode="multiple"
-                options={tagsQuery.data ? tagsQuery.data['medium']?.map((tag: string) => ({
-                  label: tag,
-                  value: tag,
-                })) : []}
-                placeholder="Select mediums"
-                maxCount={10}
-                // onChange={(value) => form.setFieldValue('medium', value.length > 0 ? stringifyArray(value) : null)}
-                disabled={tagsQuery.isLoading}
-              />
-            </Form.Item>
-            <Form.Item
-              label="Styles"
-              name="styles"
-              className="sm:w-1/2"
-            >
-              <Select
-                mode="multiple"
-                options={tagsQuery.data ? tagsQuery.data['style']?.map((tag: string) => ({
-                  label: tag,
-                  value: tag,
-                })) : []}
-                placeholder="Select or type styles"
-                maxCount={10}
-                // onChange={(value) => form.setFieldValue('styles', stringifyArray(value))}
-                disabled={tagsQuery.isLoading}
-              />
-            </Form.Item>
-
-            {/* Size */}
-
-            <label className="block mb-1">Dimensions</label>
-            <div className="flex flex-col sm:flex-row gap-2">
-              <Form.Item
-                label="Width"
-                name={["dimensions", "width"]}
-                className="sm:w-1/4"
-              >
-                <InputNumber min={1} className="w-full" />
-              </Form.Item>
-              <Form.Item
-                label="Height"
-                name={["dimensions", "height"]}
-                className="sm:w-1/4"
-              >
-                <InputNumber min={1} className="w-full" />
-              </Form.Item>
-              <Form.Item
-                label="Depth"
-                name={["dimensions", "depth"]}
-                className="sm:w-1/4"
-              >
-                <InputNumber min={0} className="w-full" />
-              </Form.Item>
-              <Form.Item
-                label="Unit"
-                name={["dimensions", "unit"]}
-                className="sm:w-1/4"
-              >
-                <Radio.Group
-                  block
-                  optionType="button"
-                  options={[
-                    { label: 'inches', value: 'inches' },
-                    { label: 'cm', value: 'cm' },
+              <div className="flex flex-col sm:flex-row gap-x-2">
+                <Form.Item
+                  label="Signed"
+                  name="signed"
+                  valuePropName="checked"
+                >
+                  <Checkbox>Artwork is signed</Checkbox>
+                </Form.Item>
+                <Form.Item
+                  label="Signature Note"
+                  name="signature_note"
+                  className="grow"
+                  rules={[
+                    { max: 1000, message: 'Signature note cannot exceed 1000 characters'}
                   ]}
-                />
-              </Form.Item>
-            </div>
+                >
+                  <Input.TextArea rows={1} />
+                </Form.Item>
+              </div>
 
-          </Tabs.TabPane>
-          <Tabs.TabPane tab="Inventory" key="inventory">
-            {/* <StyledDivider variant="light" >Inventory</StyledDivider> */}
+              {/* Description */}
 
-            {/* Location, Ownership & SKU */}
-
-            {mode === 'create' && (
               <Form.Item
-                label="Location"
-                name="location_id"
+                label='Description'
+                name="description"
+                rules={FORM_RULES.description}
+              >
+                <Input.TextArea rows={10} />
+              </Form.Item>
+
+            </Tabs.TabPane>
+            {mode === 'create' && (
+              <Tabs.TabPane tab="Images" key="images">
+                <Form.Item
+                  // label="Upload Files"
+                  name="images"
+                  valuePropName="fileList"
+                  getValueFromEvent={(e) => {
+                    if (Array.isArray(e)) {
+                      return e;
+                    }
+                    return e?.fileList;
+                  }}
+                >
+                  <Dragger
+                    multiple
+                    beforeUpload={() => false}
+                    listType="picture"
+                  >
+                    <FlexBox direction="col" className="font-light p-5" >
+                      <HugeiconsIcon icon={InboxUploadIcon} size={48} strokeWidth={0.5} />
+                      <div className="text-xl text-gray-500 mt-3" >Click or drag files here to upload</div>
+                      <div className="text-sm text-gray-400" >All image types are supported</div>
+                    </FlexBox>
+                  </Dragger>
+                </Form.Item>
+              </Tabs.TabPane>
+            )}
+            <Tabs.TabPane tab="Specifications" key="specifications">
+              {/* <StyledDivider variant="light" >Specifications</StyledDivider> */}
+
+              {/* Mediums & Styles */}
+
+              <Form.Item
+                label="Category"
+                name="category"
+                rules={[{ required: true, message: 'Category is required' }]}
                 className="sm:w-1/2"
               >
                 <Select
-                  options={locationsOptions}
-                  defaultValue={defaultLocationValue}
-                  placeholder="Select a location"
-                  showSearch={{ optionFilterProp: ['label', 'value'] }}
+                  defaultValue={ARTWORK_CATEGORIES[0].value}
+                  options={ARTWORK_CATEGORIES}
                 />
               </Form.Item>
-            )}
-
-            <div className="flex items-center gap-3">
-              <Form.Item
-                label='Ownership'
-                name="ownership"
-              >
-                <Radio.Group
-                  optionType="button"
-                  options={[
-                    { label: 'Owned', value: 'owned' },
-                    { label: 'Consigned', value: 'consigned' },
-                  ]}
-                />
-              </Form.Item>
-              {ownerSelected && watchForm?.ownership === 'consigned' && (
-                <ContactWidget
-                  contact={ownerSelected}
-                  title="Owner"
-                  className="mb-3"
-                  unsetFunction={clearOwner}
-                />
-              )}
-              {watchForm?.ownership === 'consigned' && !ownerSelected && (
+              <FlexBox>
                 <Form.Item
-                  label='Owner'
-                  className="lg:w-1/3"
+                  label="Subjects"
+                  name="subjects"
+                  className="sm:w-1/2"
                 >
                   <Select
-                    options={contactsOptions}
-                    maxCount={1}
-                    placeholder="Select owner from contacts"
+                    mode="multiple"
+                    options={tagsQuery.data ? tagsQuery.data['subject']?.map((tag: string) => ({
+                      label: tag,
+                      value: tag,
+                    })) : []}
+                    placeholder="Select subjects"
+                    maxCount={10}
+                    // onChange={(value) => {form.setFieldValue('subject', value.length > 0 ? stringifyArray(value) : null)}}
+                    disabled={tagsQuery.isLoading}
+                  />
+                </Form.Item>
+                <Button
+                  type="dashed"
+                  className="text-ghost"
+                  onClick={() => {
+                    setManageTagsType('subject');
+                    setShowManageTags(true);
+                  }}
+                >
+                  Manage Subjects
+                </Button>
+              </FlexBox>
+              <FlexBox>
+                <Form.Item
+                  label="Mediums"
+                  name="mediums"
+                  className="sm:w-1/2"
+                >
+                  <Select
+                    mode="multiple"
+                    options={tagsQuery.data ? tagsQuery.data['medium']?.map((tag: string) => ({
+                      label: tag,
+                      value: tag,
+                    })) : []}
+                    placeholder="Select mediums"
+                    maxCount={10}
+                    // onChange={(value) => form.setFieldValue('medium', value.length > 0 ? stringifyArray(value) : null)}
+                    disabled={tagsQuery.isLoading}
+                  />
+                </Form.Item>
+                <Button
+                  type="dashed"
+                  className="text-ghost"
+                  onClick={() => {
+                    setManageTagsType('medium');
+                    setShowManageTags(true);
+                  }}
+                >
+                  Manage Mediums
+                </Button>
+              </FlexBox>
+              <Form.Item
+                label="Styles"
+                name="styles"
+                className="sm:w-1/2"
+              >
+                <Select
+                  mode="multiple"
+                  options={tagsQuery.data ? tagsQuery.data['style']?.map((tag: string) => ({
+                    label: tag,
+                    value: tag,
+                  })) : []}
+                  placeholder="Select or type styles"
+                  maxCount={10}
+                  // onChange={(value) => form.setFieldValue('styles', stringifyArray(value))}
+                  disabled={tagsQuery.isLoading}
+                />
+              </Form.Item>
+
+              {/* Size */}
+
+              <label className="block mb-1">Dimensions</label>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <Form.Item
+                  label="Width"
+                  name={["dimensions", "width"]}
+                  className="sm:w-1/4"
+                >
+                  <InputNumber min={1} className="w-full" />
+                </Form.Item>
+                <Form.Item
+                  label="Height"
+                  name={["dimensions", "height"]}
+                  className="sm:w-1/4"
+                >
+                  <InputNumber min={1} className="w-full" />
+                </Form.Item>
+                <Form.Item
+                  label="Depth"
+                  name={["dimensions", "depth"]}
+                  className="sm:w-1/4"
+                >
+                  <InputNumber min={0} className="w-full" />
+                </Form.Item>
+                <Form.Item
+                  label="Unit"
+                  name={["dimensions", "unit"]}
+                  className="sm:w-1/4"
+                >
+                  <Radio.Group
+                    block
+                    optionType="button"
+                    options={[
+                      { label: 'inches', value: 'inches' },
+                      { label: 'cm', value: 'cm' },
+                    ]}
+                  />
+                </Form.Item>
+              </div>
+
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Inventory" key="inventory">
+              {/* <StyledDivider variant="light" >Inventory</StyledDivider> */}
+
+              {/* Location, Ownership & SKU */}
+
+              {mode === 'create' && (
+                <Form.Item
+                  label="Location"
+                  name="location_id"
+                  className="sm:w-1/2"
+                >
+                  <Select
+                    options={locationsOptions}
+                    defaultValue={defaultLocationValue}
+                    placeholder="Select a location"
                     showSearch={{ optionFilterProp: ['label', 'value'] }}
-                    onChange={(value: string) => onChangeOwner(value)}
                   />
                 </Form.Item>
               )}
-              <Form.Item
-                label=""
-                name="owner_contact_id"
-                hidden
-              >
-                <Input />
-              </Form.Item>
-            </div>
 
-            <Form.Item
-              label="SKU"
-              className="sm:w-1/2"
-              >
-              <Space.Compact>
+              <div className="flex items-center gap-3">
                 <Form.Item
-                  name="sku"
-                  noStyle
-                  rules={[{ max: 100, message: 'SKU cannot exceed 100 characters' }]}
+                  label='Ownership'
+                  name="ownership"
                 >
-                  <Input
-                    defaultValue={form.getFieldValue('sku')}
-                    allowClear
-                    onClear={() => form.setFieldValue('sku', null)}
-                    className="rounded-e-none"
+                  <Radio.Group
+                    optionType="button"
+                    options={[
+                      { label: 'Owned', value: 'owned' },
+                      { label: 'Consigned', value: 'consigned' },
+                    ]}
                   />
-                  {!watchForm?.sku && (
-                    <Tooltip title="Auto Generate SKU">
-                      <Button
-                        color="primary"
-                        variant="outlined"
-                        onClick={() => generateSkuMutation.mutate()}
-                        className="rounded-s-none"
-                      >
-                        {generateSkuMutation.isPending ? (
-                          <Spin size="small" />
-                        ):(
-                          <HugeiconsIcon icon={MagicWand05Icon} size={20} />
-                        )}
-                      </Button>
-                    </Tooltip>
-                  )}
                 </Form.Item>
-              </Space.Compact>
-            </Form.Item>
+                {ownerSelected && watchForm?.ownership === 'consigned' && (
+                  <ContactWidget
+                    contact={ownerSelected}
+                    title="Owner"
+                    className="mb-3"
+                    unsetFunction={clearOwner}
+                  />
+                )}
+                {watchForm?.ownership === 'consigned' && !ownerSelected && (
+                  <Form.Item
+                    label='Owner'
+                    className="lg:w-1/3"
+                  >
+                    <Select
+                      options={contactsOptions}
+                      maxCount={1}
+                      placeholder="Select owner from contacts"
+                      showSearch={{ optionFilterProp: ['label', 'value'] }}
+                      onChange={(value: string) => onChangeOwner(value)}
+                    />
+                  </Form.Item>
+                )}
+                <Form.Item
+                  label=""
+                  name="owner_contact_id"
+                  hidden
+                >
+                  <Input />
+                </Form.Item>
+              </div>
 
-            <Form.Item
-              label="Provenance"
-              name="provenance"
-              rules={[{ max: 20000, message: 'Provenance cannot exceed 20000 characters'}]}
-            >
-              <Input.TextArea rows={4} />
-            </Form.Item>
-          </Tabs.TabPane>
-        </Tabs>
-      </Form>
-    </Drawer>
+              <Form.Item
+                label="SKU"
+                className="sm:w-1/2"
+                >
+                <Space.Compact>
+                  <Form.Item
+                    name="sku"
+                    noStyle
+                    rules={[{ max: 100, message: 'SKU cannot exceed 100 characters' }]}
+                  >
+                    <Input
+                      defaultValue={form.getFieldValue('sku')}
+                      allowClear
+                      onClear={() => form.setFieldValue('sku', null)}
+                      className="rounded-e-none"
+                    />
+                    {!watchForm?.sku && (
+                      <Tooltip title="Auto Generate SKU">
+                        <Button
+                          color="primary"
+                          variant="outlined"
+                          onClick={() => generateSkuMutation.mutate()}
+                          className="rounded-s-none"
+                        >
+                          {generateSkuMutation.isPending ? (
+                            <Spin size="small" />
+                          ):(
+                            <HugeiconsIcon icon={MagicWand05Icon} size={20} />
+                          )}
+                        </Button>
+                      </Tooltip>
+                    )}
+                  </Form.Item>
+                </Space.Compact>
+              </Form.Item>
+
+              <Form.Item
+                label="Provenance"
+                name="provenance"
+                rules={[{ max: 20000, message: 'Provenance cannot exceed 20000 characters'}]}
+              >
+                <Input.TextArea rows={4} />
+              </Form.Item>
+            </Tabs.TabPane>
+          </Tabs>
+        </Form>
+      </Drawer>
+
+      <ManageTagsModal
+        open={showManageTags}
+        setOpen={setShowManageTags}
+        type={manageTagsType}
+      />
+
+    </>
   );
 }
 
