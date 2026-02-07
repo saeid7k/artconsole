@@ -9,7 +9,7 @@ type Props = HTMLAttributes<HTMLDivElement> & {
   wrapping?: 'wrap' | 'nowrap' | 'wrap-reverse';
   className?: string;
   style?: React.CSSProperties;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 function FlexBox({
@@ -39,7 +39,7 @@ function FlexBox({
       style={style}
       {...props}
     >
-      {children}
+      {children ?? null}
     </div>
   )
 }
