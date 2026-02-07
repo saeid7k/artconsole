@@ -29,7 +29,22 @@ class TagController extends Controller
    */
   public function store(Request $request)
   {
-    //
+    $request->validate([
+      'type' => 'required|string',
+      'value' => 'required|string',
+    ]);
+
+    $user = auth()->user();
+    $gallery = $user->currentGallery();
+
+    $tag = new Tag([
+      'gallery_id' => $gallery->id,
+      'type' => $request->input('type'),
+      'value' => $request->input('value'),
+    ]);
+    $tag->save();
+
+    return response()->json($tag, 201);
   }
 
   /**
@@ -61,7 +76,8 @@ class TagController extends Controller
    */
   public function destroy(Tag $tag)
   {
-    //
+    $tag->delete();
+    return response()->json(['message' => 'Tag deleted successfully']);
   }
 
   public function getGroupedTags()
@@ -69,7 +85,7 @@ class TagController extends Controller
     $user = auth()->user();
     $gallery = $user->currentGallery();
     $tags = $gallery->tags->groupBy('type')->map(function ($group) {
-      return $group->map(function ($tag) {
+      return $group->sortBy('value')->map(function ($tag) {
         return $tag->value;
       })->values();
     });
@@ -81,8 +97,11 @@ class TagController extends Controller
   {
     $user = auth()->user();
     $gallery = $user->currentGallery();
-    $tags = $gallery->tags($type ?? null)->get();
-
+    $tags = $gallery->tags;
+    if ($type) {
+      $tags = $tags->where('type', $type);
+    }
+    $tags = $tags->sortBy('type')->sortBy('value')->values()->toArray();
     return response()->json($tags);
   }
 }
