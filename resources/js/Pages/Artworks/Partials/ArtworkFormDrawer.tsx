@@ -562,23 +562,35 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                   Manage Mediums
                 </Button>
               </FlexBox>
-              <Form.Item
-                label="Styles"
-                name="styles"
-                className="sm:w-1/2"
-              >
-                <Select
-                  mode="multiple"
-                  options={tagsQuery.data ? tagsQuery.data['style']?.map((tag: string) => ({
-                    label: tag,
-                    value: tag,
-                  })) : []}
-                  placeholder="Select or type styles"
-                  maxCount={10}
-                  // onChange={(value) => form.setFieldValue('styles', stringifyArray(value))}
-                  disabled={tagsQuery.isLoading}
-                />
-              </Form.Item>
+              <FlexBox>
+                <Form.Item
+                  label="Styles"
+                  name="styles"
+                  className="sm:w-1/2"
+                >
+                  <Select
+                    mode="multiple"
+                    options={tagsQuery.data ? tagsQuery.data['style']?.map((tag: string) => ({
+                      label: tag,
+                      value: tag,
+                    })) : []}
+                    placeholder="Select or type styles"
+                    maxCount={10}
+                    // onChange={(value) => form.setFieldValue('styles', stringifyArray(value))}
+                    disabled={tagsQuery.isLoading}
+                  />
+                </Form.Item>
+                <Button
+                  type="dashed"
+                  className="text-ghost"
+                  onClick={() => {
+                    setManageTagsType('style');
+                    setShowManageTags(true);
+                  }}
+                >
+                  Manage Styles
+                </Button>
+              </FlexBox>
 
               {/* Size */}
 
