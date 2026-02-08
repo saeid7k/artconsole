@@ -70,7 +70,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
   // Appends
 
-  protected $appends = ['abilities', 'full_name', 'is_admin', 'formatted_address', 'photo'];
+  protected $appends = ['abilities', 'full_name', 'is_admin', 'formatted_address', 'photo', 'has_password'];
 
   public function getAbilitiesAttribute(): array
   {
@@ -98,6 +98,11 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
   {
     $media = $this->getLastMedia('profile-photo');
     return $media ? $media->getUrl() : null;
+  }
+
+  public function getHasPasswordAttribute(): bool
+  {
+    return !is_null($this->password);
   }
 
   // Relations
