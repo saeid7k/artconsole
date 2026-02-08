@@ -8,7 +8,7 @@ import ARTWORK_STATUSES, { DEFAULT_ARTWORK_STATUS } from "@/constants/artworkSta
 import { FORM_RULES } from "@/constants/formRules";
 import useLocations from "@/hooks/useLocations";
 import { ArtworkProps } from "@/types/artwork";
-import { InboxUploadIcon, MagicWand05Icon, Settings01Icon } from "@hugeicons/core-free-icons";
+import { Alert02Icon, InboxUploadIcon, MagicWand05Icon, Settings01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -220,6 +220,13 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
 
   const defaultArtistMode = watchForm?.artist_selection_mode ? watchForm?.artist_selection_mode : (artwork?.artist_id ? 'select' : 'add');
 
+  // Error Watchers
+
+  const generalTabHasError = form.getFieldsError(['title', 'status', 'artist_id', 'year', 'price', 'edition', 'signed']).some((field) => field.errors.length > 0);
+  const descriptionTabHasError = form.getFieldsError(['description']).some((field) => field.errors.length > 0);
+  const specificationsTabHasError = form.getFieldsError(['category', 'subjects', 'mediums', 'styles', 'dimensions']).some((field) => field.errors.length > 0);
+  const inventoryTabHasError = form.getFieldsError(['location_id', 'ownership', 'owner_contact_id', 'sku', 'provenance']).some((field) => field.errors.length > 0);
+
   return (
     <>
       <Drawer
@@ -243,7 +250,16 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
           validateTrigger="onBlur"
         >
           <Tabs type="card" >
-            <Tabs.TabPane tab="General" key="general">
+            {/* General */}
+            <Tabs.TabPane
+              tab={
+                <FlexBox>
+                  General
+                  {generalTabHasError ? <HugeiconsIcon icon={Alert02Icon} size={12} color="red" /> : ""}
+                </FlexBox>
+              }
+              key="general"
+            >
               {/* Title & Status */}
 
               <div className="flex flex-col sm:flex-row gap-x-4">
@@ -452,6 +468,8 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
               </div>
 
             </Tabs.TabPane>
+
+            {/* Images */}
             {mode === 'create' && (
               <Tabs.TabPane tab="Images" key="images">
                 <Form.Item
@@ -479,7 +497,17 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                 </Form.Item>
               </Tabs.TabPane>
             )}
-            <Tabs.TabPane tab="Description" key="description">
+
+            {/* Description */}
+            <Tabs.TabPane
+              tab={
+                <FlexBox>
+                  Description
+                  {descriptionTabHasError ? <HugeiconsIcon icon={Alert02Icon} size={12} color="red" /> : ""}
+                </FlexBox>
+              }
+              key="description"
+            >
               <Form.Item
                 label='Description'
                 name="description"
@@ -489,12 +517,21 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                   showMediaToolbar={false}
                 />
               </Form.Item>
+              {watchForm?.description?.length > 20000 && (
+                <div className="text-red-500 text-sm mt-1">Description cannot exceed 20000 characters</div>
+              )}
             </Tabs.TabPane>
-            <Tabs.TabPane tab="Specifications" key="specifications">
-              {/* <StyledDivider variant="light" >Specifications</StyledDivider> */}
 
-              {/* Mediums & Styles */}
-
+            {/* Specifications */}
+            <Tabs.TabPane
+              tab={
+                <FlexBox>
+                  Specifications
+                  {specificationsTabHasError ? <HugeiconsIcon icon={Alert02Icon} size={12} color="red" /> : ""}
+                </FlexBox>
+              }
+              key="specifications"
+            >
               <Form.Item
                 label="Category"
                 name="category"
@@ -645,11 +682,17 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
               </div>
 
             </Tabs.TabPane>
-            <Tabs.TabPane tab="Inventory" key="inventory">
-              {/* <StyledDivider variant="light" >Inventory</StyledDivider> */}
 
-              {/* Location, Ownership & SKU */}
-
+            {/* Inventory */}
+            <Tabs.TabPane
+              tab={
+                <FlexBox>
+                  Inventory
+                  {inventoryTabHasError ? <HugeiconsIcon icon={Alert02Icon} size={12} color="red" /> : ""}
+                </FlexBox>
+              }
+              key="inventory"
+            >
               {mode === 'create' && (
                 <Form.Item
                   label="Location"
