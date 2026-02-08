@@ -1,28 +1,44 @@
-import COUNTRIES from "@/constants/countries.json"
+import { ProfileProvider } from "@/contexts/ProfileContext"
 import { AuthProps } from "@/types/auth"
 import { getInitials } from "@/utils/stringHelper"
 import { Cancel01Icon, Edit03Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router, usePage } from "@inertiajs/react"
-import { Avatar, Divider, Form, Input, message, Modal } from "antd"
+import { Avatar, message, Modal, Tabs } from "antd"
 import axios from "axios"
 import React, { useEffect, useRef, useState } from "react"
-import AddressFields from "./Fields/AddressFields"
+import ProfilePersonalTab from "./Profile/ProfilePersonalTab"
 
 function ProfileModal({ open, setOpen }: { open: boolean, setOpen: (open: boolean) => void }) {
 
   // Hooks
 
   const { user } = usePage().props.auth as AuthProps
-  const [form] = Form.useForm()
 
   // Constants and States
 
   const pictureUploadRef = useRef<HTMLInputElement | null>(null)
   const [preview, setPreview] = useState<string>(user.photo ?? '')
-  const watchCountry = Form.useWatch(['address', 'country'], form);
+  const [profileTriggerCounter, setProfileTriggerCounter] = useState(0)
 
-  // Functions
+  const tabItems = [
+    {
+      key: 'personal',
+      label: 'Personal',
+      children: <div className="p-4"><ProfilePersonalTab /></div>
+    }
+  ]
+
+  function handleClose() {
+    setProfileTriggerCounter(prev => prev + 1)
+    setOpen(false)
+  }
+
+  useEffect(() => {
+    setProfileTriggerCounter(prev => prev + 1)
+  }, [open])
+
+  // Photo Handling
 
   const handleOverlayClick = () => {
     pictureUploadRef.current?.click()
@@ -54,31 +70,6 @@ function ProfileModal({ open, setOpen }: { open: boolean, setOpen: (open: boolea
     })
   }
 
-  function handleSave() {
-    form
-      .validateFields()
-      .then((values) => {
-        axios.post(route('profile.update'), values)
-          .then((res) => {
-            message.success(res.data.message || "Profile updated successfully")
-            router.reload()
-            setOpen(false)
-          })
-          .catch((e) => {
-            message.error(e.response?.data?.message || "Failed to update profile")
-          });
-      })
-      .catch((info) => {
-        message.error("Please correct the errors in the form")
-      });
-  }
-
-  function handleClose() {
-    setOpen(false)
-  }
-
-  // Effects
-
   useEffect(() => {
     return () => {
       if (preview && preview.startsWith("blob:")) {
@@ -93,124 +84,52 @@ function ProfileModal({ open, setOpen }: { open: boolean, setOpen: (open: boolea
       open={open}
       onCancel={handleClose}
       closeIcon={<HugeiconsIcon icon={Cancel01Icon} size={32} />}
-      // footer={null}
+      footer={null}
       width={800}
-      okText="Save"
-      onOk={handleSave}
       afterClose={handleClose}
-      afterOpenChange={() => form.resetFields()}
+      // afterOpenChange={() => form.resetFields()}
     >
-      {/* Photo */}
+      <ProfileProvider value={{ profileTriggerCounter }}>
+        {/* Photo */}
 
-      <div className="">
-        <input
-          ref={pictureUploadRef}
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          style={{ display: "none" }}
-        />
+        <div className="">
+          <input
+            ref={pictureUploadRef}
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            style={{ display: "none" }}
+          />
 
-        <div className="relative w-20 h-20 ratio-square rounded-full overflow-hidden m-auto">
-          {preview ? (
-            <img
-              src={preview}
-              alt="Profile Photo"
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <div className="w-full h-full bg-gray-300 grid place-content-center">
-              <Avatar size={80} className="text-white">{getInitials(user.full_name)}</Avatar>
+          <div className="relative w-20 h-20 ratio-square rounded-full overflow-hidden m-auto">
+            {preview ? (
+              <img
+                src={preview}
+                alt="Profile Photo"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full bg-gray-300 grid place-content-center">
+                <Avatar size={80} className="text-white">{getInitials(user.full_name)}</Avatar>
+              </div>
+            )}
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={handleOverlayClick}
+              className="bg-black text-white opacity-0 w-full h-full absolute top-0 left-0 hover:opacity-50 cursor-pointer grid place-content-center transition-all"
+            >
+              <HugeiconsIcon icon={Edit03Icon} size={32} />
             </div>
-          )}
-          <div
-            role="button"
-            tabIndex={0}
-            onClick={handleOverlayClick}
-            className="bg-black text-white opacity-0 w-full h-full absolute top-0 left-0 hover:opacity-50 cursor-pointer grid place-content-center transition-all"
-          >
-            <HugeiconsIcon icon={Edit03Icon} size={32} />
           </div>
         </div>
-      </div>
 
-      <Divider />
+        {/* Fields */}
 
-      {/* Fields */}
-
-      <div className="">
-        <Form
-          layout="vertical"
-          className="w-full"
-          form={form}
-          initialValues={{
-            firstname: user.firstname,
-            lastname: user.lastname,
-            email: user.email,
-            phone: user.phone,
-            address: user.address,
-          }}
-          onKeyDown={(e: React.KeyboardEvent<HTMLFormElement>) => {
-            if (e.key === 'Enter') {
-              e.preventDefault()
-              handleSave()
-            }
-          }}
-          validateTrigger='onBlur'
-        // onValuesChange={handleValuesChange}
-        >
-          <div className="sm:flex gap-4">
-            <Form.Item
-              name="firstname"
-              label="First Name"
-              rules={[
-              { required: true, message: 'First Name is required' },
-              { max: 255, message: 'First Name cannot exceed 255 characters' }
-              ]}
-              className="sm:w-1/2"
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              name="lastname"
-              label="Last Name"
-              rules={[
-                { max: 255, message: 'Last Name cannot exceed 255 characters' }
-              ]}
-              className="sm:w-1/2"
-            >
-              <Input />
-            </Form.Item>
-          </div>
-          <div className="sm:flex gap-4">
-            <Form.Item
-              name="email"
-              label="Email"
-              rules={[
-                { required: true, message: 'Email is required' },
-                { type: 'email', message: 'Email is not valid' },
-              ]}
-              className="sm:w-1/2"
-            >
-              <Input disabled />
-            </Form.Item>
-            <Form.Item
-              name="phone"
-              label="Phone"
-              rules={[
-                { max: 20, message: 'Phone number cannot exceed 20 characters' }
-              ]}
-              className="sm:w-1/2"
-            >
-              <Input
-                addonBefore={COUNTRIES.find(country => country.name === watchCountry)?.dialCode}
-              />
-            </Form.Item>
-          </div>
-          <Divider plain >Address</Divider>
-          <AddressFields />
-        </Form>
-      </div>
+        <Tabs
+          items={tabItems}
+        />
+      </ProfileProvider>
     </Modal>
   )
 }
