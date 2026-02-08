@@ -4,7 +4,7 @@ import { Button } from "antd"
 import { useState } from "react"
 import ChangePasswordModal from "./ChangePasswordModal"
 
-function ProfileAccountTab() {
+function AccountSecurityTab() {
 
   const { user } = usePage().props.auth as AuthProps
 
@@ -42,4 +42,4 @@ function ProfileAccountTab() {
   )
 }
 
-export default ProfileAccountTab
+export default AccountSecurityTab

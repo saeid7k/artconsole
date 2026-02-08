@@ -2,15 +2,15 @@ import { getInitials } from "@/utils/stringHelper";
 import { Logout03Icon, UserAccountIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
-import { Avatar, Button, Dropdown, Menu } from "antd";
+import { Avatar, Dropdown, Menu } from "antd";
 import { useState } from "react";
-import ProfileModal from "./ProfileModal";
+import AccountModal from "./Account/AccountModal";
 import DarkModeSwitch from "./DarkModeSwitch";
 
 function UserMenu() {
 
   const { user } = usePage().props.auth
-  const [openProfileModal, setOpenProfileModal] = useState(false)
+  const [openAccountModal, setOpenAccountModal] = useState(false)
 
   function Popup() {
     return (
@@ -24,8 +24,8 @@ function UserMenu() {
             <div className="text-sm text-slate-500">{user.email}</div>
           </div>
         </div>
-        <Menu.Item key="profile" onClick={() => setOpenProfileModal(true)}>
-          <div className="flex items-center gap-1"><HugeiconsIcon icon={UserAccountIcon} size={24} />Profile</div>
+        <Menu.Item key="account" onClick={() => setOpenAccountModal(true)}>
+          <div className="flex items-center gap-1"><HugeiconsIcon icon={UserAccountIcon} size={24} />Account</div>
         </Menu.Item>
         <div className="flex flex-col my-2 px-3">
           <label>Theme</label>
@@ -54,7 +54,7 @@ function UserMenu() {
         </Avatar>
       </Dropdown>
 
-      <ProfileModal open={openProfileModal} setOpen={setOpenProfileModal} />
+      <AccountModal open={openAccountModal} setOpen={setOpenAccountModal} />
     </div>
   )
 }
