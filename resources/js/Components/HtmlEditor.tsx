@@ -40,7 +40,7 @@ const HtmlEditor = ({ value, onChange, showMediaToolbar = true }: Props) => {
 
   return (
     <div
-      className="quill-wrapper h-[400px] mb-[70px]" /* Margin bottom accounts for the toolbar */
+      className="quill-wrapper h-[400px]"
     >
       <ReactQuill
         theme="snow"
