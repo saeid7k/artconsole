@@ -122,6 +122,8 @@ export default function Register() {
             type="primary"
             disabled={processing}
             htmlType='submit'
+            className='w-full'
+            size='large'
           >
             Register
           </Button>
