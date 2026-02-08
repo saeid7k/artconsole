@@ -7,6 +7,7 @@ import { router, usePage } from "@inertiajs/react"
 import { Avatar, message, Modal, Tabs } from "antd"
 import axios from "axios"
 import React, { useEffect, useRef, useState } from "react"
+import ProfileAccountTab from "./Profile/ProfileAccountTab"
 import ProfilePersonalTab from "./Profile/ProfilePersonalTab"
 
 function ProfileModal({ open, setOpen }: { open: boolean, setOpen: (open: boolean) => void }) {
@@ -25,7 +26,12 @@ function ProfileModal({ open, setOpen }: { open: boolean, setOpen: (open: boolea
     {
       key: 'personal',
       label: 'Personal',
-      children: <div className="p-4"><ProfilePersonalTab /></div>
+      children: <ProfilePersonalTab />
+    },
+    {
+      key: 'account',
+      label: 'Account & Security',
+      children: <ProfileAccountTab />
     }
   ]
 
