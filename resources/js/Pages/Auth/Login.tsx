@@ -1,8 +1,7 @@
-// import PrimaryButton from '@/components/PrimaryButton';
-// import { Checkbox } from '@/components/ui/checkbox';
-// import { Input } from '@/components/ui/input';
+import FlexBox from '@/Components/Containers/FlexBox';
 import StyledDivider from '@/Components/StyledDivider';
 import GuestLayout from '@/Layouts/GuestLayout';
+import googleLogo from '@images/logo/google-logo.svg';
 import { Head, Link, router, useForm } from '@inertiajs/react';
 import { Button, Checkbox, Input } from 'antd';
 import { FormEventHandler } from 'react';
@@ -83,6 +82,7 @@ export default function Login({
             type="primary"
             disabled={processing}
             htmlType='submit'
+            size='large'
           >
             Log in
           </Button>
@@ -92,13 +92,27 @@ export default function Login({
 
       <StyledDivider variant='light' >OR</StyledDivider>
 
-      <Button
-        type="default"
-        onClick={() => router.visit(route('register'))}
-        className="w-full"
-      >
-        Register with email
-      </Button>
+      <div className="flex flex-col gap-3">
+        <Button
+          type="default"
+          size='large'
+          href={route('auth.google')}
+          className="w-full"
+        >
+          <FlexBox gap={3} >
+            <img src={googleLogo} alt="Google Logo" className="h-5 w-5" />
+            Continue with Google
+          </FlexBox>
+        </Button>
+        <Button
+          type="dashed"
+          size='large'
+          onClick={() => router.visit(route('register'))}
+          className="w-full"
+        >
+          Register with email
+        </Button>
+      </div>
     </GuestLayout>
   );
 }
