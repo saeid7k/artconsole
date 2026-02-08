@@ -9,7 +9,7 @@ import FlexBox from "../Containers/FlexBox";
 import AddressFields from "../Fields/AddressFields";
 import LoadingSpinner from "../LoadingSpinner";
 
-function ProfilePersonalTab() {
+function AccountPersonalTab() {
 
   const { user } = usePage().props.auth as AuthProps
   const { profileTriggerCounter } = useProfile()
@@ -129,4 +129,4 @@ function ProfilePersonalTab() {
   )
 }
 
-export default ProfilePersonalTab
+export default AccountPersonalTab

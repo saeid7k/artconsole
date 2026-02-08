@@ -7,10 +7,10 @@ import { router, usePage } from "@inertiajs/react"
 import { Avatar, message, Modal, Tabs } from "antd"
 import axios from "axios"
 import React, { useEffect, useRef, useState } from "react"
-import ProfileAccountTab from "./Profile/ProfileAccountTab"
-import ProfilePersonalTab from "./Profile/ProfilePersonalTab"
+import AccountPersonalTab from "./AccountPersonalTab"
+import AccountSecurityTab from "./AccountSecurityTab"
 
-function ProfileModal({ open, setOpen }: { open: boolean, setOpen: (open: boolean) => void }) {
+function AccountModal({ open, setOpen }: { open: boolean, setOpen: (open: boolean) => void }) {
 
   // Hooks
 
@@ -26,12 +26,12 @@ function ProfileModal({ open, setOpen }: { open: boolean, setOpen: (open: boolea
     {
       key: 'personal',
       label: 'Personal',
-      children: <ProfilePersonalTab />
+      children: <AccountPersonalTab />
     },
     {
-      key: 'account',
-      label: 'Account & Security',
-      children: <ProfileAccountTab />
+      key: 'security',
+      label: 'Security',
+      children: <AccountSecurityTab />
     }
   ]
 
@@ -86,7 +86,7 @@ function ProfileModal({ open, setOpen }: { open: boolean, setOpen: (open: boolea
 
   return (
     <Modal
-      title="Profile"
+      title="Account Settings"
       open={open}
       onCancel={handleClose}
       closeIcon={<HugeiconsIcon icon={Cancel01Icon} size={32} />}
@@ -140,4 +140,4 @@ function ProfileModal({ open, setOpen }: { open: boolean, setOpen: (open: boolea
   )
 }
 
-export default ProfileModal
+export default AccountModal
