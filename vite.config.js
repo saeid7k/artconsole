@@ -16,6 +16,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'resources/js'),
       '~': path.resolve(__dirname),
       '@css': path.resolve(__dirname, 'resources/css'),
+      '@images': path.resolve(__dirname, 'resources/images'),
     }
   }
 });
