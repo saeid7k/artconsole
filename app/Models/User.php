@@ -37,14 +37,9 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     'website',
     'address',
     'bio',
-    'password',
-  ];
-
-  protected $guarded = [
+    'social_auth_id',
     'email_verified_at',
-    'remember_token',
-    'created_at',
-    'updated_at',
+    'password',
   ];
 
   /**
@@ -55,6 +50,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
   protected $hidden = [
     'password',
     'remember_token',
+    'social_auth_id',
   ];
 
   /**
@@ -68,6 +64,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
       'email_verified_at' => 'datetime',
       'password' => 'hashed',
       'address' => 'object',
+      'social_auth_id' => 'array',
     ];
   }
 
