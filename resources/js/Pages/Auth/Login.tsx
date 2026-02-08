@@ -1,9 +1,10 @@
 // import PrimaryButton from '@/components/PrimaryButton';
 // import { Checkbox } from '@/components/ui/checkbox';
 // import { Input } from '@/components/ui/input';
+import StyledDivider from '@/Components/StyledDivider';
 import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
-import { Button, Checkbox, Input, Space } from 'antd';
+import { Head, Link, router, useForm } from '@inertiajs/react';
+import { Button, Checkbox, Input } from 'antd';
 import { FormEventHandler } from 'react';
 
 export default function Login({
@@ -38,10 +39,8 @@ export default function Login({
       )}
 
       <form onSubmit={submit}>
-        <Space
-          orientation="vertical"
-          className='w-full'
-          size={'middle'}
+        <div
+          className='flex flex-col gap-5 w-full'
         >
           <div>
             <Input
@@ -79,12 +78,7 @@ export default function Login({
           >
             Remember me
           </Checkbox>
-        </Space>
 
-        <Space
-          orientation='vertical'
-          className='w-full justify-between items-end mt-4 gap-3'
-        >
           <Button
             type="primary"
             disabled={processing}
@@ -92,14 +86,19 @@ export default function Login({
           >
             Log in
           </Button>
-          <Link
-            href={route('register')}
-            className="text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none"
-          >
-            Don't have an account? Register here.
-          </Link>
-        </Space>
+
+        </div>
       </form>
+
+      <StyledDivider variant='light' >OR</StyledDivider>
+
+      <Button
+        type="default"
+        onClick={() => router.visit(route('register'))}
+        className="w-full"
+      >
+        Register with email
+      </Button>
     </GuestLayout>
   );
 }
