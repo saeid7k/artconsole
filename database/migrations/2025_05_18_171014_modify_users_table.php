@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->string('username')->nullable()->unique()->after('lastname');
             $table->json('social_auth_id')->nullable()->after('email_verified_at');
             $table->string('password')->nullable()->change();
+            $table->timestamp('deleted_at')->nullable()->after('updated_at');
         });
     }
 
