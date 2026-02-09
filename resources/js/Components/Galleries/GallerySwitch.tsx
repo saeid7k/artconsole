@@ -154,7 +154,7 @@ function GallerySwitch() {
               <div className="flex flex-col gap-1">
                 <div className="flex items-center justify-between">
                   <div className="text-ghost">Switch Gallery</div>
-                  <Tooltip title="Create New Gallery" mouseEnterDelay={1}>
+                  <Tooltip title="Create New Gallery" >
                     <Button
                       size="small"
                       icon={<HugeiconsIcon icon={AddIcon} size={16} />}
