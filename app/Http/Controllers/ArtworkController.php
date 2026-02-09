@@ -332,4 +332,40 @@ class ArtworkController extends Controller
       'artwork_id' => $newArtwork->id,
     ]);
   }
+
+  public function massMoveLocation(Request $request)
+  {
+    $this->authorize('update', Artwork::class);
+
+    $request->validate([
+      'artwork_ids' => ['required', 'array'],
+      'artwork_ids.*' => ['integer', 'exists:artworks,id'],
+      'location_id' => ['required', 'exists:locations,id'],
+      'reason' => ['nullable', 'string', 'max:200'],
+    ]);
+
+    $artworks = Artwork::whereIn('id', $request->artwork_ids)->get();
+    foreach ($artworks as $artwork) {
+      $prevLocationId = $artwork->location_id;
+
+      $artwork->location_id = $request->location_id;
+      activity()->withoutLogs(function () use ($artwork) {
+        $artwork->save();
+      });
+
+      activity('artwork-move')
+        ->causedBy(auth()->user())
+        ->performedOn($artwork)
+        ->withProperties([
+            'prev_location' => Location::find($prevLocationId)->name ?? null,
+            'new_location' => Location::find($request->location_id)->name ?? null,
+            'reason' => $request->reason,
+          ])
+        ->log('moved the artwork to new location');
+    }
+
+    return response()->json([
+      'message' => 'Artworks moved successfully.',
+    ]);
+  }
 }
