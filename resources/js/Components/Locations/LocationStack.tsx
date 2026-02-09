@@ -195,15 +195,17 @@ function LocationStack({
 
         {showActions && (
           <FlexBox direction="col">
-            <Tooltip title="Move" placement="right">
-              <Button
-                size="small"
-                variant="text"
-                icon={<HugeiconsIcon icon={ArrowDataTransferHorizontalIcon} size={16} />}
-                color="blue"
-                onClick={() => setOpenMoveModal(true)}
-              />
-            </Tooltip>
+            {artwork && (
+              <Tooltip title="Move" placement="right">
+                <Button
+                  size="small"
+                  variant="text"
+                  icon={<HugeiconsIcon icon={ArrowDataTransferHorizontalIcon} size={16} />}
+                  color="blue"
+                  onClick={() => setOpenMoveModal(true)}
+                />
+              </Tooltip>
+            )}
             <Tooltip title="History" placement="right">
               <Button
                 size="small"
@@ -216,10 +218,11 @@ function LocationStack({
           </FlexBox>
         )}
       </FlexBox>
-      {showActions && (
+      {showActions && artwork && (
         <MoveModal
           open={openMoveModal}
           setOpen={setOpenMoveModal}
+          artwork={artwork}
         />
       )}
     </>

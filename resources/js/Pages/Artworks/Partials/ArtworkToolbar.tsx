@@ -220,6 +220,7 @@ function ArtworkToolbar({ artwork }: Props) {
       <MoveModal
         open={openMoveModal}
         setOpen={setOpenMoveModal}
+        artwork={artwork}
       />
 
       {/* Delete Confirmation Modal */}

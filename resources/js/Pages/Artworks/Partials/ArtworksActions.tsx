@@ -1,5 +1,6 @@
+import MoveModal from "@/Components/MoveModal"
 import { ArtworkProps } from "@/types/artwork"
-import { Copy01Icon, Delete02Icon, MoreHorizontalCircle01Icon, PencilEdit02Icon, ViewIcon } from "@hugeicons/core-free-icons"
+import { ArrowDataTransferHorizontalIcon, Copy01Icon, Delete02Icon, MoreHorizontalCircle01Icon, PencilEdit02Icon, ViewIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router } from "@inertiajs/react"
 import { useMutation } from "@tanstack/react-query"
@@ -38,6 +39,9 @@ function ArtworksActions({ artwork }: { artwork: ArtworkProps }) {
     },
   })
 
+  // Move Modal
+
+  const [openMoveModal, setOpenMoveModal] = useState(false);
 
   return (
     <>
@@ -93,6 +97,13 @@ function ArtworksActions({ artwork }: { artwork: ArtworkProps }) {
             <Menu
               items={[
                 {
+                  key: 'move',
+                  icon: <HugeiconsIcon icon={ArrowDataTransferHorizontalIcon} size={16} />,
+                  label: 'Move to new Location',
+                  disabled: !artwork.abilities.update,
+                  onClick: () => setOpenMoveModal(true),
+                },
+                {
                   key: 'copy',
                   icon: <HugeiconsIcon icon={Copy01Icon} size={16} />,
                   label: 'Copy Artwork',
@@ -112,11 +123,17 @@ function ArtworksActions({ artwork }: { artwork: ArtworkProps }) {
           />
         </Dropdown>
       </div>
+
       <ArtworkFormDrawer
         artwork={artwork}
         show={showEditDrawer}
         onClose={() => { setShowEditDrawer(false); router.reload() }}
         mode="update"
+      />
+      <MoveModal
+        open={openMoveModal}
+        setOpen={setOpenMoveModal}
+        artwork={artwork}
       />
     </>
   )

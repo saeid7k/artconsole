@@ -1,5 +1,5 @@
-import { useArtworkShow } from "@/contexts/ArtworkShowContext";
 import useLocations from "@/hooks/useLocations";
+import { ArtworkProps } from "@/types/artwork";
 import { router } from "@inertiajs/react";
 import { Form, Input, message, Modal, Select } from "antd";
 import axios from "axios";
@@ -8,11 +8,11 @@ import { useEffect } from "react";
 type Props = {
   open?: boolean;
   setOpen: (open: boolean) => void;
+  artwork: ArtworkProps | null;
 }
 
-function MoveModal({ open = false, setOpen }: Props) {
+function MoveModal({ open = false, setOpen, artwork }: Props) {
 
-  const { artwork } = useArtworkShow();
   const [moveForm] = Form.useForm()
 
   // Fetch Locations & Options
