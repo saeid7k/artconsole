@@ -2,8 +2,8 @@
 
 namespace App\Observers;
 
-use App\Models\Gallery;
 use App\Models\User;
+use Illuminate\Support\Facades\Http;
 
 class UserObserver
 {
@@ -13,9 +13,13 @@ class UserObserver
   public function created(User $user): void
   {
     // create default gallery for user
-    $user->galleriesOwned()->create([
+    $gallery = $user->galleriesOwned()->create([
       'name' =>  $user->firstname . "'s Gallery",
     ]);
+    $sampleLogo = Http::get("https://api.dicebear.com/9.x/shapes/svg?seed={$gallery->id}")->body() ?? null;
+    if ($sampleLogo) {
+      $gallery->addMediaFromString($sampleLogo)->usingFileName('gallery-' . $gallery->id . '-logo.svg')->toMediaCollection('gallery-logo');
+    }
   }
 
   /**
