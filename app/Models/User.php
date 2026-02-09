@@ -9,6 +9,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\LogOptions;
@@ -21,7 +22,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {
   /** @use HasFactory<\Database\Factories\UserFactory> */
 
-  use HasFactory, Notifiable, Metable, InteractsWithMedia, LogsActivity, Notifiable;
+  use HasFactory, Notifiable, Metable, InteractsWithMedia, LogsActivity, Notifiable, SoftDeletes;
   /**
    * The attributes that are mass assignable.
    *
