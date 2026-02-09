@@ -16,6 +16,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { Link, router } from '@inertiajs/react';
 import type { TableProps } from 'antd';
 import { Image, Table } from 'antd';
+import { useState } from 'react';
 import imagePlaceholder from '~/resources/images/image-placeholder.svg';
 import ArtworksActions from './ArtworksActions';
 
@@ -28,6 +29,7 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
 
   const { breakpoint, windowWidth } = useWindow()
   const { filters } = useArtworksIndex()
+  const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([])
 
   const columns: TableProps['columns'] = [
     {
@@ -180,6 +182,12 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
           Object.fromEntries(urlParams.entries()),
           { preserveScroll: true, preserveState: true }
         );
+      }}
+      rowSelection={{
+        type: 'checkbox',
+        onChange: (selectedRowKeys, selectedRows) => {
+          setSelectedRowKeys(selectedRowKeys as number[])
+        }
       }}
     />
   )
