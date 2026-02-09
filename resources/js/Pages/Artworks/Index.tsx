@@ -4,16 +4,16 @@ import { useSearch } from "@/hooks/useSearch"
 import AppLayout from "@/Layouts/AppLayout"
 import { PageProps } from "@/types"
 import { LocationProps } from "@/types/location"
-import { FilterRemoveIcon, GridViewIcon, TableIcon } from "@hugeicons/core-free-icons"
+import { deleteQueryParam, getQueryParam } from "@/utils/urlHelper"
+import { FilterRemoveIcon, GridViewIcon, KeyframesMultipleIcon, TableIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router } from "@inertiajs/react"
 import { Button, Segmented, Tooltip } from "antd"
 import Search from "antd/es/input/Search"
 import { useEffect, useState } from "react"
+import ArtworkFormDrawer from "./Partials/ArtworkFormDrawer"
 import ArtworksGrids from "./Partials/ArtworksGrids"
 import ArtworksTable from "./Partials/ArtworksTable"
-import ArtworkFormDrawer from "./Partials/ArtworkFormDrawer"
-import { deleteQueryParam, getQueryParam } from "@/utils/urlHelper"
 
 function Index({ artworks, locations }: { artworks: PageProps, locations: Array<LocationProps> }) {
 
@@ -74,10 +74,22 @@ function Index({ artworks, locations }: { artworks: PageProps, locations: Array<
     }
   }, [])
 
+  // Mass Actions
+
+  const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([])
+
   // Render
 
   const renderToolbar = () => (
     <div className="flex gap-2">
+      {selectedRowKeys.length > 0 && (
+        <Button
+          type="default"
+        >
+          <HugeiconsIcon icon={KeyframesMultipleIcon} size={20} />
+          Mass Actions
+        </Button>
+      )}
       {isFiltered && (
         <Tooltip title="Clear Filters">
           <Button
@@ -121,7 +133,7 @@ function Index({ artworks, locations }: { artworks: PageProps, locations: Array<
   )
 
   return (
-    <ArtworkIndexProvider value={{ filters: urlFilters }}>
+    <ArtworkIndexProvider value={{ filters: urlFilters, selectedRowKeys, setSelectedRowKeys }}>
       <PageTitle title="Artworks Inventory"
         counter={artworks.total}
         onCreateButtonClick={() => setShowCreateDrawer(true)}

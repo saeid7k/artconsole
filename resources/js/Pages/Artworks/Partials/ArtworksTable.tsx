@@ -16,7 +16,6 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { Link, router } from '@inertiajs/react';
 import type { TableProps } from 'antd';
 import { Image, Table } from 'antd';
-import { useState } from 'react';
 import imagePlaceholder from '~/resources/images/image-placeholder.svg';
 import ArtworksActions from './ArtworksActions';
 
@@ -28,8 +27,7 @@ type LocationsProps = Array<{
 function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations: LocationsProps }) {
 
   const { breakpoint, windowWidth } = useWindow()
-  const { filters } = useArtworksIndex()
-  const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([])
+  const { filters, selectedRowKeys, setSelectedRowKeys } = useArtworksIndex()
 
   const columns: TableProps['columns'] = [
     {
