@@ -27,7 +27,7 @@ type LocationsProps = Array<{
 function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations: LocationsProps }) {
 
   const { breakpoint, windowWidth } = useWindow()
-  const { filters, selectedRowKeys, setSelectedRowKeys } = useArtworksIndex()
+  const { filters, selectedIds, setSelectedIds } = useArtworksIndex()
 
   const columns: TableProps['columns'] = [
     {
@@ -184,7 +184,7 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
       rowSelection={{
         type: 'checkbox',
         onChange: (selectedRowKeys, selectedRows) => {
-          setSelectedRowKeys(selectedRowKeys as number[])
+          setSelectedIds(selectedRowKeys as number[])
         }
       }}
     />
