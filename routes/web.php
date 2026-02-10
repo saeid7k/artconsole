@@ -58,6 +58,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/{artwork}/save-note', [App\Http\Controllers\ArtworkController::class, 'saveNote'])->name('save-note');
     Route::post('/{artwork}/copy', [App\Http\Controllers\ArtworkController::class, 'copy'])->name('copy');
     Route::post('/mass-move', [App\Http\Controllers\ArtworkController::class, 'massMoveLocation'])->name('mass-move');
+    Route::post('/mass-update-status', [App\Http\Controllers\ArtworkController::class, 'massUpdateStatus'])->name('mass-update-status');
   });
 
   Route::prefix('members')->name('members.')->group(function () {

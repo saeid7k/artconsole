@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ArtworkCategory;
+use App\Enums\ArtworkStatus;
 use App\Http\Requests\ArtworkStoreUpdateRequest;
 use App\Models\Artwork;
 use App\Models\Location;
@@ -382,6 +383,29 @@ class ArtworkController extends Controller
 
     return response()->json([
       'message' => 'Artworks moved successfully.',
+    ]);
+  }
+
+  public function massUpdateStatus(Request $request)
+  {
+    $user = auth()->user();
+    $gallery = $user->currentGallery();
+    if (!$gallery->hasEditAccess($user)) {
+      return response()->json([
+        'message' => 'Unauthorized',
+      ], 403);
+    }
+
+    $request->validate([
+      'artwork_ids' => ['required', 'array'],
+      'artwork_ids.*' => ['integer', 'exists:artworks,id'],
+      'status' => ['required', 'string', 'in:' . ArtworkStatus::stringifyAll()],
+    ]);
+
+    $gallery->artworks()->whereIn('id', $request->artwork_ids)->update(['status' => $request->status]);
+
+    return response()->json([
+      'message' => 'Artworks status updated successfully.',
     ]);
   }
 }
