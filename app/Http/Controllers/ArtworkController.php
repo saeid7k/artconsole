@@ -357,7 +357,7 @@ class ArtworkController extends Controller
       'reason' => ['nullable', 'string', 'max:200'],
     ]);
 
-    $artworks = Artwork::whereIn('id', $request->artwork_ids)->get();
+    $artworks = $gallery->artworks()->whereIn('id', $request->artwork_ids)->get();
     foreach ($artworks as $artwork) {
       $prevLocationId = $artwork->location_id;
 
