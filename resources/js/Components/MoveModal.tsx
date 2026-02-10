@@ -8,7 +8,7 @@ import { useEffect } from "react";
 type Props = {
   open?: boolean;
   setOpen: (open: boolean) => void;
-  artwork: ArtworkProps | null;
+  artwork: ArtworkProps | number[] | null;
 }
 
 function MoveModal({ open = false, setOpen, artwork }: Props) {
@@ -32,10 +32,24 @@ function MoveModal({ open = false, setOpen, artwork }: Props) {
   function handleMove() {
     moveForm.validateFields()
     .then(() => {
-      axios.post(route('artworks.move', { artwork: artwork?.id }), {
-        location_id: moveForm.getFieldValue('new_location'),
-        reason: moveForm.getFieldValue('reason'),
-      })
+      let apiRequest;
+      if (Array.isArray(artwork)) {
+        apiRequest = axios.post(route('artworks.mass-move'), {
+          artwork_ids: artwork,
+          location_id: moveForm.getFieldValue('new_location'),
+          reason: moveForm.getFieldValue('reason'),
+        });
+      } else {
+        if (moveForm.getFieldValue('new_location') == artwork?.location_id) {
+          message.info('Artwork is already in the selected location.');
+          return;
+        }
+        apiRequest = axios.post(route('artworks.move', { artwork: artwork?.id }), {
+          location_id: moveForm.getFieldValue('new_location'),
+          reason: moveForm.getFieldValue('reason'),
+        });
+      }
+      apiRequest
       .then(() => {
         message.success('Location changed successfully.');
         moveForm.resetFields();
