@@ -148,6 +148,12 @@ class ArtworkController extends Controller
 
     $prevLocationId = $artwork->location_id;
 
+    if ($prevLocationId == $request->location_id) {
+      return response()->json([
+        'message' => 'Artwork is already in the selected location.',
+      ]);
+    }
+
     $artwork->location_id = $request->location_id;
     activity()->withoutLogs(function () use ($artwork) {
       $artwork->save();
@@ -335,7 +341,13 @@ class ArtworkController extends Controller
 
   public function massMoveLocation(Request $request)
   {
-    $this->authorize('update', Artwork::class);
+    $user = auth()->user();
+    $gallery = $user->currentGallery();
+    if (!$gallery->hasEditAccess($user)) {
+      return response()->json([
+        'message' => 'Unauthorized',
+      ], 403);
+    }
 
     $request->validate([
       'artwork_ids' => ['required', 'array'],
@@ -347,6 +359,10 @@ class ArtworkController extends Controller
     $artworks = Artwork::whereIn('id', $request->artwork_ids)->get();
     foreach ($artworks as $artwork) {
       $prevLocationId = $artwork->location_id;
+
+      if ($prevLocationId == $request->location_id) {
+        continue;
+      }
 
       $artwork->location_id = $request->location_id;
       activity()->withoutLogs(function () use ($artwork) {
