@@ -19,7 +19,7 @@ function ArtworksMassActions({ selectedIds }: { selectedIds: number[] }) {
                 key: 'mass-move',
                 icon: <HugeiconsIcon icon={ArrowDataTransferHorizontalIcon} size={16} />,
                 label: 'Move to new Location',
-                onClick: () => { }
+                onClick: () => setShowMoveModal(true)
               }
             ]}
           />
@@ -27,7 +27,6 @@ function ArtworksMassActions({ selectedIds }: { selectedIds: number[] }) {
       >
         <Button
           type="primary"
-          onClick={() => setShowMoveModal(true)}
         >
           <HugeiconsIcon icon={KeyframesMultipleIcon} size={20} />
           Mass Actions
