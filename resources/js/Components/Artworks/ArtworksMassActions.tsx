@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query"
 import { Button, Dropdown, Menu, message } from "antd"
 import axios from "axios"
 import { useState } from "react"
+import AnimatedContainer from "../AnimatedContainer"
 import MoveModal from "../MoveModal"
 
 function ArtworksMassActions({ selectedIds }: { selectedIds: number[] }) {
@@ -27,7 +28,7 @@ function ArtworksMassActions({ selectedIds }: { selectedIds: number[] }) {
   })
 
   return (<>
-    {selectedIds.length > 0 && (
+    <AnimatedContainer type="fadeRight" condition={selectedIds.length > 0} >
       <Dropdown
         trigger={['click']}
         popupRender={() => (
@@ -61,7 +62,7 @@ function ArtworksMassActions({ selectedIds }: { selectedIds: number[] }) {
           <div>Mass Actions</div>
         </Button>
       </Dropdown>
-    )}
+    </AnimatedContainer>
 
     <MoveModal
       open={showMoveModal}
