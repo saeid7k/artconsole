@@ -1,3 +1,4 @@
+import ARTWORK_STATUSES from "@/constants/artworkStatuses";
 import useFilters from "@/hooks/useFilters";
 import { useWindow } from "@/hooks/useWindow";
 import { FilterIcon, FilterRemoveIcon } from "@hugeicons/core-free-icons";
@@ -29,13 +30,14 @@ function ArtworksFilter() {
 
   // Renders
 
-  const renderArtistsFilter = () => {
+  const renderArtistsFilter = ({className = ''}) => {
     return (
       <Select
         mode="multiple"
         options={artistsOptionsQuery.data?.map((artist: any) => ({ ...artist, value: artist.value.toString() }))}
-        className="min-w-[150px]"
-        placeholder="Select Artists"
+        className={`min-w-[100px] ${className}`}
+        popupMatchSelectWidth={false}
+        placeholder="Artists"
         optionLabelProp="label"
         showSearch={{
           optionFilterProp: 'label',
@@ -47,11 +49,31 @@ function ArtworksFilter() {
     )
   }
 
+  const renderStatusFilter = ({className = ''}) => {
+    return (
+      <Select
+        mode="multiple"
+        options={ARTWORK_STATUSES}
+        className={`min-w-[100px] ${className}`}
+        popupMatchSelectWidth={false}
+        placeholder="Status"
+        optionLabelProp="label"
+        showSearch={{
+          optionFilterProp: 'label',
+        }}
+        onChange={(value: string[]) => setFilter('status', value ?? [])}
+        value={filters.status.map(String) || []}
+        loading={artistsOptionsQuery.isLoading}
+      />
+    )
+  }
+
   return (
     <>
       {windowWidth > 1280 && (
         <>
-          {renderArtistsFilter()}
+          {renderArtistsFilter({})}
+          {renderStatusFilter({})}
         </>
       )}
       {windowWidth <= 1280 && (
@@ -83,8 +105,18 @@ function ArtworksFilter() {
         onClose={() => { setDrawerOpen(false) }}
         open={drawerOpen}
       >
-        <div className="label">Artists</div>
-        {renderArtistsFilter()}
+        <div
+          className="flex flex-col gap-3"
+        >
+          <div>
+            <div className="label">Artists</div>
+            {renderArtistsFilter({className: 'w-full'})}
+          </div>
+          <div>
+            <div className="label">Status</div>
+            {renderStatusFilter({className: 'w-full'})}
+          </div>
+        </div>
       </Drawer>
     </>
   )
