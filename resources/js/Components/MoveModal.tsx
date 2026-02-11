@@ -77,6 +77,11 @@ function MoveModal({ open = false, setOpen, artwork }: Props) {
       okText="Move"
       onOk={handleMove}
     >
+      {Array.isArray(artwork) ? (
+        <blockquote>Moving <span className="text-blue-500 font-bold">{artwork.length}</span> artworks</blockquote>
+      ) : (
+        <blockquote>Moving artwork <span className="text-blue-500 font-bold">{artwork?.title}</span></blockquote>
+      )}
       <Form
         layout="vertical"
         form={moveForm}
