@@ -6,13 +6,14 @@ import AppLayout from "@/Layouts/AppLayout"
 import { PageProps } from "@/types"
 import { LocationProps } from "@/types/location"
 import { deleteQueryParam, getQueryParam } from "@/utils/urlHelper"
-import { FilterRemoveIcon, GridViewIcon, TableIcon } from "@hugeicons/core-free-icons"
+import { GridViewIcon, TableIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router } from "@inertiajs/react"
-import { Button, Segmented, Tooltip } from "antd"
+import { Segmented, Tooltip } from "antd"
 import Search from "antd/es/input/Search"
 import { useEffect, useState } from "react"
 import ArtworkFormDrawer from "./Partials/ArtworkFormDrawer"
+import ArtworksFilter from "./Partials/ArtworksFilter"
 import ArtworksGrids from "./Partials/ArtworksGrids"
 import ArtworksTable from "./Partials/ArtworksTable"
 
@@ -36,33 +37,6 @@ function Index({ artworks, locations }: { artworks: PageProps, locations: Array<
     setViewMode(mode);
   }
 
-  // Filters
-
-  const filtersAvailable = ['category', 'location', 'status'];
-
-  const urlFilters = (() => {
-    let allParams = new URLSearchParams(window.location.search);
-    let filters: { [key: string]: string[] } = {};
-    filtersAvailable.forEach((filter) => {
-      filters[filter] = allParams.getAll(filter);
-    });
-    return filters;
-  })();
-
-  const isFiltered = Object.values(urlFilters).some((vals) => vals.length > 0);
-
-  function clearFilters() {
-    const urlParams = new URLSearchParams(window.location.search);
-
-    let paramsObject = Object.fromEntries(urlParams.entries());
-    Object.entries(paramsObject).forEach(([key, value]) => {
-      if (filtersAvailable.includes(key)) {
-        delete paramsObject[key];
-      }
-    });
-    router.get(route('artworks.index'), paramsObject, { preserveState: true });
-  }
-
   // Create Drawer
 
   const [showCreateDrawer, setShowCreateDrawer] = useState(false)
@@ -75,6 +49,19 @@ function Index({ artworks, locations }: { artworks: PageProps, locations: Array<
     }
   }, [])
 
+  // Filters
+
+  const filtersAvailable = ['category', 'location', 'status', 'artist'];
+
+  const urlFilters = (() => {
+    let allParams = new URLSearchParams(window.location.search);
+    let filters: { [key: string]: string[] } = {};
+    filtersAvailable.forEach((filter) => {
+      filters[filter] = allParams.getAll(filter);
+    });
+    return filters;
+  })();
+
   // Mass Actions
 
   const [selectedIds, setSelectedIds] = useState<number[]>([])
@@ -82,20 +69,11 @@ function Index({ artworks, locations }: { artworks: PageProps, locations: Array<
   // Render
 
   const renderToolbar = () => (
-    <div className="flex gap-2">
+    <div className="flex items-start gap-2">
 
       <ArtworksMassActions selectedIds={selectedIds} />
 
-      {isFiltered && (
-        <Tooltip title="Clear Filters">
-          <Button
-            type="text"
-            shape="circle"
-            icon={<HugeiconsIcon icon={FilterRemoveIcon} size={20} />}
-            onClick={clearFilters}
-          />
-        </Tooltip>
-      )}
+      <ArtworksFilter />
 
       <Segmented
         options={[
@@ -118,6 +96,7 @@ function Index({ artworks, locations }: { artworks: PageProps, locations: Array<
         ]}
         onChange={(value) => switchViewMode(value as 'table' | 'grid')}
       />
+
       <Search
         placeholder="search artworks..."
         style={{ width: 200 }}
@@ -130,7 +109,7 @@ function Index({ artworks, locations }: { artworks: PageProps, locations: Array<
   )
 
   return (
-    <ArtworkIndexProvider value={{ filters: urlFilters, selectedIds, setSelectedIds }}>
+    <ArtworkIndexProvider value={{ filters: urlFilters, filtersAvailable, selectedIds, setSelectedIds }}>
       <PageTitle title="Artworks Inventory"
         counter={artworks.total}
         onCreateButtonClick={() => setShowCreateDrawer(true)}
