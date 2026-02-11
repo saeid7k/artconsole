@@ -70,7 +70,7 @@ function Index({ artworks, locations }: { artworks: PageProps, locations: Array<
   // Render
 
   const renderToolbar = () => (
-    <div className="flex items-start gap-2">
+    <div className="flex items-start gap-2 flex-wrap">
 
       <ArtworksMassActions selectedIds={selectedIds} />
 
