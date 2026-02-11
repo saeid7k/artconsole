@@ -1,8 +1,7 @@
-import { useArtworksIndex } from "@/contexts/ArtworksIndexContext";
+import useFilters from "@/hooks/useFilters";
 import { useWindow } from "@/hooks/useWindow";
 import { FilterIcon, FilterRemoveIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { router } from "@inertiajs/react";
 import { useQuery } from "@tanstack/react-query";
 import { Button, Drawer, Select, Tooltip } from "antd";
 import axios from "axios";
@@ -12,37 +11,8 @@ function ArtworksFilter() {
 
   const { windowWidth } = useWindow();
 
-  const { filters, filtersAvailable } = useArtworksIndex()
+  const { filters, setFilter, clearFilters } = useFilters('artworks.index');
   const isFiltered = Object.values(filters).some((vals) => Array.isArray(vals) && vals.length > 0);
-
-  // clear filters
-
-  function clearFilters() {
-    const urlParams = new URLSearchParams(window.location.search);
-
-    let paramsObject = Object.fromEntries(urlParams.entries());
-    Object.entries(paramsObject).forEach(([key, value]) => {
-      if (filtersAvailable.includes(key)) {
-        delete paramsObject[key];
-      }
-    });
-    router.get(route('artworks.index'), paramsObject, { preserveState: false });
-  }
-
-  // Set filter
-
-  function setFilter(key: string, value: string[]) {
-    const urlParams = new URLSearchParams(window.location.search);
-    urlParams.set('page', '1');
-
-    if (value.length > 0) {
-      urlParams.set(key, value.join(',').toString());
-    } else {
-      urlParams.delete(key);
-    }
-
-    router.get(route('artworks.index'), Object.fromEntries(urlParams.entries()), { preserveState: true });
-  }
 
   // Fetch Artists Options
 

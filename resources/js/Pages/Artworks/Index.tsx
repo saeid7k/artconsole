@@ -49,20 +49,6 @@ function Index({ artworks, locations }: { artworks: PageProps, locations: Array<
     }
   }, [])
 
-  // Filters
-
-  const filtersAvailable = ['category', 'location', 'status', 'artist'];
-
-  const urlFilters = (() => {
-    let allParams = new URLSearchParams(window.location.search);
-    let filters: { [key: string]: string[] } = {};
-    filtersAvailable.forEach((filter) => {
-      let values = allParams.getAll(filter);
-      filters[filter] = values.map((value) => value.split(',')).flat().filter((val) => val !== '');
-    });
-    return filters;
-  })();
-
   // Mass Actions
 
   const [selectedIds, setSelectedIds] = useState<number[]>([])
@@ -110,7 +96,7 @@ function Index({ artworks, locations }: { artworks: PageProps, locations: Array<
   )
 
   return (
-    <ArtworkIndexProvider value={{ filters: urlFilters, filtersAvailable, selectedIds, setSelectedIds }}>
+    <ArtworkIndexProvider value={{ selectedIds, setSelectedIds }}>
       <PageTitle title="Artworks Inventory"
         counter={artworks.total}
         onCreateButtonClick={() => setShowCreateDrawer(true)}

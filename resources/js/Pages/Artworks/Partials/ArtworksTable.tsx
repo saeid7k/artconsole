@@ -18,6 +18,7 @@ import type { TableProps } from 'antd';
 import { Image, Table } from 'antd';
 import imagePlaceholder from '~/resources/images/image-placeholder.svg';
 import ArtworksActions from './ArtworksActions';
+import useFilters from '@/hooks/useFilters';
 
 type LocationsProps = Array<{
   id: number;
@@ -27,7 +28,8 @@ type LocationsProps = Array<{
 function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations: LocationsProps }) {
 
   const { breakpoint, windowWidth } = useWindow()
-  const { filters, selectedIds, setSelectedIds } = useArtworksIndex()
+  const { selectedIds, setSelectedIds } = useArtworksIndex()
+  const { filters } = useFilters('artworks.index')
 
   const columns: TableProps['columns'] = [
     {
