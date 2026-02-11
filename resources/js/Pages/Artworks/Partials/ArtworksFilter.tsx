@@ -1,16 +1,18 @@
 import { useArtworksIndex } from "@/contexts/ArtworksIndexContext";
-import { getQueryParam } from "@/utils/urlHelper";
-import { FilterRemoveIcon } from "@hugeicons/core-free-icons";
+import { useWindow } from "@/hooks/useWindow";
+import { FilterIcon, FilterRemoveIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
 import { useQuery } from "@tanstack/react-query";
-import { Button, Input, Select, Tooltip } from "antd";
+import { Button, Drawer, Select, Tooltip } from "antd";
 import axios from "axios";
+import { useState } from "react";
 
 function ArtworksFilter() {
 
-  const { filters, filtersAvailable } = useArtworksIndex()
+  const { windowWidth } = useWindow();
 
+  const { filters, filtersAvailable } = useArtworksIndex()
   const isFiltered = Object.values(filters).some((vals) => Array.isArray(vals) && vals.length > 0);
 
   // clear filters
@@ -33,13 +35,10 @@ function ArtworksFilter() {
     const urlParams = new URLSearchParams(window.location.search);
     urlParams.set('page', '1');
 
-    const currentString = urlParams.get(key);
-    const existingValues = currentString ? currentString.split(',') : [];
-
-    const uniqueValues = Array.from(new Set([...existingValues, ...value.map(String)]));
-
-    if (uniqueValues.length > 0) {
-      urlParams.set(key, uniqueValues.join(','));
+    if (value.length > 0) {
+      urlParams.set(key, value.join(',').toString());
+    } else {
+      urlParams.delete(key);
     }
 
     router.get(route('artworks.index'), Object.fromEntries(urlParams.entries()), { preserveState: true });
@@ -54,29 +53,69 @@ function ArtworksFilter() {
     retry: false,
   })
 
-  return (
-    <>
+  // Filters Drawer
+
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  // Renders
+
+  const renderArtistsFilter = () => {
+    return (
       <Select
         mode="multiple"
-        options={artistsOptionsQuery.data}
+        options={artistsOptionsQuery.data?.map((artist: any) => ({ ...artist, value: artist.value.toString() }))}
         className="min-w-[150px]"
         placeholder="Select Artists"
         optionLabelProp="label"
         showSearch={{
           optionFilterProp: 'label',
         }}
-        onChange={(value: string[]) => setFilter('artist', value)}
+        onChange={(value: string[]) => setFilter('artist', value ?? [])}
+        value={filters.artist.map(String) || []}
+        loading={artistsOptionsQuery.isLoading}
       />
-      {isFiltered && (
-        <Tooltip title="Clear Filters">
+    )
+  }
+
+  return (
+    <>
+      {windowWidth > 1280 && (
+        <>
+          {renderArtistsFilter()}
+        </>
+      )}
+      {windowWidth <= 1280 && (
+        <Tooltip title="Filters">
           <Button
             type="text"
             shape="circle"
+            icon={<HugeiconsIcon icon={FilterIcon} size={20} />}
+            onClick={() => setDrawerOpen(true)}
+          />
+        </Tooltip>
+      )}
+
+      {isFiltered && (
+        <Tooltip title="Clear Filters">
+          <Button
+            variant="text"
+            shape="circle"
+            color="red"
             icon={<HugeiconsIcon icon={FilterRemoveIcon} size={20} />}
             onClick={clearFilters}
           />
         </Tooltip>
       )}
+
+      <Drawer
+        title="Filters"
+        placement="right"
+        onClose={() => { setDrawerOpen(false) }}
+        open={drawerOpen}
+      >
+        <div className="label">Artists</div>
+        {renderArtistsFilter()}
+      </Drawer>
     </>
   )
 }
