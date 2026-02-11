@@ -47,6 +47,10 @@ class ArtworkController extends Controller
         $locationIds = explode(',', $request->location);
         $q->whereIn('location_id', $locationIds);
       })
+      ->when($request->artist, function ($q) use ($request) {
+        $artistIds = explode(',', $request->artist);
+        $q->whereIn('artist_id', $artistIds);
+      })
       ->when($request->sort_by && $request->sort_order, function ($q) use ($request) {
         $q->orderBy($request->sort_by, $request->sort_order);
       }, function ($q) {
