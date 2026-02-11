@@ -5,14 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Gallery;
 use App\Models\Media;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class GalleryController extends Controller
 {
   public function create(Request $request)
   {
     $this->authorize('create', Gallery::class);
-    
+
     $request->validate([
       'logo' => 'nullable|image|max:10240',
       'name' => 'required|string|max:255',
@@ -125,5 +124,24 @@ class GalleryController extends Controller
       ->log('removed gallery logo');
 
     return response(['message' => 'Gallery logo removed successfully.']);
+  }
+
+  public function getArtistsOptions(Request $request)
+  {
+    $user = $request->user();
+    $gallery = $user->currentGallery();
+
+    $this->authorize('view', $gallery);
+
+    $artists = $gallery->artists;
+
+    return response(
+      $artists->map(function ($artist) {
+        return [
+          'label' => $artist->firstname . ' ' . $artist->lastname,
+          'value' => $artist->id,
+        ];
+      }),
+    );
   }
 }
