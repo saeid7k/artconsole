@@ -1,4 +1,3 @@
-import { useArtworksIndex } from '@/contexts/ArtworksIndexContext';
 import { useWindow } from '@/hooks/useWindow';
 import { PageProps } from '@/types';
 import { LocationProps } from '@/types/location';
@@ -11,7 +10,6 @@ import LocationStack from './LocationStack';
 function LocationsTable({ locations }: {locations: PageProps}) {
 
   const { breakpoint, windowWidth } = useWindow()
-  const { filters } = useArtworksIndex()
 
   const columns: TableProps<LocationProps>['columns'] = [
     {
