@@ -117,8 +117,12 @@ p {
   margin: 0.5rem 0;
 }
 
-label {
+label, .label {
   color: var(--text-label)
+}
+
+.label {
+  margin-bottom: 0.25rem;
 }
 
 code {
