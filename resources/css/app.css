@@ -33,6 +33,7 @@
   --text-label: theme('colors.gray.500');
   --text-muted: theme('colors.gray.400');
   --text-body: theme('colors.gray.800');
+  --text-soft: theme('colors.gray.600');
   --text-link: theme('colors.blue.500');
 
   --primary: var(--primary-500);
@@ -101,6 +102,7 @@
   --text-label: theme('colors.gray.400');
   --text-muted: theme('colors.gray.500');
   --text-body: theme('colors.gray.200');
+  --text-soft: theme('colors.gray.400');
   --text-link: theme('colors.blue.200');
 
   --primary: var(--primary-400);
@@ -121,6 +123,13 @@ label {
 
 code {
   color: theme('colors.purple.500');
+}
+
+blockquote {
+  border-left: 4px solid var(--primary-200);
+  padding: 0.25rem 1rem;
+  margin-left: 0;
+  color: var(--text-soft);
 }
 
 .text-ghost {
@@ -156,6 +165,10 @@ code {
 
 .text-body {
   color: var(--text-body);
+}
+
+.text-soft {
+  color: var(--text-soft);
 }
 
 .text-link {
