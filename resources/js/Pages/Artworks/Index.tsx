@@ -57,7 +57,8 @@ function Index({ artworks, locations }: { artworks: PageProps, locations: Array<
     let allParams = new URLSearchParams(window.location.search);
     let filters: { [key: string]: string[] } = {};
     filtersAvailable.forEach((filter) => {
-      filters[filter] = allParams.getAll(filter);
+      let values = allParams.getAll(filter);
+      filters[filter] = values.map((value) => value.split(',')).flat().filter((val) => val !== '');
     });
     return filters;
   })();
