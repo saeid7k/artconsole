@@ -67,7 +67,7 @@ function ArtworkToolbar({ artwork }: Props) {
   const renderMoreActionsMenu = () => {
     return (
       <Menu>
-        {windowWidth < 1024 && (
+        {windowWidth <= 1024 && (
           <>
             <Menu.Item
               key="add-images"
@@ -111,7 +111,7 @@ function ArtworkToolbar({ artwork }: Props) {
             Copy Artwork
           </FlexBox>
         </Menu.Item>
-        {windowWidth < 1024 && (
+        {windowWidth <= 1024 && (
           <>
             <Menu.Item
               key="delete"
@@ -132,7 +132,7 @@ function ArtworkToolbar({ artwork }: Props) {
   return (
     <>
       <FlexBox>
-        {windowWidth >= 1024 && (
+        {windowWidth > 1024 && (
           <>
             <Tooltip title="Add Images" mouseEnterDelay={0.5} >
               <Button
