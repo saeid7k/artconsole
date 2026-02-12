@@ -15,7 +15,7 @@ type Props = {
 
 function ManageTagsModal({ open , setOpen, type = 'tag' }: Props) {
 
-  const { tags, tagsQuery } = useTags(type, open);
+  const { tags, tagsQuery } = useTags({type, enabled: open});
 
   function handleClose() {
     setOpen(false);
