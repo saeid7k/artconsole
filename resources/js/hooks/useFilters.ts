@@ -2,7 +2,14 @@ import { router } from "@inertiajs/react";
 
 function useFilters(routeName: string) {
 
-  const filtersAvailable = ['category', 'location', 'status', 'artist'];
+  const filtersAvailable = [
+    'category',
+    'location',
+    'status',
+    'artist',
+    'medium',
+    'style',
+  ];
 
   const filters = (() => {
     let allParams = new URLSearchParams(window.location.search);
