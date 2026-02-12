@@ -1,7 +1,8 @@
+import useTags from "@/hooks/useTags";
 import { ucFirst } from "@/utils/stringHelper";
 import { Delete02Icon, FloppyDiskIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { Button, Input, message, Modal, Space } from "antd";
 import axios from "axios";
 import { useState } from "react";
@@ -14,23 +15,11 @@ type Props = {
 
 function ManageTagsModal({ open , setOpen, type = 'tag' }: Props) {
 
+  const { tags, tagsQuery } = useTags(type, open);
+
   function handleClose() {
     setOpen(false);
   }
-
-  // Fetch all tags
-
-  const tagsQuery = useQuery({
-    queryKey: ['all-tags', type],
-    queryFn: () => {
-      return axios.get(route('tags.get-all', { type }))
-        .then(res => res.data)
-        .catch(err => {
-          throw err;
-        })
-    },
-    enabled: open ? true : false,
-  })
 
   // Add new tag
 
@@ -73,8 +62,8 @@ function ManageTagsModal({ open , setOpen, type = 'tag' }: Props) {
     >
       <div className="flex flex-col gap-3 my-3">
         <div className="flex flex-col gap-1 max-h-[300px] overflow-y-auto" >
-          {tagsQuery.isFetched && tagsQuery.data.length > 0 && (
-            tagsQuery.data.map((tag: any) => (
+          { tagsQuery.isFetched && tags.length > 0 && (
+            tags.map((tag: any) => (
               <div
                 key={tag.id}
                 className="flex items-center justify-between p-2 bg-light border rounded-lg"
