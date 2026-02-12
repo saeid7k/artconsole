@@ -44,7 +44,11 @@ function useFilters(routeName: string) {
     router.get(route(routeName), paramsObject, { preserveState: false });
   }
 
-  return { filters, setFilter, clearFilters };
+  // Counters
+
+  const filteredFieldsCount = Object.values(filters).filter((vals) => Array.isArray(vals) && vals.length > 0).length;
+
+  return { filters, setFilter, clearFilters, filteredFieldsCount };
 
 }
 
