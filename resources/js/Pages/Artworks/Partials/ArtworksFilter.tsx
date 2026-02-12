@@ -1,5 +1,6 @@
 import ARTWORK_STATUSES from "@/constants/artworkStatuses";
 import useFilters from "@/hooks/useFilters";
+import useLocations from "@/hooks/useLocations";
 import { useWindow } from "@/hooks/useWindow";
 import { FilterIcon, FilterRemoveIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -23,6 +24,10 @@ function ArtworksFilter() {
     enabled: true,
     retry: false,
   })
+
+  // Locations Options from useLocations Hook
+
+  const { locationsOptions } = useLocations({ enableQuery: true });
 
   // Filters Drawer
 
@@ -68,12 +73,32 @@ function ArtworksFilter() {
     )
   }
 
+  const renderLocationsFilter = ({className = ''}) => {
+    return (
+      <Select
+        mode="multiple"
+        options={locationsOptions.map((loc) => ({ ...loc, value: loc.value.toString() }))}
+        className={`min-w-[100px] ${className}`}
+        popupMatchSelectWidth={false}
+        placeholder="Locations"
+        optionLabelProp="label"
+        showSearch={{
+          optionFilterProp: 'label',
+        }}
+        onChange={(value: string[]) => setFilter('location', value ?? [])}
+        value={filters.location.map(String) || []}
+        // loading={artistsOptionsQuery.isLoading}
+      />
+    )
+  }
+
   return (
     <>
       {windowWidth > 1280 && (
         <>
           {renderArtistsFilter({})}
           {renderStatusFilter({})}
+          {renderLocationsFilter({})}
         </>
       )}
       {windowWidth <= 1280 && (
@@ -115,6 +140,10 @@ function ArtworksFilter() {
           <div>
             <div className="label">Status</div>
             {renderStatusFilter({className: 'w-full'})}
+          </div>
+          <div>
+            <div className="label">Locations</div>
+            {renderLocationsFilter({className: 'w-full'})}
           </div>
         </div>
       </Drawer>
