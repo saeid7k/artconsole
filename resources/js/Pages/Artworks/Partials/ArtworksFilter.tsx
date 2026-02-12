@@ -1,6 +1,7 @@
 import ARTWORK_STATUSES from "@/constants/artworkStatuses";
 import useFilters from "@/hooks/useFilters";
 import useLocations from "@/hooks/useLocations";
+import useTags from "@/hooks/useTags";
 import { useWindow } from "@/hooks/useWindow";
 import { FilterIcon, FilterRemoveIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -16,6 +17,10 @@ function ArtworksFilter() {
   const { filters, setFilter, clearFilters, filteredFieldsCount } = useFilters('artworks.index');
   const isFiltered = Object.values(filters).some((vals) => Array.isArray(vals) && vals.length > 0);
 
+  // Filters Drawer
+
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
   // Fetch Artists Options
 
   const artistsOptionsQuery = useQuery({
@@ -29,9 +34,11 @@ function ArtworksFilter() {
 
   const { locationsOptions } = useLocations({ enableQuery: true });
 
-  // Filters Drawer
+  // Tags Options from useTags Hook
 
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const { tags, tagsQuery } = useTags({ enabled: drawerOpen });
+  const mediumsOptions = tags.filter((tag: any) => tag.type === 'medium').map((tag: any) => ({ label: tag.value, value: tag.id.toString() }));
+  const stylesOptions = tags.filter((tag: any) => tag.type === 'style').map((tag: any) => ({ label: tag.value, value: tag.id.toString() }));
 
   // Renders
 
@@ -92,15 +99,58 @@ function ArtworksFilter() {
     )
   }
 
+  const renderMediumFilter = ({className = ''}) => {
+    return (
+      <Select
+        mode="multiple"
+        options={mediumsOptions}
+        className={`min-w-[110px] ${className}`}
+        popupMatchSelectWidth={false}
+        placeholder="Mediums"
+        optionLabelProp="label"
+        showSearch={{
+          optionFilterProp: 'label',
+        }}
+        onChange={(value: string[]) => setFilter('medium', value ?? [])}
+        value={filters.medium.map(String) || []}
+        loading={tagsQuery.isLoading}
+      />
+    )
+  }
+
+  const renderStyleFilter = ({className = ''}) => {
+    return (
+      <Select
+        mode="multiple"
+        options={stylesOptions}
+        className={`min-w-[110px] ${className}`}
+        popupMatchSelectWidth={false}
+        placeholder="Styles"
+        optionLabelProp="label"
+        showSearch={{
+          optionFilterProp: 'label',
+        }}
+        onChange={(value: string[]) => setFilter('style', value ?? [])}
+        value={filters.style.map(String) || []}
+        loading={tagsQuery.isLoading}
+      />
+    )
+  }
+
   return (
     <>
       {windowWidth > 1280 && (
         <>
           {renderArtistsFilter({})}
           {renderStatusFilter({})}
-          {renderLocationsFilter({})}
+          {windowWidth > 1536 && (
+            <>
+              {renderLocationsFilter({})}
+            </>
+          )}
         </>
       )}
+
       <Tooltip
         title={filteredFieldsCount > 0 ? `${filteredFieldsCount} Fields are filtered` : "Filters"}
       >
@@ -151,6 +201,14 @@ function ArtworksFilter() {
           <div>
             <div className="label">Locations</div>
             {renderLocationsFilter({className: 'w-full'})}
+          </div>
+          <div>
+            <div className="label">Mediums</div>
+            {renderMediumFilter({className: 'w-full'})}
+          </div>
+          <div>
+            <div className="label">Styles</div>
+            {renderStyleFilter({className: 'w-full'})}
           </div>
         </div>
       </Drawer>
