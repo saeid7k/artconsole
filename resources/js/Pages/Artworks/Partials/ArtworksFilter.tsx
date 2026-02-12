@@ -5,7 +5,7 @@ import { useWindow } from "@/hooks/useWindow";
 import { FilterIcon, FilterRemoveIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useQuery } from "@tanstack/react-query";
-import { Button, Drawer, Select, Tooltip } from "antd";
+import { Badge, Button, Drawer, Select, Tooltip } from "antd";
 import axios from "axios";
 import { useState } from "react";
 
@@ -13,7 +13,7 @@ function ArtworksFilter() {
 
   const { windowWidth } = useWindow();
 
-  const { filters, setFilter, clearFilters } = useFilters('artworks.index');
+  const { filters, setFilter, clearFilters, filteredFieldsCount } = useFilters('artworks.index');
   const isFiltered = Object.values(filters).some((vals) => Array.isArray(vals) && vals.length > 0);
 
   // Fetch Artists Options
@@ -78,7 +78,7 @@ function ArtworksFilter() {
       <Select
         mode="multiple"
         options={locationsOptions.map((loc) => ({ ...loc, value: loc.value.toString() }))}
-        className={`min-w-[100px] ${className}`}
+        className={`min-w-[110px] ${className}`}
         popupMatchSelectWidth={false}
         placeholder="Locations"
         optionLabelProp="label"
@@ -101,16 +101,23 @@ function ArtworksFilter() {
           {renderLocationsFilter({})}
         </>
       )}
-      {windowWidth <= 1280 && (
-        <Tooltip title="Filters">
+      <Tooltip
+        title={filteredFieldsCount > 0 ? `${filteredFieldsCount} Fields are filtered` : "Filters"}
+      >
+        <Badge
+          count={filteredFieldsCount}
+          size="small"
+          color='blue'
+          offset={[-4,6]}
+        >
           <Button
             type="text"
             shape="circle"
             icon={<HugeiconsIcon icon={FilterIcon} size={20} />}
             onClick={() => setDrawerOpen(true)}
           />
-        </Tooltip>
-      )}
+        </Badge>
+      </Tooltip>
 
       {isFiltered && (
         <Tooltip title="Clear Filters">
