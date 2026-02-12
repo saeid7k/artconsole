@@ -1,3 +1,4 @@
+import { ARTWORK_CATEGORIES } from "@/constants/artworkCategories";
 import ARTWORK_STATUSES from "@/constants/artworkStatuses";
 import useFilters from "@/hooks/useFilters";
 import useLocations from "@/hooks/useLocations";
@@ -56,6 +57,25 @@ function ArtworksFilter() {
         }}
         onChange={(value: string[]) => setFilter('artist', value ?? [])}
         value={filters.artist.map(String) || []}
+        loading={artistsOptionsQuery.isLoading}
+      />
+    )
+  }
+
+  const renderCategoryFilter = ({className = ''}) => {
+    return (
+      <Select
+        mode="multiple"
+        options={ARTWORK_CATEGORIES}
+        className={`min-w-[100px] ${className}`}
+        popupMatchSelectWidth={false}
+        placeholder="Category"
+        optionLabelProp="label"
+        showSearch={{
+          optionFilterProp: 'label',
+        }}
+        onChange={(value: string[]) => setFilter('category', value ?? [])}
+        value={filters.category.map(String) || []}
         loading={artistsOptionsQuery.isLoading}
       />
     )
@@ -142,12 +162,12 @@ function ArtworksFilter() {
       {windowWidth > 1280 && (
         <>
           {renderArtistsFilter({})}
-          {renderStatusFilter({})}
           {windowWidth > 1536 && (
             <>
               {renderLocationsFilter({})}
             </>
           )}
+          {renderStatusFilter({})}
         </>
       )}
 
@@ -195,12 +215,8 @@ function ArtworksFilter() {
             {renderArtistsFilter({className: 'w-full'})}
           </div>
           <div>
-            <div className="label">Status</div>
-            {renderStatusFilter({className: 'w-full'})}
-          </div>
-          <div>
-            <div className="label">Locations</div>
-            {renderLocationsFilter({className: 'w-full'})}
+            <div className="label">Category</div>
+            {renderCategoryFilter({className: 'w-full'})}
           </div>
           <div>
             <div className="label">Mediums</div>
@@ -209,6 +225,14 @@ function ArtworksFilter() {
           <div>
             <div className="label">Styles</div>
             {renderStyleFilter({className: 'w-full'})}
+          </div>
+          <div>
+            <div className="label">Locations</div>
+            {renderLocationsFilter({className: 'w-full'})}
+          </div>
+          <div>
+            <div className="label">Status</div>
+            {renderStatusFilter({className: 'w-full'})}
           </div>
         </div>
       </Drawer>
