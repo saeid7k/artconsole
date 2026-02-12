@@ -102,7 +102,7 @@ class TagController extends Controller
     $user = auth()->user();
     $gallery = $user->currentGallery();
     $tags = $gallery->tags;
-    if ($type) {
+    if ($type && $type !== 'all') {
       $tags = $tags->where('type', $type);
     }
     $tags = $tags->sortBy('type')->sortBy('value')->values()->toArray();
