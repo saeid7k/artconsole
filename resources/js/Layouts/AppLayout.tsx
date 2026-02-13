@@ -11,7 +11,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Button, ConfigProvider, Layout, theme } from "antd";
 import { Content, Footer, Header } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useEffect } from "react";
 
 interface AppProps extends PropsWithChildren {
   title?: string|React.ReactNode,
@@ -20,11 +20,18 @@ interface AppProps extends PropsWithChildren {
 
 function App ({ children }: AppProps) {
 
-  const { darkMode } = useApp()
-  const { sidebarCollapsed, toggleSidebar } = useApp()
-  const { scrollY } = useWindow()
+  const { sidebarCollapsed, toggleSidebar, darkMode } = useApp()
+  const { scrollY, windowWidth } = useWindow()
   const collapsedWidth = 50
   const expandedWidth = 200
+
+  useEffect(() => {
+    if (windowWidth < 768 && !sidebarCollapsed) {
+      toggleSidebar()
+    } else if (windowWidth >= 768 && sidebarCollapsed) {
+      toggleSidebar()
+    }
+  }, [windowWidth])
 
   return (
     <ConfigProvider
