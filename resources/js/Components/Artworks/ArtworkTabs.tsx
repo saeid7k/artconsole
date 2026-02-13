@@ -14,7 +14,7 @@ function ArtworkTabs({ artwork }: { artwork: ArtworkProps }) {
       children: (
         <div className="flex flex-col lg:flex-row gap-5 items-start flex-wrap">
           {artwork.images?.length > 0 && (
-            <div className="grow">
+            <div className="grow w-full overflow-x-auto">
               <ArtworkImages artwork={artwork} />
             </div>
           )}

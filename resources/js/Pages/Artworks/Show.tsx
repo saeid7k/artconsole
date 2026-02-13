@@ -66,7 +66,7 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
 
           {/* Details */}
 
-          <Card className="lg:w-1/2 grow max-h-[580px] overflow-y-auto">
+          <Card className="lg:w-1/2 grow sm:max-h-[580px] overflow-y-auto">
             <FlexBox justifyContent="between" alignItems="start" >
               <ArtworkTitleStack
                 artwork={artwork}
@@ -153,7 +153,7 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
 
         {/* Tabs */}
 
-        <Card>
+        <Card className="[&_.ant-card-body]:p-2 [&_.ant-card-body]:sm:p-5" >
           <ArtworkTabs artwork={artwork} />
         </Card>
       </div>
