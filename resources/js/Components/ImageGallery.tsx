@@ -36,14 +36,14 @@ function ImageGallery({ images }: Props) {
             ref={carouselRef}
             dots={false}
             afterChange={(current) => setCurrentImageIndex(current)}
-            className="h-[440px]"
+            className="h-[300px] sm:h-[440px]"
           >
             {images.map((image, index) => (
               <div key={image.id} className="[&_.ant-image-cover]:!opacity-0"
               >
                 <img
                   src={image.urls.original}
-                  className="max-h-[440px] !w-auto max-w-full mx-auto cursor-pointer"
+                  className="max-h-[300px] sm:max-h-[440px] !w-auto max-w-full mx-auto cursor-pointer"
                   onClick={() => setOpenImageIndex(index)}
                 />
               </div>
