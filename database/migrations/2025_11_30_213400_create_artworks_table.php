@@ -35,7 +35,6 @@ return new class extends Migration
       $table->json('mediums')->nullable();
       $table->json('styles')->nullable();
       $table->json('dimensions')->nullable();
-      $table->json('collections')->nullable();
 
       $table->string('ownership', 50)->nullable(); // owned | consigned
       $table->foreignId('owner_contact_id')->nullable()->constrained('contacts')->nullOnDelete();

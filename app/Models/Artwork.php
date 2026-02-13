@@ -38,7 +38,6 @@ class Artwork extends Model implements HasMedia
     'mediums',
     'styles',
     'dimensions',
-    'collections',
     'ownership',
     'owner_contact_id',
     'provenance',
@@ -53,7 +52,6 @@ class Artwork extends Model implements HasMedia
     'mediums' => 'array',
     'styles' => 'array',
     'dimensions' => 'object',
-    'collections' => 'array',
     'details' => 'object',
   ];
 
