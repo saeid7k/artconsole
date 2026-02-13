@@ -31,17 +31,10 @@ export const useWindow = () => {
   const [breakpoint, setBreakpoint] = useState<string>('sm');
 
   useEffect(() => {
-    const check = () => {
-      const keys = Object.keys(breakpoints) as (keyof typeof breakpoints)[];
-      const active =
-        keys.findLast((key) => windowWidth >= breakpoints[key]) ?? 'sm';
-      setBreakpoint(active);
-    };
-
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
-  }, []);
+    const keys = Object.keys(breakpoints) as (keyof typeof breakpoints)[];
+    const active = keys.findLast((key) => windowWidth >= breakpoints[key]) ?? 'sm';
+    setBreakpoint(active);
+  }, [windowWidth]);
 
   // Window Position
 
