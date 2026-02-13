@@ -44,8 +44,6 @@ class ArtworkStoreUpdateRequest extends FormRequest
       'dimensions.height' => ['nullable', 'numeric', 'min:0'],
       'dimensions.depth' => ['nullable', 'numeric', 'min:0'],
       'dimensions.unit' => ['nullable', 'string', 'in:cm,inches'],
-      'collections' => ['nullable', 'array'],
-      'collections.*' => ['string', 'max:100'],
 
       'ownership' => ['nullable', 'string', 'in:owned,consigned'],
       'owner_contact_id' => ['nullable', 'integer', 'exists:contacts,id'],

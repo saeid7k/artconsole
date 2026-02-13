@@ -47,7 +47,6 @@ class ArtworkFactory extends Factory
       'subjects' => $this->faker->randomElements(self::SUBJECTS, 1, false),
       'mediums' => $this->faker->randomElements(self::MEDIUMS, 1, false),
       'styles' => $this->faker->randomElements(self::STYLES, $this->faker->numberBetween(1, 3), false),
-      'collections' => null,
       'ownership' => $this->faker->randomElement(['owned', 'consigned']),
       'status' => $this->faker->randomElement(ArtworkStatus::cases())->value,
       'details' => null,

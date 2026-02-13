@@ -29,7 +29,6 @@ export interface ArtworkProps {
   mediums?: string[] | null;
   styles?: string[] | null;
   dimensions?: DimensionsProps | null;
-  collections: string[];
 
   ownership?: string | null;
   owner_contact_id?: number | null;
