@@ -1,5 +1,5 @@
 import { DimensionsProps } from "@/types/dimensions";
-import { keyToTitle, stringifyObject } from "./stringHelper";
+import { keyToTitle, stringifyArray, stringifyObject } from "./stringHelper";
 import { formatAddress } from "./addressHelper";
 import dayjs from "dayjs";
 
@@ -25,17 +25,21 @@ function formatByKey(key: string, value: any): any {
     default:
       return typeof value === 'object' ?
         stringifyObject(value)
-        : (
-          typeof value === 'string' ?
-            keyToTitle(value)
-            :
-            (
-              typeof value === 'boolean' ?
-                value ? 'Yes' : 'No'
-                :
-                value
-            )
-        )
+        :
+        (Array.isArray(value) ?
+          stringifyArray(value)
+          :
+          (
+            typeof value === 'string' ?
+              keyToTitle(value)
+              :
+              (
+                typeof value === 'boolean' ?
+                  value ? 'Yes' : 'No'
+                  :
+                  value
+              )
+          ))
   }
 }
 
