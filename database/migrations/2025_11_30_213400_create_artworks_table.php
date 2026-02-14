@@ -38,6 +38,7 @@ return new class extends Migration
 
       $table->string('ownership', 50)->nullable(); // owned | consigned
       $table->foreignId('owner_contact_id')->nullable()->constrained('contacts')->nullOnDelete();
+      $table->text('consignment_terms')->nullable(); // Note about consignment agreement
       $table->text('provenance')->nullable(); // Note about history of ownership
 
       $table->json('details')->nullable(); // Additional metadata

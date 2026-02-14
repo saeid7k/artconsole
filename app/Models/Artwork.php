@@ -40,6 +40,7 @@ class Artwork extends Model implements HasMedia
     'dimensions',
     'ownership',
     'owner_contact_id',
+    'consignment_terms',
     'provenance',
     'details',
     'status',

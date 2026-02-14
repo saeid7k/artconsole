@@ -21,6 +21,7 @@ class ArtworkFactory extends Factory
   {
     $category = $this->faker->randomElement(ArtworkCategory::cases())->value;
     $editionType = $this->faker->randomElement(ArtworkEdition::cases())->value;
+    $ownership = $this->faker->randomElement(['owned', 'consigned']);
 
     return [
       'artist_data' => [
@@ -47,11 +48,12 @@ class ArtworkFactory extends Factory
       'subjects' => $this->faker->randomElements(self::SUBJECTS, 1, false),
       'mediums' => $this->faker->randomElements(self::MEDIUMS, 1, false),
       'styles' => $this->faker->randomElements(self::STYLES, $this->faker->numberBetween(1, 3), false),
-      'ownership' => $this->faker->randomElement(['owned', 'consigned']),
+      'ownership' => $ownership,
       'status' => $this->faker->randomElement(ArtworkStatus::cases())->value,
       'details' => null,
       'signed' => $this->faker->boolean(70),
       'signature_note' => $this->faker->optional(0.5, null)->sentence,
+      'consignment_terms' => $ownership === 'consigned' ? $this->faker->paragraph : null,
       'provenance' => $this->faker->optional(0.8, null)->paragraph,
     ];
   }
