@@ -1,6 +1,6 @@
 import colors from "@/Themes/theme";
 import { ArtworkProps } from "@/types/artwork";
-import { SignatureIcon } from "@hugeicons/core-free-icons";
+import { Agreement01Icon, SignatureIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "@inertiajs/react";
 import { Popover, Tooltip } from "antd";
@@ -47,22 +47,38 @@ function ArtworkTitleStack({
     large: 'md'
   }
 
+  const consignmentIconSize = {
+    medium: 16,
+    large: 20
+  }
+
   return (
     <div className={`flex flex-col ${rootClassName || ''} ${className}`}>
 
       {/* Title */}
 
-      <Link
-        className={twMerge(
-          'text-body font-semibold',
-          titleFontSizeClass[size],
-          serifTitle ? 'font-serif' : '',
-          linkedTitle ? '' : 'pointer-events-none'
+      <FlexBox gap={2} >
+        <Link
+          className={twMerge(
+            'text-body font-semibold',
+            titleFontSizeClass[size],
+            serifTitle ? 'font-serif' : '',
+            linkedTitle ? '' : 'pointer-events-none'
+          )}
+          href={route('artworks.show', artwork.id)}
+        >
+          {artwork.title}
+        </Link>
+        {artwork.ownership == 'consigned' && (
+          <Popover
+            title="Consigned Artwork"
+            content={artwork.owner ? `Owner: ${artwork?.owner?.full_name || 'Unknown'}` : null}
+            placement="right"
+          >
+            <HugeiconsIcon icon={Agreement01Icon} color={colors.gray[500]} size={consignmentIconSize[size]} />
+          </Popover>
         )}
-        href={route('artworks.show', artwork.id)}
-      >
-        {artwork.title}
-      </Link>
+      </FlexBox>
 
       {/* Artist */}
 
