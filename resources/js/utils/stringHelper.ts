@@ -54,6 +54,10 @@ function stringifyObject(obj: Record<string, any> | null | undefined): string {
     return '';
   }
 
+  if (Array.isArray(obj)) {
+    return stringifyArray(obj);
+  }
+
   return Object.entries(obj)
     .map(([key, value]) => `${key}: ${String(value)}`)
     .join(', ');
