@@ -51,6 +51,26 @@ class ArtworkController extends Controller
         $artistIds = explode(',', $request->artist);
         $q->whereIn('artist_id', $artistIds);
       })
+      ->when($request->medium, function ($q) use ($request) {
+        $mediums = explode(',', $request->medium);
+        $q->where(function ($q) use ($mediums) {
+          foreach ($mediums as $medium) {
+            $q->orWhereJsonContains('mediums', $medium);
+          }
+        });
+      })
+      ->when($request->style, function ($q) use ($request) {
+        $styles = explode(',', $request->style);
+        $q->where(function ($q) use ($styles) {
+          foreach ($styles as $style) {
+            $q->orWhereJsonContains('styles', $style);
+          }
+        });
+      })
+      ->when($request->ownership, function ($q) use ($request) {
+        $ownerships = explode(',', $request->ownership);
+        $q->whereIn('ownership', $ownerships);
+      })
       ->when($request->sort_by && $request->sort_order, function ($q) use ($request) {
         $q->orderBy($request->sort_by, $request->sort_order);
       }, function ($q) {

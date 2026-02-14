@@ -38,8 +38,8 @@ function ArtworksFilter() {
   // Tags Options from useTags Hook
 
   const { tags, tagsQuery } = useTags({ enabled: drawerOpen });
-  const mediumsOptions = tags.filter((tag: any) => tag.type === 'medium').map((tag: any) => ({ label: tag.value, value: tag.id.toString() }));
-  const stylesOptions = tags.filter((tag: any) => tag.type === 'style').map((tag: any) => ({ label: tag.value, value: tag.id.toString() }));
+  const mediumsOptions = tags.filter((tag: any) => tag.type === 'medium').map((tag: any) => ({ label: tag.value, value: tag.value }));
+  const stylesOptions = tags.filter((tag: any) => tag.type === 'style').map((tag: any) => ({ label: tag.value, value: tag.value }));
 
   // Renders
 
@@ -157,6 +157,25 @@ function ArtworksFilter() {
     )
   }
 
+  const renderOwnershipFilter = ({className = ''}) => {
+    return (
+      <Select
+        mode="multiple"
+        options={['Owned', 'Consigned'].map((item) => ({ label: item, value: item.toLowerCase() }))}
+        className={`min-w-[110px] ${className}`}
+        popupMatchSelectWidth={false}
+        placeholder="Ownership"
+        optionLabelProp="label"
+        showSearch={{
+          optionFilterProp: 'label',
+        }}
+        onChange={(value: string[]) => setFilter('ownership', value ?? [])}
+        value={filters.ownership.map(String) || []}
+        loading={tagsQuery.isLoading}
+      />
+    )
+  }
+
   return (
     <>
       {windowWidth > 1280 && (
@@ -233,6 +252,10 @@ function ArtworksFilter() {
           <div>
             <div className="label">Status</div>
             {renderStatusFilter({className: 'w-full'})}
+          </div>
+          <div>
+            <div className="label">Ownership</div>
+            {renderOwnershipFilter({className: 'w-full'})}
           </div>
         </div>
       </Drawer>
