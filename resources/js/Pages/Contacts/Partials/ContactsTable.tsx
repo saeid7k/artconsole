@@ -74,7 +74,7 @@ function ContactsTable({ contacts }: { contacts: PageProps }) {
       showSorterTooltip: false,
       render: (value, record) => {
         return (
-          <RelationshipTags key={record.id} contact={record as ContactProps} manageButtonDelay={500} />
+          <RelationshipTags key={record.id} contact={record as ContactProps} />
         )
       },
       width: 180,
