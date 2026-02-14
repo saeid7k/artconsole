@@ -32,6 +32,7 @@ export interface ArtworkProps {
 
   ownership?: string | null;
   owner_contact_id?: number | null;
+  consignment_terms?: string | null;
   provenance?: string | null;
 
   details?: object | null;
