@@ -9,6 +9,7 @@ function useFilters(routeName: string) {
     'artist',
     'medium',
     'style',
+    'ownership',
   ];
 
   const filters = (() => {
