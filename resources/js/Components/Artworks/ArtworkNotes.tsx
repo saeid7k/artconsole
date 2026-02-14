@@ -1,6 +1,6 @@
 import colors from "@/Themes/theme";
 import { ArtworkProps } from "@/types/artwork";
-import { AddCircleIcon } from "@hugeicons/core-free-icons";
+import { AddIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
@@ -84,7 +84,7 @@ function ArtworkNotes({ artwork }: { artwork: ArtworkProps }) {
         onClick={addNote}
       >
         <FlexBox direction="col" className="text-muted" >
-          <HugeiconsIcon icon={AddCircleIcon} size={64} strokeWidth={0.5} color={colors.muted.DEFAULT} />
+          <HugeiconsIcon icon={AddIcon} size={64} strokeWidth={0.5} color={colors.muted.DEFAULT} />
           <div className="text-lg">Add Note</div>
         </FlexBox>
       </div>
