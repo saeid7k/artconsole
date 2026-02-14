@@ -753,6 +753,14 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
               </div>
 
               <Form.Item
+                label="Consignment Terms"
+                name="consignment_terms"
+                rules={[{ max: 20000, message: 'Consignment Terms cannot exceed 20000 characters'}]}
+              >
+                <Input.TextArea rows={4} />
+              </Form.Item>
+
+              <Form.Item
                 label="SKU"
                 className="sm:w-1/2"
                 >
