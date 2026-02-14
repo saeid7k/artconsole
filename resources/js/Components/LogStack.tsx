@@ -57,7 +57,7 @@ function LogStack({ log }: { log: ActivityLogProps }) {
     return (
       <>
         {Object.entries(log.properties?.attributes || {}).map(([key, value]) => (
-          <FlexBox key={key} gap={2}>
+          <FlexBox key={key} gap={2} alignItems="start">
             <label>{keyToTitle(key)}:</label><div className="line-clamp-2 truncate whitespace-normal !max-w-[400px]">{formatByKey(key, value)}</div>
           </FlexBox>
         ))}
