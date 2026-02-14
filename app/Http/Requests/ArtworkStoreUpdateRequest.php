@@ -47,6 +47,7 @@ class ArtworkStoreUpdateRequest extends FormRequest
 
       'ownership' => ['nullable', 'string', 'in:owned,consigned'],
       'owner_contact_id' => ['nullable', 'integer', 'exists:contacts,id'],
+      'consignment_terms' => ['nullable', 'string', 'max:20000'],
       'provenance' => ['nullable', 'string', 'max:20000'],
 
       'details' => ['nullable', 'array'],
