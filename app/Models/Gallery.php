@@ -29,7 +29,7 @@ class Gallery extends Model implements HasMedia
 
   // Appends
 
-  protected $appends = [ 'abilities', 'members_count', 'logo', 'formatted_address' ];
+  protected $appends = [ 'abilities', 'members_count', 'logo', 'formatted_address', 'meta' ];
 
   public function getAbilitiesAttribute()
   {
@@ -54,6 +54,11 @@ class Gallery extends Model implements HasMedia
   public function getFormattedAddressAttribute(): string
   {
     return AddressHelper::formatAddress($this->address);
+  }
+
+  public function getMetaAttribute()
+  {
+    return $this->getMetas();
   }
 
   // Relationships
