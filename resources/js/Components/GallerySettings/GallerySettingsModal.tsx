@@ -5,9 +5,10 @@ import { BankIcon, Cancel01Icon, Key01Icon, Link04Icon, Location03Icon, Settings
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router, usePage } from "@inertiajs/react"
 import { Divider, Modal, Tabs } from "antd"
+import Accounting from "./Accounting"
+import Address from "./Address"
 import General from "./General"
 import Members from "./Members"
-import Address from "./Address"
 
 function GallerySettingsModal({ open, setOpen }: { open: boolean, setOpen: (open: boolean) => void }) {
 
@@ -38,7 +39,7 @@ function GallerySettingsModal({ open, setOpen }: { open: boolean, setOpen: (open
     {
       key: 'accounting',
       label: <div className="flex items-center gap-1"><HugeiconsIcon icon={BankIcon} size={20} />Accounting</div>,
-      children: <div>Accounting...</div>
+      children: <Accounting />
     },
     {
       key: 'links',
