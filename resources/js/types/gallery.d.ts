@@ -19,4 +19,5 @@ export interface GalleryProps {
     delete: boolean;
     manage_members: boolean;
   };
+  meta?: { [key: string]: any }
 }

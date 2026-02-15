@@ -5,12 +5,14 @@ import ManageTagsModal from "@/Components/ManageTagsModal";
 import { ARTWORK_CATEGORIES, DEFAULT_ARTWORK_CATEGORY } from "@/constants/artworkCategories";
 import ARTWORK_EDITIONS from "@/constants/artworkEditions";
 import ARTWORK_STATUSES, { DEFAULT_ARTWORK_STATUS } from "@/constants/artworkStatuses";
+import { CURRENCIES } from "@/constants/currencies";
 import { FORM_RULES } from "@/constants/formRules";
 import useLocations from "@/hooks/useLocations";
 import { ArtworkProps } from "@/types/artwork";
+import { UsePageProps } from "@/types/usePage";
 import { Alert02Icon, InboxUploadIcon, MagicWand05Icon, Settings01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { router } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Button, Checkbox, Drawer, Form, Input, InputNumber, message, Radio, Segmented, Select, Space, Spin, Tabs, Tooltip } from "antd";
 import Dragger from "antd/es/upload/Dragger";
@@ -18,6 +20,7 @@ import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import { serialize } from "object-to-formdata";
 import { useState } from "react";
+import CONFIGS from "~/resources/configs.json";
 
 type Props = {
   mode?: 'create' | 'update';
@@ -29,6 +32,7 @@ type Props = {
 function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: Props) {
 
   const [form] = Form.useForm();
+  const currency = usePage<UsePageProps>().props.current_gallery?.meta?.currency || CONFIGS.defaults.currency
 
   // Drawer handlers
 
@@ -390,7 +394,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                 className="sm:w-1/4"
               >
                 <Space.Compact>
-                  <Space.Addon>$</Space.Addon>
+                  <Space.Addon>{CURRENCIES.find(c => c.code === currency)?.symbol}</Space.Addon>
                   <InputNumber
                     min={0}
                     step={1}
