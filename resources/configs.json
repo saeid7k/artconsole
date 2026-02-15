@@ -1,6 +1,7 @@
 {
   "defaults": {
     "country": "Canada",
+    "currency": "CAD",
     "access_level": "viewer"
   }
 }

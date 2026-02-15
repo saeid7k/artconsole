@@ -1,5 +1,4 @@
 import ACCESS_LEVELS from "@/constants/accessLevels";
-import CONFIGS from "@/constants/configs.json";
 import { GalleryProps } from "@/types/gallery";
 import { ucFirst } from "@/utils/stringHelper";
 import { AddMaleIcon, Cancel01Icon } from "@hugeicons/core-free-icons";
@@ -9,6 +8,7 @@ import { Form, Input, message, Modal, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
 import axios from "axios";
 import { useState } from "react";
+import CONFIGS from "~/resources/configs.json";
 import GalleryAvatar from "../Galleries/GalleryAvatar";
 
 type Props = {
