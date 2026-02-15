@@ -144,4 +144,17 @@ class GalleryController extends Controller
       }),
     );
   }
+
+  public function updateAccounting(Request $request, Gallery $gallery)
+  {
+    $this->authorize('update', $gallery);
+
+    $request->validate([
+      'currency' => ['nullable', 'string', 'max:10'],
+    ]);
+
+    $gallery->setMeta('currency', $request->input('currency'));
+
+    return response(['message' => 'Gallery accounting info updated successfully.']);
+  }
 }
