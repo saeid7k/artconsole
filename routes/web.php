@@ -41,6 +41,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('{gallery}/update', [App\Http\Controllers\GalleryController::class, 'update'])->name('update');
     Route::post('{gallery}/update-address', [App\Http\Controllers\GalleryController::class, 'updateAddress'])->name('update-address');
     Route::get('artists-options', [App\Http\Controllers\GalleryController::class, 'getArtistsOptions'])->name('artists-options');
+    Route::post('{gallery}/update-accounting', [App\Http\Controllers\GalleryController::class, 'updateAccounting'])->name('update-accounting');
   });
 
   Route::prefix('artworks')->name('artworks.')->group(function () {
