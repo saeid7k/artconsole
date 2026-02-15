@@ -109,6 +109,11 @@ class Gallery extends Model implements HasMedia
       ->orWhereNull('gallery_id');
   }
 
+  public function reports(): HasMany
+  {
+    return $this->hasMany(Report::class);
+  }
+
   // Methods
 
   public function isMember(User $user)
