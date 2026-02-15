@@ -33,7 +33,7 @@ function LocationCard({ location }: { location: LocationProps }) {
   function handleDelete() {
     if (location.artworks_count > 0) {
       notificationApi.error({
-        title: 'Cannot Delete Location',
+        title: 'Cannot Delete Location with Artworks',
         description: 'This location has artworks associated with it. Please move or delete the artworks before deleting this location.',
         duration: 10,
         showProgress: true,
