@@ -1,7 +1,10 @@
 import { DimensionsProps } from "@/types/dimensions";
-import { keyToTitle, stringifyArray, stringifyObject } from "./stringHelper";
-import { formatAddress } from "./addressHelper";
+import { UsePageProps } from "@/types/usePage";
+import { usePage } from "@inertiajs/react";
 import dayjs from "dayjs";
+import CONFIGS from "~/resources/configs.json";
+import { formatAddress } from "./addressHelper";
+import { keyToTitle, stringifyArray, stringifyObject } from "./stringHelper";
 
 function formatByKey(key: string, value: any): any {
   switch (key) {
@@ -68,7 +71,7 @@ function trimWebsite(website: string): string {
   return website.replace(/^(https?:\/\/)?(www\.)?/, '');
 }
 
-function formatCurrency(amount: number | string, maximumFractionDigits: number = 2, currency: string = 'CAD', locale: string = 'en-CA'): string {
+function formatCurrency(amount: number | string, maximumFractionDigits: number = 2, currency: string| null = null, locale: string = 'en-CA'): string {
   if (amount === null || amount === undefined || amount === '') return '';
 
   const num = typeof amount === 'string' ? parseFloat(amount) : amount;
@@ -77,7 +80,7 @@ function formatCurrency(amount: number | string, maximumFractionDigits: number =
 
   return new Intl.NumberFormat(locale, {
     style: 'currency',
-    currency: currency,
+    currency: currency || usePage<UsePageProps>().props.current_gallery?.meta?.currency || CONFIGS.defaults.currency || 'CAD',
     minimumFractionDigits: 0,
     maximumFractionDigits: maximumFractionDigits,
   }).format(num);
@@ -98,4 +101,5 @@ function formatDimensions({dimensions, showDepth = false}: {dimensions: Dimensio
   return dimensionString;
 }
 
-export { formatByKey, formatPhoneNumber, trimWebsite, formatCurrency, formatDimensions };
+export { formatByKey, formatCurrency, formatDimensions, formatPhoneNumber, trimWebsite };
+
