@@ -17,9 +17,9 @@ return new class extends Migration
       $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
       $table->string('type');
       $table->string('name');
-      $table->text('description');
-      $table->json('options');
-      $table->json('artworks');
+      $table->text('description')->nullable();
+      $table->json('options')->nullable();
+      $table->json('artworks')->nullable();
       $table->timestamps();
     });
   }
