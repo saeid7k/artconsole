@@ -1,6 +1,8 @@
+import { DEFAULT_SIZE, SIZE_OPTIONS } from "@/constants/artworksLabelReport";
 import { useWindow } from "@/hooks/useWindow";
 import { keyToTitle } from "@/utils/stringHelper";
-import { Drawer, Form, Input } from "antd"
+import { Checkbox, Divider, Drawer, Form, Input, Select } from "antd";
+import FlexBox from "../Containers/FlexBox";
 
 type Props = {
   type: 'artworks-label' | 'inventory-report';
@@ -14,9 +16,17 @@ function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
 
   const [form] = Form.useForm()
 
+  const title = (
+    <div>
+      <span>Create New Report</span>
+      <Divider orientation="vertical" />
+      <span className="text-primary-700 dark:text-primary-300">{keyToTitle(type)}</span>
+    </div>
+  )
+
   return (
     <Drawer
-      title={`Create New Report | ${keyToTitle(type)}`}
+      title={title}
       placement="right"
       size={ breakpoint == "xs" ? windowWidth: (windowWidth * 0.9)}
       onClose={onClose}
@@ -27,13 +37,74 @@ function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
         form={form}
         layout="vertical"
       >
-        <Form.Item
-          name="name"
-          label="Report Name"
-          rules={[{ required: true, message: 'Please input the report name!' }]}
-        >
-          <Input placeholder="Enter report name" />
-        </Form.Item>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6">
+          <div>
+            {/* Report Name */}
+            <Form.Item
+              name="name"
+              label="Report Name"
+              rules={[{ required: true, message: 'Please input the report name!' }]}
+            >
+              <Input placeholder="Enter report name" />
+            </Form.Item>
+
+            {/* Description */}
+            <Form.Item
+              name="description"
+              label="Description"
+            >
+              <Input.TextArea placeholder="Enter report description" rows={4} />
+            </Form.Item>
+          </div>
+          <div>
+            {/* Size */}
+            <Form.Item
+              name="size"
+              label="Size"
+            >
+              <Select
+                options={SIZE_OPTIONS}
+                optionRender={(option: any) => (
+                  <FlexBox direction="col" alignItems="start" gap={0}>
+                    <div>{option.label}</div>
+                    <div className="text-sm font-light">{option.data.description}</div>
+                  </FlexBox>
+                )}
+                labelRender={(props) => (
+                  <FlexBox direction="col" alignItems="start" gap={0}>
+                    <div>{props.label}</div>
+                    <div className="text-sm font-light">{SIZE_OPTIONS.find(option => option.value === props.value)?.description}</div>
+                  </FlexBox>
+                )}
+                placeholder="Select size"
+                defaultValue={DEFAULT_SIZE.value}
+              />
+            </Form.Item>
+
+            {/* SKU */}
+            <Form.Item
+              name="include_sku"
+              valuePropName="checked"
+              initialValue={true}
+              className="mb-0"
+            >
+              <Checkbox>
+                Include SKU
+              </Checkbox>
+            </Form.Item>
+
+            {/* Price */}
+            <Form.Item
+              name="include_price"
+              valuePropName="checked"
+              initialValue={true}
+            >
+              <Checkbox>
+                Include Price
+              </Checkbox>
+            </Form.Item>
+          </div>
+        </div>
       </Form>
     </Drawer>
   )
