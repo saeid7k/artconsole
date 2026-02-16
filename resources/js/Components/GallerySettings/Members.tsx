@@ -252,7 +252,7 @@ function Members() {
             </Button>
           </div>
         )}
-        <div className="flex items-center gap-1 text-primary-700">
+        <div className="flex items-center gap-1 text-primary-700 dark:text-primary-300">
           <HugeiconsIcon icon={UserMultipleIcon} size={20} />
           <div>Members</div>
         </div>
@@ -268,7 +268,7 @@ function Members() {
         />
         {invitations.length > 0 && (
           <>
-            <div className="flex items-center gap-1 text-primary-700 mt-5">
+            <div className="flex items-center gap-1 text-primary-700 dark:text-primary-300 mt-5">
               <HugeiconsIcon icon={SentIcon} size={20} />
               <div>Pending Invitations</div>
             </div>

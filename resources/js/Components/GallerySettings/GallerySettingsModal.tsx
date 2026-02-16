@@ -60,7 +60,7 @@ function GallerySettingsModal({ open, setOpen }: { open: boolean, setOpen: (open
           <div className="flex items-center gap-3">
             <div>Gallery Settings</div>
             <Divider orientation="vertical" className="top-0 border-gray-300" />
-            <div className="text-primary-700">{gallery.name}</div>
+            <div className="text-primary-700 dark:text-primary-300">{gallery.name}</div>
           </div>
         }
         open={open}
