@@ -10,9 +10,10 @@ type Props = {
     title: string | React.ReactNode;
   }[];
   onCreateButtonClick?: () => void;
+  extraTitleContent?: React.ReactNode;
 }
 
-function PageTitle({ title, counter = null, toolbar = null, breadcrumbItems = [], onCreateButtonClick = undefined }: Props) {
+function PageTitle({ title, counter = null, toolbar = null, breadcrumbItems = [], onCreateButtonClick = undefined, extraTitleContent = null }: Props) {
   return (
       <div
         className="flex items-center justify-between flex-wrap gap-2 px-6 pb-3 w-full grow-0"
@@ -38,6 +39,7 @@ function PageTitle({ title, counter = null, toolbar = null, breadcrumbItems = []
                 </Button>
               </Tooltip>
             )}
+            {extraTitleContent && <div>{extraTitleContent}</div>}
           </div>
         </div>
         {toolbar && <div>{toolbar}</div>}
