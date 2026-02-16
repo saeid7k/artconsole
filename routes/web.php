@@ -113,6 +113,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/{note}/collaborators', [App\Http\Controllers\NoteController::class, 'getCollaborators'])->name('collaborators');
     Route::delete('/{note}', [App\Http\Controllers\NoteController::class, 'destroy']) ->name('destroy');
   });
+
+  Route::prefix('reports')->name('reports.')->group(function () {
+    Route::get('/', [App\Http\Controllers\ReportController::class, 'index'])->name('index');
+  });
 });
 
 Route::middleware(['auth', Admin::class])->group(function () {
