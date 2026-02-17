@@ -55,14 +55,6 @@ function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
               <Input placeholder="Enter report name" />
             </Form.Item>
 
-            {/* Description */}
-            <Form.Item
-              name="description"
-              label="Description"
-            >
-              <Input.TextArea placeholder="Enter report description" rows={4} />
-            </Form.Item>
-
             {/* Size */}
             <Form.Item
               name="size"
@@ -111,6 +103,13 @@ function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
             </Form.Item>
           </div>
           <div>
+            {/* Description */}
+            <Form.Item
+              name="description"
+              label="Description"
+            >
+              <Input.TextArea placeholder="Enter report description" rows={5} />
+            </Form.Item>
           </div>
         </div>
         <div>
