@@ -432,4 +432,28 @@ class ArtworkController extends Controller
       'message' => 'Artworks status updated successfully.',
     ]);
   }
+
+  public function search(Request $request)
+  {
+    $this->authorize('viewAny', Artwork::class);
+
+    $request->validate([
+      'query' => ['sometimes', 'nullable', 'string'],
+    ]);
+
+    $user = auth()->user();
+    $gallery = $user->currentGallery();
+
+    $artworks = $gallery->artworks()
+      ->when($request->query, function ($q) use ($request) {
+        $search = '%' . strtolower($request->input('query')) . '%';
+        $q->where(function ($qq) use ($search) {
+          $qq->whereRaw('LOWER(title) LIKE ?', $search)
+            ->orWhereRaw('LOWER(sku) LIKE ?', $search);
+        });
+      })
+      ->simplePaginate(10);
+
+    return response()->json($artworks);
+  }
 }
