@@ -1,7 +1,8 @@
 import { DEFAULT_SIZE, SIZE_OPTIONS } from "@/constants/artworksLabelReport";
 import { useWindow } from "@/hooks/useWindow";
 import { keyToTitle } from "@/utils/stringHelper";
-import { Checkbox, Divider, Drawer, Form, Input, Select } from "antd";
+import { Button, Checkbox, Divider, Drawer, Form, Input, Select } from "antd";
+import ArtworkSelector from "../Artworks/ArtworkSelector";
 import FlexBox from "../Containers/FlexBox";
 
 type Props = {
@@ -28,10 +29,16 @@ function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
     <Drawer
       title={title}
       placement="right"
-      size={ breakpoint == "xs" ? windowWidth: (windowWidth * 0.9)}
+      size={ breakpoint == "xs" ? windowWidth : (Math.min(windowWidth * 0.9, 1024))}
       onClose={onClose}
       open={show}
       keyboard={false}
+      extra={<Button onClick={() => form.submit()} type="primary">Create</Button>}
+      styles={{
+        body: {
+          paddingBottom: '3rem'
+        }
+      }}
     >
       <Form
         form={form}
@@ -55,8 +62,7 @@ function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
             >
               <Input.TextArea placeholder="Enter report description" rows={4} />
             </Form.Item>
-          </div>
-          <div>
+
             {/* Size */}
             <Form.Item
               name="size"
@@ -104,6 +110,12 @@ function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
               </Checkbox>
             </Form.Item>
           </div>
+          <div>
+          </div>
+        </div>
+        <div>
+          <div className="label">Select Artworks</div>
+          <ArtworkSelector />
         </div>
       </Form>
     </Drawer>
