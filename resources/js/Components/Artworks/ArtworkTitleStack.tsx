@@ -17,7 +17,9 @@ type Props = {
   showEdition?: boolean;
   showSigned?: boolean;
   showYear?: boolean;
+  showConsignment?: boolean;
   size?: "medium" | "large";
+  disableLinks?: boolean;
   className?: string;
 }
 
@@ -30,7 +32,9 @@ function ArtworkTitleStack({
   showEdition = true,
   showSigned = true,
   showYear = true,
+  showConsignment = true,
   size = "medium",
+  disableLinks = false,
   className = '',
 }: Props)
 {
@@ -63,13 +67,13 @@ function ArtworkTitleStack({
             'text-body font-semibold',
             titleFontSizeClass[size],
             serifTitle ? 'font-serif' : '',
-            linkedTitle ? '' : 'pointer-events-none'
+            (linkedTitle && !disableLinks) ? '' : 'pointer-events-none'
           )}
           href={route('artworks.show', artwork.id)}
         >
           {artwork.title}
         </Link>
-        {artwork.ownership == 'consigned' && (
+        {showConsignment && artwork.ownership == 'consigned' && (
           <Popover
             title="Consigned Artwork"
             content={artwork.owner ? `Owner: ${artwork?.owner?.full_name || 'Unknown'}` : null}
@@ -87,7 +91,10 @@ function ArtworkTitleStack({
         {artwork.artist ? (
           <Tooltip title="View Artist Profile" mouseEnterDelay={0.5} placement={artistTooltipPlacement}>
             <Link
-              className="text-accent"
+              className={twMerge(
+                "text-accent",
+                disableLinks ? 'pointer-events-none' : ''
+              )}
               href={route('contacts.show', artwork.artist.id)}
             >
               {artistName}
