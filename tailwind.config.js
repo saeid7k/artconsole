@@ -20,6 +20,9 @@ export default {
 
     theme: {
     	extend: {
+        gridTemplateColumns: {
+          '24': 'repeat(24, minmax(0, 1fr))',
+        },
     		fontFamily: {
     			sans: [
             'Segoe UI',
@@ -30,11 +33,6 @@ export default {
             ...defaultTheme.fontFamily.serif
           ]
     		},
-    		// borderRadius: {
-    		// 	lg: 'var(--radius)',
-    		// 	md: 'calc(var(--radius) - 2px)',
-    		// 	sm: 'calc(var(--radius) - 4px)'
-    		// },
     		colors: {
           body: 'var(--text-body)',
     			background: 'hsl(var(--background))',
