@@ -8,14 +8,16 @@ import ColumnTitle from "../Containers/ColumnTitle";
 import LoadingSpinner from "../LoadingSpinner";
 import ArtworkTitleStack from "./ArtworkTitleStack";
 import { twMerge } from "tailwind-merge";
+import ArtworkSelectCard from "./ArtworkSelectCard";
 
 function ArtworkSelector() {
 
-  const [sourceItems, setSourceItems] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loadMoreUrl, setLoadMoreUrl] = useState<string | null>(null);
-  const [checkedItems, setCheckedItems] = useState<any[]>([]);
+  const [sourceItems, setSourceItems] = useState<any[]>([]);
   const [selectedItems, setSelectedItems] = useState<any[]>([]);
+  const [checkedSourceItems, setCheckedSourceItems] = useState<any[]>([]);
+  const [checkedSelectedItems, setCheckedSelectedItems] = useState<any[]>([]);
 
   const searchArtworksMutation = useMutation({
     mutationFn: (searchTerm: string) => axios.post(route('artworks.search'), {
@@ -45,8 +47,8 @@ function ArtworkSelector() {
     }
   })
 
-  function toggleCheckArtwork(artwork: any) {
-    setCheckedItems(prev => {
+  function toggleCheckSource(artwork: any) {
+    setCheckedSourceItems(prev => {
       if (prev.find((p: any) => p.id === artwork.id)) {
         return prev.filter(p => p.id !== artwork.id);
       } else {
@@ -55,9 +57,24 @@ function ArtworkSelector() {
     })
   }
 
-  function selectChecked() {
-    setSelectedItems(prev => [...prev, ...checkedItems.filter(c => !prev.find((p: any) => p.id === c.id))]);
-    setCheckedItems([]);
+  function toggleCheckSelected(artwork: any) {
+    setCheckedSelectedItems(prev => {
+      if (prev.find((p: any) => p.id === artwork.id)) {
+        return prev.filter(p => p.id !== artwork.id);
+      } else {
+        return [...prev, artwork];
+      }
+    })
+  }
+
+  function handleSelect() {
+    setSelectedItems(prev => [...prev, ...checkedSourceItems.filter(c => !prev.find((p: any) => p.id === c.id))]);
+    setCheckedSourceItems([]);
+  }
+
+  function handleDeselect() {
+    setSelectedItems(prev => prev.filter(p => !checkedSelectedItems.find((c: any) => c.id === p.id)));
+    setCheckedSelectedItems([]);
   }
 
   return (
@@ -65,7 +82,7 @@ function ArtworkSelector() {
       className="grid grid-cols-24 gap-3"
     >
       <div className="col-span-10" >
-        <ColumnTitle>Source ({sourceItems.length})</ColumnTitle>
+        <ColumnTitle>Source</ColumnTitle>
         <Space.Compact className="w-full">
           <Input
             type="search"
@@ -89,31 +106,12 @@ function ArtworkSelector() {
             <Empty description="No artworks found" />
           )}
           {sourceItems.length > 0 && sourceItems.map((artwork: any) => (
-            <div key={artwork.id}
-              className={twMerge(
-                "relative flex border hover:bg-primary-light cursor-pointer transition-all",
-                checkedItems.find((c: any) => c.id === artwork.id) && "bg-primary-light !border-primary"
-              )}
-              onClick={() => toggleCheckArtwork(artwork)}
-            >
-              <img
-                src={artwork.main_image_thumb_url}
-                alt={artwork.title}
-                className="w-20 aspect-square object-cover"
-              />
-              <div
-                className="p-1"
-              >
-                <ArtworkTitleStack artwork={artwork} showSigned={false} showEdition={false} showConsignment={false} disableLinks />
-              </div>
-              <HugeiconsIcon
-                icon={CheckmarkCircleIcon}
-                className={twMerge(
-                  "absolute right-1 top-1 hidden",
-                  checkedItems.find((c: any) => c.id === artwork.id) && "block text-primary"
-                )}
-              />
-            </div>
+            <ArtworkSelectCard
+              key={artwork.id}
+              artwork={artwork}
+              checkedItems={checkedSourceItems}
+              onClick={toggleCheckSource}
+            />
           ))}
           <div className="mx-1 mb-3">
             <Button
@@ -135,7 +133,8 @@ function ArtworkSelector() {
             type="primary"
             icon={<HugeiconsIcon icon={ArrowRight02Icon} />}
             iconPlacement="end"
-            onClick={selectChecked}
+            onClick={handleSelect}
+            disabled={checkedSourceItems.length === 0}
           >
             Select
           </Button>
@@ -143,6 +142,8 @@ function ArtworkSelector() {
             type="primary"
             icon={<HugeiconsIcon icon={ArrowLeft02Icon} />}
             iconPlacement="start"
+            onClick={handleDeselect}
+            disabled={checkedSelectedItems.length === 0}
           >
             Deselect
           </Button>
@@ -150,6 +151,7 @@ function ArtworkSelector() {
             type="default"
             className="mt-3"
             onClick={() => setSelectedItems([])}
+            disabled={selectedItems.length === 0}
           >
             Clear Selection
           </Button>
@@ -157,6 +159,19 @@ function ArtworkSelector() {
       </div>
       <div className="col-span-10" >
         <ColumnTitle>Selected ({selectedItems.length})</ColumnTitle>
+        <div className="flex flex-col gap-2 mt-2 h-[400px] overflow-y-auto">
+          {selectedItems.length === 0 && (
+            <Empty description="No artworks selected yet" />
+          )}
+          {selectedItems.length > 0 && selectedItems.map((artwork: any) => (
+            <ArtworkSelectCard
+              key={artwork.id}
+              artwork={artwork}
+              checkedItems={checkedSelectedItems}
+              onClick={toggleCheckSelected}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
