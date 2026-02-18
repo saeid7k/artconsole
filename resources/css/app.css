@@ -38,6 +38,7 @@
 
   --primary: var(--primary-500);
   --primary-foreground: hsl(210 20% 98%);
+  --primary-light: theme('colors.purple.50');
   --primary-50: hsl(270 100% 97.5%);
   /* #faf5ff */
   --primary-100: hsl(270 100% 92.0%);
@@ -107,6 +108,7 @@
 
   --primary: var(--primary-400);
   --primary-foreground: var(--primary-900);
+  --primary-light: theme('colors.purple.900');
 }
 
 body {
@@ -148,6 +150,10 @@ blockquote {
 
 .bg-soft {
   background-color: var(--bg-soft);
+}
+
+.bg-primary-light {
+  background-color: var(--primary-light);
 }
 
 .border-light {
