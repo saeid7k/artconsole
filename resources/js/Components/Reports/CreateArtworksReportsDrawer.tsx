@@ -4,6 +4,7 @@ import { keyToTitle } from "@/utils/stringHelper";
 import { Button, Checkbox, Divider, Drawer, Form, Input, Select } from "antd";
 import ArtworkSelector from "../Artworks/ArtworkSelector";
 import FlexBox from "../Containers/FlexBox";
+import StyledDivider from "../StyledDivider";
 
 type Props = {
   type: 'artworks-label' | 'inventory-report';
@@ -112,8 +113,8 @@ function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
             </Form.Item>
           </div>
         </div>
-        <div>
-          <div className="label">Select Artworks</div>
+        <div className="mb-5">
+          <StyledDivider rootClassName="mb-3" >Select Artworks</StyledDivider>
           <ArtworkSelector />
         </div>
       </Form>
