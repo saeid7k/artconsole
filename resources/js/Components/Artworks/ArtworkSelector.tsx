@@ -10,7 +10,11 @@ import ArtworkTitleStack from "./ArtworkTitleStack";
 import { twMerge } from "tailwind-merge";
 import ArtworkSelectCard from "./ArtworkSelectCard";
 
-function ArtworkSelector() {
+type Props = {
+  setSelectedIds: (ids: number[]) => void;
+}
+
+function ArtworkSelector({ setSelectedIds }: Props) {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [loadMoreUrl, setLoadMoreUrl] = useState<string | null>(null);
@@ -38,10 +42,6 @@ function ArtworkSelector() {
       console.error('Failed to search artworks:', err);
     }
   })
-
-  useEffect(() => {
-    searchArtworksMutation.mutate({searchTerm});
-  }, []);
 
   const loadMoreMutation = useMutation({
     mutationFn: () => axios.post(loadMoreUrl!).then(res => res.data),
@@ -92,6 +92,14 @@ function ArtworkSelector() {
     setSelectedItems([]);
     setCheckedSelectedItems([]);
   }
+
+  useEffect(() => {
+    searchArtworksMutation.mutate({searchTerm});
+  }, []);
+
+  useEffect(() => {
+    setSelectedIds(selectedItems.map(item => item.id));
+  }, [selectedItems]);
 
   return (
     <div
