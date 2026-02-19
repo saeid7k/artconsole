@@ -8,9 +8,10 @@ type Props = {
   artwork: ArtworkProps;
   checkedItems?: ArtworkProps[];
   onClick?: (artwork: ArtworkProps) => void;
+  size?: 'small' | 'default';
 }
 
-function ArtworkSelectCard({ artwork, checkedItems, onClick }: Props) {
+function ArtworkSelectCard({ artwork, checkedItems, onClick, size = 'default' }: Props) {
   return (
     <div key={artwork.id}
       className={twMerge(
@@ -23,13 +24,24 @@ function ArtworkSelectCard({ artwork, checkedItems, onClick }: Props) {
         <img
           src={artwork.main_image_thumb_url}
           alt={artwork.title}
-          className="w-20 aspect-square object-cover"
+          className={twMerge(
+            "aspect-square object-cover",
+            size === 'small' ? "w-8" : "w-20"
+          )}
         />
       )}
       <div
         className="p-1"
       >
-        <ArtworkTitleStack artwork={artwork} showSigned={false} showEdition={false} showConsignment={false} disableLinks />
+        <ArtworkTitleStack
+          artwork={artwork}
+          showArtist={size === 'small' ? false : true}
+          showYear={size === 'small' ? false : true}
+          showSigned={false}
+          showEdition={false}
+          showConsignment={false}
+          disableLinks
+        />
       </div>
       <HugeiconsIcon
         icon={CheckmarkCircleIcon}
