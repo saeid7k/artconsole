@@ -113,10 +113,11 @@ function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
             </Form.Item>
           </div>
         </div>
-        <div className="mb-5">
-          <StyledDivider rootClassName="mb-3" >Select Artworks</StyledDivider>
+        <StyledDivider rootClassName="mb-3" >Select Artworks</StyledDivider>
+        <div className="mb-5 w-full overflow-x-auto">
           <ArtworkSelector />
         </div>
+        <Divider />
       </Form>
     </Drawer>
   )
