@@ -439,20 +439,27 @@ class ArtworkController extends Controller
 
     $request->validate([
       'query' => ['sometimes', 'nullable', 'string'],
+      'all' => ['sometimes', 'boolean'],
     ]);
 
     $user = auth()->user();
     $gallery = $user->currentGallery();
 
-    $artworks = $gallery->artworks()
+    $artworksQuery = $gallery->artworks()
       ->when($request->query, function ($q) use ($request) {
         $search = '%' . strtolower($request->input('query')) . '%';
         $q->where(function ($qq) use ($search) {
           $qq->whereRaw('LOWER(title) LIKE ?', $search)
             ->orWhereRaw('LOWER(sku) LIKE ?', $search);
         });
-      })
-      ->simplePaginate(10);
+      });
+
+    if ($request->all) {
+      $count = $artworksQuery->count();
+      $artworks = $artworksQuery->paginate($count > 1000 ? 1000 : $count);
+    } else {
+      $artworks = $artworksQuery->paginate(10);
+    }
 
     return response()->json($artworks);
   }
