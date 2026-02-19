@@ -5,6 +5,8 @@ import { Button, Checkbox, Divider, Drawer, Form, Input, Select } from "antd";
 import ArtworkSelector from "../Artworks/ArtworkSelector";
 import FlexBox from "../Containers/FlexBox";
 import StyledDivider from "../StyledDivider";
+import { useState } from "react";
+import dayjs from "dayjs";
 
 type Props = {
   type: 'artworks-label' | 'inventory-report';
@@ -15,8 +17,13 @@ type Props = {
 function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
 
   const { windowWidth, breakpoint } = useWindow()
-
   const [form] = Form.useForm()
+
+  const [selectedArtworkIds, setSelectedArtworkIds] = useState<number[]>([]);
+
+  const handleClose = () => {
+    onClose();
+  }
 
   const title = (
     <div>
@@ -31,10 +38,18 @@ function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
       title={title}
       placement="right"
       size={ breakpoint == "xs" ? windowWidth : (Math.min(windowWidth * 0.9, 1024))}
-      onClose={onClose}
+      onClose={handleClose}
       open={show}
       keyboard={false}
-      extra={<Button onClick={() => form.submit()} type="primary">Create</Button>}
+      extra={
+        <Button
+          type="primary"
+          onClick={() => form.submit()}
+          disabled={selectedArtworkIds.length === 0}
+        >
+          Create
+        </Button>
+      }
       styles={{
         body: {
           paddingBottom: '3rem'
@@ -44,6 +59,13 @@ function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
       <Form
         form={form}
         layout="vertical"
+        initialValues={{
+          'name': `${keyToTitle(type)} - ${dayjs().format('LL')}`,
+          'size': DEFAULT_SIZE.value,
+          'include_sku': true,
+          'include_price': true,
+          'description': '',
+        }}
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6">
           <div>
@@ -53,7 +75,9 @@ function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
               label="Report Name"
               rules={[{ required: true, message: 'Please input the report name!' }]}
             >
-              <Input placeholder="Enter report name" />
+              <Input
+                placeholder="Enter report name"
+              />
             </Form.Item>
 
             {/* Size */}
@@ -115,7 +139,7 @@ function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
         </div>
         <StyledDivider rootClassName="mb-3" >Select Artworks</StyledDivider>
         <div className="mb-5 w-full overflow-x-auto">
-          <ArtworkSelector />
+          <ArtworkSelector setSelectedIds={setSelectedArtworkIds} />
         </div>
         <Divider />
       </Form>
