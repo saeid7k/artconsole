@@ -14,6 +14,7 @@ type Props = {
   linkedTitle?: boolean;
   serifTitle?: boolean;
   artistTooltipPlacement?: "top" | "left" | "right" | "bottom" | "topLeft" | "topRight" | "bottomLeft" | "bottomRight" | "leftTop" | "leftBottom" | "rightTop" | "rightBottom";
+  showArtist?: boolean;
   showEdition?: boolean;
   showSigned?: boolean;
   showYear?: boolean;
@@ -29,6 +30,7 @@ function ArtworkTitleStack({
   linkedTitle = true,
   serifTitle = false,
   artistTooltipPlacement = "bottom",
+  showArtist = true,
   showEdition = true,
   showSigned = true,
   showYear = true,
@@ -86,25 +88,27 @@ function ArtworkTitleStack({
 
       {/* Artist */}
 
-      <div>
-        <span className="text-muted italic">by </span>
-        {artwork.artist ? (
-          <Tooltip title="View Artist Profile" mouseEnterDelay={0.5} placement={artistTooltipPlacement}>
-            <Link
-              className={twMerge(
-                "text-accent",
-                disableLinks ? 'pointer-events-none' : ''
-              )}
-              href={route('contacts.show', artwork.artist.id)}
-            >
-              {artistName}
-            </Link>
-          </Tooltip>
+      {showArtist && (
+        <div>
+          <span className="text-muted italic">by </span>
+          {artwork.artist ? (
+            <Tooltip title="View Artist Profile" mouseEnterDelay={0.5} placement={artistTooltipPlacement}>
+              <Link
+                className={twMerge(
+                  "text-accent",
+                  disableLinks ? 'pointer-events-none' : ''
+                )}
+                href={route('contacts.show', artwork.artist.id)}
+              >
+                {artistName}
+              </Link>
+            </Tooltip>
 
-        ) : (
-          <span className="text-accent">{artistName}</span>
-        )}
-      </div>
+          ) : (
+            <span className="text-accent">{artistName}</span>
+          )}
+        </div>
+      )}
 
       {/* Edition */}
 
