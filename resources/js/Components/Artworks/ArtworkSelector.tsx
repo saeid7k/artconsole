@@ -1,4 +1,4 @@
-import { ArrowLeft02Icon, ArrowRight02Icon, CheckmarkCircleIcon, Search01Icon } from "@hugeicons/core-free-icons";
+import { ArrowLeft01Icon, ArrowLeft02Icon, ArrowLeftDoubleIcon, ArrowRight01Icon, ArrowRight02Icon, ArrowRight03Icon, ArrowRightDoubleIcon, CheckmarkCircleIcon, Search01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useMutation } from "@tanstack/react-query";
 import { Button, Empty, Input, message, Space } from "antd";
@@ -18,14 +18,21 @@ function ArtworkSelector() {
   const [selectedItems, setSelectedItems] = useState<any[]>([]);
   const [checkedSourceItems, setCheckedSourceItems] = useState<any[]>([]);
   const [checkedSelectedItems, setCheckedSelectedItems] = useState<any[]>([]);
+  const [allSourceCount, setAllSourceCount] = useState(0);
 
   const searchArtworksMutation = useMutation({
-    mutationFn: (searchTerm: string) => axios.post(route('artworks.search'), {
-      query: searchTerm
+    mutationFn: ({searchTerm, all = false, setAsSelected = false}: {searchTerm: string, all?: boolean, setAsSelected?: boolean}) => axios.post(route('artworks.search'), {
+      query: searchTerm,
+      all: all
     }).then(res => res.data),
-    onSuccess: (response) => {
+    onSuccess: (response, variables) => {
       setSourceItems(response.data);
       setLoadMoreUrl(response.next_page_url || null);
+      setAllSourceCount(response.total);
+      if (variables.setAsSelected) {
+        setSelectedItems(prev => [...prev, ...response.data.filter((s: any) => !prev.find((p: any) => p.id === s.id))]);
+        setCheckedSourceItems([]);
+      }
     },
     onError: (err) => {
       console.error('Failed to search artworks:', err);
@@ -33,7 +40,7 @@ function ArtworkSelector() {
   })
 
   useEffect(() => {
-    searchArtworksMutation.mutate(searchTerm);
+    searchArtworksMutation.mutate({searchTerm});
   }, []);
 
   const loadMoreMutation = useMutation({
@@ -77,9 +84,18 @@ function ArtworkSelector() {
     setCheckedSelectedItems([]);
   }
 
+  function handleSelectAll() {
+    searchArtworksMutation.mutate({ searchTerm, all: true, setAsSelected: true });
+  }
+
+  function handleClearSelection() {
+    setSelectedItems([]);
+    setCheckedSelectedItems([]);
+  }
+
   return (
     <div
-      className="grid grid-cols-24 gap-3"
+      className="grid grid-cols-24 gap-3 min-w-[800px]"
     >
       <div className="col-span-10" >
         <ColumnTitle>Source</ColumnTitle>
@@ -88,14 +104,14 @@ function ArtworkSelector() {
             type="search"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            onClear={() => {setSearchTerm(''); searchArtworksMutation.mutate('')}}
-            onPressEnter={() => searchArtworksMutation.mutate(searchTerm)}
+            onClear={() => {setSearchTerm(''); searchArtworksMutation.mutate({searchTerm: ''})}}
+            onPressEnter={() => searchArtworksMutation.mutate({searchTerm})}
             placeholder="Search artworks..."
             allowClear
           />
           <Button
             type="default"
-            onClick={() => searchArtworksMutation.mutate(searchTerm)}
+            onClick={() => searchArtworksMutation.mutate({searchTerm})}
             icon={<HugeiconsIcon icon={Search01Icon} size={16} />}
           >
           </Button>
@@ -131,27 +147,38 @@ function ArtworkSelector() {
         <div className="flex flex-col gap-2 mt-20">
           <Button
             type="primary"
-            icon={<HugeiconsIcon icon={ArrowRight02Icon} />}
+            icon={<HugeiconsIcon icon={ArrowRight01Icon} />}
             iconPlacement="end"
             onClick={handleSelect}
             disabled={checkedSourceItems.length === 0}
           >
-            Select
+            Select {checkedSourceItems.length > 0 && `(${checkedSourceItems.length})`}
           </Button>
           <Button
             type="primary"
-            icon={<HugeiconsIcon icon={ArrowLeft02Icon} />}
+            icon={<HugeiconsIcon icon={ArrowLeft01Icon} />}
             iconPlacement="start"
             onClick={handleDeselect}
             disabled={checkedSelectedItems.length === 0}
           >
-            Deselect
+            Deselect {checkedSelectedItems.length > 0 && `(${checkedSelectedItems.length})`}
           </Button>
           <Button
             type="default"
+            icon={<HugeiconsIcon icon={ArrowRightDoubleIcon} />}
+            iconPlacement="end"
+            onClick={handleSelectAll}
+            disabled={sourceItems.length === 0}
             className="mt-3"
-            onClick={() => setSelectedItems([])}
+          >
+            <div>Select All <span className="text-primary font-bold">({allSourceCount})</span></div>
+          </Button>
+          <Button
+            type="default"
+            onClick={handleClearSelection}
             disabled={selectedItems.length === 0}
+            icon={<HugeiconsIcon icon={ArrowLeftDoubleIcon} />}
+            iconPlacement="start"
           >
             Clear Selection
           </Button>
@@ -159,9 +186,9 @@ function ArtworkSelector() {
       </div>
       <div className="col-span-10" >
         <ColumnTitle>Selected ({selectedItems.length})</ColumnTitle>
-        <div className="flex flex-col gap-2 mt-2 h-[400px] overflow-y-auto">
+        <div className="flex flex-col gap-1 mt-2 h-[400px] overflow-y-auto">
           {selectedItems.length === 0 && (
-            <Empty description="No artworks selected yet" />
+            <Empty description="No artworks selected yet" className="mt-5" />
           )}
           {selectedItems.length > 0 && selectedItems.map((artwork: any) => (
             <ArtworkSelectCard
@@ -169,6 +196,7 @@ function ArtworkSelector() {
               artwork={artwork}
               checkedItems={checkedSelectedItems}
               onClick={toggleCheckSelected}
+              size="small"
             />
           ))}
         </div>
