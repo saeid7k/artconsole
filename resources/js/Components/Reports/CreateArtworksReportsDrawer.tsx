@@ -1,12 +1,13 @@
 import { DEFAULT_SIZE, SIZE_OPTIONS } from "@/constants/artworksLabelReport";
 import { useWindow } from "@/hooks/useWindow";
 import { keyToTitle } from "@/utils/stringHelper";
-import { Button, Checkbox, Divider, Drawer, Form, Input, Select } from "antd";
+import { Button, Checkbox, Divider, Drawer, Form, Input, message, Select } from "antd";
+import axios from "axios";
+import dayjs from "dayjs";
+import { useState } from "react";
 import ArtworkSelector from "../Artworks/ArtworkSelector";
 import FlexBox from "../Containers/FlexBox";
 import StyledDivider from "../StyledDivider";
-import { useState } from "react";
-import dayjs from "dayjs";
 
 type Props = {
   type: 'artworks_label' | 'inventory_report';
@@ -23,6 +24,32 @@ function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
 
   const handleClose = () => {
     onClose();
+  }
+
+  function handleSubmit() {
+    form.validateFields().then(values => {
+      axios.post(route('reports.store'), {
+        type,
+        name: values.name,
+        description: values.description,
+        options: {
+          size: values.size,
+          include_sku: values.include_sku,
+          include_price: values.include_price,
+        },
+        artworks: selectedArtworkIds,
+      })
+        .then(() => {
+          message.success('Report created successfully');
+          form.resetFields();
+          setSelectedArtworkIds([]);
+          onClose();
+        })
+        .catch((err) => {
+          message.error(err?.response?.data?.message || 'Failed to create report');
+        })
+    })
+    .catch(e => {})
   }
 
   const title = (
@@ -66,6 +93,7 @@ function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
           'include_price': true,
           'description': '',
         }}
+        onFinish={handleSubmit}
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6">
           <div>
