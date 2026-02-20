@@ -9,7 +9,14 @@ class ReportController extends Controller
 {
   public function index()
   {
-    return inertia('Reports/Index');
+    $user = auth()->user();
+    $gallery = $user->currentGallery();
+
+    $reports = $gallery->reports()->latest()->get();
+
+    return inertia('Reports/Index', [
+      'reports' => $reports,
+    ]);
   }
 
   public function store(Request $request)
