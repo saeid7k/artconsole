@@ -10,9 +10,9 @@ import { useState } from "react"
 function Index({ reports = [] }: any) {
 
   const [showCreateArtworksReportsDrawer, setShowCreateArtworksReportsDrawer] = useState(false)
-  const [selectedReportType, setSelectedReportType] = useState<'artworks-label' | 'inventory-report'>('artworks-label')
+  const [selectedReportType, setSelectedReportType] = useState<any>('artworks_label')
 
-  const handleNewReportClick = (type: 'artworks-label' | 'inventory-report') => {
+  const handleNewReportClick = (type: any) => {
     setSelectedReportType(type)
     setShowCreateArtworksReportsDrawer(true)
   }
@@ -24,8 +24,8 @@ function Index({ reports = [] }: any) {
         popupRender={() =>
           <Menu
             items={[
-              { key: 'artworks-label', label: 'Artworks Label', onClick: () => handleNewReportClick('artworks-label') },
-              { key: 'inventory-report', label: 'Inventory Report', onClick: () => handleNewReportClick('inventory-report') },
+              { key: 'artworks_label', label: 'Artworks Label', onClick: () => handleNewReportClick('artworks_label') },
+              { key: 'inventory_report', label: 'Inventory Report', onClick: () => handleNewReportClick('inventory_report') },
             ]}
           />
         }
