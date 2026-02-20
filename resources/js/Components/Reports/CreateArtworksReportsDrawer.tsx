@@ -9,7 +9,7 @@ import { useState } from "react";
 import dayjs from "dayjs";
 
 type Props = {
-  type: 'artworks-label' | 'inventory-report';
+  type: 'artworks_label' | 'inventory_report';
   show: boolean;
   onClose: () => void;
 }
