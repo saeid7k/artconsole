@@ -20,8 +20,9 @@ class ReportController extends Controller
     $request->validate([
       'type' => 'required|string|in:' . ReportType::stringifyAll(),
       'name' => 'required|string',
+      'size' => 'nullable|string',
       'description' => 'nullable|string',
-      'options' => 'nullable|object',
+      'options' => 'nullable|array',
       'artworks' => 'nullable|array',
     ]);
 
