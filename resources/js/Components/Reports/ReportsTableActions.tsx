@@ -1,9 +1,18 @@
-import { Delete02Icon, FileViewIcon, PdfIcon, ViewIcon } from "@hugeicons/core-free-icons"
+import { downloadFile } from "@/utils/downloadHelper"
+import { Delete02Icon, FileViewIcon, PdfIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { Button, Divider, Tooltip } from "antd"
+import { Button, Tooltip } from "antd"
 import FlexBox from "../Containers/FlexBox"
 
 function ReportsTableActions({ report }: any) {
+
+  function handleDownload() {
+    downloadFile({
+      url: route('reports.download', { report: report.id }),
+      fileName: report.name + '.pdf'
+    })
+  }
+
   return (
     <FlexBox>
       <Tooltip title="Preview">
@@ -20,6 +29,7 @@ function ReportsTableActions({ report }: any) {
           color='red'
           shape="circle"
           icon={<HugeiconsIcon icon={PdfIcon} size={20} />}
+          onClick={handleDownload}
         />
       </Tooltip>
       <Tooltip title="Delete">
