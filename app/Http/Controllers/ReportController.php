@@ -67,4 +67,20 @@ class ReportController extends Controller
       ['Content-Type' => $media->mime_type]
     );
   }
+
+  public function getUrl(Request $request, $reportId)
+  {
+    $report = Report::findOrFail($reportId);
+    $media = $report->media()->first();
+
+    if (!$media) {
+      return response()->json([
+        'message' => 'Report file not found.',
+      ], 404);
+    }
+
+    return response()->json([
+      'url' => $media->getUrl(),
+    ]);
+  }
 }

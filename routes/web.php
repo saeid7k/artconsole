@@ -119,6 +119,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [App\Http\Controllers\ReportController::class, 'index'])->name('index');
     Route::post('/store', [App\Http\Controllers\ReportController::class, 'store'])->name('store');
     Route::get('/{report}/download', [App\Http\Controllers\ReportController::class, 'download'])->name('download');
+    Route::get('/{report}/url', [App\Http\Controllers\ReportController::class, 'getUrl'])->name('url');
   });
 });
 
