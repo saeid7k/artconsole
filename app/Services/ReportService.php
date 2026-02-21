@@ -58,7 +58,7 @@ class ReportService
     $tempPath = storage_path('app/report_' . $this->report->id . '.pdf');
 
     pdf()
-      ->view($viewPath, ['report' => $this->report, 'artworks' => [...$artworks, ...$artworks, ...$artworks]])
+      ->view($viewPath, ['report' => $this->report, 'artworks' => $artworks])
       ->format(Format::Letter)
       ->margins($margins[0], $margins[1], $margins[2], $margins[3], Unit::Inch)
       ->footerView('reports.footer')
