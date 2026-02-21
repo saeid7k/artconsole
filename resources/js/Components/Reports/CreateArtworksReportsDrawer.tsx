@@ -8,6 +8,7 @@ import { useState } from "react";
 import ArtworkSelector from "../Artworks/ArtworkSelector";
 import FlexBox from "../Containers/FlexBox";
 import StyledDivider from "../StyledDivider";
+import { router } from "@inertiajs/react";
 
 type Props = {
   type: 'artworks_label' | 'inventory_report';
@@ -21,6 +22,7 @@ function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
   const [form] = Form.useForm()
 
   const [selectedArtworkIds, setSelectedArtworkIds] = useState<number[]>([]);
+  const [saving, setSaving] = useState(false);
 
   const handleClose = () => {
     onClose();
@@ -28,6 +30,7 @@ function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
 
   function handleSubmit() {
     form.validateFields().then(values => {
+      setSaving(true);
       axios.post(route('reports.store'), {
         type,
         name: values.name,
@@ -45,10 +48,12 @@ function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
           form.resetFields();
           setSelectedArtworkIds([]);
           onClose();
+          router.reload({ only: ['reports'] });
         })
         .catch((err) => {
           message.error(err?.response?.data?.message || 'Failed to create report');
         })
+        .finally(() => {setSaving(false)})
     })
     .catch(e => {})
   }
@@ -74,6 +79,7 @@ function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
           type="primary"
           onClick={() => form.submit()}
           disabled={selectedArtworkIds.length === 0}
+          loading={saving}
         >
           Create
         </Button>
