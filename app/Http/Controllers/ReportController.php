@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ReportType;
+use App\Models\Report;
 use App\Services\ReportService;
 use Illuminate\Http\Request;
-
-use function Spatie\LaravelPdf\Support\pdf;
+use Illuminate\Support\Facades\Storage;
 
 class ReportController extends Controller
 {
@@ -52,8 +52,19 @@ class ReportController extends Controller
 
   public function download(Request $request, $reportId)
   {
-    return response()->json([
-      'message' => 'Not implemented yet'
-    ], 501);
+    $report = Report::findOrFail($reportId);
+    $media = $report->media()->first();
+
+    if (!$media) {
+      return response()->json([
+        'message' => 'Report file not found.',
+      ], 404);
+    }
+
+    return Storage::disk($media->disk)->download(
+      $media->getPathRelativeToRoot(),
+      $media->file_name,
+      ['Content-Type' => $media->mime_type]
+    );
   }
 }
