@@ -195,7 +195,7 @@ class DemoSeeder extends Seeder
     $artworkIds = Artwork::where('gallery_id', $this->firstGallery->id)->pluck('id')->toArray();
 
     for ($i = 0; $i < 5; $i++) {
-      $selectedIds = $this->faker->randomElements($artworkIds, min($this->faker->numberBetween(3, 8), count($artworkIds)));
+      $selectedIds = $this->faker->randomElements($artworkIds, min($this->faker->numberBetween(3, 30), count($artworkIds)));
       Report::create([
         'gallery_id' => $this->firstGallery->id,
         'user_id' => 1,
@@ -208,6 +208,7 @@ class DemoSeeder extends Seeder
           'include_price' => $this->faker->boolean,
         ],
         'artworks' => $selectedIds,
+        'created_at' => now()->subDays(5 - $i),
       ]);
     }
 
