@@ -37,11 +37,13 @@ function ReportsTable({ reports = [] }: any) {
       render: (record: any) => (
         <FlexBox direction="col" alignItems="start" gap={0} className="max-w-[300px]" >
           <div>{record.name}</div>
-          <TextboxExpandable
-            content={record.description}
-            lines={1}
-            className="text-ghost"
-          />
+          {record.description && (
+            <TextboxExpandable
+              content={record.description}
+              lines={1}
+              className="text-ghost"
+            />
+          )}
         </FlexBox>
       )
     },
