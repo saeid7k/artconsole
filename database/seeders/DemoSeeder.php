@@ -8,6 +8,7 @@ use App\Models\Contact;
 use App\Models\Gallery;
 use App\Models\Report;
 use App\Models\User;
+use App\Services\ReportService;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
@@ -196,20 +197,22 @@ class DemoSeeder extends Seeder
 
     for ($i = 0; $i < 5; $i++) {
       $selectedIds = $this->faker->randomElements($artworkIds, min($this->faker->numberBetween(3, 30), count($artworkIds)));
-      Report::create([
+      $report = Report::create([
         'gallery_id' => $this->firstGallery->id,
         'user_id' => 1,
         'type' => ReportType::ArtworksLabel->value,
         'name' => 'Artworks Label Report ' . ($i + 1),
         'description' => $this->faker->paragraph,
         'options' => [
-          'size' => $this->faker->randomElement($sizes),
+          'size' => 'small',
           'include_sku' => $this->faker->boolean,
           'include_price' => $this->faker->boolean,
+          'border' => $this->faker->boolean,
         ],
         'artworks' => $selectedIds,
         'created_at' => now()->subDays(5 - $i),
       ]);
+      (new ReportService($report))->generatePdf();
     }
 
     $this->command->info('✅' . ' 5 artworks label reports created for first gallery.');
