@@ -36,6 +36,7 @@ function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
           size: values.size,
           include_sku: values.include_sku,
           include_price: values.include_price,
+          border: values.border,
         },
         artworks: selectedArtworkIds,
       })
@@ -91,6 +92,7 @@ function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
           'size': DEFAULT_SIZE.value,
           'include_sku': true,
           'include_price': true,
+          'border': true,
           'description': '',
         }}
         onFinish={handleSubmit}
@@ -149,9 +151,21 @@ function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
               name="include_price"
               valuePropName="checked"
               initialValue={true}
+              className="mb-0"
             >
               <Checkbox>
                 Include Price
+              </Checkbox>
+            </Form.Item>
+
+            {/* Border */}
+            <Form.Item
+              name="border"
+              valuePropName="checked"
+              initialValue={true}
+            >
+              <Checkbox>
+                Print Border
               </Checkbox>
             </Form.Item>
           </div>
