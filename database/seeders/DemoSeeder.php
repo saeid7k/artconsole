@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Enums\ReportType;
 use App\Models\Artwork;
 use App\Models\Contact;
 use App\Models\Gallery;
+use App\Models\Report;
 use App\Models\User;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
@@ -27,6 +29,7 @@ class DemoSeeder extends Seeder
     $this->addMembers();
     $this->createContacts();
     $this->createArtworks();
+    $this->createReports();
   }
 
   private function createAdmin(): void
@@ -182,5 +185,31 @@ class DemoSeeder extends Seeder
       }
     }
     $this->command->info('✅' . ' Sample images added to artworks in the first gallery.');
+  }
+
+  private function createReports(): void
+  {
+    $this->command->comment('Creating artworks label reports for first gallery...');
+
+    $sizes = ['small', 'medium', 'large'];
+    $artworkIds = Artwork::where('gallery_id', $this->firstGallery->id)->pluck('id')->toArray();
+
+    for ($i = 0; $i < 2; $i++) {
+      $selectedIds = $this->faker->randomElements($artworkIds, min($this->faker->numberBetween(3, 8), count($artworkIds)));
+      Report::create([
+        'gallery_id' => $this->firstGallery->id,
+        'user_id' => 1,
+        'type' => ReportType::ArtworksLabel->value,
+        'name' => 'Artworks Label Report ' . ($i + 1),
+        'options' => [
+          'size' => $this->faker->randomElement($sizes),
+          'include_sku' => $this->faker->boolean,
+          'include_price' => $this->faker->boolean,
+        ],
+        'artworks' => $selectedIds,
+      ]);
+    }
+
+    $this->command->info('✅' . ' 2 artworks label reports created for first gallery.');
   }
 }
