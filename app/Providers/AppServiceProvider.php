@@ -16,6 +16,8 @@ use App\Observers\MediaObserver;
 use App\Observers\UserObserver;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Spatie\Browsershot\Browsershot;
+use Spatie\LaravelPdf\Facades\Pdf;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -40,5 +42,14 @@ class AppServiceProvider extends ServiceProvider
         Artwork::observe(ArtworkObserver::class);
         Location::observe(LocationObserver::class);
         Media::observe(MediaObserver::class);
+
+        Pdf::default()
+          ->withBrowsershot(function (Browsershot $browsershot) {
+            $browsershot->noSandbox()->timeout(120);
+            if (app()->environment('production', 'staging')) {
+              $browsershot->setNodeBinary('/usr/bin/node')
+                 ->setNpmBinary('/usr/bin/npm');
+            }
+          });
     }
 }
