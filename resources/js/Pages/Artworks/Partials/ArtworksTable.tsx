@@ -19,6 +19,7 @@ import { Image, Table } from 'antd';
 import imagePlaceholder from '~/resources/images/image-placeholder.svg';
 import ArtworksActions from './ArtworksActions';
 import useFilters from '@/hooks/useFilters';
+import { paginate } from '@/utils/paginationHelper';
 
 type LocationsProps = Array<{
   id: number;
@@ -163,25 +164,12 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
         showSizeChanger: true,
       }}
       onChange={(pagination, filters, sorter: any) => {
-        const urlParams = new URLSearchParams(window.location.search);
-        urlParams.set('sort_by', typeof sorter.field === 'string' ? sorter.field : String(sorter.field ?? ''));
-        urlParams.set('sort_order', sorter.order === 'ascend' ? 'asc' : 'desc');
-        urlParams.set('page', String(pagination.current));
-        urlParams.set('per_page', String(pagination.pageSize));
-
-        Object.entries(filters).forEach(([key, value]) => {
-          if (value && value.length > 0) {
-            urlParams.set(key, String(value));
-          } else {
-            urlParams.delete(key);
-          }
-        });
-
-        router.get(
-          route('artworks.index'),
-          Object.fromEntries(urlParams.entries()),
-          { preserveScroll: true, preserveState: true }
-        );
+        paginate({
+          routeName: 'artworks.index',
+          pagination,
+          filters,
+          sorter,
+        })
       }}
       rowSelection={{
         type: 'checkbox',
