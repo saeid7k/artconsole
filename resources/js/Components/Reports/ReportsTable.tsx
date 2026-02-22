@@ -4,7 +4,7 @@ import { paginate } from "@/utils/paginationHelper";
 import { keyToTitle } from "@/utils/stringHelper";
 import { CircleArrowDown01Icon, NoteIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Button, Card, Dropdown, Table, TableProps } from "antd";
+import { Button, Card, Dropdown, Table, TableProps, Tag } from "antd";
 import dayjs from "dayjs";
 import FlexBox from "../Containers/FlexBox";
 import TextboxExpandable from "../TextboxExpandable";
@@ -58,29 +58,16 @@ function ReportsTable({ reports }: any) {
       title: 'Info',
       key: 'info',
       render: (record: any) => (
-        <FlexBox direction="col" alignItems="start" gap={0} >
-          <div>Artworks: {record.artworks?.length ?? 0}</div>
-          {record.options && (
-            <Dropdown
-              trigger={['click']}
-              popupRender={() => (
-                <Card size="small" >
-                  {Object.entries(record.options || {}).map(([key, value]: [string, any]) => (
-                    <div key={key}><span className="label">{keyToTitle(key)}:</span> {formatByKey(key, value)}</div>
-                  ))}
-                </Card>
-              )}
-            >
-              <Button
-                type="text"
-                size="small"
-                icon={<HugeiconsIcon icon={CircleArrowDown01Icon} size={16} />}
-                iconPlacement="end"
-                className="text-ghost -translate-x-2"
-              >
-                Options
-              </Button>
-            </Dropdown>
+        <FlexBox direction="col" alignItems="start" gap={1} justifyContent="between" >
+          <FlexBox justifyContent="between">
+            Artworks:
+            <Tag variant="outlined" >{record.artworks?.length ?? 0}</Tag>
+          </FlexBox>
+          {record?.options?.size && (
+            <FlexBox justifyContent="between">
+              Size:
+              <Tag variant="outlined" >{keyToTitle(record.options.size)}</Tag>
+            </FlexBox>
           )}
         </FlexBox>
       )

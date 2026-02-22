@@ -68,7 +68,7 @@ function ReportsTableActions({ report }: any) {
                   onClick: () => regenerateMutation.mutate(),
                   extra: (
                     <Popover
-                      content="The report will be replaced with a newly generated one based on the latest artworks data. This action cannot be undone."
+                      content="The report will be regenerated based on the latest artworks data."
                       title="Regenerate Report"
                       children={<HugeiconsIcon icon={InformationCircleIcon} size={16} />}
                     />
