@@ -8,7 +8,7 @@ import { HugeiconsIcon } from "@hugeicons/react"
 import { Button, Dropdown, Empty, Menu, Tooltip } from "antd"
 import { useState } from "react"
 
-function Index({ reports = [] }: any) {
+function Index({ reports }: any) {
 
   const [showCreateArtworksReportsDrawer, setShowCreateArtworksReportsDrawer] = useState(false)
   const [selectedReportType, setSelectedReportType] = useState<any>('artworks_label')
@@ -42,7 +42,7 @@ function Index({ reports = [] }: any) {
     <div>
       <PageTitle
         title="Reports"
-        counter={reports?.length || 0}
+        counter={reports?.data?.length || 0}
         extraTitleContent={
           <NewReportDropdown>
             <Tooltip title="Create New Report" >
@@ -57,7 +57,7 @@ function Index({ reports = [] }: any) {
         }
       />
 
-      {reports?.length == 0 && (
+      {reports?.data?.length == 0 && (
         <FlexBox direction="col" gap={5} >
           <Empty description="No reports available" />
           <NewReportDropdown>
@@ -70,7 +70,7 @@ function Index({ reports = [] }: any) {
           </NewReportDropdown>
         </FlexBox>
       )}
-      {reports?.length > 0 && (
+      {reports?.data?.length > 0 && (
         <ReportsTable reports={reports} />
       )}
 
