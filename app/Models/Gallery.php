@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Helpers\AddressHelper;
+use App\Helpers\ConfigHelper;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\LogOptions;
@@ -29,7 +31,7 @@ class Gallery extends Model implements HasMedia
 
   // Appends
 
-  protected $appends = [ 'abilities', 'members_count', 'logo', 'formatted_address', 'meta' ];
+  protected $appends = [ 'abilities', 'members_count', 'logo', 'formatted_address', 'meta', 'currency' ];
 
   public function getAbilitiesAttribute()
   {
@@ -59,6 +61,19 @@ class Gallery extends Model implements HasMedia
   public function getMetaAttribute()
   {
     return $this->getMetas();
+  }
+
+  public function currency(): Attribute
+  {
+    return Attribute::make(
+      get: function () {
+        return $this->getMeta('currency', ConfigHelper::getDefault('currency'));
+      },
+      set: function ($value) {
+        $this->setMeta('currency', $value);
+        return $value;
+      }
+    );
   }
 
   // Relationships
