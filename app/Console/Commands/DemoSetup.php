@@ -28,6 +28,15 @@ class DemoSetup extends Command
    */
   public function handle()
   {
+    // exit if not in local environment
+    if (
+      !app()->environment('local')
+      || !in_array(getenv('DB_HOST'), ['127.0.0.1', 'localhost'])
+    ) {
+      $this->error('This command can only be run in the local environment and with a local database.');
+      return;
+    }
+
     // rollback all migrations
     $this->call('migrate:reset');
 
