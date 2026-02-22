@@ -95,4 +95,22 @@ class ReportController extends Controller
       'message' => 'Report deleted successfully.',
     ], 200);
   }
+
+  public function regenerate(Request $request, $reportId)
+  {
+    $report = Report::findOrFail($reportId);
+
+    // Delete existing PDF file
+    $media = $report->media()->first();
+    if ($media) {
+      $media->delete();
+    }
+
+    // Generate new PDF file
+    (new ReportService($report))->generatePdf();
+
+    return response()->json([
+      'message' => 'Report regenerated successfully.',
+    ], 200);
+  }
 }
