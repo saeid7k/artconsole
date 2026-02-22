@@ -33,7 +33,7 @@ class ReportController extends Controller
       'type' => 'required|string|in:' . ReportType::stringifyAll(),
       'name' => 'required|string',
       'size' => 'nullable|string',
-      'description' => 'nullable|string',
+      'description' => 'nullable|string|max:255',
       'options' => 'nullable|array',
       'artworks' => 'nullable|array',
     ]);
