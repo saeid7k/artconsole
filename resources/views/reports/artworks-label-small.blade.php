@@ -38,6 +38,13 @@
     .label-border {
       border: 1pt solid #000 !important;
     }
+
+    .label > div {
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   </style>
 </head>
 
@@ -49,7 +56,11 @@
           'label',
           'label-border' => $report->options->border ?? false,
         ])>
-          Name: {{ $artwork->title }}
+          <div>{{ $artwork->artist->full_name }}</div>
+          <div style="font-weight: bold; font-style: italic;">{{ $artwork->title }}</div>
+          <div>{{ $artwork->formatted_mediums }}</div>
+          <div>{{ $artwork->formatted_dimensions }}</div>
+          <div>{{ $artwork->formatted_price }}</div>
         </div>
       @endforeach
     </div>

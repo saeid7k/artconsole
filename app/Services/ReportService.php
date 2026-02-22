@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Helpers\FormatHelper;
 use App\Models\Report;
+use Illuminate\Support\Number;
 use Illuminate\Support\Str;
 use Spatie\LaravelPdf\Enums\Format;
 use Spatie\LaravelPdf\Enums\Unit;
@@ -54,9 +56,15 @@ class ReportService
     }
 
     $gallery = $this->report->gallery;
-    $artworks = $gallery->artworks()->whereIn('id', $this->report->artworks)->get() ?? [];
-    $tempPath = storage_path('app/report_' . $this->report->id . '.pdf');
+    $artworks = $gallery->artworks()->with('artist')->whereIn('id', $this->report->artworks)->get() ?? [];
+    $artworks->map(function ($artwork) {
+      $artwork->formatted_mediums = FormatHelper::stringifyArray($artwork->mediums ?? []);
+      $artwork->formatted_dimensions = FormatHelper::formatDimensions($artwork->dimensions, true);
+      $artwork->formatted_price = Number::currency(((float) $artwork->price ?? 0), 'CAD');
+      return $artwork;
+    });
 
+    $tempPath = storage_path('app/report_' . $this->report->id . '.pdf');
     pdf()
       ->view($viewPath, ['report' => $this->report, 'artworks' => $artworks])
       ->format(Format::Letter)
