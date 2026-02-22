@@ -10,12 +10,14 @@ use Illuminate\Support\Facades\Storage;
 
 class ReportController extends Controller
 {
-  public function index()
+  public function index(Request $request)
   {
     $user = auth()->user();
     $gallery = $user->currentGallery();
 
-    $reports = $gallery->reports()->latest()->get();
+    $reports = $gallery->reports()
+      ->latest()
+      ->paginate($request->per_page ?? 10)->withQueryString();
 
     return inertia('Reports/Index', [
       'reports' => $reports,
