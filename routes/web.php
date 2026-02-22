@@ -121,6 +121,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/{report}/download', [App\Http\Controllers\ReportController::class, 'download'])->name('download');
     Route::get('/{report}/url', [App\Http\Controllers\ReportController::class, 'getUrl'])->name('url');
     Route::delete('/{report}/delete', [App\Http\Controllers\ReportController::class, 'destroy'])->name('destroy');
+    Route::post('/{report}/regenerate', [App\Http\Controllers\ReportController::class, 'regenerate'])->name('regenerate');
   });
 });
 
