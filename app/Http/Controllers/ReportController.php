@@ -85,4 +85,14 @@ class ReportController extends Controller
       'url' => $media->getUrl(),
     ]);
   }
+
+  public function destroy(Request $request, $reportId)
+  {
+    $report = Report::findOrFail($reportId);
+    $report->delete();
+
+    return response()->json([
+      'message' => 'Report deleted successfully.',
+    ], 200);
+  }
 }
