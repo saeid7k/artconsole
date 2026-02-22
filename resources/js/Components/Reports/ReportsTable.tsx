@@ -1,15 +1,16 @@
+import { useWindow } from "@/hooks/useWindow";
+import { formatByKey } from "@/utils/formatHelper";
+import { paginate } from "@/utils/paginationHelper";
 import { keyToTitle } from "@/utils/stringHelper";
+import { CircleArrowDown01Icon, NoteIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Button, Card, Dropdown, Table, TableProps } from "antd";
+import dayjs from "dayjs";
 import FlexBox from "../Containers/FlexBox";
 import TextboxExpandable from "../TextboxExpandable";
-import dayjs from "dayjs";
-import { formatByKey } from "@/utils/formatHelper";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { CircleArrowDown01Icon, NoteIcon } from "@hugeicons/core-free-icons";
 import ReportsTableActions from "./ReportsTableActions";
-import { useWindow } from "@/hooks/useWindow";
 
-function ReportsTable({ reports = [] }: any) {
+function ReportsTable({ reports }: any) {
 
   const { breakpoint } = useWindow()
 
@@ -94,10 +95,22 @@ function ReportsTable({ reports = [] }: any) {
 
   return (
     <Table
-      dataSource={reports}
+      dataSource={reports.data}
       columns={columns}
       scroll={{
         x: 'max-content'
+      }}
+      pagination={{
+        current: reports.current_page,
+        total: reports.total,
+        pageSize: reports.per_page,
+        showSizeChanger: true,
+      }}
+      onChange={(pagination, filters, sorter: any) => {
+        paginate({
+          routeName: 'reports.index',
+          pagination,
+        })
       }}
     />
   )
