@@ -24,9 +24,21 @@ function useReport(report: any) {
     },
   })
 
+  const regenerateMutation = useMutation({
+    mutationFn: () => axios.post(route('reports.regenerate', report.id)),
+    onSuccess: () => {
+      message.success('Report regenerated successfully')
+      router.reload()
+    },
+    onError: (error: any) => {
+      message.error(error.response?.data?.message || 'Failed to regenerate report')
+    },
+  })
+
   return {
     handleDownload,
-    deleteMutation
+    deleteMutation,
+    regenerateMutation,
   }
 }
 
