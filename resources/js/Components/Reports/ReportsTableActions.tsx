@@ -1,7 +1,7 @@
 import useReport from "@/hooks/useReport"
-import { Delete02Icon, FileViewIcon, PdfIcon } from "@hugeicons/core-free-icons"
+import { ArrowReloadHorizontalIcon, Delete02Icon, FileViewIcon, InformationCircleIcon, MoreHorizontalCircle01Icon, PdfIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { Button, Popconfirm, Tooltip } from "antd"
+import { Button, Dropdown, Menu, Popconfirm, Popover, Tooltip } from "antd"
 import { useState } from "react"
 import FlexBox from "../Containers/FlexBox"
 import ReportPreviewDrawer from "./ReportPreviewDrawer"
@@ -9,7 +9,7 @@ import ReportPreviewDrawer from "./ReportPreviewDrawer"
 function ReportsTableActions({ report }: any) {
 
   const [showPreview, setShowPreview] = useState(false)
-  const { handleDownload, deleteMutation } = useReport(report);
+  const { handleDownload, deleteMutation, regenerateMutation } = useReport(report);
 
   return (
     <>
@@ -52,9 +52,40 @@ function ReportsTableActions({ report }: any) {
               color='danger'
               shape="circle"
               icon={<HugeiconsIcon icon={Delete02Icon} size={20} />}
+              loading={deleteMutation.isPending}
             />
           </Popconfirm>
         </Tooltip>
+        <Dropdown
+          trigger={['click']}
+          popupRender={() =>
+            <Menu
+              items={[
+                {
+                  key: 'regenerate',
+                  icon: <HugeiconsIcon icon={ArrowReloadHorizontalIcon} size={16} />,
+                  label: 'Regenerate Report',
+                  onClick: () => regenerateMutation.mutate(),
+                  extra: (
+                    <Popover
+                      content="The report will be replaced with a newly generated one based on the latest artworks data. This action cannot be undone."
+                      title="Regenerate Report"
+                      children={<HugeiconsIcon icon={InformationCircleIcon} size={16} />}
+                    />
+                  )
+                },
+              ]}
+            />
+          }
+        >
+          <Button
+            variant="text"
+            color='default'
+            shape="circle"
+            icon={<HugeiconsIcon icon={MoreHorizontalCircle01Icon} size={20} />}
+            loading={regenerateMutation.isPending}
+          />
+        </Dropdown>
       </FlexBox>
 
       <ReportPreviewDrawer
