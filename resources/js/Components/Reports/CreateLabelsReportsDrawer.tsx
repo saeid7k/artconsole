@@ -11,12 +11,11 @@ import StyledDivider from "../StyledDivider";
 import { router } from "@inertiajs/react";
 
 type Props = {
-  type: 'artworks_label' | 'inventory_report';
   show: boolean;
   onClose: () => void;
 }
 
-function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
+function CreateLabelsReportsDrawer({ show, onClose }: Props) {
 
   const { windowWidth, breakpoint } = useWindow()
   const [form] = Form.useForm()
@@ -32,7 +31,7 @@ function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
     form.validateFields().then(values => {
       setSaving(true);
       axios.post(route('reports.store'), {
-        type,
+        type: 'artworks_label',
         name: values.name,
         description: values.description,
         options: {
@@ -62,7 +61,7 @@ function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
     <div>
       <span>Create New Report</span>
       <Divider orientation="vertical" />
-      <span className="text-primary-700 dark:text-primary-300">{keyToTitle(type)}</span>
+      <span className="text-primary-700 dark:text-primary-300">Artworks Label</span>
     </div>
   )
 
@@ -94,7 +93,7 @@ function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
         form={form}
         layout="vertical"
         initialValues={{
-          'name': `${keyToTitle(type)} - ${dayjs().format('LL')}`,
+          'name': `Artworks Label - ${dayjs().format('LL')}`,
           'size': DEFAULT_SIZE.value,
           'include_sku': true,
           'include_price': true,
@@ -195,4 +194,4 @@ function CreateArtworksReportsDrawer({ type, show, onClose }: Props) {
   )
 }
 
-export default CreateArtworksReportsDrawer
+export default CreateLabelsReportsDrawer

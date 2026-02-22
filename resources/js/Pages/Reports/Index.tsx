@@ -1,6 +1,6 @@
 import FlexBox from "@/Components/Containers/FlexBox"
 import PageTitle from "@/Components/PageTitle"
-import CreateArtworksReportsDrawer from "@/Components/Reports/CreateArtworksReportsDrawer"
+import CreateLabelsReportsDrawer from "@/Components/Reports/CreateLabelsReportsDrawer"
 import ReportsTable from "@/Components/Reports/ReportsTable"
 import AppLayout from "@/Layouts/AppLayout"
 import { AddIcon, AddSquareIcon } from "@hugeicons/core-free-icons"
@@ -10,14 +10,14 @@ import { useState } from "react"
 
 function Index({ reports }: any) {
 
-  const [showCreateArtworksReportsDrawer, setShowCreateArtworksReportsDrawer] = useState(false)
-  const [selectedReportType, setSelectedReportType] = useState<any>('artworks_label')
+  const [showCreateLabelsReportsDrawer, setShowCreateLabelsReportsDrawer] = useState(false)
 
   // New Report
 
   const handleNewReportClick = (type: any) => {
-    setSelectedReportType(type)
-    setShowCreateArtworksReportsDrawer(true)
+    if (type === 'artworks_label') {
+      setShowCreateLabelsReportsDrawer(true)
+    }
   }
 
   function NewReportDropdown({children}: {children: React.ReactNode}) {
@@ -74,10 +74,9 @@ function Index({ reports }: any) {
         <ReportsTable reports={reports} />
       )}
 
-      <CreateArtworksReportsDrawer
-        type={selectedReportType}
-        show={showCreateArtworksReportsDrawer}
-        onClose={() => setShowCreateArtworksReportsDrawer(false)}
+      <CreateLabelsReportsDrawer
+        show={showCreateLabelsReportsDrawer}
+        onClose={() => setShowCreateLabelsReportsDrawer(false)}
       />
     </div>
   )
