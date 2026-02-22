@@ -57,10 +57,10 @@ class ReportService
 
     $gallery = $this->report->gallery;
     $artworks = $gallery->artworks()->with('artist')->whereIn('id', $this->report->artworks)->get() ?? [];
-    $artworks->map(function ($artwork) {
+    $artworks->map(function ($artwork) use ($gallery) {
       $artwork->formatted_mediums = FormatHelper::stringifyArray($artwork->mediums ?? []);
       $artwork->formatted_dimensions = FormatHelper::formatDimensions($artwork->dimensions, true);
-      $artwork->formatted_price = Number::currency(((float) $artwork->price ?? 0), 'CAD');
+      $artwork->formatted_price = Number::currency(((float) $artwork->price ?? 0), $gallery->currency == 'CAD' ? 'USD' : $gallery->currency, precision: 0);
       return $artwork;
     });
 
