@@ -56,11 +56,21 @@
           'label',
           'label-border' => $report->options->border ?? false,
         ])>
-          <div>{{ $artwork->artist->full_name }}</div>
-          <div style="font-weight: bold; font-style: italic;">{{ $artwork->title }}</div>
-          <div>{{ $artwork->formatted_mediums }}</div>
-          <div>{{ $artwork->formatted_dimensions }}</div>
-          <div>{{ $artwork->formatted_price }}</div>
+          @if ($report->options?->artist_name ?? false)
+            <div>{{ $artwork->artist?->full_name }}</div>
+          @endif
+          @if ($report->options?->artwork_title ?? false)
+            <div style="font-weight: bold; font-style: italic;">{{ $artwork->title }}</div>
+          @endif
+          @if ($report->options?->mediums ?? false)
+            <div>{{ $artwork->formatted_mediums }}</div>
+          @endif
+          @if ($report->options?->dimensions ?? false)
+            <div>{{ $artwork->formatted_dimensions }}</div>
+          @endif
+          @if ($report->options?->price ?? false)
+            <div>{{ $artwork->formatted_price }}</div>
+          @endif
         </div>
       @endforeach
     </div>
