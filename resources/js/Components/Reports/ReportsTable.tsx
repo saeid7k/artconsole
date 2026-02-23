@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import FlexBox from "../Containers/FlexBox";
 import TextboxExpandable from "../TextboxExpandable";
 import ReportsTableActions from "./ReportsTableActions";
+import StyledDate from "../StyledDate";
 
 function ReportsTable({ reports }: any) {
 
@@ -52,7 +53,7 @@ function ReportsTable({ reports }: any) {
       title: 'Date',
       dataIndex: 'created_at',
       key: 'created_at',
-      render: (text: string) => dayjs(text).format('LLL')
+      render: (text: string) => <StyledDate value={text} />
     },
     {
       title: 'Info',
