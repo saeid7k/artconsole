@@ -52,7 +52,7 @@
 <body>
   @php
     $options = $report->options;
-    $perPage = $options->size == 'small' ? 30 : 10;
+    $perPage = $options->size == 'small' ? 30 : ($options->size == 'medium' ? 10 : 6);
   @endphp
 
   @foreach (collect($artworks)->chunk($perPage) as $chunk)
