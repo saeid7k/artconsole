@@ -248,6 +248,9 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
           initialValues={artwork ? artwork : {
             status: DEFAULT_ARTWORK_STATUS.value,
             category: DEFAULT_ARTWORK_CATEGORY.value,
+            dimensions: {
+              unit: 'inches',
+            },
             location_id: defaultLocationValue,
             ownership: 'owned',
           }}
