@@ -21,7 +21,6 @@ type Props = {
   showConsignment?: boolean;
   size?: "medium" | "large";
   disableLinks?: boolean;
-  className?: string;
 }
 
 function ArtworkTitleStack({
@@ -37,7 +36,6 @@ function ArtworkTitleStack({
   showConsignment = true,
   size = "medium",
   disableLinks = false,
-  className = '',
 }: Props)
 {
 
@@ -59,7 +57,7 @@ function ArtworkTitleStack({
   }
 
   return (
-    <div className={`flex flex-col ${rootClassName || ''} ${className}`}>
+    <div className={`flex flex-col ${rootClassName || ''}`}>
 
       {/* Title */}
 
