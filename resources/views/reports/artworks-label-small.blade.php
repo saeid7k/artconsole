@@ -26,7 +26,7 @@
     .label {
       width: 2.625in;
       height: 1in;
-      font-size: 10pt;
+      font-size: 9pt;
       box-sizing: border-box;
       border-radius: 8pt;
       padding: 0.125in;
