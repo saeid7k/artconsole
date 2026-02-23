@@ -31,10 +31,6 @@ class DemoSeeder extends Seeder
     $this->createContacts();
     $this->createArtworks();
     $this->createReports();
-
-    // run queued jobs
-    $this->command->comment('Processing queued jobs...');
-    $this->call('queue:work', ['--stop-when-empty' => true]);
   }
 
   private function createAdmin(): void

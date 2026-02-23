@@ -54,5 +54,10 @@ class DemoSetup extends Command
     // seed the database
     $this->call('db:seed', ['--class' => AppSeeder::class]);
     $this->call('db:seed', ['--class' => DemoSeeder::class]);
+
+    // Run queued jobs
+    $this->comment('Processing queued jobs...');
+    $this->call('queue:work', ['--stop-when-empty' => true]);
+    $this->info('✅ Demo setup complete!');
   }
 }
