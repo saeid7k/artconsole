@@ -36,7 +36,7 @@ function ArtworkCard({ artwork }: { artwork: ArtworkProps }) {
       <div className="flex flex-col gap-1 p-2 text-center">
         <ArtworkTitleStack
           artwork={artwork}
-          rootClassName="text-center"
+          rootClassName="text-center justify-center items-center"
           artistTooltipPlacement="right"
           showEdition={false}
         />
