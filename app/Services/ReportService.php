@@ -42,7 +42,7 @@ class ReportService
         break;
       case 'large':
         $viewPath = $viewPath . '-large';
-        $margins = [0.5, 0.5, 0.5, 0.5];
+        $margins = [0.512, 0.118, 0.512, 0.118];
         break;
       default:
         $viewPath = $viewPath . '-small';
