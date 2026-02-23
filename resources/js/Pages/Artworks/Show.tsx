@@ -73,7 +73,7 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
                 linkedTitle={false}
                 size="large"
                 serifTitle={true}
-                className="mb-5"
+                rootClassName="mb-5"
               />
               <div className="flex items-start gap-2">
                 {artwork.price ? (
