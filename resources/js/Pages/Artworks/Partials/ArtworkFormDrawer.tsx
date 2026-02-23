@@ -14,7 +14,7 @@ import { Alert02Icon, InboxUploadIcon, MagicWand05Icon, Settings01Icon } from "@
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Button, Checkbox, Drawer, Form, Input, InputNumber, message, Radio, Segmented, Select, Space, Spin, Tabs, Tooltip } from "antd";
+import { Button, Checkbox, Drawer, Form, Input, InputNumber, message, Radio, Segmented, Select, Space, Tabs, Tooltip } from "antd";
 import Dragger from "antd/es/upload/Dragger";
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
@@ -782,23 +782,19 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                       allowClear
                       onClear={() => form.setFieldValue('sku', null)}
                       className="rounded-e-none"
+                      value={watchForm?.sku || ''}
+                      onChange={(e) => form.setFieldValue('sku', e.target.value)}
                     />
-                    {!watchForm?.sku && (
-                      <Tooltip title="Auto Generate SKU">
-                        <Button
-                          color="primary"
-                          variant="outlined"
-                          onClick={() => generateSkuMutation.mutate()}
-                          className="rounded-s-none"
-                        >
-                          {generateSkuMutation.isPending ? (
-                            <Spin size="small" />
-                          ):(
-                            <HugeiconsIcon icon={MagicWand05Icon} size={20} />
-                          )}
-                        </Button>
-                      </Tooltip>
-                    )}
+                    <Tooltip title="Auto Generate SKU">
+                      <Button
+                        color="primary"
+                        variant="outlined"
+                        onClick={() => generateSkuMutation.mutate()}
+                        className="rounded-s-none"
+                        icon={<HugeiconsIcon icon={MagicWand05Icon} size={16} />}
+                        loading={generateSkuMutation.isPending}
+                      />
+                    </Tooltip>
                   </Form.Item>
                 </Space.Compact>
               </Form.Item>
