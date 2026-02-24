@@ -3,5 +3,6 @@
     "country": "Canada",
     "currency": "CAD",
     "access_level": "viewer"
-  }
+  },
+  "new_tag_timeout": 5
 }

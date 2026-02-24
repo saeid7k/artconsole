@@ -7,6 +7,7 @@ import { Popover, Tooltip } from "antd";
 import { twMerge } from "tailwind-merge";
 import FlexBox from "../Containers/FlexBox";
 import FormattedEdition from "../FormattedEdition";
+import NewTag from "../NewTag";
 
 type Props = {
   artwork: ArtworkProps
@@ -82,6 +83,7 @@ function ArtworkTitleStack({
             <HugeiconsIcon icon={Agreement01Icon} color={colors.gray[500]} size={consignmentIconSize[size]} />
           </Popover>
         )}
+        <NewTag dateRef={artwork.created_at} />
       </FlexBox>
 
       {/* Artist */}
