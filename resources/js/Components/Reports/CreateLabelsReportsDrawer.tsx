@@ -12,14 +12,15 @@ import StyledDivider from "../StyledDivider";
 type Props = {
   show: boolean;
   onClose: () => void;
+  preSelectedArtworkIds?: number[];
 }
 
-function CreateLabelsReportsDrawer({ show, onClose }: Props) {
+function CreateLabelsReportsDrawer({ show, onClose, preSelectedArtworkIds = [] }: Props) {
 
   const { windowWidth, breakpoint } = useWindow()
   const [form] = Form.useForm()
 
-  const [selectedArtworkIds, setSelectedArtworkIds] = useState<number[]>([]);
+  const [selectedArtworkIds, setSelectedArtworkIds] = useState<number[]>(preSelectedArtworkIds);
   const [saving, setSaving] = useState(false);
 
   const handleClose = () => {
@@ -76,11 +77,13 @@ function CreateLabelsReportsDrawer({ show, onClose }: Props) {
   // Render
 
   const title = (
-    <div>
+    <FlexBox>
       <span>Create New Report</span>
       <Divider orientation="vertical" />
       <span className="text-primary-700 dark:text-primary-300">Artworks Label</span>
-    </div>
+      <Divider orientation="vertical" />
+      <div className="text-ghost">{selectedArtworkIds.length} selected</div>
+    </FlexBox>
   )
 
   return (
@@ -273,10 +276,14 @@ function CreateLabelsReportsDrawer({ show, onClose }: Props) {
 
           </div>
         </div>
-        <StyledDivider rootClassName="mb-3" >Select Artworks</StyledDivider>
-        <div className="mb-5 w-full overflow-x-auto">
-          <ArtworkSelector setSelectedIds={setSelectedArtworkIds} />
-        </div>
+        {preSelectedArtworkIds.length === 0 && (
+          <>
+            <StyledDivider rootClassName="mb-3" >Select Artworks</StyledDivider>
+            <div className="mb-5 w-full overflow-x-auto">
+              <ArtworkSelector setSelectedIds={setSelectedArtworkIds} />
+            </div>
+          </>
+        )}
         <Divider />
       </Form>
     </Drawer>
