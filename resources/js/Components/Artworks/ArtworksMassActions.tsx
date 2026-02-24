@@ -1,5 +1,5 @@
 import ARTWORK_STATUSES from "@/constants/artworkStatuses"
-import { ArrowDataTransferHorizontalIcon, GeometricShapes01Icon, KeyframesMultipleIcon } from "@hugeicons/core-free-icons"
+import { ArrowDataTransferHorizontalIcon, GeometricShapes01Icon, KeyframesMultipleIcon, NoteIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router } from "@inertiajs/react"
 import { useMutation } from "@tanstack/react-query"
@@ -8,10 +8,12 @@ import axios from "axios"
 import { useState } from "react"
 import AnimatedContainer from "../AnimatedContainer"
 import MoveModal from "../MoveModal"
+import CreateLabelsReportsDrawer from "../Reports/CreateLabelsReportsDrawer"
 
 function ArtworksMassActions({ selectedIds }: { selectedIds: number[] }) {
 
   const [showMoveModal, setShowMoveModal] = useState(false)
+  const [showCreateLabelsReportsDrawer, setShowCreateLabelsReportsDrawer] = useState(false)
 
   const updateStatusMutation = useMutation({
     mutationFn: (status: string) => axios.post(route('artworks.mass-update-status'), {
@@ -35,13 +37,13 @@ function ArtworksMassActions({ selectedIds }: { selectedIds: number[] }) {
           <Menu
             items={[
               {
-                key: 'mass-move',
+                key: 'move',
                 icon: <HugeiconsIcon icon={ArrowDataTransferHorizontalIcon} size={16} />,
                 label: 'Move to new Location',
                 onClick: () => setShowMoveModal(true)
               },
               {
-                key: 'mass-update-status',
+                key: 'update-status',
                 icon: <HugeiconsIcon icon={GeometricShapes01Icon} size={16} />,
                 label: 'Update Status',
                 children: (ARTWORK_STATUSES || []).map(status => ({
@@ -49,6 +51,12 @@ function ArtworksMassActions({ selectedIds }: { selectedIds: number[] }) {
                   label: status.label,
                   onClick: () => updateStatusMutation.mutate(status.value)
                 })),
+              },
+              {
+                key: 'labels-report',
+                icon: <HugeiconsIcon icon={NoteIcon} size={16} />,
+                label: 'Create Labels Report',
+                onClick: () => setShowCreateLabelsReportsDrawer(true)
               }
             ]}
           />
@@ -64,11 +72,21 @@ function ArtworksMassActions({ selectedIds }: { selectedIds: number[] }) {
       </Dropdown>
     </AnimatedContainer>
 
-    <MoveModal
-      open={showMoveModal}
-      setOpen={setShowMoveModal}
-      artwork={selectedIds}
-    />
+    {showMoveModal && (
+      <MoveModal
+        open={showMoveModal}
+        setOpen={setShowMoveModal}
+        artwork={selectedIds}
+      />
+    )}
+
+    {showCreateLabelsReportsDrawer && (
+      <CreateLabelsReportsDrawer
+        show={showCreateLabelsReportsDrawer}
+        onClose={() => setShowCreateLabelsReportsDrawer(false)}
+        preSelectedArtworkIds={selectedIds}
+      />
+    )}
   </>)
 }
 
