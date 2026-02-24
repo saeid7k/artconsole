@@ -51,7 +51,7 @@ function CreateLabelsReportsDrawer({ show, onClose, preSelectedArtworkIds = [] }
           form.resetFields();
           setSelectedArtworkIds([]);
           onClose();
-          router.reload({ only: ['reports'] });
+          router.visit(route('reports.index'), { preserveState: false })
         })
         .catch((err) => {
           message.error(err?.response?.data?.message || 'Failed to create report');
