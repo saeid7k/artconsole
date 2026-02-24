@@ -21,6 +21,7 @@ class LocationController extends Controller
 
     foreach ($locations as $location) {
       $location->artworks_images_urls = $location->artworksImagesUrls('small', 10);
+      $location->artworks_ids = $location->artworks()->pluck('id');
     }
 
     return inertia('Locations/Index', [
