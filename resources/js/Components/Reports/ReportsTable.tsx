@@ -1,15 +1,14 @@
 import { useWindow } from "@/hooks/useWindow";
-import { formatByKey } from "@/utils/formatHelper";
 import { paginate } from "@/utils/paginationHelper";
 import { keyToTitle } from "@/utils/stringHelper";
 import { CircleArrowDown01Icon, NoteIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Button, Card, Dropdown, Table, TableProps, Tag } from "antd";
-import dayjs from "dayjs";
+import { Table, TableProps, Tag } from "antd";
 import FlexBox from "../Containers/FlexBox";
+import NewTag from "../NewTag";
+import StyledDate from "../StyledDate";
 import TextboxExpandable from "../TextboxExpandable";
 import ReportsTableActions from "./ReportsTableActions";
-import StyledDate from "../StyledDate";
 
 function ReportsTable({ reports }: any) {
 
@@ -38,7 +37,10 @@ function ReportsTable({ reports }: any) {
       key: 'name',
       render: (record: any) => (
         <FlexBox direction="col" alignItems="start" gap={0} className="max-w-[300px]" >
-          <div>{record.name}</div>
+          <FlexBox gap={2}>
+            <div>{record.name}</div>
+            <NewTag dateRef={record.created_at} />
+          </FlexBox>
           {record.description && (
             <TextboxExpandable
               content={record.description}
