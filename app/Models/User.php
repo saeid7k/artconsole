@@ -71,7 +71,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
   // Appends
 
-  protected $appends = ['abilities', 'full_name', 'is_admin', 'formatted_address', 'photo', 'has_password'];
+  protected $appends = ['abilities', 'full_name', 'is_admin', 'formatted_address', 'photo', 'has_password', 'timezone'];
 
   public function getAbilitiesAttribute(): array
   {
@@ -104,6 +104,11 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
   public function getHasPasswordAttribute(): bool
   {
     return !is_null($this->password);
+  }
+
+  public function getTimezoneAttribute(): ?string
+  {
+    return $this->getMeta('timezone') ?? config('app.timezone');
   }
 
   // Relations
