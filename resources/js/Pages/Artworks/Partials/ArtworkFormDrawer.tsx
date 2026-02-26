@@ -14,9 +14,10 @@ import { Alert02Icon, InboxUploadIcon, MagicWand05Icon, Settings01Icon } from "@
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Button, Checkbox, Drawer, Form, Input, InputNumber, message, Radio, Segmented, Select, Space, Tabs, Tooltip } from "antd";
+import { Button, Checkbox, DatePicker, Drawer, Form, Input, InputNumber, message, Radio, Segmented, Select, Space, Tabs, Tooltip } from "antd";
 import Dragger from "antd/es/upload/Dragger";
 import axios from "axios";
+import dayjs from "dayjs";
 import { AnimatePresence, motion } from "framer-motion";
 import { serialize } from "object-to-formdata";
 import { useState } from "react";
@@ -401,10 +402,9 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                   <InputNumber
                     min={0}
                     step={1}
+                    precision={0}
                     className="w-full"
                     defaultValue={form.getFieldValue('price')}
-                    onChange={(value) => form.setFieldValue('price', value)}
-                    formatter={(value) => value ? Intl.NumberFormat('en-CA').format(value) : ''}
                   />
                 </Space.Compact>
               </Form.Item>
@@ -700,6 +700,8 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
               }
               key="inventory"
             >
+
+              {/* Location */}
               {mode === 'create' && (
                 <Form.Item
                   label="Location"
@@ -715,58 +717,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                 </Form.Item>
               )}
 
-              <div className="flex items-center gap-3">
-                <Form.Item
-                  label='Ownership'
-                  name="ownership"
-                >
-                  <Radio.Group
-                    optionType="button"
-                    options={[
-                      { label: 'Owned', value: 'owned' },
-                      { label: 'Consigned', value: 'consigned' },
-                    ]}
-                  />
-                </Form.Item>
-                {ownerSelected && watchForm?.ownership === 'consigned' && (
-                  <ContactWidget
-                    contact={ownerSelected}
-                    title="Owner"
-                    className="mb-3"
-                    unsetFunction={clearOwner}
-                  />
-                )}
-                {watchForm?.ownership === 'consigned' && !ownerSelected && (
-                  <Form.Item
-                    label='Owner'
-                    className="lg:w-1/3"
-                  >
-                    <Select
-                      options={contactsOptions}
-                      maxCount={1}
-                      placeholder="Select owner from contacts"
-                      showSearch={{ optionFilterProp: ['label', 'value'] }}
-                      onChange={(value: string) => onChangeOwner(value)}
-                    />
-                  </Form.Item>
-                )}
-                <Form.Item
-                  label=""
-                  name="owner_contact_id"
-                  hidden
-                >
-                  <Input />
-                </Form.Item>
-              </div>
-
-              <Form.Item
-                label="Consignment Terms"
-                name="consignment_terms"
-                rules={[{ max: 20000, message: 'Consignment Terms cannot exceed 20000 characters'}]}
-              >
-                <Input.TextArea rows={4} />
-              </Form.Item>
-
+              {/* SKU */}
               <Form.Item
                 label="SKU"
                 className="sm:w-1/2"
@@ -799,6 +750,112 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                 </Space.Compact>
               </Form.Item>
 
+              {/* Ownership */}
+              <div className="flex items-center flex-wrap gap-3">
+                <Form.Item
+                  label='Ownership'
+                  name="ownership"
+                >
+                  <Radio.Group
+                    optionType="button"
+                    options={[
+                      { label: 'Owned', value: 'owned' },
+                      { label: 'Consigned', value: 'consigned' },
+                    ]}
+                  />
+                </Form.Item>
+                {ownerSelected && watchForm?.ownership === 'consigned' && (
+                  <ContactWidget
+                    contact={ownerSelected}
+                    title="Owner"
+                    className="mb-3"
+                    unsetFunction={clearOwner}
+                  />
+                )}
+                <AnimatePresence>
+                  {!ownerSelected && watchForm?.ownership === 'consigned' && (
+                    <motion.div
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ duration: 0.3 }}
+                      className="lg:w-1/3"
+                    >
+                      <Form.Item
+                        label='Owner'
+                      >
+                        <Select
+                          options={contactsOptions}
+                          maxCount={1}
+                          placeholder="Select owner from contacts"
+                          showSearch={{ optionFilterProp: ['label', 'value'] }}
+                          onChange={(value: string) => onChangeOwner(value)}
+                        />
+                      </Form.Item>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                <Form.Item
+                  label=""
+                  name="owner_contact_id"
+                  hidden
+                >
+                  <Input />
+                </Form.Item>
+              </div>
+
+              {/* Acquisition */}
+              <AnimatePresence>
+                {watchForm?.ownership === 'owned' && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="grid grid-cols-1 sm:grid-cols-2 gap-2"
+                  >
+                    <Form.Item
+                      label="Acquisition Price"
+                      name="acquisition_price"
+                    >
+                        <Space.Compact className="w-full">
+                        <Space.Addon>{CURRENCIES.find(c => c.code === currency)?.symbol}</Space.Addon>
+                        <InputNumber
+                          min={0}
+                          step={1}
+                          precision={0}
+                          className="w-full"
+                          defaultValue={form.getFieldValue('acquisition_price')}
+                        />
+                      </Space.Compact>
+                    </Form.Item>
+
+                    <Form.Item
+                      label="Acquisition Date"
+                      name="acquisition_date"
+                      getValueProps={(value) => ({
+                        value: value ? dayjs(value) : null,
+                      })}
+                      getValueFromEvent={(date, dateString) => dateString}
+                    >
+                      <DatePicker
+                        className="w-full"
+                      />
+                    </Form.Item>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Consignment Terms */}
+              <Form.Item
+                label="Consignment Terms"
+                name="consignment_terms"
+                rules={[{ max: 20000, message: 'Consignment Terms cannot exceed 20000 characters'}]}
+              >
+                <Input.TextArea rows={4} />
+              </Form.Item>
+
+              {/* Provenance */}
               <Form.Item
                 label="Provenance"
                 name="provenance"
