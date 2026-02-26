@@ -74,6 +74,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::prefix('profile')->name('profile.')->group(function () {
     Route::post('/update', [App\Http\Controllers\ProfileController::class, 'update'])->name('update');
     Route::post('/update-photo', [App\Http\Controllers\ProfileController::class, 'updatePhoto'])->name('update-photo');
+    Route::post('/set-meta', [App\Http\Controllers\ProfileController::class, 'setMeta'])->name('set-meta');
   });
 
   Route::prefix('activity-logs')->name('activity-logs.')->group(function () {

@@ -89,4 +89,19 @@ class ProfileController extends Controller
 
     return Response()->json(['message' => 'Profile photo updated successfully']);
   }
+
+  public function setMeta(Request $request)
+  {
+    $request->validate([
+      'key' => ['required', 'string'],
+      'value' => ['required', 'string'],
+    ]);
+
+    $user = $request->user();
+    $user->setMeta($request->input('key'), $request->input('value'));
+
+    return Response()->json([
+      'message' => $request->input('key') . ' updated successfully'
+    ]);
+  }
 }
