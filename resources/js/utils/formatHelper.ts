@@ -16,6 +16,7 @@ function formatByKey(key: string, value: any): any {
       return trimWebsite(value);
     case 'price':
     case 'cost':
+    case 'acquisition_price':
     case 'amount':
       return formatCurrency(value);
     case 'dimensions':
@@ -24,6 +25,7 @@ function formatByKey(key: string, value: any): any {
       return formatAddress(value);
     case 'date':
     case 'birthday':
+    case 'acquisition_date':
       return value ? dayjs(value).format('MMM D, YYYY') : '';
     default:
       return typeof value === 'object' ?
