@@ -9,6 +9,7 @@ import axios from "axios"
 import React, { useEffect, useRef, useState } from "react"
 import AccountPersonalTab from "./AccountPersonalTab"
 import AccountSecurityTab from "./AccountSecurityTab"
+import AccountPreferencesTab from "./AccountPreferencesTab"
 
 function AccountModal({ open, setOpen }: { open: boolean, setOpen: (open: boolean) => void }) {
 
@@ -27,6 +28,11 @@ function AccountModal({ open, setOpen }: { open: boolean, setOpen: (open: boolea
       key: 'personal',
       label: 'Personal',
       children: <AccountPersonalTab />
+    },
+    {
+      key: 'preferences',
+      label: 'Preferences',
+      children: <AccountPreferencesTab />
     },
     {
       key: 'security',
