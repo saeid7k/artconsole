@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Helpers\AddressHelper;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 
@@ -27,7 +28,17 @@ class UserObserver
    */
   public function updated(User $user): void
   {
-    //
+    // update timezone if not set yet
+
+    if ($user->wasChanged('address') && !$user->getMeta('timezone')) {
+      $formattedAddress = $user->formatted_address;
+      if ($formattedAddress) {
+        $geocode = AddressHelper::addressToGeocode($formattedAddress);
+        if ($geocode && isset($geocode['timezone'])) {
+          $user->setMeta('timezone', $geocode['timezone']);
+        }
+      }
+    }
   }
 
   /**
