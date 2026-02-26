@@ -7,7 +7,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import FlexBox from "../Containers/FlexBox";
 import AddressFields from "../Fields/AddressFields";
-import LoadingSpinner from "../LoadingSpinner";
 
 function AccountPersonalTab() {
 
@@ -120,8 +119,8 @@ function AccountPersonalTab() {
         <Button
           type="primary"
           onClick={handleSave}
+          loading={isSaving}
         >
-          {isSaving && <LoadingSpinner size="small" color="white" />}
           Save
         </Button>
       </FlexBox>
