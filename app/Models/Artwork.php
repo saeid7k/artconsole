@@ -42,6 +42,8 @@ class Artwork extends Model implements HasMedia
     'owner_contact_id',
     'consignment_terms',
     'provenance',
+    'acquisition_date',
+    'acquisition_price',
     'details',
     'status',
   ];
@@ -54,6 +56,8 @@ class Artwork extends Model implements HasMedia
     'styles' => 'array',
     'dimensions' => 'object',
     'details' => 'object',
+    'acquisition_date' => 'date',
+    'acquisition_price' => 'decimal:2',
   ];
 
   // Appends
