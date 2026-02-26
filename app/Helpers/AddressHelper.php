@@ -48,21 +48,22 @@ class AddressHelper
     return $postalCode;
   }
 
-  public static function addressToCoordinates(string $address): ?array
+  public static function addressToGeocode(string $address): ?array
   {
     $geocoder = app('geocoder')->geocode($address)->get();
 
     if ($geocoder->isEmpty()) {
       return null;
     }
-
     $coordinates = $geocoder->first()->getCoordinates();
     $postalCode = $geocoder->first()->getPostalCode();
+    $timezone = $geocoder->first()->getTimezone();
 
     return [
       'lat' => $coordinates->getLatitude(),
       'lng' => $coordinates->getLongitude(),
       'postal_code' => $postalCode,
+      'timezone' => $timezone,
     ];
   }
 }
