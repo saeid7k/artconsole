@@ -61,7 +61,7 @@ class LocationObserver
     $coordinatesIsNotFilled = empty($coordinates?->lat) || empty($coordinates?->lng);
 
     if (($address?->street && $coordinatesIsNotFilled) || $location->wasChanged('address')) {
-      $coordinates = AddressHelper::addressToCoordinates($location->formatted_address);
+      $coordinates = AddressHelper::addressToGeocode($location->formatted_address);
       if ($coordinates) {
         $address = DataHelper::objectToArray($location->address);
         $address['coordinates']['lat'] = $coordinates['lat'];
