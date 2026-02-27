@@ -23,6 +23,7 @@
       border: 1px solid #ccc;
       padding: 8px;
       vertical-align: top;
+      font-weight: normal;
     }
 
     .text-light {
@@ -64,8 +65,8 @@
           <td class="w-max">
             <img src="{{ $artwork->base64_image }}" alt="Thumbnail" style="width: 1in; height: 0.625in; object-fit: contain;" />
           </td>
-          <td style="line-height: 1.75;">
-            <div">{{ $artwork->location?->name }}</div>
+          <td>
+            <div style="margin-bottom: 0.5em;">{{ $artwork->location?->name }}</div>
             <div class="text-sm text-light" style="white-space: nowrap;">{{ $artwork->sku }}</div>
           </td>
           <td>
@@ -78,7 +79,7 @@
           </td>
           <td>
             <div>
-              <div>{{ $artwork->artist?->full_name }}</div>
+              <div style="margin-bottom: 0.5em;">{{ $artwork->artist?->full_name }}</div>
               <div class="text-light">{{ $artwork->year }}</div>
             </div>
           </td>
