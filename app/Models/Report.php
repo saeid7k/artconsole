@@ -22,11 +22,14 @@ class Report extends Model implements HasMedia
     'artworks',
   ];
 
-  protected $casts = [
-    'options' => 'object',
-    'artworks' => 'array',
-    'created_at' => TimezoneAwareDatetime::class,
-  ];
+  protected function casts(): array
+  {
+    return [
+      'options' => 'object',
+      'artworks' => 'array',
+      'created_at' => TimezoneAwareDatetime::class . ':Y-m-d H:i:s',
+    ];
+  }
 
   public function gallery(): BelongsTo
   {

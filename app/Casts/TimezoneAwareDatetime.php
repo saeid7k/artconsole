@@ -4,32 +4,31 @@ namespace App\Casts;
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Illuminate\Contracts\Database\Eloquent\SerializesCastableAttributes;
 use Illuminate\Database\Eloquent\Model;
 
-class TimezoneAwareDatetime implements CastsAttributes
+class TimezoneAwareDatetime implements CastsAttributes, SerializesCastableAttributes
 {
-  private static ?string $cachedTimezone = null;
+  protected string $format;
 
-  protected function userTimezone(): string
+  public function __construct(string $format = 'Y-m-d H:i:s')
   {
-    if (static::$cachedTimezone !== null) {
-      return static::$cachedTimezone;
-    }
-
-    $user = auth()->user();
-
-    static::$cachedTimezone = ($user ? $user->getMeta('timezone') : null) ?? config('app.timezone');
-
-    return static::$cachedTimezone;
+    $this->format = $format;
   }
 
-  public function get(Model $model, string $key, mixed $value, array $attributes): ?Carbon
+  public function get(Model $model, string $key, mixed $value, array $attributes): ?string
   {
     if (is_null($value)) {
       return null;
     }
 
-    return Carbon::parse($value)->setTimezone($this->userTimezone());
+    if (!$value instanceof Carbon) {
+      $value = Carbon::parse($value);
+    }
+    
+    return $value
+      ->setTimezone(auth()->user()->timezone ?? config('app.timezone'))
+      ->format($this->format);
   }
 
   public function set(Model $model, string $key, mixed $value, array $attributes): mixed
@@ -38,6 +37,18 @@ class TimezoneAwareDatetime implements CastsAttributes
       return null;
     }
 
-    return Carbon::parse($value)->setTimezone('UTC')->format('Y-m-d H:i:s');
+    if (!$value instanceof Carbon) {
+      $value = Carbon::parse($value);
+    }
+
+    return $value
+      ->shiftTimezone(auth()->user()->timezone ?? config('app.timezone'))
+      ->setTimezone(config('app.timezone'))
+      ->format('Y-m-d H:i:s');
+  }
+
+  public function serialize(Model $model, string $key, mixed $value, array $attributes): ?string
+  {
+    return $value instanceof Carbon ? $value->format($this->format) : $value;
   }
 }
