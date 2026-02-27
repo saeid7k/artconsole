@@ -34,7 +34,7 @@ function CreateInventoryReportDrawer({ show, onClose, preSelectedArtworkIds = []
         name: values.name,
         description: values.description,
         options: {
-          show_header: values.show_header,
+          header: values.header,
         },
         artworks: selectedArtworkIds,
       })
@@ -133,7 +133,7 @@ function CreateInventoryReportDrawer({ show, onClose, preSelectedArtworkIds = []
               <div className="ps-5 grid grid-cols-1 sm:grid-cols-3 gap-x-5">
                 {/* Header */}
                 <Form.Item
-                  name="show_header"
+                  name="header"
                   valuePropName="checked"
                   initialValue={true}
                   className="mb-0"
