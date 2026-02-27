@@ -12,8 +12,9 @@ function ActionFooter({ isProcessing, save = undefined }: Props) {
         <Button
           type="primary"
           onClick={save}
-        >
-          {isProcessing ? 'Saving...' : 'Save'}
+          loading={isProcessing}
+        > 
+          Save
         </Button>
       )}
     </div>
