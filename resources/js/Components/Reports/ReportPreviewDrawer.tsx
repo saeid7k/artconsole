@@ -33,7 +33,8 @@ function ReportPreviewDrawer({ report, show, onClose }: Props) {
       placement="right"
       onClose={onClose}
       open={show}
-      size={800}
+      resizable
+      defaultSize={800}
       extra={
         <Button
           variant="text"
