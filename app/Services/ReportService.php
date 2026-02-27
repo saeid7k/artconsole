@@ -62,7 +62,7 @@ class ReportService
 
     $gallery = $this->report->gallery;
     $gallery->base64_logo = $gallery->getLastMedia('gallery-logo')->base64Content() ?? null;
-    $artworks = $gallery->artworks()->with('artist')->whereIn('id', $this->report->artworks)->get() ?? [];
+    $artworks = $gallery->artworks()->with('artist', 'location:id,name')->whereIn('id', $this->report->artworks)->get() ?? [];
     $artworks->map(function ($artwork) use ($gallery) {
       $artwork->formatted_mediums = FormatHelper::stringifyArray($artwork->mediums ?? []);
       $artwork->formatted_dimensions = FormatHelper::formatDimensions($artwork->dimensions, true);

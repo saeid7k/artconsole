@@ -43,13 +43,13 @@
           <th></th>
         @endif
         <th>Image</th>
-        <th>SKU</th>
+        <th>Location / SKU</th>
         <th>Details</th>
         <th>Artist / Year</th>
         <th>Price</th>
         <th>Status</th>
         @if ($report->options->notes ?? false)
-        <th>Note</th>
+        <th>Notes</th>
         @endif
       </tr>
     </thead>
@@ -62,10 +62,11 @@
             </td>
           @endif
           <td class="w-max">
-            <img src="{{ $artwork->base64_image }}" alt="Thumbnail" style="width: 1in; height: 0.75in; object-fit: contain;" />
+            <img src="{{ $artwork->base64_image }}" alt="Thumbnail" style="width: 1in; height: 0.625in; object-fit: contain;" />
           </td>
-          <td>
-            <div class="text-sm" style="white-space: nowrap;">{{ $artwork->sku }}</div>
+          <td style="line-height: 1.75;">
+            <div">{{ $artwork->location?->name }}</div>
+            <div class="text-sm text-light" style="white-space: nowrap;">{{ $artwork->sku }}</div>
           </td>
           <td>
             <div>
