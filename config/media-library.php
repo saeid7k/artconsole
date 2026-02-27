@@ -1,7 +1,6 @@
 <?php
 
 use App\CustomClasses\MediaPathGenerator;
-use App\Models\Media;
 
 return [
 
@@ -42,7 +41,7 @@ return [
     /*
      * The fully qualified class name of the media model.
      */
-    'media_model' => Media::class,
+    'media_model' => App\Models\Media::class,
 
     /*
      * The fully qualified class name of the media observer.
