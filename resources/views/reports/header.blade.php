@@ -45,8 +45,9 @@
     <div style="text-align: center;" >
       <h1>{{ $report->type_title }}</h1>
     </div>
-    <div style="text-align: right; padding-top: 0.25in;" >
-      <div class="text-light">{{ $report->created_at->format('F j, Y') }}</div>
+    <div style="text-align: right; padding-top: 0.25in; line-height: 1.5;" >
+      <div>{{ $report->created_at->format('F j, Y') }}</div>
+      <div>Total pieces: {{ count($report->artworks) }}</div>
     </div>
   </div>
 </body>
