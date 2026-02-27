@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 enum ReportType: string
 {
   case ArtworksLabel = 'artworks_label';
-  case InventoryReport = 'inventory_report';
+  case Inventory = 'inventory';
 
   public function label(): string
   {
