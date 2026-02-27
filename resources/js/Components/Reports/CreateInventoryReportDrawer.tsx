@@ -35,6 +35,8 @@ function CreateInventoryReportDrawer({ show, onClose, preSelectedArtworkIds = []
         description: values.description,
         options: {
           header: values.header,
+          checkbox: values.checkbox,
+          notes: values.notes,
         },
         artworks: selectedArtworkIds,
       })
@@ -100,6 +102,9 @@ function CreateInventoryReportDrawer({ show, onClose, preSelectedArtworkIds = []
         initialValues={{
           'name': `Inventory Report - ${dayjs().format('LL')}`,
           'description': '',
+          'header': true,
+          'checkbox': false,
+          'notes': false,
         }}
         onFinish={handleSubmit}
       >
@@ -130,20 +135,41 @@ function CreateInventoryReportDrawer({ show, onClose, preSelectedArtworkIds = []
           <div>
             <div>
               <div className="label">Options</div>
-              <div className="ps-5 grid grid-cols-1 sm:grid-cols-3 gap-x-5">
-                {/* Header */}
-                <Form.Item
-                  name="header"
-                  valuePropName="checked"
-                  initialValue={true}
-                  className="mb-0"
-                >
-                  <Checkbox
-                    disabled={formWatch?.size === 'small'}
+              <div className="ps-5 grid grid-cols-1 sm:grid-cols-2 gap-x-5">
+                <div>
+                  {/* Header */}
+                  <Form.Item
+                    name="header"
+                    valuePropName="checked"
+                    className="mb-0"
                   >
-                    Show Header
-                  </Checkbox>
-                </Form.Item>
+                    <Checkbox>
+                      Show Header
+                    </Checkbox>
+                  </Form.Item>
+
+                  {/* Checkbox */}
+                  <Form.Item
+                    name="checkbox"
+                    valuePropName="checked"
+                    className="mb-0"
+                  >
+                    <Checkbox>
+                      Include Checkbox Column
+                    </Checkbox>
+                  </Form.Item>
+
+                  {/* Note */}
+                  <Form.Item
+                    name="notes"
+                    valuePropName="checked"
+                    className="mb-0"
+                  >
+                    <Checkbox>
+                      Include Note Column
+                    </Checkbox>
+                  </Form.Item>
+                </div>
               </div>
             </div>
           </div>
