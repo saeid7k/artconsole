@@ -143,6 +143,25 @@ class Artwork extends Model implements HasMedia
     );
   }
 
+  public function formattedEdition(): Attribute
+  {
+    return new Attribute(
+      get: function ($value) {
+        $edition = $this->edition ? (array) $this->edition : null;
+        if (!$edition || !isset($edition['type'])) {
+          return '-';
+        }
+
+        return match ($edition['type']) {
+          'unique' => 'Unique',
+          'open' => "Open Edition, #{$edition['number']}",
+          'limited' => "Limited Edition, #{$edition['number']}/{$edition['size']}",
+          default => '-',
+        };
+      },
+    );
+  }
+
   // Relationships
 
   public function gallery()
