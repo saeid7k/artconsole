@@ -1,6 +1,7 @@
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import dayjs from 'dayjs';
+import { usePage } from '@inertiajs/react';
 
 // Initialize plugins
 dayjs.extend(utc);
@@ -21,6 +22,11 @@ const getTimezoneOptions = () => {
   .sort((a, b) => a.offsetValue - b.offsetValue);
 };
 
+const dayjsUserTz = (date: string, userTimezone?: string) => {
+  let tz = usePage().props.auth?.user?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+  return dayjs.utc(date).tz(userTimezone ?? tz);
+};
+
 const timeZoneOptions = getTimezoneOptions();
 
-export { timeZoneOptions };
+export { timeZoneOptions, dayjsUserTz };
