@@ -1,5 +1,5 @@
 import ARTWORK_STATUSES from "@/constants/artworkStatuses"
-import { ArrowDataTransferHorizontalIcon, GeometricShapes01Icon, KeyframesMultipleIcon, NoteIcon } from "@hugeicons/core-free-icons"
+import { ArrowDataTransferHorizontalIcon, GeometricShapes01Icon, KeyframesMultipleIcon, LayoutTable02Icon, NoteIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router } from "@inertiajs/react"
 import { useMutation } from "@tanstack/react-query"
@@ -8,12 +8,14 @@ import axios from "axios"
 import { useState } from "react"
 import AnimatedContainer from "../AnimatedContainer"
 import MoveModal from "../MoveModal"
+import CreateInventoryReportDrawer from "../Reports/CreateInventoryReportDrawer"
 import CreateLabelsReportsDrawer from "../Reports/CreateLabelsReportsDrawer"
 
 function ArtworksMassActions({ selectedIds }: { selectedIds: number[] }) {
 
   const [showMoveModal, setShowMoveModal] = useState(false)
   const [showCreateLabelsReportsDrawer, setShowCreateLabelsReportsDrawer] = useState(false)
+  const [showCreateInventoryReportsDrawer, setShowCreateInventoryReportsDrawer] = useState(false)
 
   const updateStatusMutation = useMutation({
     mutationFn: (status: string) => axios.post(route('artworks.mass-update-status'), {
@@ -53,11 +55,21 @@ function ArtworksMassActions({ selectedIds }: { selectedIds: number[] }) {
                 })),
               },
               {
+                key: 'divider-reports',
+                type: 'divider',
+              },
+              {
                 key: 'labels-report',
                 icon: <HugeiconsIcon icon={NoteIcon} size={16} />,
                 label: 'Create Labels Report',
                 onClick: () => setShowCreateLabelsReportsDrawer(true)
-              }
+              },
+              {
+                key: 'inventory-report',
+                icon: <HugeiconsIcon icon={LayoutTable02Icon} size={16} />,
+                label: 'Create Inventory Report',
+                onClick: () => setShowCreateInventoryReportsDrawer(true)
+              },
             ]}
           />
         )}
@@ -84,6 +96,14 @@ function ArtworksMassActions({ selectedIds }: { selectedIds: number[] }) {
       <CreateLabelsReportsDrawer
         show={showCreateLabelsReportsDrawer}
         onClose={() => setShowCreateLabelsReportsDrawer(false)}
+        preSelectedArtworkIds={selectedIds}
+      />
+    )}
+
+    {showCreateInventoryReportsDrawer && (
+      <CreateInventoryReportDrawer
+        show={showCreateInventoryReportsDrawer}
+        onClose={() => setShowCreateInventoryReportsDrawer(false)}
         preSelectedArtworkIds={selectedIds}
       />
     )}
