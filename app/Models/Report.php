@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\TimezoneAwareDatetime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\MediaLibrary\HasMedia;
@@ -24,6 +25,7 @@ class Report extends Model implements HasMedia
   protected $casts = [
     'options' => 'object',
     'artworks' => 'array',
+    'created_at' => TimezoneAwareDatetime::class,
   ];
 
   public function gallery(): BelongsTo
