@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\ArtworkStatus;
+use App\Enums\ReportType;
 use App\Helpers\FormatHelper;
 use App\Models\Report;
 use Illuminate\Support\Number;
@@ -31,7 +32,6 @@ class ReportService
         $viewPath = 'reports.inventory';
         break;
     }
-
     $margins = [0.5, 0.1875, 0.5, 0.1875];
 
     if ($this->report->type === 'artworks_label') {
@@ -61,6 +61,7 @@ class ReportService
     }
 
     $gallery = $this->report->gallery;
+    $gallery->base64_logo = $gallery->getLastMedia('gallery-logo')->base64Content() ?? null;
     $artworks = $gallery->artworks()->with('artist')->whereIn('id', $this->report->artworks)->get() ?? [];
     $artworks->map(function ($artwork) use ($gallery) {
       $artwork->formatted_mediums = FormatHelper::stringifyArray($artwork->mediums ?? []);
@@ -70,14 +71,26 @@ class ReportService
       $artwork->status = ArtworkStatus::from($artwork->status)->label();
       return $artwork;
     });
+    $this->report->type_title = ReportType::from($this->report->type)->label();
+
+    if ($this->report->type == 'inventory') {
+      $this->report->type_title = $this->report->type_title . ' Report';
+    }
 
     $tempPath = storage_path('app/report_' . $this->report->id . '.pdf');
-    pdf()
+    $pdf = pdf()
       ->view($viewPath, ['report' => $this->report, 'artworks' => $artworks])
       ->format(Format::Letter)
       ->margins($margins[0], $margins[1], $margins[2], $margins[3], Unit::Inch)
-      ->footerView('reports.footer')
-      ->save($tempPath);
+      ->footerView('reports.footer');
+
+    if ($this->report->options->header ?? false) {
+      $pdf
+        ->margins(1.25, $margins[1], $margins[2], $margins[3], Unit::Inch)
+        ->headerView('reports.header', ['report' => $this->report, 'gallery' => $gallery]);
+    }
+
+    $pdf->save($tempPath);
 
     $this->report->addMedia($tempPath)
       ->usingFileName(Str::slug($this->report->name) . '.pdf')
