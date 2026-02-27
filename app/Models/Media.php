@@ -54,4 +54,20 @@ class Media extends BaseMedia
     }
     return $result;
   }
+
+  public function base64Content(?string $conversionName = ''): string
+  {
+    $disk = Storage::disk($this->disk);
+    $path = $this->getPath($conversionName);
+
+    if ($this->disk === 'public' || $this->disk === 'local') {
+      if (!file_exists($path)) {return "";}
+      $content = file_get_contents($path);
+    } else {
+      $content = $disk->get($this->getPath($conversionName));
+    }
+
+    $base64 = base64_encode($content);
+    return "data:{$this->mime_type};base64,{$base64}";
+  }
 }
