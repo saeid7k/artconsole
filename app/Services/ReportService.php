@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\ArtworkStatus;
 use App\Helpers\FormatHelper;
 use App\Models\Report;
 use Illuminate\Support\Number;
@@ -26,27 +27,31 @@ class ReportService
       case 'artworks_label':
         $viewPath = 'reports.artworks-label';
         break;
-      case 'inventory_report':
-        $viewPath = 'reports.inventory-report';
+      case 'inventory':
+        $viewPath = 'reports.inventory';
         break;
     }
 
-    switch ($this->report->options->size ?? null) {
-      case 'small':
-        $viewPath = $viewPath . '-small';
-        $margins = [0.5, 0.1875, 0.5, 0.1875];
-        break;
-      case 'medium':
-        $viewPath = $viewPath . '-medium';
-        $margins = [0.5, 0.1562, 0.5, 0.1562];
-        break;
-      case 'large':
-        $viewPath = $viewPath . '-large';
-        $margins = [0.512, 0.118, 0.512, 0.118];
-        break;
-      default:
-        $viewPath = $viewPath . '-small';
-        $margins = [0.5, 0.1875, 0.5, 0.1875];
+    $margins = [0.5, 0.1875, 0.5, 0.1875];
+
+    if ($this->report->type === 'artworks_label') {
+      switch ($this->report->options->size ?? null) {
+        case 'small':
+          $viewPath = $viewPath . '-small';
+          $margins = [0.5, 0.1875, 0.5, 0.1875];
+          break;
+        case 'medium':
+          $viewPath = $viewPath . '-medium';
+          $margins = [0.5, 0.1562, 0.5, 0.1562];
+          break;
+        case 'large':
+          $viewPath = $viewPath . '-large';
+          $margins = [0.512, 0.118, 0.512, 0.118];
+          break;
+        default:
+          $viewPath = $viewPath . '-small';
+          $margins = [0.5, 0.1875, 0.5, 0.1875];
+      }
     }
 
     if (!isset($viewPath)) {
@@ -61,6 +66,8 @@ class ReportService
       $artwork->formatted_mediums = FormatHelper::stringifyArray($artwork->mediums ?? []);
       $artwork->formatted_dimensions = FormatHelper::formatDimensions($artwork->dimensions, true);
       $artwork->formatted_price = Number::currency(((float) $artwork->price ?? 0), $gallery->currency == 'CAD' ? 'USD' : $gallery->currency, precision: 0);
+      $artwork->base64_image = $artwork->mainImage ? $artwork->mainImage->base64Content('thumb') : null;
+      $artwork->status = ArtworkStatus::from($artwork->status)->label();
       return $artwork;
     });
 
