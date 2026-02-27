@@ -27,7 +27,7 @@ class Report extends Model implements HasMedia
     return [
       'options' => 'object',
       'artworks' => 'array',
-      'created_at' => TimezoneAwareDatetime::class . ':Y-m-d H:i:s',
+      // 'created_at' => TimezoneAwareDatetime::class . ':Y-m-d H:i:s',
     ];
   }
 
