@@ -39,25 +39,36 @@
   <table>
     <thead>
       <tr>
+        @if ($report->options->checkbox ?? false)
+          <th></th>
+        @endif
         <th>Image</th>
         <th>SKU</th>
         <th>Details</th>
         <th>Artist / Year</th>
         <th>Price</th>
         <th>Status</th>
+        @if ($report->options->notes ?? false)
+        <th>Note</th>
+        @endif
       </tr>
     </thead>
     <tbody>
       @foreach ($artworks as $artwork)
         <tr>
+          @if ($report->options->checkbox ?? false)
+            <td style="padding-top: 0.25in;">
+              <input type="checkbox" />
+            </td>
+          @endif
           <td class="w-max">
-            <img src="{{ $artwork->base64_image }}" alt="Thumbnail" style="width: 100px; height: 50px; object-fit: contain;" />
+            <img src="{{ $artwork->base64_image }}" alt="Thumbnail" style="width: 1in; height: 0.75in; object-fit: contain;" />
           </td>
           <td>
-            <div>{{ $artwork->sku }}</div>
+            <div class="text-sm" style="white-space: nowrap;">{{ $artwork->sku }}</div>
           </td>
           <td>
-            <div class="flex flex-col gap-1">
+            <div>
               <div style="font-style: italic;">{{ $artwork->title }}</div>
               <div class="text-light text-sm">{{ $artwork->formatted_edition }}</div>
               <div class="text-light text-sm">{{ $artwork->formatted_mediums }}</div>
@@ -65,7 +76,7 @@
             </div>
           </td>
           <td>
-            <div class="flex flex-col gap-1">
+            <div>
               <div>{{ $artwork->artist?->full_name }}</div>
               <div class="text-light">{{ $artwork->year }}</div>
             </div>
@@ -76,6 +87,11 @@
           <td>
             <div>{{ $artwork->status }}</div>
           </td>
+          @if ($report->options->notes ?? false)
+          <td style="min-width: 1in;">
+            <div></div>
+          </td>
+          @endif
         </tr>
       @endforeach
     </tbody>
