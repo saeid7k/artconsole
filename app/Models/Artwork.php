@@ -13,7 +13,8 @@ use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use App\Models\Media;
+use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 
 class Artwork extends Model implements HasMedia
 {
@@ -179,7 +180,7 @@ class Artwork extends Model implements HasMedia
 
   // Methods
 
-  public function registerMediaConversions(?Media $media = null): void
+  public function registerMediaConversions(?BaseMedia $media = null): void
   {
     $this->addMediaConversion('thumb')
       ->width(200)
