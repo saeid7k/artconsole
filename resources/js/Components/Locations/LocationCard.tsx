@@ -1,5 +1,5 @@
 import { LocationProps } from "@/types/location";
-import { Delete02Icon, Image02Icon, Location01Icon, MoreHorizontalSquare01Icon, NoteIcon, PencilEdit02Icon, StarIcon, ViewIcon, ViewOffSlashIcon } from "@hugeicons/core-free-icons";
+import { Delete02Icon, Image02Icon, LayoutTable02Icon, Location01Icon, MoreHorizontalSquare01Icon, NoteIcon, PencilEdit02Icon, StarIcon, ViewIcon, ViewOffSlashIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
 import { Button, Card, Divider, Dropdown, Menu, message, notification, Popconfirm, Tag, Tooltip } from "antd";
@@ -10,6 +10,7 @@ import DataRow from "../Containers/DataRow";
 import FlexBox from "../Containers/FlexBox";
 import GoogleMap from "../GoogleMap";
 import ImageGroup from "../ImageGroup";
+import CreateInventoryReportDrawer from "../Reports/CreateInventoryReportDrawer";
 import CreateLabelsReportsDrawer from "../Reports/CreateLabelsReportsDrawer";
 import TextboxExpandable from "../TextboxExpandable";
 import LocationCreateEditModal from "./LocationCreateEditModal";
@@ -19,6 +20,7 @@ function LocationCard({ location }: { location: LocationProps }) {
   const [openEditModal, setOpenEditModal] = useState(false);
   const [notificationApi, notificationContextHolder] = notification.useNotification();
   const [showCreateLabelsReportModal, setShowCreateLabelsReportModal] = useState(false);
+  const [showCreateInventoryReportModal, setShowCreateInventoryReportModal] = useState(false);
 
   function handleSetAsPrimary() {
     axios.post(route('locations.set-primary'), {
@@ -154,12 +156,21 @@ function LocationCard({ location }: { location: LocationProps }) {
                       </FlexBox>
                     )}
                   </Menu.Item>
+                  <Menu.Divider />
                   <Menu.Item key="labels-report"
                     onClick={() => setShowCreateLabelsReportModal(true)}
                   >
                     <FlexBox>
                       <HugeiconsIcon icon={NoteIcon} size={20} />
                       <div>Create Labels Report</div>
+                    </FlexBox>
+                  </Menu.Item>
+                  <Menu.Item key="inventory-report"
+                    onClick={() => setShowCreateInventoryReportModal(true)}
+                  >
+                    <FlexBox>
+                      <HugeiconsIcon icon={LayoutTable02Icon} size={20} />
+                      <div>Create Inventory Report</div>
                     </FlexBox>
                   </Menu.Item>
                 </Menu>
@@ -236,6 +247,14 @@ function LocationCard({ location }: { location: LocationProps }) {
         <CreateLabelsReportsDrawer
           show={showCreateLabelsReportModal}
           onClose={() => setShowCreateLabelsReportModal(false)}
+          preSelectedArtworkIds={location.artworks_ids ?? []}
+        />
+      )}
+
+      {showCreateInventoryReportModal && (
+        <CreateInventoryReportDrawer
+          show={showCreateInventoryReportModal}
+          onClose={() => setShowCreateInventoryReportModal(false)}
           preSelectedArtworkIds={location.artworks_ids ?? []}
         />
       )}
