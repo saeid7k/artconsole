@@ -1,5 +1,6 @@
 import FlexBox from "@/Components/Containers/FlexBox"
 import PageTitle from "@/Components/PageTitle"
+import CreateInventoryReportDrawer from "@/Components/Reports/CreateInventoryReportDrawer"
 import CreateLabelsReportsDrawer from "@/Components/Reports/CreateLabelsReportsDrawer"
 import ReportsTable from "@/Components/Reports/ReportsTable"
 import AppLayout from "@/Layouts/AppLayout"
@@ -11,12 +12,15 @@ import { useState } from "react"
 function Index({ reports }: any) {
 
   const [showCreateLabelsReportsDrawer, setShowCreateLabelsReportsDrawer] = useState(false)
+  const [showCreateInventoryReportDrawer, setShowCreateInventoryReportDrawer] = useState(false)
 
   // New Report
 
   const handleNewReportClick = (type: any) => {
     if (type === 'artworks_label') {
       setShowCreateLabelsReportsDrawer(true)
+    } else if (type === 'inventory') {
+      setShowCreateInventoryReportDrawer(true)
     }
   }
 
@@ -28,7 +32,7 @@ function Index({ reports }: any) {
           <Menu
             items={[
               { key: 'artworks_label', label: 'Artworks Label', onClick: () => handleNewReportClick('artworks_label') },
-              { key: 'inventory_report', label: 'Inventory Report', onClick: () => handleNewReportClick('inventory_report') },
+              { key: 'inventory', label: 'Inventory Report', onClick: () => handleNewReportClick('inventory') },
             ]}
           />
         }
@@ -77,6 +81,10 @@ function Index({ reports }: any) {
       <CreateLabelsReportsDrawer
         show={showCreateLabelsReportsDrawer}
         onClose={() => setShowCreateLabelsReportsDrawer(false)}
+      />
+      <CreateInventoryReportDrawer
+        show={showCreateInventoryReportDrawer}
+        onClose={() => setShowCreateInventoryReportDrawer(false)}
       />
     </div>
   )

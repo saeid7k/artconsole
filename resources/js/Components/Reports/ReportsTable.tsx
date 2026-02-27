@@ -1,7 +1,7 @@
 import { useWindow } from "@/hooks/useWindow";
 import { paginate } from "@/utils/paginationHelper";
 import { keyToTitle } from "@/utils/stringHelper";
-import { CircleArrowDown01Icon, NoteIcon } from "@hugeicons/core-free-icons";
+import { LayoutTable02Icon, NoteIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Table, TableProps, Tag } from "antd";
 import FlexBox from "../Containers/FlexBox";
@@ -16,7 +16,7 @@ function ReportsTable({ reports }: any) {
 
   const reportTypeIcon: { [key: string]: React.ReactNode } = {
     'artworks_label': <HugeiconsIcon icon={NoteIcon} size={20} />,
-    'inventory_report': <HugeiconsIcon icon={CircleArrowDown01Icon} size={20} />,
+    'inventory': <HugeiconsIcon icon={LayoutTable02Icon} size={20} />,
   }
 
   // Table columns
@@ -61,7 +61,7 @@ function ReportsTable({ reports }: any) {
       title: 'Info',
       key: 'info',
       render: (record: any) => (
-        <FlexBox direction="col" alignItems="start" gap={1} justifyContent="between" >
+        <FlexBox direction="col" alignItems="start" gap={1} justifyContent="between" className="max-w-[150px]" >
           <FlexBox justifyContent="between">
             Artworks:
             <Tag variant="outlined" >{record.artworks?.length ?? 0}</Tag>
