@@ -1,9 +1,9 @@
 import { DEFAULT_SIZE, SIZE_OPTIONS } from "@/constants/artworksLabelReport";
 import { useWindow } from "@/hooks/useWindow";
+import { dayjsUserTz } from "@/utils/dateTimeHelper";
 import { router } from "@inertiajs/react";
 import { Button, Checkbox, Divider, Drawer, Form, Input, message, Select } from "antd";
 import axios from "axios";
-import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import ArtworkSelector from "../Artworks/ArtworkSelector";
 import FlexBox from "../Containers/FlexBox";
@@ -115,7 +115,7 @@ function CreateLabelsReportsDrawer({ show, onClose, preSelectedArtworkIds = [] }
         form={form}
         layout="vertical"
         initialValues={{
-          'name': `Artworks Label - ${dayjs().format('LL')}`,
+          'name': `Artworks Label - ${dayjsUserTz().format('LL')}`,
           'size': DEFAULT_SIZE.value,
           'sku': false,
           'artist_name': true,

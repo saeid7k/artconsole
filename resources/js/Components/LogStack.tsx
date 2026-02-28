@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import FlexBox from "./Containers/FlexBox";
+import { dayjsUserTz } from "@/utils/dateTimeHelper";
 
 function LogStack({ log }: { log: ActivityLogProps }) {
 
@@ -112,7 +113,7 @@ function LogStack({ log }: { log: ActivityLogProps }) {
       </FlexBox>
       <FlexBox className="w-max whitespace-nowrap">
         <HugeiconsIcon icon={Time04Icon} size={16} className="text-muted" />
-        {dayjs(log.created_at).format('MMM D, YYYY h:mm A')}
+        {dayjsUserTz(log.created_at).format('MMM D, YYYY h:mm A')}
       </FlexBox>
     </div>
   )

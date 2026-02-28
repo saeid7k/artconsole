@@ -1,8 +1,8 @@
 import { useWindow } from "@/hooks/useWindow";
+import { dayjsUserTz } from "@/utils/dateTimeHelper";
 import { router } from "@inertiajs/react";
 import { Button, Checkbox, Divider, Drawer, Form, Input, message } from "antd";
 import axios from "axios";
-import dayjs from "dayjs";
 import { useState } from "react";
 import ArtworkSelector from "../Artworks/ArtworkSelector";
 import FlexBox from "../Containers/FlexBox";
@@ -100,7 +100,7 @@ function CreateInventoryReportDrawer({ show, onClose, preSelectedArtworkIds = []
         form={form}
         layout="vertical"
         initialValues={{
-          'name': `Inventory Report - ${dayjs().format('LL')}`,
+          'name': `Inventory Report - ${dayjsUserTz().format('LL')}`,
           'description': '',
           'header': true,
           'checkbox': false,
