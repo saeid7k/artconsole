@@ -4,13 +4,13 @@ import { useWindow } from "@/hooks/useWindow"
 import AppLayout from "@/Layouts/AppLayout"
 import { PageProps } from "@/types"
 import { NotificationProps } from "@/types/notification"
+import { dayjsUserTz } from "@/utils/dateTimeHelper"
 import { keyToTitle } from "@/utils/stringHelper"
 import { InboxIcon, InboxUnreadIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router } from "@inertiajs/react"
 import { Button, Table, TableProps, Tooltip } from "antd"
 import axios from "axios"
-import dayjs from "dayjs"
 import { twMerge } from "tailwind-merge"
 
 function Notifications({ notifications }: { notifications: PageProps}) {
@@ -85,7 +85,7 @@ function Notifications({ notifications }: { notifications: PageProps}) {
       sorter: (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
-      render: (text) => (<div className="min-w-max">{dayjs(text).format('LLL')}</div>),
+      render: (text) => (<div className="min-w-max">{dayjsUserTz(text).format('LLL')}</div>),
       width: 'max-content',
     },
     {

@@ -17,6 +17,7 @@ import CopyToClipboard from "../CopyToClipboard";
 import LoadingSpinner from "../LoadingSpinner";
 import MoveModal from "../MoveModal";
 import StyledDivider from "../StyledDivider";
+import { dayjsUserTz } from "@/utils/dateTimeHelper";
 
 type Props = {
   location: LocationProps;
@@ -127,7 +128,7 @@ function LocationStack({
                 {createdLog.length > 0 && (
                   createdLog.map((log: ActivityLogProps) => (
                     <Timeline.Item
-                      title={dayjs(log.created_at).format('MMM D, YYYY')}
+                      title={dayjsUserTz(log.created_at).format('MMM D, YYYY')}
                       placement="start"
                     >
                       added to {log.properties.location}
@@ -136,7 +137,7 @@ function LocationStack({
                 )}
                 {moveLogs.map((log: ActivityLogProps) => (
                     <Timeline.Item
-                      title={dayjs(log.created_at).format('MMM D, YYYY')}
+                      title={dayjsUserTz(log.created_at).format('MMM D, YYYY')}
                       placement="start"
                     >
                       <FlexBox>

@@ -1,4 +1,5 @@
 import { ArtworkProps } from "@/types/artwork";
+import { dayjsUserTz } from "@/utils/dateTimeHelper";
 import { downloadFile } from "@/utils/downloadHelper";
 import { Delete02Icon, Download01Icon, StarIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -6,7 +7,6 @@ import { router } from "@inertiajs/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Button, message, Table, TableProps, Tooltip } from "antd";
 import axios from "axios";
-import dayjs from "dayjs";
 import { useEffect } from "react";
 import FlexBox from "../Containers/FlexBox";
 import LoadingSpinner from "../LoadingSpinner";
@@ -107,8 +107,8 @@ function ArtworkImages({ artwork }: { artwork: ArtworkProps }) {
       showSorterTooltip: false,
       render: (text) => (
         <FlexBox direction="col" gap={0} alignItems="start" >
-          <div>{dayjs(text).format('MMM D, YYYY')}</div>
-          <div className="text-muted">{dayjs(text).format('h:mm A')}</div>
+          <div>{dayjsUserTz(text).format('MMM D, YYYY')}</div>
+          <div className="text-muted">{dayjsUserTz(text).format('h:mm A')}</div>
         </FlexBox>
       ),
       width: 1,

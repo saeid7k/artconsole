@@ -2,6 +2,7 @@ import ACCESS_LEVELS from "@/constants/accessLevels"
 import { useGallerySettings } from "@/contexts/GallerySettingsContext"
 import { InviteLinkProps } from "@/types/inviteLink"
 import { UserProps } from "@/types/user"
+import { dayjsUserTz } from "@/utils/dateTimeHelper"
 import { ucFirst } from "@/utils/stringHelper"
 import { RemoveCircleIcon, SentIcon, UserMinus01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
@@ -201,7 +202,7 @@ function Members() {
       },
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
-      render: (text): string => text ? dayjs(text).format('LL') : 'Never',
+      render: (text): string => text ? dayjsUserTz(text).format('LL') : 'Never',
       width: 160,
     },
     {

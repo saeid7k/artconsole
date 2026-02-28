@@ -1,4 +1,5 @@
 import { NoteProps } from "@/types/note";
+import { dayjsUserTz } from "@/utils/dateTimeHelper";
 import { getInitials } from "@/utils/stringHelper";
 import { Delete02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -6,7 +7,6 @@ import { router } from "@inertiajs/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Avatar, Button, Card, Input, Popover } from "antd";
 import axios from "axios";
-import dayjs from "dayjs";
 import { twMerge } from "tailwind-merge";
 import FlexBox from "../Containers/FlexBox";
 
@@ -78,7 +78,7 @@ function Note({ index, note, onChange }: Props) {
               ))}
             </Avatar.Group>
             <div className="text-ghost">
-              {note.updated_at && dayjs(note.updated_at).format('MMM D, YYYY h:mm A')}
+              {note.updated_at && dayjsUserTz(note.updated_at).format('MMM D, YYYY h:mm A')}
             </div>
           </FlexBox>
           <FlexBox justifyContent="end" >
