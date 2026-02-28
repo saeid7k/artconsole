@@ -22,9 +22,14 @@ const getTimezoneOptions = () => {
   .sort((a, b) => a.offsetValue - b.offsetValue);
 };
 
-const dayjsUserTz = (date: string, userTimezone?: string) => {
+const dayjsUserTz = (date?: string, userTimezone?: string) => {
   let tz = usePage().props.auth?.user?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone || '';
-  return dayjs.utc(date).tz(userTimezone ?? tz);
+
+  if (!date) {
+    return dayjs().tz(userTimezone ?? tz);
+  } else {
+    return dayjs.utc(date).tz(userTimezone ?? tz);
+  }
 };
 
 const timeZoneOptions = getTimezoneOptions();
