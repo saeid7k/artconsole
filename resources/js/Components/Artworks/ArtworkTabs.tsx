@@ -1,6 +1,7 @@
 import { ArtworkProps } from "@/types/artwork";
 import { Empty, Tabs } from "antd";
 import ActivityLogs from "../ActivityLogs";
+import ArtworkDocuments from "./ArtworkDocuments";
 import ArtworkImages from "./ArtworkImages";
 import ArtworkImageUpload from "./ArtworkImageUpload";
 import ArtworkNotes from "./ArtworkNotes";
@@ -12,7 +13,7 @@ function ArtworkTabs({ artwork }: { artwork: ArtworkProps }) {
       key: 'images',
       label: 'Images',
       children: (
-        <div className="flex flex-col lg:flex-row gap-5 items-start flex-wrap">
+        <div className="flex flex-col lg:flex-row gap-x-3 gap-y-0 items-start flex-wrap">
           {artwork.images?.length > 0 && (
             <div className="grow w-full overflow-x-auto">
               <ArtworkImages artwork={artwork} />
@@ -30,7 +31,7 @@ function ArtworkTabs({ artwork }: { artwork: ArtworkProps }) {
     {
       key: 'documents',
       label: 'Documents',
-      children: <Empty description="No documents available." className="py-10" />,
+      children: <ArtworkDocuments artwork={artwork} />,
     },
     {
       key: 'financial',
