@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\ArtworkCategory;
 use App\Enums\ArtworkStatus;
+use App\Helpers\FormatHelper;
 use App\Http\Requests\ArtworkStoreUpdateRequest;
 use App\Models\Artwork;
 use App\Models\Location;
@@ -462,5 +463,28 @@ class ArtworkController extends Controller
     }
 
     return response()->json($artworks);
+  }
+
+  public function renderDocument(Request $request, Artwork $artwork)
+  {
+    $this->authorize('view', $artwork);
+
+    $request->validate([
+      'type' => ['required', 'string', 'in:coa'],
+    ]);
+
+    $artwork->load(['artist']);
+
+    $viewPath = match ($request->input('type')) {
+      'coa' => 'documents.coa',
+      default => null,
+    };
+
+    $artwork->formatted_dimensions = FormatHelper::formatDimensions($artwork->dimensions, true);
+    $artwork->formatted_medium = FormatHelper::stringifyArray($artwork->mediums ?? []);
+
+    return view($viewPath, [
+      'artwork' => $artwork,
+    ]);
   }
 }
