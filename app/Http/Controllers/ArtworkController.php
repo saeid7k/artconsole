@@ -11,6 +11,9 @@ use App\Models\Location;
 use App\Services\ArtworkService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Spatie\LaravelPdf\Enums\Format;
+
+use function Spatie\LaravelPdf\Support\pdf;
 
 class ArtworkController extends Controller
 {
@@ -480,10 +483,31 @@ class ArtworkController extends Controller
       default => null,
     };
 
-    $artwork->formatted_medium = FormatHelper::stringifyArray($artwork->mediums ?? []);
-
     return view($viewPath, [
       'artwork' => $artwork,
     ]);
+  }
+
+  public function downloadDocument(Request $request, Artwork $artwork)
+  {
+    $this->authorize('view', $artwork);
+
+    $request->validate([
+      'type' => ['required', 'string', 'in:coa'],
+    ]);
+
+    $artwork->load(['artist']);
+
+    $viewPath = match ($request->input('type')) {
+      'coa' => 'documents.coa',
+      default => null,
+    };
+
+    $pdf = pdf()
+      ->view($viewPath, ['artwork' => $artwork])
+      ->format(Format::Letter)
+      ->landscape();
+
+    return $pdf;
   }
 }
