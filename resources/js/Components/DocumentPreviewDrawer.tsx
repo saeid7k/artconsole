@@ -1,7 +1,10 @@
 import { useArtworkShow } from "@/contexts/ArtworkShowContext";
 import { DocumentProps } from "@/types/document";
+import { downloadFile } from "@/utils/downloadHelper";
+import { PdfIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useMutation } from "@tanstack/react-query";
-import { Divider, Drawer } from "antd";
+import { Button, Divider, Drawer, Tooltip } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import FlexBox from "./Containers/FlexBox";
@@ -28,6 +31,13 @@ function DocumentPreviewDrawer({ document, show, onClose }: Props) {
     }
   });
 
+  function handleDownload() {
+    downloadFile({
+      url: route('artworks.download-document', { artwork: artwork?.id, type: document.value }),
+      fileName: `${document.label} - ${artwork?.title}.pdf`
+    })
+  }
+
   useEffect(() => {
     if (show && artwork) {
       renderDocumentMutation.mutate();
@@ -36,11 +46,38 @@ function DocumentPreviewDrawer({ document, show, onClose }: Props) {
     }
   }, [show, artwork]);
 
+  // Renders
+
+  const renderTitle = () => {
+    return (
+      <FlexBox>
+        {document?.label}
+        <Divider orientation="vertical" />
+        <div className="text-primary">{artwork?.title}</div>
+      </FlexBox>
+    )
+  }
+
+  const renderToolbar = () => {
+    return (
+      <Tooltip title="Download PDF" placement="bottomLeft" >
+        <Button
+          variant="text"
+          color="red"
+          shape="circle"
+          icon={<HugeiconsIcon icon={PdfIcon} />}
+          onClick={handleDownload}
+        />
+      </Tooltip>
+    )
+  }
+
   return (
     <Drawer
       open={show}
       onClose={onClose}
-      title={<FlexBox>{document?.label}<Divider orientation="vertical" /><div className="text-primary">{artwork?.title}</div></FlexBox>}
+      title={renderTitle()}
+      extra={renderToolbar()}
       resizable
       defaultSize={1280}
     >
