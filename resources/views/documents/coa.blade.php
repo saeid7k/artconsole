@@ -56,8 +56,11 @@
     }
 
     .container {
+      position: relative;
       padding: 0.75in;
       width: auto;
+      height: 100%;
+      box-sizing: border-box;
     }
 
     .border {
@@ -103,11 +106,14 @@
     }
 
     .signature-row {
+      position: absolute;
+      bottom: 0.75in;
       display: flex;
       justify-content: space-between;
       gap: 2in;
-      width: 8in;
-      margin: 1in auto 0;
+      width: calc(11in - 1.5in);
+      padding: 0 1in;
+      box-sizing: border-box;
     }
 
     .signature-holder {
