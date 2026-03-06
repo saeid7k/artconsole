@@ -130,7 +130,7 @@
 </head>
 
 <body>
-  <div class="wrapper border">
+  <div class="wrapper">
     <div class="container">
       <div class="header">
         <h1 style="margin-bottom: 0.25in; font-size:48pt;">Certificate of Authenticity</h1>
