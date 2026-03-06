@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\FormatHelper;
 use App\Traits\HasNotes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -143,10 +144,19 @@ class Artwork extends Model implements HasMedia
     );
   }
 
+  public function formattedDimensions(): Attribute
+  {
+    return new Attribute(
+      get: function (?bool $showDepth = true) {
+        return FormatHelper::formatDimensions($this->dimensions, $showDepth ?? true);
+      },
+    );
+  }
+
   public function formattedEdition(): Attribute
   {
     return new Attribute(
-      get: function ($value) {
+      get: function () {
         $edition = $this->edition ? (array) $this->edition : null;
         if (!$edition || !isset($edition['type'])) {
           return '-';
@@ -158,6 +168,15 @@ class Artwork extends Model implements HasMedia
           'limited' => "Limited Edition, #{$edition['number']}/{$edition['size']}",
           default => '-',
         };
+      },
+    );
+  }
+
+  public function formattedMedium(): Attribute
+  {
+    return new Attribute(
+      get: function () {
+        return FormatHelper::stringifyArray($this->mediums);
       },
     );
   }
