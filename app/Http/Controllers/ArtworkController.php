@@ -480,7 +480,6 @@ class ArtworkController extends Controller
       default => null,
     };
 
-    $artwork->formatted_dimensions = FormatHelper::formatDimensions($artwork->dimensions, true);
     $artwork->formatted_medium = FormatHelper::stringifyArray($artwork->mediums ?? []);
 
     return view($viewPath, [
