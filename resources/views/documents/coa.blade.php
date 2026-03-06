@@ -7,6 +7,10 @@
       </div>
     HTML;
   };
+
+  $fontEbGaramondBase64 = base64_encode(file_get_contents(Vite::asset('resources/fonts/EBGaramond.woff2')));
+  $fontTangerineRegularBase64 = base64_encode(file_get_contents(Vite::asset('resources/fonts/Tangerine-Regular.woff2')));
+  $fontTangerineBoldBase64 = base64_encode(file_get_contents(Vite::asset('resources/fonts/Tangerine-Bold.woff2')));
 @endphp
 
 <!DOCTYPE html>
@@ -18,21 +22,21 @@
   <style>
     @font-face {
       font-family: 'EB Garamond';
-      src: url("{{ Vite::asset('resources/fonts/EBGaramond.woff2') }}") format('woff2-variations');
+      src: url("data:font/woff2;base64,{{ $fontEbGaramondBase64 }}") format('woff2-variations');
       font-weight: 100 900;
       font-style: normal;
       font-display: swap;
     }
     @font-face {
       font-family: 'Tangerine';
-      src: url("{{ Vite::asset('resources/fonts/Tangerine-Regular.woff2') }}") format('woff2');
+      src: url("data:font/woff2;base64,{{ $fontTangerineRegularBase64 }}") format('woff2');
       font-weight: 400;
       font-style: normal;
       font-display: swap;
     }
     @font-face {
       font-family: 'Tangerine';
-      src: url("{{ Vite::asset('resources/fonts/Tangerine-Bold.woff2') }}") format('woff2');
+      src: url("data:font/woff2;base64,{{ $fontTangerineBoldBase64 }}") format('woff2');
       font-weight: 700;
       font-style: normal;
       font-display: swap;
