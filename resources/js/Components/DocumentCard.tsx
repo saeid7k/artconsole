@@ -5,10 +5,20 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { Button, Card, Tooltip } from "antd";
 import { useState } from "react";
 import DocumentPreviewDrawer from "./DocumentPreviewDrawer";
+import { downloadFile } from "@/utils/downloadHelper";
+import { useArtworkShow } from "@/contexts/ArtworkShowContext";
 
 function DocumentCard({ document }: { document: DocumentProps }) {
 
+  const { artwork } = useArtworkShow()
   const [showPreview, setShowPreview] = useState(false);
+
+  function handleDownload() {
+    downloadFile({
+      url: route('artworks.download-document', { artwork: artwork.id, type: document.value }),
+      fileName: `${document.label} - ${artwork.title}.pdf`
+    })
+  }
 
   return (
     <>
@@ -31,7 +41,7 @@ function DocumentCard({ document }: { document: DocumentProps }) {
               variant="text"
               color="purple"
               shape="circle"
-              // onClick={() => }
+              onClick={() => handleDownload()}
             >
               <HugeiconsIcon icon={Download01Icon} size={20} />
             </Button>
