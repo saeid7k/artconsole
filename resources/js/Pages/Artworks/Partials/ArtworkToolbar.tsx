@@ -1,9 +1,11 @@
 import FlexBox from "@/Components/Containers/FlexBox";
+import DocumentPreviewDrawer from "@/Components/DocumentPreviewDrawer";
 import MoveModal from "@/Components/MoveModal";
+import { ARTWORK_DOCUMENTS } from "@/constants/artworkDocuments";
 import useFilesUpload from "@/hooks/useFilesUpload";
 import { useWindow } from "@/hooks/useWindow";
 import { ArtworkProps } from "@/types/artwork";
-import { ArrowDataTransferHorizontalIcon, CopyIcon, Delete02Icon, ImageAddIcon, MoreHorizontalCircle01Icon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
+import { ArrowDataTransferHorizontalIcon, CopyIcon, Delete02Icon, DiplomaIcon, ImageAddIcon, MoreHorizontalCircle01Icon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
 import { useMutation } from "@tanstack/react-query";
@@ -20,17 +22,16 @@ function ArtworkToolbar({ artwork }: Props) {
 
   const { windowWidth } = useWindow();
 
+  const [showEditDrawer, setShowEditDrawer] = useState(false)
+  const [openMoveModal, setOpenMoveModal] = useState(false);
+  const [showCoaPreview, setShowCoaPreview] = useState(false);
+
   // Upload Images
 
   const { triggerFilesSelect, FilesInput } = useFilesUpload({
     url: route('artworks.upload-images', { artwork: artwork.id }),
     reloadOnSuccess: true
   });
-
-  // Edit Drawer & Move Modal
-
-  const [showEditDrawer, setShowEditDrawer] = useState(false)
-  const [openMoveModal, setOpenMoveModal] = useState(false);
 
   // Delete
 
@@ -101,6 +102,15 @@ function ArtworkToolbar({ artwork }: Props) {
             </Menu.Item>
           </>
         )}
+        <Menu.Item
+          key="coa"
+          onClick={() => setShowCoaPreview(true)}
+        >
+          <FlexBox>
+            <HugeiconsIcon icon={DiplomaIcon} size={20} />
+            Certificate of Authenticity
+          </FlexBox>
+        </Menu.Item>
         <Menu.Item
           key="copy"
           disabled={!artwork.abilities.create}
@@ -241,6 +251,12 @@ function ArtworkToolbar({ artwork }: Props) {
           <div className="italic text-red-500">{artwork.title}</div>
         </div>
       </Modal>
+
+      <DocumentPreviewDrawer
+        document={ARTWORK_DOCUMENTS.find(doc => doc.value === 'coa')}
+        show={showCoaPreview}
+        onClose={() => setShowCoaPreview(false)}
+      />
     </>
   )
 }
