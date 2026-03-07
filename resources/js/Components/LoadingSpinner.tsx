@@ -4,9 +4,10 @@ import { twMerge } from "tailwind-merge";
 type Props = {
   size?: 'small' | 'default' | 'large';
   color?: 'default' | 'white';
+  className?: string;
 }
 
-function LoadingSpinner({ size = 'default', color = 'default' }: Props) {
+function LoadingSpinner({ size = 'default', color = 'default', className }: Props) {
 
   const paddingSize = {
     small: 'p-1',
@@ -18,7 +19,8 @@ function LoadingSpinner({ size = 'default', color = 'default' }: Props) {
     <div
       className={twMerge(
         "flex justify-center",
-        paddingSize[size]
+        paddingSize[size],
+        className
       )}
     >
       <Spin
