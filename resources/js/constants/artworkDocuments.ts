@@ -1,4 +1,4 @@
-import coaThumbnail from '~/resources/documents/coa/coa-thumbnail.png';
+import coaThumbnail from '~/resources/documents/coa/coa-thumbnail.jpg';
 
 const ARTWORK_DOCUMENTS = [
   {
