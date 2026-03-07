@@ -9,16 +9,17 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import FlexBox from "./Containers/FlexBox";
 import LoadingSpinner from "./LoadingSpinner";
+import { ArtworkProps } from "@/types/artwork";
 
 type Props = {
+  artwork: ArtworkProps;
   document?: DocumentProps | undefined;
   show: boolean;
   onClose: () => void;
 }
 
-function DocumentPreviewDrawer({ document, show, onClose }: Props) {
+function DocumentPreviewDrawer({ artwork, document, show, onClose }: Props) {
 
-  const { artwork } = useArtworkShow()
   const [htmlContent, setHtmlContent] = useState<string | null>(null);
 
   const renderDocumentMutation = useMutation({

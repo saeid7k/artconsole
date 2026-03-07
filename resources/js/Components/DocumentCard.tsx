@@ -61,6 +61,7 @@ function DocumentCard({ document }: { document: DocumentProps }) {
       </Card>
 
       <DocumentPreviewDrawer
+        artwork={artwork}
         document={document}
         show={showPreview}
         onClose={() => setShowPreview(false)}

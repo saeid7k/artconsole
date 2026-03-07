@@ -253,6 +253,7 @@ function ArtworkToolbar({ artwork }: Props) {
       </Modal>
 
       <DocumentPreviewDrawer
+        artwork={artwork}
         document={ARTWORK_DOCUMENTS.find(doc => doc.value === 'coa')}
         show={showCoaPreview}
         onClose={() => setShowCoaPreview(false)}
