@@ -8,9 +8,10 @@ import { Button, Divider, Drawer, Tooltip } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import FlexBox from "./Containers/FlexBox";
+import LoadingSpinner from "./LoadingSpinner";
 
 type Props = {
-  document: DocumentProps;
+  document?: DocumentProps | undefined;
   show: boolean;
   onClose: () => void;
 }
@@ -22,7 +23,7 @@ function DocumentPreviewDrawer({ document, show, onClose }: Props) {
 
   const renderDocumentMutation = useMutation({
     mutationFn: () => axios.post(route('artworks.render-document', { artwork: artwork?.id }), {
-      type: document.value,
+      type: document?.value,
     }),
     onSuccess: (res: any) => {
       setHtmlContent(res.data);
@@ -32,6 +33,7 @@ function DocumentPreviewDrawer({ document, show, onClose }: Props) {
   });
 
   function handleDownload() {
+    if (!document) return;
     downloadFile({
       url: route('artworks.download-document', { artwork: artwork?.id, type: document.value }),
       fileName: `${document.label} - ${artwork?.title}.pdf`
@@ -81,14 +83,15 @@ function DocumentPreviewDrawer({ document, show, onClose }: Props) {
       resizable
       defaultSize={1280}
     >
-      <div
-        // className="h-[70vh] overflow-auto"
-      >
+      {renderDocumentMutation.isPending && (
+        <LoadingSpinner size="large" className="py-20" />
+      )}
+      {(document && htmlContent) && (
         <div
           dangerouslySetInnerHTML={{ __html: htmlContent || '' }}
           className="scale-75 xl:scale-90 origin-top-left"
         ></div>
-      </div>
+      )}
     </Drawer>
   );
 }
