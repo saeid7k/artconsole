@@ -1,6 +1,8 @@
+import DocumentPreviewDrawer from "@/Components/DocumentPreviewDrawer"
 import MoveModal from "@/Components/MoveModal"
+import { ARTWORK_DOCUMENTS } from "@/constants/artworkDocuments"
 import { ArtworkProps } from "@/types/artwork"
-import { ArrowDataTransferHorizontalIcon, Copy01Icon, Delete02Icon, MoreHorizontalCircle01Icon, PencilEdit02Icon, ViewIcon } from "@hugeicons/core-free-icons"
+import { ArrowDataTransferHorizontalIcon, Copy01Icon, Delete02Icon, DiplomaIcon, MoreHorizontalCircle01Icon, PencilEdit02Icon, ViewIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router } from "@inertiajs/react"
 import { useMutation } from "@tanstack/react-query"
@@ -14,6 +16,7 @@ function ArtworksActions({ artwork }: { artwork: ArtworkProps }) {
   // Edit Drawer
 
   const [showEditDrawer, setShowEditDrawer] = useState(false)
+  const [showCoaPreview, setShowCoaPreview] = useState(false);
 
   const deleteMutation = useMutation({
     mutationFn: (artworkId: number) => axios.delete(route('artworks.destroy', artworkId)),
@@ -104,6 +107,12 @@ function ArtworksActions({ artwork }: { artwork: ArtworkProps }) {
                   onClick: () => setOpenMoveModal(true),
                 },
                 {
+                  key: 'coa',
+                  icon: <HugeiconsIcon icon={DiplomaIcon} size={16} />,
+                  label: 'Certificate of Authenticity',
+                  onClick: () => setShowCoaPreview(true),
+                },
+                {
                   key: 'copy',
                   icon: <HugeiconsIcon icon={Copy01Icon} size={16} />,
                   label: 'Copy Artwork',
@@ -124,6 +133,8 @@ function ArtworksActions({ artwork }: { artwork: ArtworkProps }) {
         </Dropdown>
       </div>
 
+      {/* Child Components */}
+
       <ArtworkFormDrawer
         artwork={artwork}
         show={showEditDrawer}
@@ -134,6 +145,12 @@ function ArtworksActions({ artwork }: { artwork: ArtworkProps }) {
         open={openMoveModal}
         setOpen={setOpenMoveModal}
         artwork={artwork}
+      />
+      <DocumentPreviewDrawer
+        artwork={artwork}
+        show={showCoaPreview}
+        onClose={() => setShowCoaPreview(false)}
+        document={ARTWORK_DOCUMENTS.find(doc => doc.value === 'coa')}
       />
     </>
   )
