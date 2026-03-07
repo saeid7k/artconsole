@@ -6,20 +6,21 @@ import LocationStack from '@/Components/Locations/LocationStack';
 import { ARTWORK_CATEGORIES } from '@/constants/artworkCategories';
 import ARTWORK_STATUSES from '@/constants/artworkStatuses';
 import { useArtworksIndex } from '@/contexts/ArtworksIndexContext';
+import useFilters from '@/hooks/useFilters';
 import { useWindow } from '@/hooks/useWindow';
 import { PageProps } from '@/types';
 import { ArtworkProps } from '@/types/artwork';
 import { formatCurrency } from '@/utils/formatHelper';
+import { paginate } from '@/utils/paginationHelper';
 import { keyToTitle } from '@/utils/stringHelper';
 import { ViewIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Link, router } from '@inertiajs/react';
 import type { TableProps } from 'antd';
 import { Image, Table } from 'antd';
+import { useState } from 'react';
 import imagePlaceholder from '~/resources/images/image-placeholder.svg';
 import ArtworksActions from './ArtworksActions';
-import useFilters from '@/hooks/useFilters';
-import { paginate } from '@/utils/paginationHelper';
 
 type LocationsProps = Array<{
   id: number;
@@ -31,13 +32,14 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
   const { breakpoint, windowWidth } = useWindow()
   const { selectedIds, setSelectedIds } = useArtworksIndex()
   const { filters } = useFilters('artworks.index')
+  const [ paginationLoading, setPaginationLoading ] = useState(false);
 
   const columns: TableProps['columns'] = [
     {
       title: 'SKU',
       dataIndex: 'sku',
       key: 'sku',
-      sorter: (a, b) => a.sku.localeCompare(b.sku),
+      sorter: true,
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
       render: (_, record) => (
@@ -80,7 +82,7 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
       title: 'Title',
       dataIndex: 'title',
       key: 'title',
-      sorter: (a, b) => a.title.localeCompare(b.title),
+      sorter: true,
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
       render: (_, record) => <ArtworkTitleStack artwork={record as ArtworkProps} showYear={false} showSigned={false} />,
@@ -92,7 +94,7 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
       key: 'category',
       filters: ARTWORK_CATEGORIES.map((cat) => ({ text: cat.label, value: cat.value })),
       filteredValue: filters?.category?.length > 0 ? filters.category : null,
-      sorter: (a, b) => a.category.localeCompare(b.category),
+      sorter: true,
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
       render: (text) => keyToTitle(text),
@@ -123,7 +125,7 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
       title: 'Price',
       dataIndex: 'price',
       key: 'price',
-      sorter: (a, b) => a.price - b.price,
+      sorter: true,
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
       render: (text) => formatCurrency(text, 2),
@@ -133,7 +135,7 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
-      sorter: (a, b) => a.status.localeCompare(b.status),
+      sorter: true,
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
       filters: ARTWORK_STATUSES.map((status) => ({ text: status.label, value: status.value })),
@@ -164,6 +166,11 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
         showSizeChanger: true,
       }}
       onChange={(pagination, filters, sorter: any) => {
+        setPaginationLoading(true);
+        const removeListener = router.on('finish', () => {
+          setPaginationLoading(false);
+          removeListener();
+        });
         paginate({
           routeName: 'artworks.index',
           pagination,
@@ -177,6 +184,7 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
           setSelectedIds(selectedRowKeys as number[])
         }
       }}
+      loading={paginationLoading}
     />
   )
 }
