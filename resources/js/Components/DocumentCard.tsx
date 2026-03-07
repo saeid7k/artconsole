@@ -56,7 +56,7 @@ function DocumentCard({ document }: { document: DocumentProps }) {
         <img
           src={document.thumbnailUrl}
           alt={document.label}
-          className="w-[150px] h-[150px] object-cover rounded shadow"
+          className="w-[150px] h-[150px] object-contain rounded shadow"
         />
       </Card>
 
