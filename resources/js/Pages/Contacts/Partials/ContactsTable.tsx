@@ -5,23 +5,26 @@ import { useWindow } from '@/hooks/useWindow';
 import { PageProps } from '@/types';
 import { ContactProps } from '@/types/contact';
 import { formatPhoneNumber } from '@/utils/formatHelper';
+import { paginate } from '@/utils/paginationHelper';
 import { Call02Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { router } from '@inertiajs/react';
 import type { TableProps } from 'antd';
 import { Table } from 'antd';
+import { useState } from 'react';
 import ContactsActions from './ContactsActions';
 
 function ContactsTable({ contacts }: { contacts: PageProps }) {
 
   const { breakpoint } = useWindow()
+  const [ paginationLoading, setPaginationLoading ] = useState(false);
 
   const columns: TableProps['columns'] = [
     {
       title: 'Name',
       dataIndex: 'full_name',
       key: 'full_name',
-      sorter: (a, b) => a.full_name.localeCompare(b.full_name),
+      sorter: true,
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
       render: (text, record): JSX.Element => (<ContactStack contact={record as ContactProps} />),
@@ -32,7 +35,7 @@ function ContactsTable({ contacts }: { contacts: PageProps }) {
       title: 'Address',
       dataIndex: 'formatted_address',
       key: 'formatted_address',
-      sorter: (a, b) => a.formatted_address.localeCompare(b.formatted_address),
+      sorter: true,
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
       render: (text) => (<div className="line-clamp-2">{text}</div>),
@@ -42,7 +45,7 @@ function ContactsTable({ contacts }: { contacts: PageProps }) {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
-      sorter: (a, b) => a.email.localeCompare(b.email),
+      sorter: true,
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
       width: 200,
@@ -51,7 +54,7 @@ function ContactsTable({ contacts }: { contacts: PageProps }) {
       title: 'Phone',
       dataIndex: 'phone',
       key: 'phone',
-      sorter: (a, b) => a.phone.localeCompare(b.phone),
+      sorter: true,
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
       render: (text) => {
@@ -69,7 +72,7 @@ function ContactsTable({ contacts }: { contacts: PageProps }) {
       dataIndex: 'relationship',
       key: 'relationship',
       filters: RELATIONSHIPS.map(rel => ({ text: rel.label, value: rel.value })),
-      sorter: (a, b) => a.relationship.localeCompare(b.relationship),
+      sorter: true,
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
       render: (value, record) => {
@@ -101,23 +104,20 @@ function ContactsTable({ contacts }: { contacts: PageProps }) {
         showSizeChanger: true,
       }}
       onChange={(pagination, filters, sorter: any) => {
-        const urlParams = new URLSearchParams(window.location.search);
-        urlParams.set('sort_by', typeof sorter.field === 'string' ? sorter.field : String(sorter.field ?? ''));
-        urlParams.set('sort_order', sorter.order === 'ascend' ? 'asc' : 'desc');
-        urlParams.set('page', String(pagination.current));
-        urlParams.set('per_page', String(pagination.pageSize));
-        if (filters.relationship) {
-          urlParams.set('relationship', String(filters.relationship));
-        } else {
-          urlParams.delete('relationship');
-        }
+        setPaginationLoading(true);
+        const removeListener = router.on('finish', () => {
+          setPaginationLoading(false);
+          removeListener();
+        });
 
-        router.get(
-          route('contacts.index'),
-          Object.fromEntries(urlParams.entries()),
-          { preserveScroll: true, preserveState: true }
-        );
+        paginate({
+          routeName: 'contacts.index',
+          pagination,
+          filters,
+          sorter,
+        })
       }}
+      loading={paginationLoading}
     />
   )
 }
