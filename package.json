@@ -18,7 +18,7 @@
         "@vitejs/plugin-react": "^4.2.0",
         "autoprefixer": "^10.4.12",
         "axios": "^1.8.2",
-        "baseline-browser-mapping": "^2.9.6",
+        "baseline-browser-mapping": "^2.10.0",
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^1.2.0",
         "postcss": "^8.4.31",
@@ -46,5 +46,8 @@
         "react-quill": "^2.0.0",
         "tailwind-merge": "^3.3.0",
         "tailwindcss-animate": "^1.0.7"
+    },
+    "resolutions": {
+        "baseline-browser-mapping": "latest"
     }
 }
