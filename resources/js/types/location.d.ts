@@ -16,4 +16,9 @@ export interface LocationProps {
   artworks_count: number;
   artworks_images_urls?: string[];
   artworks_ids?: number[];
+  abilities: {
+    create: boolean;
+    update: boolean;
+    delete: boolean;
+  };
 }
