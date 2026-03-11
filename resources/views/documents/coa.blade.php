@@ -149,11 +149,13 @@
           {!! $renderDataRow('Edition', $artwork->formatted_edition) !!}
         </div>
         <div>
-          <img
-            src="{{ $artwork->mainImage->base64Content() }}"
-            alt="Artwork Image"
-            style="width: 100%; max-height: 2in; object-fit: contain;"
-          />
+          @if($artwork->mainImage)
+            <img
+              src="{{ $artwork->mainImage->base64Content() }}"
+              alt="Artwork Image"
+              style="width: 100%; max-height: 2in; object-fit: contain;"
+            />
+          @endif
         </div>
       </div>
       <div class="signature-row">
