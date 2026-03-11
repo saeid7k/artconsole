@@ -8,7 +8,7 @@ import { LocationProps } from "@/types/location"
 import { deleteQueryParam, getQueryParam } from "@/utils/urlHelper"
 import { GridViewIcon, TableIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { router } from "@inertiajs/react"
+import { router, usePage } from "@inertiajs/react"
 import { Segmented, Tooltip } from "antd"
 import Search from "antd/es/input/Search"
 import { useEffect, useState } from "react"
@@ -19,6 +19,7 @@ import ArtworksTable from "./Partials/ArtworksTable"
 
 function Index({ artworks, locations }: { artworks: PageProps, locations: Array<LocationProps> }) {
 
+  const user = usePage().props.auth.user;
   const { handleSearch, debouncedSearch } = useSearch('artworks.index');
 
   // Switch Mode
@@ -99,6 +100,7 @@ function Index({ artworks, locations }: { artworks: PageProps, locations: Array<
     <ArtworkIndexProvider value={{ selectedIds, setSelectedIds }}>
       <PageTitle title="Artworks Inventory"
         counter={artworks.total}
+        createButtonDisabled={!user.has_edit_access}
         onCreateButtonClick={() => setShowCreateDrawer(true)}
         toolbar={renderToolbar()}
       />

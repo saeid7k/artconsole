@@ -5,8 +5,11 @@ import { Button, Dropdown, Menu, Popconfirm, Popover, Tooltip } from "antd"
 import { useState } from "react"
 import FlexBox from "../Containers/FlexBox"
 import ReportPreviewDrawer from "./ReportPreviewDrawer"
+import { usePage } from "@inertiajs/react"
 
 function ReportsTableActions({ report }: any) {
+
+  const user = usePage().props.auth.user
 
   const [showPreview, setShowPreview] = useState(false)
   const { handleDownload, deleteMutation, regenerateMutation } = useReport(report);
@@ -53,6 +56,7 @@ function ReportsTableActions({ report }: any) {
               shape="circle"
               icon={<HugeiconsIcon icon={Delete02Icon} size={20} />}
               loading={deleteMutation.isPending}
+              disabled={!user.has_edit_access}
             />
           </Popconfirm>
         </Tooltip>
@@ -66,13 +70,16 @@ function ReportsTableActions({ report }: any) {
                   icon: <HugeiconsIcon icon={ArrowReloadHorizontalIcon} size={16} />,
                   label: 'Regenerate Report',
                   onClick: () => regenerateMutation.mutate(),
-                  extra: (
-                    <Popover
-                      content="The report will be regenerated based on the latest artworks data."
-                      title="Regenerate Report"
-                      children={<HugeiconsIcon icon={InformationCircleIcon} size={16} />}
-                    />
-                  )
+                  extra: (<>
+                    {user.has_edit_access && (
+                      <Popover
+                        content="The report will be regenerated based on the latest artworks data."
+                        title="Regenerate Report"
+                        children={<HugeiconsIcon icon={InformationCircleIcon} size={16} />}
+                      />
+                    )}
+                  </>),
+                  disabled: !user.has_edit_access
                 },
               ]}
             />

@@ -128,7 +128,6 @@ function ArtworksActions({ artwork }: { artwork: ArtworkProps }) {
             color='default'
             shape="circle"
             icon={<HugeiconsIcon icon={MoreHorizontalCircle01Icon} size={20} />}
-            disabled={!artwork.abilities.update}
           />
         </Dropdown>
       </div>

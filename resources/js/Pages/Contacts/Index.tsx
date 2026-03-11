@@ -7,9 +7,11 @@ import Search from "antd/es/input/Search";
 import { useEffect, useState } from "react";
 import ContactFormDrawer from "./Partials/ContactFormDrawer";
 import ContactsTable from "./Partials/ContactsTable";
+import { usePage } from "@inertiajs/react";
 
 function Index({ contacts }: { contacts: PageProps }) {
 
+  const user = usePage().props.auth.user;
   const { handleSearch, debouncedSearch } = useSearch('contacts.index');
 
   const [showCreateDrawer, setShowCreateDrawer] = useState(false)
@@ -27,6 +29,7 @@ function Index({ contacts }: { contacts: PageProps }) {
       <PageTitle
         title="Contacts"
         counter={contacts.total}
+        createButtonDisabled={!user.has_edit_access}
         onCreateButtonClick={() => { setShowCreateDrawer(true) }}
         toolbar={
           <Search

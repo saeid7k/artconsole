@@ -6,10 +6,13 @@ import ReportsTable from "@/Components/Reports/ReportsTable"
 import AppLayout from "@/Layouts/AppLayout"
 import { AddIcon, AddSquareIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
+import { usePage } from "@inertiajs/react"
 import { Button, Dropdown, Empty, Menu, Tooltip } from "antd"
 import { useState } from "react"
 
 function Index({ reports }: any) {
+
+  const user = usePage().props.auth.user
 
   const [showCreateLabelsReportsDrawer, setShowCreateLabelsReportsDrawer] = useState(false)
   const [showCreateInventoryReportDrawer, setShowCreateInventoryReportDrawer] = useState(false)
@@ -54,6 +57,7 @@ function Index({ reports }: any) {
                 type="text"
                 shape="circle"
                 icon={<HugeiconsIcon icon={AddSquareIcon} size={20} />}
+                disabled={!user.has_edit_access}
               >
               </Button>
             </Tooltip>
