@@ -132,6 +132,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/store', [App\Http\Controllers\TaxController::class, 'store'])->name('store');
     Route::put('/{tax}/update', [App\Http\Controllers\TaxController::class, 'update'])->name('update');
     Route::delete('/{tax}/delete', [App\Http\Controllers\TaxController::class, 'destroy'])->name('delete');
+    Route::post('/{tax}/set-default', [App\Http\Controllers\TaxController::class, 'setDefault'])->name('set-default');
   });
 });
 

@@ -11,7 +11,6 @@ import TaxFormModal from "./TaxFormModal"
 
 function Taxes() {
 
-
   const [ showTaxFormModal, setShowTaxFormModal ] = useState(false)
   const [ selectedTax, setSelectedTax ] = useState<TaxProps | null>(null)
 
@@ -29,6 +28,16 @@ function Taxes() {
     },
     onError: (error: any) => {
       message.error(error.response?.data?.message || 'Failed to delete tax')
+    }
+  })
+
+  const setDefaultTaxMutation = useMutation({
+    mutationFn: (taxId: number) => axios.post(route('taxes.set-default', { tax: taxId })),
+    onSuccess: () => {
+      taxesQuery.refetch()
+    },
+    onError: (error: any) => {
+      message.error(error.response?.data?.message || 'Failed to update default tax')
     }
   })
 
@@ -82,6 +91,7 @@ function Taxes() {
                       shape="circle"
                       color="purple"
                       icon={<HugeiconsIcon icon={StarIcon} size={20} />}
+                      onClick={() => setDefaultTaxMutation.mutate(tax.id)}
                     />
                   </Tooltip>
                 )}
