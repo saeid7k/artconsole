@@ -134,6 +134,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/{tax}/delete', [App\Http\Controllers\TaxController::class, 'destroy'])->name('delete');
     Route::post('/{tax}/set-default', [App\Http\Controllers\TaxController::class, 'setDefault'])->name('set-default');
   });
+
+  Route::prefix('invoices')->name('invoices.')->group(function () {
+    Route::get('/', [App\Http\Controllers\InvoiceController::class, 'index'])->name('index');
+    Route::post('/store', [App\Http\Controllers\InvoiceController::class, 'store'])->name('store');
+  });
 });
 
 Route::middleware(['auth', Admin::class])->group(function () {
