@@ -29,7 +29,10 @@ class TaxController extends Controller
 
     $tax = $gallery->taxes()->create($validatedData);
 
-    return response()->json($tax, 201);
+    return response()->json([
+      'message' => 'Tax created successfully',
+      'tax' => $tax,
+    ], 201);
   }
 
   public function update(Request $request, $id)
@@ -48,7 +51,10 @@ class TaxController extends Controller
 
     $tax->update($validatedData);
 
-    return response()->json($tax);
+    return response()->json([
+      'message' => 'Tax updated successfully',
+      'tax' => $tax,
+    ], 200);
   }
 
   public function destroy(Request $request, $id)
@@ -57,6 +63,22 @@ class TaxController extends Controller
     $tax = $gallery->taxes()->findOrFail($id);
     $tax->delete();
 
-    return response()->json(null, 204);
+    return response()->json([
+      'message' => 'Tax deleted successfully',
+    ], 204);
+  }
+
+  public function setDefault(Request $request, $id)
+  {
+    $gallery = $request->user()->currentGallery();
+    $tax = $gallery->taxes()->findOrFail($id);
+
+    $gallery->taxes()->update(['default' => false]);
+    $tax->update(['default' => true]);
+
+    return response()->json([
+      'message' => 'Default tax set successfully',
+      'tax' => $tax,
+    ], 200);
   }
 }
