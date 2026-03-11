@@ -4,11 +4,13 @@ import PageTitle from "@/Components/PageTitle";
 import { useSearch } from "@/hooks/useSearch";
 import AppLayout from "@/Layouts/AppLayout";
 import { PageProps } from "@/types";
+import { usePage } from "@inertiajs/react";
 import Search from "antd/es/input/Search";
 import { useState } from "react";
 
 function Index({ locations }: { locations: PageProps }) {
 
+  const user = usePage().props.auth.user;
   const { handleSearch, debouncedSearch } = useSearch('locations.index');
   const [openCreateModal, setOpenCreateModal] = useState(false);
 
@@ -31,6 +33,7 @@ function Index({ locations }: { locations: PageProps }) {
     <div>
       <PageTitle title="Locations"
         counter={locations.data.length}
+        createButtonDisabled={!user.has_edit_access}
         onCreateButtonClick={() => setOpenCreateModal(true)}
         toolbar={renderToolbar()}
       />

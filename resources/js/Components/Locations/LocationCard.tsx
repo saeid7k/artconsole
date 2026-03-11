@@ -1,7 +1,7 @@
 import { LocationProps } from "@/types/location";
 import { Delete02Icon, Image02Icon, LayoutTable02Icon, Location01Icon, MoreHorizontalSquare01Icon, NoteIcon, PencilEdit02Icon, StarIcon, ViewIcon, ViewOffSlashIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { router } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 import { Button, Card, Divider, Dropdown, Menu, message, notification, Popconfirm, Tag, Tooltip } from "antd";
 import axios from "axios";
 import { useState } from "react";
@@ -16,6 +16,8 @@ import TextboxExpandable from "../TextboxExpandable";
 import LocationCreateEditModal from "./LocationCreateEditModal";
 
 function LocationCard({ location }: { location: LocationProps }) {
+
+  const user = usePage().props.auth.user;
 
   const [openEditModal, setOpenEditModal] = useState(false);
   const [notificationApi, notificationContextHolder] = notification.useNotification();
@@ -98,6 +100,7 @@ function LocationCard({ location }: { location: LocationProps }) {
               color="default"
               shape="circle"
               onClick={() => setOpenEditModal(true)}
+              disabled={!location.abilities.update}
             >
               <HugeiconsIcon icon={PencilEdit02Icon} size={20} />
             </Button>
@@ -114,6 +117,7 @@ function LocationCard({ location }: { location: LocationProps }) {
                 variant="text"
                 color="red"
                 shape="circle"
+                disabled={!location.abilities.delete}
               >
                 <HugeiconsIcon icon={Delete02Icon} size={20} />
               </Button>
@@ -134,7 +138,7 @@ function LocationCard({ location }: { location: LocationProps }) {
                   </Menu.Item>
                   <Menu.Item key="set-primary"
                     onClick={handleSetAsPrimary}
-                    disabled={location.is_primary || !location.is_active}
+                    disabled={location.is_primary || !location.is_active || !location.abilities.update}
                   >
                     <FlexBox>
                       <HugeiconsIcon icon={StarIcon} size={20} />
@@ -143,6 +147,7 @@ function LocationCard({ location }: { location: LocationProps }) {
                   </Menu.Item>
                   <Menu.Item key="activate"
                     onClick={handleToggleActive}
+                    disabled={!location.abilities.update}
                   >
                     {location.is_active ? (
                       <FlexBox>
@@ -159,6 +164,7 @@ function LocationCard({ location }: { location: LocationProps }) {
                   <Menu.Divider />
                   <Menu.Item key="labels-report"
                     onClick={() => setShowCreateLabelsReportModal(true)}
+                    disabled={!user.has_edit_access}
                   >
                     <FlexBox>
                       <HugeiconsIcon icon={NoteIcon} size={20} />
@@ -167,6 +173,7 @@ function LocationCard({ location }: { location: LocationProps }) {
                   </Menu.Item>
                   <Menu.Item key="inventory-report"
                     onClick={() => setShowCreateInventoryReportModal(true)}
+                    disabled={!user.has_edit_access}
                   >
                     <FlexBox>
                       <HugeiconsIcon icon={LayoutTable02Icon} size={20} />

@@ -1,7 +1,7 @@
 import ARTWORK_STATUSES from "@/constants/artworkStatuses"
 import { ArrowDataTransferHorizontalIcon, GeometricShapes01Icon, KeyframesMultipleIcon, LayoutTable02Icon, NoteIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { router } from "@inertiajs/react"
+import { router, usePage } from "@inertiajs/react"
 import { useMutation } from "@tanstack/react-query"
 import { Button, Dropdown, Menu, message } from "antd"
 import axios from "axios"
@@ -12,6 +12,8 @@ import CreateInventoryReportDrawer from "../Reports/CreateInventoryReportDrawer"
 import CreateLabelsReportsDrawer from "../Reports/CreateLabelsReportsDrawer"
 
 function ArtworksMassActions({ selectedIds }: { selectedIds: number[] }) {
+
+  const user = usePage().props.auth.user
 
   const [showMoveModal, setShowMoveModal] = useState(false)
   const [showCreateLabelsReportsDrawer, setShowCreateLabelsReportsDrawer] = useState(false)
@@ -31,8 +33,10 @@ function ArtworksMassActions({ selectedIds }: { selectedIds: number[] }) {
     }
   })
 
+  const showTriggerButton = selectedIds.length > 0 && user.has_edit_access;
+
   return (<>
-    <AnimatedContainer type="fadeRight" condition={selectedIds.length > 0} >
+    <AnimatedContainer type="fadeRight" condition={showTriggerButton} >
       <Dropdown
         trigger={['click']}
         popupRender={() => (
@@ -42,7 +46,8 @@ function ArtworksMassActions({ selectedIds }: { selectedIds: number[] }) {
                 key: 'move',
                 icon: <HugeiconsIcon icon={ArrowDataTransferHorizontalIcon} size={16} />,
                 label: 'Move to new Location',
-                onClick: () => setShowMoveModal(true)
+                onClick: () => setShowMoveModal(true),
+                disabled: !user.has_edit_access
               },
               {
                 key: 'update-status',
@@ -53,6 +58,7 @@ function ArtworksMassActions({ selectedIds }: { selectedIds: number[] }) {
                   label: status.label,
                   onClick: () => updateStatusMutation.mutate(status.value)
                 })),
+                disabled: !user.has_edit_access
               },
               {
                 key: 'divider-reports',
@@ -62,13 +68,15 @@ function ArtworksMassActions({ selectedIds }: { selectedIds: number[] }) {
                 key: 'labels-report',
                 icon: <HugeiconsIcon icon={NoteIcon} size={16} />,
                 label: 'Create Labels Report',
-                onClick: () => setShowCreateLabelsReportsDrawer(true)
+                onClick: () => setShowCreateLabelsReportsDrawer(true),
+                disabled: !user.has_edit_access
               },
               {
                 key: 'inventory-report',
                 icon: <HugeiconsIcon icon={LayoutTable02Icon} size={16} />,
                 label: 'Create Inventory Report',
-                onClick: () => setShowCreateInventoryReportsDrawer(true)
+                onClick: () => setShowCreateInventoryReportsDrawer(true),
+                disabled: !user.has_edit_access
               },
             ]}
           />
