@@ -71,7 +71,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
   // Appends
 
-  protected $appends = ['abilities', 'full_name', 'is_admin', 'formatted_address', 'photo', 'has_password', 'timezone'];
+  protected $appends = ['abilities', 'full_name', 'is_admin', 'formatted_address', 'photo', 'has_password', 'timezone', 'access', 'has_edit_access'];
 
   public function getAbilitiesAttribute(): array
   {
@@ -109,6 +109,26 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
   public function getTimezoneAttribute(): ?string
   {
     return $this->getMeta('timezone') ?? config('app.timezone');
+  }
+
+  public function getAccessAttribute()
+  {
+    $currentGallery = $this->currentGallery();
+    if (!$currentGallery) {
+      return null;
+    }
+
+    return $currentGallery->pivot->access ?? null;
+  }
+
+  public function getHasEditAccessAttribute(): bool
+  {
+    $currentGallery = $this->currentGallery();
+    if (!$currentGallery) {
+      return false;
+    }
+
+    return $currentGallery->hasEditAccess($this);
   }
 
   // Relations
