@@ -1,49 +1,40 @@
 import FlexBox from "@/Components/Containers/FlexBox"
+import LoadingSpinner from "@/Components/LoadingSpinner"
 import { TaxProps } from "@/types/tax"
 import { AddIcon, Delete02Icon, Edit03Icon, StarIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { Button, Tag, Tooltip } from "antd"
-import { useState } from "react"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import { Button, Empty, message, Tag, Tooltip } from "antd"
+import axios from "axios"
+import { useEffect, useState } from "react"
 import TaxFormModal from "./TaxFormModal"
 
 function Taxes() {
 
-  // Temporary Sample Records
-  const taxes = [
-    {
-      id: 1,
-      gallery_id: 1,
-      name: "HST/GST",
-      abbreviation: "HST",
-      description: "Harmonized Sales Tax / Goods and Services Tax",
-      tax_number: "123456789RT0001",
-      rate: 13,
-      default: true,
-    },
-    {
-      id: 2,
-      gallery_id: 1,
-      name: "PST",
-      abbreviation: "PST",
-      description: "Provincial Sales Tax",
-      tax_number: "1122334455",
-      rate: 8,
-      default: false,
-    },
-    {
-      id: 3,
-      gallery_id: 1,
-      name: "Indian Act Tax Exemption",
-      abbreviation: "IAT",
-      description: "Tax exemption for sales to Indigenous peoples under the Indian Act",
-      tax_number: null,
-      rate: 0,
-      default: false,
-    },
-  ]
 
   const [ showTaxFormModal, setShowTaxFormModal ] = useState(false)
   const [ selectedTax, setSelectedTax ] = useState<TaxProps | null>(null)
+
+  const taxesQuery = useQuery({
+    queryKey: ['taxes'],
+    queryFn: () => axios.get(route('taxes.index'))
+      .then(res => res.data),
+  })
+
+  const deleteTaxMutation = useMutation({
+    mutationFn: (taxId: number) => axios.delete(route('taxes.delete', { tax: taxId })),
+    onSuccess: () => {
+      message.success('Tax deleted successfully')
+      taxesQuery.refetch()
+    },
+    onError: (error: any) => {
+      message.error(error.response?.data?.message || 'Failed to delete tax')
+    }
+  })
+
+  useEffect(() => {
+    taxesQuery.refetch()
+  }, [showTaxFormModal])
 
   return (
     <>
@@ -68,13 +59,14 @@ function Taxes() {
           </FlexBox>
         </div>
         <div className="flex flex-col gap-2">
-          {taxes.map((tax) => (
+          {taxesQuery.isLoading && <LoadingSpinner size="large" />}
+          {taxesQuery.data?.map((tax: TaxProps) => (
             <div key={tax.id} className="flex justify-between items-center gap-3 p-2 border rounded-lg">
               <div>
                 <div className="flex flex-col" >
                   <FlexBox gap={3}>
                     <div>{tax.name} ({tax.abbreviation})</div>
-                    <strong>{tax.rate}%</strong>
+                    <strong>{Intl.NumberFormat().format(tax.rate)}%</strong>
                     {tax.default && <Tag variant="outlined" color="green">Default</Tag>}
                   </FlexBox>
                   <div className="text-ghost line-clamp-1">
@@ -111,11 +103,13 @@ function Taxes() {
                     shape="circle"
                     color="danger"
                     icon={<HugeiconsIcon icon={Delete02Icon} size={20} />}
+                    onClick={() => deleteTaxMutation.mutate(tax.id)}
                   />
                 </Tooltip>
               </FlexBox>
             </div>
           ))}
+          {taxesQuery.isFetched && taxesQuery.data?.length === 0 && (<Empty description="No taxes created yet" image={Empty.PRESENTED_IMAGE_SIMPLE} />)}
         </div>
       </div>
 
