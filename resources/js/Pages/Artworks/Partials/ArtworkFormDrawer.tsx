@@ -80,7 +80,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
     queryKey: ['artists-query'],
     queryFn: () =>
       axios
-        .get(route('artists'))
+        .get(route('contacts.artists'))
         .then(res => {
           let artists = res.data;
           setAllArtists(artists);
@@ -197,7 +197,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
     queryKey: ['all-contacts-query'],
     queryFn: () =>
       axios
-        .get(route('all-contacts'))
+        .get(route('contacts.all'))
         .then(res =>{
           let contacts = res.data;
           setAllContacts(contacts);
