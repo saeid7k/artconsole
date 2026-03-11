@@ -7,6 +7,7 @@ use App\Models\Artwork;
 use App\Models\Contact;
 use App\Models\Gallery;
 use App\Models\Report;
+use App\Models\Tax;
 use App\Models\User;
 use App\Services\ReportService;
 use Faker\Factory;
@@ -31,6 +32,7 @@ class DemoSeeder extends Seeder
     $this->createContacts();
     $this->createArtworks();
     $this->createReports();
+    $this->createTaxes();
   }
 
   private function createAdmin(): void
@@ -220,5 +222,39 @@ class DemoSeeder extends Seeder
     }
 
     $this->command->info('✅' . ' 5 artworks label reports created for first gallery.');
+  }
+
+  private function createTaxes(): void
+  {
+    $this->command->comment('Creating Canadian taxes for first gallery...');
+
+    Tax::create([
+      'gallery_id' => $this->firstGallery->id,
+      'name' => 'Goods and Services Tax',
+      'abbreviation' => 'GST',
+      'rate' => 5.00,
+      'description' => 'Federal tax applied on most goods and services sold in Canada.',
+      'default' => true,
+    ]);
+
+    Tax::create([
+      'gallery_id' => $this->firstGallery->id,
+      'name' => 'Provincial Sales Tax',
+      'abbreviation' => 'PST',
+      'rate' => 7.00,
+      'description' => 'Provincial sales tax applied in provinces like British Columbia and Manitoba.',
+      'default' => false,
+    ]);
+
+    Tax::create([
+      'gallery_id' => $this->firstGallery->id,
+      'name' => 'Harmonized Sales Tax',
+      'abbreviation' => 'HST',
+      'rate' => 13.00,
+      'description' => 'Single combined federal and provincial tax used in Ontario, replacing separate GST and PST.',
+      'default' => false,
+    ]);
+
+    $this->command->info('✅' . ' 3 Canadian taxes created for first gallery (GST, PST, HST).');
   }
 }
