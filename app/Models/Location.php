@@ -30,7 +30,16 @@ class Location extends Model
 
   // Appends
 
-  protected $appends = [ 'formatted_address' ];
+  protected $appends = [ 'abilities', 'formatted_address' ];
+
+  public function getAbilitiesAttribute()
+  {
+    return [
+      'create' => auth()->user()->can('create', $this),
+      'update' => auth()->user()->can('update', $this),
+      'delete' => auth()->user()->can('delete', $this),
+    ];
+  }
 
   public function getFormattedAddressAttribute(): string
   {
