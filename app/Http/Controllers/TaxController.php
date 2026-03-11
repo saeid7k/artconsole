@@ -20,10 +20,8 @@ class TaxController extends Controller
 
     $validatedData = $request->validate([
       'name' => 'required|string|max:255',
-      'abbreviation' => 'nullable|string|max:50',
       'rate' => 'required|numeric|min:0|max:100',
       'description' => 'nullable|string',
-      'tax_number' => 'nullable|string|max:100',
       'default' => 'boolean',
     ]);
 
@@ -42,10 +40,8 @@ class TaxController extends Controller
 
     $validatedData = $request->validate([
       'name' => 'required|string|max:255',
-      'abbreviation' => 'nullable|string|max:50',
       'rate' => 'required|numeric|min:0|max:100',
       'description' => 'nullable|string',
-      'tax_number' => 'nullable|string|max:100',
       'default' => 'boolean',
     ]);
 

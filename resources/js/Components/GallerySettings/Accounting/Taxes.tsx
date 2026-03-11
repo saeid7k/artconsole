@@ -83,7 +83,7 @@ function Taxes() {
                 <div>
                   <div className="flex flex-col" >
                     <FlexBox gap={3}>
-                      <div>{tax.name} ({tax.abbreviation})</div>
+                      <div>{tax.name}</div>
                       <strong>{Intl.NumberFormat().format(tax.rate)}%</strong>
                       <AnimatePresence>
                         {isDefault &&
