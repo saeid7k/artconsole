@@ -267,7 +267,6 @@ class DemoSeeder extends Seeder
     Tax::create([
       'gallery_id' => $this->firstGallery->id,
       'name' => 'Goods and Services Tax',
-      'abbreviation' => 'GST',
       'rate' => 5.00,
       'description' => 'Federal tax applied on most goods and services sold in Canada.',
       'default' => true,
@@ -276,7 +275,6 @@ class DemoSeeder extends Seeder
     Tax::create([
       'gallery_id' => $this->firstGallery->id,
       'name' => 'Provincial Sales Tax',
-      'abbreviation' => 'PST',
       'rate' => 7.00,
       'description' => 'Provincial sales tax applied in provinces like British Columbia and Manitoba.',
       'default' => false,
@@ -285,7 +283,6 @@ class DemoSeeder extends Seeder
     Tax::create([
       'gallery_id' => $this->firstGallery->id,
       'name' => 'Harmonized Sales Tax',
-      'abbreviation' => 'HST',
       'rate' => 13.00,
       'description' => 'Single combined federal and provincial tax used in Ontario, replacing separate GST and PST.',
       'default' => false,

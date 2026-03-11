@@ -10,10 +10,8 @@ class Tax extends Model
   protected $fillable = [
     'gallery_id',
     'name',
-    'abbreviation',
     'rate',
     'description',
-    'tax_number',
     'default',
   ];
 

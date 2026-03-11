@@ -67,9 +67,6 @@ function TaxFormModal({ show, onClose, selectedTax }: Props) {
         <FormItem label="Name" name="name" required rules={[{ required: true, message: 'Tax name is required' }]} >
           <Input placeholder="Enter tax name" />
         </FormItem>
-        <FormItem label="Abbreviation" name="abbreviation">
-          <Input placeholder="Set an abbreviation" />
-        </FormItem>
         <FormItem
           label="Rate"
           name="rate"
@@ -89,9 +86,6 @@ function TaxFormModal({ show, onClose, selectedTax }: Props) {
               placeholder="Enter the tax rate"
             />
           </Space.Compact>
-        </FormItem>
-        <FormItem label="Tax Number" name="tax_number">
-          <Input placeholder="Enter your tax number" />
         </FormItem>
         <FormItem label="Description" name="description">
           <TextArea placeholder="Enter a description" />
