@@ -222,6 +222,42 @@ class DemoSeeder extends Seeder
     }
 
     $this->command->info('✅' . ' 5 artworks label reports created for first gallery.');
+
+    $this->command->comment('Creating inventory reports for first gallery...');
+
+    // Inventory report 1: between label report 1 (subDays(5)) and label report 2 (subDays(4))
+    $selectedIds = $this->faker->randomElements($artworkIds, min($this->faker->numberBetween(5, 30), count($artworkIds)));
+    $report = Report::create([
+      'gallery_id' => $this->firstGallery->id,
+      'user_id' => 1,
+      'type' => ReportType::Inventory->value,
+      'name' => 'Inventory Report 1',
+      'description' => $this->faker->paragraph,
+      'options' => [
+        'header' => $this->faker->boolean,
+      ],
+      'artworks' => $selectedIds,
+      'created_at' => now()->subDays(4)->subHours(12),
+    ]);
+    (new ReportService($report))->generatePdf();
+
+    // Inventory report 2: between label report 3 (subDays(3)) and label report 4 (subDays(2))
+    $selectedIds = $this->faker->randomElements($artworkIds, min($this->faker->numberBetween(5, 30), count($artworkIds)));
+    $report = Report::create([
+      'gallery_id' => $this->firstGallery->id,
+      'user_id' => 1,
+      'type' => ReportType::Inventory->value,
+      'name' => 'Inventory Report 2',
+      'description' => $this->faker->paragraph,
+      'options' => [
+        'header' => $this->faker->boolean,
+      ],
+      'artworks' => $selectedIds,
+      'created_at' => now()->subDays(2)->subHours(12),
+    ]);
+    (new ReportService($report))->generatePdf();
+
+    $this->command->info('✅' . ' 2 inventory reports created for first gallery.');
   }
 
   private function createTaxes(): void
