@@ -6,6 +6,7 @@ import { HugeiconsIcon } from "@hugeicons/react"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { Button, Empty, message, Tag, Tooltip } from "antd"
 import axios from "axios"
+import { AnimatePresence, motion } from "framer-motion"
 import { useEffect, useState } from "react"
 import TaxFormModal from "./TaxFormModal"
 
@@ -84,7 +85,17 @@ function Taxes() {
                     <FlexBox gap={3}>
                       <div>{tax.name} ({tax.abbreviation})</div>
                       <strong>{Intl.NumberFormat().format(tax.rate)}%</strong>
-                      {isDefault && <Tag variant="outlined" color="green">Default</Tag>}
+                      <AnimatePresence>
+                        {isDefault &&
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.8 }}
+                          >
+                            <Tag variant="outlined" color="green">Default</Tag>
+                          </motion.div>
+                        }
+                      </AnimatePresence>
                     </FlexBox>
                     <div className="text-ghost line-clamp-1">
                       {tax.description}
@@ -92,17 +103,25 @@ function Taxes() {
                   </div>
                 </div>
                 <FlexBox gap={1} >
-                  {!isDefault && (
-                    <Tooltip title="Set as Default">
-                      <Button
-                        variant="text"
-                        shape="circle"
-                        color="purple"
-                        icon={<HugeiconsIcon icon={StarIcon} size={20} />}
-                        onClick={() => setDefaultTaxMutation.mutate(tax.id)}
-                      />
-                    </Tooltip>
-                  )}
+                  <AnimatePresence>
+                    {!isDefault && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                      >
+                        <Tooltip title="Set as Default">
+                          <Button
+                            variant="text"
+                            shape="circle"
+                            color="purple"
+                            icon={<HugeiconsIcon icon={StarIcon} size={20} />}
+                            onClick={() => setDefaultTaxMutation.mutate(tax.id)}
+                          />
+                        </Tooltip>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                   <Tooltip title="Edit">
                     <Button
                       variant="text"
