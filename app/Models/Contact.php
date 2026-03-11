@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Helpers\AddressHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -85,6 +86,11 @@ class Contact extends Model implements HasMedia
   public function artworks()
   {
     return $this->hasMany(Artwork::class);
+  }
+
+  public function invoices() :HasMany
+  {
+    return $this->hasMany(Invoice::class);
   }
 
   // Activity Log
