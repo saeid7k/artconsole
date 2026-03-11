@@ -134,6 +134,11 @@ class Gallery extends Model implements HasMedia
     return $this->hasMany(Tax::class);
   }
 
+  public function invoices(): HasMany
+  {
+    return $this->hasMany(Invoice::class);
+  }
+
   // Methods
 
   public function isMember(User $user)
