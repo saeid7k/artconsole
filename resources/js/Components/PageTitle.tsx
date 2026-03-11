@@ -9,11 +9,12 @@ type Props = {
   breadcrumbItems?: {
     title: string | React.ReactNode;
   }[];
+  createButtonDisabled?: boolean;
   onCreateButtonClick?: () => void;
   extraTitleContent?: React.ReactNode;
 }
 
-function PageTitle({ title, counter = null, toolbar = null, breadcrumbItems = [], onCreateButtonClick = undefined, extraTitleContent = null }: Props) {
+function PageTitle({ title, counter = null, toolbar = null, breadcrumbItems = [], createButtonDisabled = false, onCreateButtonClick = undefined, extraTitleContent = null }: Props) {
   return (
       <div
         className="flex items-center justify-between flex-wrap gap-2 px-6 pb-3 w-full grow-0"
@@ -34,6 +35,7 @@ function PageTitle({ title, counter = null, toolbar = null, breadcrumbItems = []
                   type="text"
                   shape="circle"
                   onClick={onCreateButtonClick}
+                  disabled={createButtonDisabled}
                 >
                   <HugeiconsIcon icon={AddSquareIcon} size={20} />
                 </Button>
