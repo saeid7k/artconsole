@@ -126,6 +126,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/{report}/delete', [App\Http\Controllers\ReportController::class, 'destroy'])->name('destroy');
     Route::post('/{report}/regenerate', [App\Http\Controllers\ReportController::class, 'regenerate'])->name('regenerate');
   });
+
+  Route::prefix('taxes')->name('taxes.')->group(function () {
+    Route::get('/', [App\Http\Controllers\TaxController::class, 'index'])->name('index');
+    Route::post('/store', [App\Http\Controllers\TaxController::class, 'store'])->name('store');
+    Route::put('/{tax}/update', [App\Http\Controllers\TaxController::class, 'update'])->name('update');
+    Route::delete('/{tax}/delete', [App\Http\Controllers\TaxController::class, 'destroy'])->name('delete');
+  });
 });
 
 Route::middleware(['auth', Admin::class])->group(function () {
