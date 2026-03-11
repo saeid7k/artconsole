@@ -26,11 +26,19 @@ class LocationPolicy
 
   public function update(User $user, Location $location): bool
   {
-    return $location->gallery->hasEditAccess($user);
+    $gallery = $location->gallery;
+    if (!$gallery) {
+      return false;
+    }
+    return $gallery->hasEditAccess($user);
   }
 
   public function delete(User $user, Location $location): bool
   {
-    return $location->gallery->hasEditAccess($user);
+    $gallery = $location->gallery;
+    if (!$gallery) {
+      return false;
+    }
+    return $gallery->hasEditAccess($user);
   }
 }
