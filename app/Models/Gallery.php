@@ -129,6 +129,11 @@ class Gallery extends Model implements HasMedia
     return $this->hasMany(Report::class);
   }
 
+  public function taxes(): HasMany
+  {
+    return $this->hasMany(Tax::class);
+  }
+
   // Methods
 
   public function isMember(User $user)
