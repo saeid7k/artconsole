@@ -138,6 +138,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::prefix('invoices')->name('invoices.')->group(function () {
     Route::get('/', [App\Http\Controllers\InvoiceController::class, 'index'])->name('index');
     Route::post('/store', [App\Http\Controllers\InvoiceController::class, 'store'])->name('store');
+    Route::get('/next-number', [App\Http\Controllers\InvoiceController::class, 'nextInvoiceNumber'])->name('next-number');
   });
 });
 
