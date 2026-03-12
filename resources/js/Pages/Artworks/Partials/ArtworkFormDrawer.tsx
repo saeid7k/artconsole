@@ -751,67 +751,65 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
               </Form.Item>
 
               {/* Ownership */}
-              <div className="flex items-center flex-wrap gap-3">
-                <Form.Item
-                  label='Ownership'
-                  name="ownership"
-                >
-                  <Radio.Group
-                    optionType="button"
-                    options={[
-                      { label: 'Owned', value: 'owned' },
-                      { label: 'Consigned', value: 'consigned' },
-                    ]}
-                  />
-                </Form.Item>
-                {ownerSelected && watchForm?.ownership === 'consigned' && (
-                  <ContactWidget
-                    contact={ownerSelected}
-                    title="Owner"
-                    className="mb-3"
-                    unsetFunction={clearOwner}
-                  />
-                )}
-                <AnimatePresence>
-                  {!ownerSelected && watchForm?.ownership === 'consigned' && (
-                    <motion.div
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -20 }}
-                      transition={{ duration: 0.3 }}
-                      className="lg:w-1/3"
+              <Form.Item
+                label='Ownership'
+                name="ownership"
+              >
+                <Radio.Group
+                  optionType="button"
+                  options={[
+                    { label: 'Owned', value: 'owned' },
+                    { label: 'Consigned', value: 'consigned' },
+                  ]}
+                />
+              </Form.Item>
+              {ownerSelected && watchForm?.ownership === 'consigned' && (
+                <ContactWidget
+                  contact={ownerSelected}
+                  title="Owner"
+                  className="mb-3"
+                  unsetFunction={clearOwner}
+                />
+              )}
+              <AnimatePresence>
+                {!ownerSelected && watchForm?.ownership === 'consigned' && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
+                    className="lg:w-1/3"
+                  >
+                    <Form.Item
+                      label='Owner'
                     >
-                      <Form.Item
-                        label='Owner'
-                      >
-                        <Select
-                          options={contactsOptions}
-                          maxCount={1}
-                          placeholder="Select owner from contacts"
-                          showSearch={{ optionFilterProp: ['label', 'value'] }}
-                          onChange={(value: string) => onChangeOwner(value)}
-                        />
-                      </Form.Item>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-                <Form.Item
-                  label=""
-                  name="owner_contact_id"
-                  hidden
-                >
-                  <Input />
-                </Form.Item>
-              </div>
+                      <Select
+                        options={contactsOptions}
+                        maxCount={1}
+                        placeholder="Select owner from contacts"
+                        showSearch={{ optionFilterProp: ['label', 'value'] }}
+                        onChange={(value: string) => onChangeOwner(value)}
+                      />
+                    </Form.Item>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              <Form.Item
+                label=""
+                name="owner_contact_id"
+                hidden
+              >
+                <Input />
+              </Form.Item>
 
               {/* Acquisition */}
               <AnimatePresence>
                 {watchForm?.ownership === 'owned' && (
                   <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3 }}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3, delay: 0.3 }}
                     className="grid grid-cols-1 sm:grid-cols-2 gap-2"
                   >
                     <Form.Item
