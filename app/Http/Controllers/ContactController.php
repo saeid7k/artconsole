@@ -225,7 +225,7 @@ class ContactController extends Controller
     $gallery = $user->currentGallery();
 
     $contacts = $gallery->contacts()
-      ->select('id', 'firstname', 'lastname')
+      ->select('id', 'firstname', 'lastname', 'address')
       ->orderBy('firstname', 'asc')
       ->orderBy('lastname', 'asc')
       ->get();
