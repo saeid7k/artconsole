@@ -121,6 +121,7 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
               <ContactWidget
                 title="Customer"
                 contact={contactsQuery.data?.find((c: any) => c.id === formWatch.contact_id)}
+                showAddress
                 unsetFunction={() => form.setFieldValue('contact_id', null)}
               />
             </AnimatedContainer>
