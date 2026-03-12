@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -31,6 +32,26 @@ class Invoice extends Model
     'shipping' => 'object',
   ];
 
+  /*
+  |--------------------------------------------------------------------------
+  | Accessors & Mutators
+  |--------------------------------------------------------------------------
+  */
+
+  public function number() :Attribute
+  {
+    return Attribute::make(
+      get: fn ($value) => str_pad($value, 5, '0', STR_PAD_LEFT),
+      set: fn ($value) => str_pad($value, 5, '0', STR_PAD_LEFT)
+    );
+  }
+
+  /*
+  |--------------------------------------------------------------------------
+  | Relationships
+  |--------------------------------------------------------------------------
+  */
+
   public function gallery() :BelongsTo
   {
     return $this->belongsTo(Gallery::class);
@@ -49,5 +70,25 @@ class Invoice extends Model
   public function tax() :BelongsTo
   {
     return $this->belongsTo(Tax::class);
+  }
+
+  /*
+  |--------------------------------------------------------------------------
+  | Methods
+  |--------------------------------------------------------------------------
+  */
+
+  public static function nextInvoiceNumber($gallery = null) :string
+  {
+    $gallery = $gallery ?? auth()->user()->currentGallery();
+    $latestInvoice = self::where('gallery_id', $gallery->id)
+      ->orderBy('number', 'desc')
+      ->first();
+
+    if ($latestInvoice) {
+      return str_pad((int)$latestInvoice->number + 1, 5, '0', STR_PAD_LEFT);
+    }
+
+    return '00001';
   }
 }
