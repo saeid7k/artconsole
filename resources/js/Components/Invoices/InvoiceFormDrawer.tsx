@@ -4,10 +4,10 @@ import { router } from "@inertiajs/react";
 import { useQuery } from "@tanstack/react-query";
 import { Button, DatePicker, Drawer, Form, Input, message, Select } from "antd";
 import axios from "axios";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import ContactWidget from "../Contacts/ContactWidget";
-import { AnimatePresence, motion } from "framer-motion";
 import AnimatedContainer from "../AnimatedContainer";
+import ContactWidget from "../Contacts/ContactWidget";
 
 type Props = {
   show: boolean;
@@ -50,7 +50,11 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
   function handleSubmit() {
     form.validateFields().then(values => {
       setSaving(true);
-      axios.post(route('invoices.store'), values)
+      axios.post(route('invoices.store'), {
+        ...values,
+        date: values.date ? dayjs(values.date).format('YYYY-MM-DD') : null,
+        due_date: values.due_date ? dayjs(values.due_date).format('YYYY-MM-DD') : null,
+      })
         .then(() => {
           message.success('Invoice created successfully');
           form.resetFields();
@@ -118,6 +122,7 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
               condition={!!formWatch.contact_id}
               type="fadeRight"
             >
+              <div className="label">Bill to:</div>
               <ContactWidget
                 title="Customer"
                 contact={contactsQuery.data?.find((c: any) => c.id === formWatch.contact_id)}
