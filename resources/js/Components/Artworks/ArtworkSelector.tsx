@@ -1,4 +1,4 @@
-import { ArrowLeft01Icon, ArrowLeft02Icon, ArrowLeftDoubleIcon, ArrowRight01Icon, ArrowRight02Icon, ArrowRight03Icon, ArrowRightDoubleIcon, CheckmarkCircleIcon, Search01Icon } from "@hugeicons/core-free-icons";
+import { ArrowLeft01Icon, ArrowLeftDoubleIcon, ArrowRight01Icon, ArrowRightDoubleIcon, Search01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useMutation } from "@tanstack/react-query";
 import { Button, Empty, Input, message, Space } from "antd";
@@ -6,8 +6,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import ColumnTitle from "../Containers/ColumnTitle";
 import LoadingSpinner from "../LoadingSpinner";
-import ArtworkTitleStack from "./ArtworkTitleStack";
-import { twMerge } from "tailwind-merge";
 import ArtworkSelectCard from "./ArtworkSelectCard";
 
 type Props = {
@@ -133,8 +131,8 @@ function ArtworkSelector({ setSelectedIds }: Props) {
             <ArtworkSelectCard
               key={artwork.id}
               artwork={artwork}
-              checkedItems={checkedSourceItems}
-              onClick={toggleCheckSource}
+              isSelected={checkedSourceItems && checkedSourceItems.find((c) => c.id === artwork.id)}
+              onClick={() => toggleCheckSource(artwork)}
             />
           ))}
           <div className="mx-1 mb-3">
@@ -202,9 +200,9 @@ function ArtworkSelector({ setSelectedIds }: Props) {
             <ArtworkSelectCard
               key={artwork.id}
               artwork={artwork}
-              checkedItems={checkedSelectedItems}
-              onClick={toggleCheckSelected}
+              isSelected={checkedSelectedItems && checkedSelectedItems.find((c) => c.id === artwork.id)}
               size="small"
+              onClick={() => toggleCheckSelected(artwork)}
             />
           ))}
         </div>
