@@ -42,7 +42,10 @@ function ArtworkSelector({ setSelectedIds }: Props) {
   })
 
   const loadMoreMutation = useMutation({
-    mutationFn: () => axios.post(loadMoreUrl!).then(res => res.data),
+    mutationFn: () => axios.post(loadMoreUrl!, {
+      query: searchTerm,
+    })
+      .then(res => res.data),
     onSuccess: (response) => {
       setSourceItems(prev => [...prev, ...response.data]);
       setLoadMoreUrl(response.next_page_url || null);
