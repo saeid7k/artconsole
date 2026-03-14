@@ -46,8 +46,17 @@ function ArtworkFinder({ onSelect }: Props) {
   })
 
   useEffect(() => {
-    searchArtworksMutation.mutate({searchTerm});
-  }, [])
+    if (searchTerm.trim() === '') {
+      searchArtworksMutation.mutate({searchTerm});
+      return;
+    }
+
+    const delayDebounce = setTimeout(() => {
+      searchArtworksMutation.mutate({searchTerm});
+    }, 1000);
+
+    return () => clearTimeout(delayDebounce);
+  }, [searchTerm])
 
   return (
     <div>
