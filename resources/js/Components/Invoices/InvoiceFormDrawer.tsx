@@ -5,9 +5,10 @@ import { useQuery } from "@tanstack/react-query";
 import { Button, DatePicker, Drawer, Form, Input, message, Select } from "antd";
 import axios from "axios";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AnimatedContainer from "../AnimatedContainer";
 import ContactWidget from "../Contacts/ContactWidget";
+import InvoiceTable from "./InvoiceTable";
 
 type Props = {
   show: boolean;
@@ -20,6 +21,7 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
   const { windowWidth, breakpoint } = useWindow()
   const [form] = Form.useForm()
 
+  const [items, setItems] = useState<any[]>([]);
   const [saving, setSaving] = useState(false);
 
   // Select Customer
@@ -33,27 +35,42 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
 
   const nextInvoiceNumberQuery = useQuery({
     queryKey: ['next-invoice-number'],
-    queryFn: () => axios.get(route('invoices.next-number')).then(res => res.data.next_invoice_number),
+    queryFn: () => axios.get(route('invoices.next-number'))
+      .then(res => {
+        if (!formWatch.number) {
+          form.setFieldValue('number', res.data.next_invoice_number);
+        }
+        return res.data.next_invoice_number;
+      }),
     enabled: show && !selectedInvoice,
   })
 
-  useEffect(() => {
-    if (nextInvoiceNumberQuery.data && !selectedInvoice) {
-      form.setFieldValue('number', nextInvoiceNumberQuery.data);
-    }
-  }, [nextInvoiceNumberQuery.data])
-
   const handleClose = () => {
+    form.resetFields();
+    setItems([]);
     onClose();
   }
 
   function handleSubmit() {
     form.validateFields().then(values => {
+      if (items.length === 0) {
+        message.error('Please add at least one item to the invoice');
+        return;
+      }
       setSaving(true);
       axios.post(route('invoices.store'), {
         ...values,
         date: values.date ? dayjs(values.date).format('YYYY-MM-DD') : null,
         due_date: values.due_date ? dayjs(values.due_date).format('YYYY-MM-DD') : null,
+        items: items.map((item) => ({
+          type: item.type,
+          artwork_id: item.type === 'artwork' ? item.artwork.id : null,
+          name: item.name,
+          description: item.description,
+          quantity: item.quantity,
+          price: item.price,
+          taxable: item.taxable,
+        }))
       })
         .then(() => {
           message.success('Invoice created successfully');
@@ -74,102 +91,111 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
   const formWatch = Form.useWatch([], form) ?? {}
 
   return (
-    <Drawer
-      title={`${selectedInvoice ? 'Edit' : 'Create'} Invoice`}
-      placement="right"
-      size={breakpoint == "xs" ? windowWidth : (Math.min(windowWidth * 0.9, 1024))}
-      onClose={handleClose}
-      open={show}
-      keyboard={false}
-      extra={
-        <Button
-          type="primary"
-          onClick={() => form.submit()}
-          loading={saving}
-        >
-          Save
-        </Button>
-      }
-      destroyOnHidden
-    >
-      <Form
-        form={form}
-        layout="horizontal"
-        initialValues={selectedInvoice ? selectedInvoice : {
-          contact_id: null,
-          number: '',
-          date: null,
-          due_date: null,
-        }}
-        onFinish={handleSubmit}
+    <>
+      <Drawer
+        title={`${selectedInvoice ? 'Edit' : 'Create'} Invoice`}
+        placement="right"
+        size={breakpoint == "xs" ? windowWidth : (Math.min(windowWidth * 0.9, 1280))}
+        onClose={handleClose}
+        open={show}
+        keyboard={false}
+        extra={
+          <Button
+            type="primary"
+            onClick={() => form.submit()}
+            loading={saving}
+          >
+            Save
+          </Button>
+        }
+        destroyOnHidden
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <Form.Item
-              name="contact_id"
-              label="Select Customer"
-              className="w-full sm:max-w-[300px]"
-              hidden={formWatch.contact_id}
-            >
-              <Select
-                options={contactsQuery.data?.map((contact: any) => ({ label: contact.full_name, value: contact.id }))}
-                placeholder="Select Customer"
-                showSearch={{ optionFilterProp: ['label', 'value'] }}
-                loading={contactsQuery.isLoading}
-              />
-            </Form.Item>
-            <AnimatedContainer
-              condition={!!formWatch.contact_id}
-              type="fadeRight"
-            >
-              <div className="label">Bill to:</div>
-              <ContactWidget
-                title="Customer"
-                contact={contactsQuery.data?.find((c: any) => c.id === formWatch.contact_id)}
-                showAddress
-                unsetFunction={() => form.setFieldValue('contact_id', null)}
-              />
-            </AnimatedContainer>
+        <Form
+          form={form}
+          layout="horizontal"
+          initialValues={selectedInvoice ? selectedInvoice : {
+            contact_id: null,
+            number: '',
+            date: null,
+            due_date: null,
+          }}
+          onFinish={handleSubmit}
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <Form.Item
+                name="contact_id"
+                label="Select Customer"
+                className="w-full sm:max-w-[300px]"
+                hidden={formWatch.contact_id}
+              >
+                <Select
+                  options={contactsQuery.data?.map((contact: any) => ({ label: contact.full_name, value: contact.id }))}
+                  placeholder="Select Customer"
+                  showSearch={{ optionFilterProp: ['label', 'value'] }}
+                  loading={contactsQuery.isLoading}
+                />
+              </Form.Item>
+              <AnimatedContainer
+                condition={!!formWatch.contact_id}
+                type="fadeRight"
+              >
+                <div className="label">Bill to:</div>
+                <ContactWidget
+                  title="Customer"
+                  contact={contactsQuery.data?.find((c: any) => c.id === formWatch.contact_id)}
+                  showAddress
+                  unsetFunction={() => form.setFieldValue('contact_id', null)}
+                />
+              </AnimatedContainer>
+            </div>
+            <div className="w-full sm:max-w-[300px] flex flex-col items-end justify-self-end">
+              <Form.Item
+                name="number"
+                label="Number"
+                className="w-full"
+                labelCol={{ span: 8 }}
+                rules={[
+                  { required: true, message: 'Please enter the invoice number' },
+                  { max: 100, message: 'Invoice number cannot exceed 100 characters' },
+                ]}
+              >
+                <Input
+                  placeholder="Invoice Number"
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    form.setFieldValue('number', value.replace(/\D/g, ''));
+                  }}
+                />
+              </Form.Item>
+              <Form.Item
+                name="date"
+                label="Invoice Date"
+                className="w-full"
+                labelCol={{ span: 8 }}
+                rules={[
+                  { required: true, message: 'Please select the invoice date' },
+                ]}
+              >
+                <DatePicker className="w-full" />
+              </Form.Item>
+              <Form.Item
+                name="due_date"
+                label="Due Date"
+                className="w-full"
+                labelCol={{ span: 8 }}
+              >
+                <DatePicker className="w-full" />
+              </Form.Item>
+            </div>
           </div>
-          <div className="w-full sm:max-w-[300px] flex flex-col items-end justify-self-end">
-            <Form.Item
-              name="number"
-              label="Number"
-              className="w-full"
-              labelCol={{ span: 8 }}
-              rules={[
-                { required: true, message: 'Please enter the invoice number' },
-                { max: 100, message: 'Invoice number cannot exceed 100 characters' },
-              ]}
-            >
-              <Input
-                placeholder="Invoice Number"
-                onChange={(e) => {
-                  const value = e.target.value;
-                  form.setFieldValue('number', value.replace(/\D/g, ''));
-                }}
-              />
-            </Form.Item>
-            <Form.Item
-              name="date"
-              label="Invoice Date"
-              className="w-full"
-              labelCol={{ span: 8 }}
-            >
-              <DatePicker className="w-full" />
-            </Form.Item>
-            <Form.Item
-              name="due_date"
-              label="Due Date"
-              className="w-full"
-              labelCol={{ span: 8 }}
-            >
-              <DatePicker className="w-full" />
-            </Form.Item>
-          </div>
-        </div>
-      </Form>
-    </Drawer>
+          <InvoiceTable
+            items={items}
+            setItems={setItems}
+          />
+        </Form>
+      </Drawer>
+    </>
   )
 }
 
