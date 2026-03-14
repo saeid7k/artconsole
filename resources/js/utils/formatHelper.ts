@@ -2,7 +2,7 @@ import { DimensionsProps } from "@/types/dimensions";
 import { UsePageProps } from "@/types/usePage";
 import { usePage } from "@inertiajs/react";
 import dayjs from "dayjs";
-import CONFIGS from "~/resources/configs.json";
+import CONFIGS from "@/constants/configs.json";
 import { formatAddress } from "./addressHelper";
 import { keyToTitle, stringifyArray, stringifyObject } from "./stringHelper";
 

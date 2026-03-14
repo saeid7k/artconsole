@@ -1,7 +1,7 @@
 import colors from "@/Themes/theme";
 import { Tag } from "antd";
 import dayjs from "dayjs";
-import CONFIGS from "~/resources/configs.json";
+import CONFIGS from "@/constants/configs.json";
 
 function NewTag({ dateRef }: { dateRef: string }) {
   return (

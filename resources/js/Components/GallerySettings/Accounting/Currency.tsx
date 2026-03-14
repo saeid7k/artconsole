@@ -4,7 +4,7 @@ import { useGallerySettings } from "@/contexts/GallerySettingsContext";
 import { Form, message, Select } from "antd"
 import axios from "axios";
 import { useEffect, useState } from "react";
-import CONFIGS from "~/resources/configs.json";
+import CONFIGS from "@/constants/configs.json";
 
 function Currency() {
 
