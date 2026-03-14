@@ -28,6 +28,17 @@ class InvoiceController extends Controller
       'date' => 'required|date',
       'due_date' => 'sometimes|nullable|date|after_or_equal:date',
       'items' => 'required|array|min:1',
+    ], [
+      'contact_id.required' => 'Select customer for the invoice.',
+      'contact_id.exists' => 'The selected contact is invalid.',
+      'number.required' => 'The invoice number is required.',
+      'date.required' => 'The invoice date is required.',
+      'date.date' => 'The invoice date must be a valid date.',
+      'due_date.date' => 'The due date must be a valid date.',
+      'due_date.after_or_equal' => 'The due date must be after or equal to the invoice date.',
+      'items.required' => 'At least one invoice item is required.',
+      'items.array' => 'Items are not in the correct format.',
+      'items.min' => 'At least one invoice item is required.',
     ]);
 
     $suer = auth()->user();
