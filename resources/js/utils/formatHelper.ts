@@ -88,7 +88,7 @@ function formatCurrency(amount: number | string, maximumFractionDigits: number =
   }).format(num);
 }
 
-function formatDimensions({dimensions, showDepth = false}: {dimensions: DimensionsProps | null; showDepth?: boolean;}): string {
+function formatDimensions({dimensions, showDepth = false}: {dimensions?: DimensionsProps | null; showDepth?: boolean;}): string {
   if (!dimensions) {
     return '-';
   }
