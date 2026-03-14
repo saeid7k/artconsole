@@ -95,8 +95,17 @@ function ArtworkSelector({ setSelectedIds }: Props) {
   }
 
   useEffect(() => {
-    searchArtworksMutation.mutate({searchTerm});
-  }, []);
+    if (searchTerm.trim() === '') {
+      searchArtworksMutation.mutate({searchTerm});
+      return;
+    }
+
+    const delayDebounce = setTimeout(() => {
+      searchArtworksMutation.mutate({searchTerm});
+    }, 1000);
+
+    return () => clearTimeout(delayDebounce);
+  }, [searchTerm])
 
   useEffect(() => {
     setSelectedIds(selectedItems.map(item => item.id));
