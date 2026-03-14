@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 import ArtworkTitleStack from "./ArtworkTitleStack";
 import { CheckmarkCircleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import ArtworkStatusTag from "./ArtworkStatusTag";
 
 type Props = {
   artwork: ArtworkProps;
@@ -14,7 +15,7 @@ function ArtworkSelectCard({ artwork, isSelected, size = 'default', ...props }: 
   return (
     <div key={artwork.id}
       className={twMerge(
-        "relative flex border hover:bg-primary-light cursor-pointer transition-all",
+        "relative flex items-start border hover:bg-primary-light cursor-pointer transition-all",
         isSelected && "bg-primary-light !border-primary"
       )}
       {...props}
@@ -30,7 +31,7 @@ function ArtworkSelectCard({ artwork, isSelected, size = 'default', ...props }: 
         />
       )}
       <div
-        className="p-1"
+        className="p-1 grow flex items-start justify-between"
       >
         <ArtworkTitleStack
           artwork={artwork}
@@ -41,11 +42,17 @@ function ArtworkSelectCard({ artwork, isSelected, size = 'default', ...props }: 
           showConsignment={false}
           disableLinks
         />
+        {size !== 'small' && (
+          <ArtworkStatusTag
+            status={artwork.status}
+            fontSize="xs"
+          />
+        )}
       </div>
       <HugeiconsIcon
         icon={CheckmarkCircleIcon}
         className={twMerge(
-          "absolute right-1 top-1 hidden",
+          "absolute right-1 bottom-1 hidden",
           isSelected && "block text-primary"
         )}
       />
