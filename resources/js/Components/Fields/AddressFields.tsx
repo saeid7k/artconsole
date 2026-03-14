@@ -1,6 +1,6 @@
 import COUNTRIES from "@/constants/countries.json";
 import { Form, Input, Select } from "antd";
-import CONFIGS from "~/resources/configs.json";
+import CONFIGS from "@/constants/configs.json";
 
 type Props = {
   namePathPrefix?: string[];

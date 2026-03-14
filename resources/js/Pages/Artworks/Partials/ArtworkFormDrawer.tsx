@@ -21,7 +21,7 @@ import dayjs from "dayjs";
 import { AnimatePresence, motion } from "framer-motion";
 import { serialize } from "object-to-formdata";
 import { useState } from "react";
-import CONFIGS from "~/resources/configs.json";
+import CONFIGS from "@/constants/configs.json";
 
 type Props = {
   mode?: 'create' | 'update';
