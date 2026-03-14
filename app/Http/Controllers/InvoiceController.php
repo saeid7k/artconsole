@@ -27,6 +27,7 @@ class InvoiceController extends Controller
       'number' => 'required|string|max:100',
       'date' => 'required|date',
       'due_date' => 'sometimes|nullable|date|after_or_equal:date',
+      'items' => 'required|array|min:1',
     ]);
 
     $suer = auth()->user();
@@ -36,6 +37,10 @@ class InvoiceController extends Controller
       'user_id' => $suer->id,
       'status' => InvoiceStatus::default()->value,
     ]);
+
+    foreach ($validated['items'] as $item) {
+      $invoice->items()->create($item);
+    }
 
     return response()->json([
       'message' => 'Invoice created successfully',
