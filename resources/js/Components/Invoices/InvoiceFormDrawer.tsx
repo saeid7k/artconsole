@@ -25,7 +25,7 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
   const { windowWidth, breakpoint } = useWindow()
   const [form] = Form.useForm()
   const { taxesOptions, defaultTaxValue, taxesQuery } = useTaxes({ enableQuery: show })
-  const { darkMode, currencySymbol } = useApp()
+  const { currencySymbol } = useApp()
 
   const [items, setItems] = useState<any[]>([]);
   const [saving, setSaving] = useState(false);
