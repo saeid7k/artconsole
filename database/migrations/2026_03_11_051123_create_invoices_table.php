@@ -25,7 +25,6 @@ return new class extends Migration
       $table->json('shipping')->nullable();
 
       $table->foreignId('tax_id')->nullable()->constrained()->nullOnDelete();
-      $table->string('tax_name', 255)->nullable();
       $table->decimal('tax_rate', 5, 2)->nullable();
 
       $table->decimal('subtotal', 12, 2)->default(0);
