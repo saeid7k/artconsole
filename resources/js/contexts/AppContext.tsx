@@ -1,3 +1,7 @@
+import CONFIGS from '@/constants/configs.json';
+import { CURRENCIES } from '@/constants/currencies';
+import { UsePageProps } from '@/types/usePage';
+import { usePage } from '@inertiajs/react';
 import axios from 'axios';
 import { createContext, Dispatch, PropsWithChildren, SetStateAction, useContext, useEffect, useRef, useState } from 'react';
 
@@ -11,6 +15,8 @@ export type AppContextType = {
     [key: string]: any;
   };
   fetchIntervalData: () => void;
+  currency: string;
+  currencySymbol: string;
 };
 
 const AppContext = createContext<AppContextType>({
@@ -21,6 +27,8 @@ const AppContext = createContext<AppContextType>({
   setDarkMode: () => {},
   intervalData: {},
   fetchIntervalData: () => {},
+  currency: 'CAD',
+  currencySymbol: '$',
 });
 
 function AppProvider({ children }: PropsWithChildren) {
@@ -110,8 +118,25 @@ function AppProvider({ children }: PropsWithChildren) {
     return () => clearInterval(interval);
   }, []);
 
+  // Currency
+
+  const galleryCurrency = usePage<UsePageProps>().props.current_gallery?.meta?.currency
+  const currency = galleryCurrency || CONFIGS.defaults.currency || 'CAD';
+  const currencySymbol = CURRENCIES.find(c => c.code === currency)?.symbol || '$';
+
   return (
-    <AppContext.Provider value={{ sidebarCollapsed, setSidebarCollapsed, toggleSidebar, darkMode, setDarkMode, intervalData, fetchIntervalData }}>
+    <AppContext.Provider
+      value={{
+        sidebarCollapsed,
+        setSidebarCollapsed,
+        toggleSidebar,
+        darkMode,
+        setDarkMode,
+        intervalData,
+        fetchIntervalData,
+        currency,
+        currencySymbol
+      }}>
       {children}
     </AppContext.Provider>
   );
