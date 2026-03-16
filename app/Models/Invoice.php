@@ -16,11 +16,17 @@ class Invoice extends Model
     'number',
     'date',
     'due_date',
+    'shipping',
     'tax_id',
     'tax_name',
     'tax_rate',
-    'shipping',
     'subtotal',
+    'available_extra_costs',
+    'shipping_cost',
+    'shipping_taxable',
+    'discount_type', // ['percentage', 'fixed']
+    'discount_rate',
+    'discount_amount',
     'tax_amount',
     'total',
     'status',
@@ -31,6 +37,14 @@ class Invoice extends Model
     'date' => 'date',
     'due_date' => 'date',
     'shipping' => 'object',
+    'available_extra_costs' => 'object',
+    'shipping_taxable' => 'boolean',
+    /*
+      'available_extra_costs' => [
+        'shipping' => true,
+        'discount' => false,
+      ]
+    */
   ];
 
   /*
