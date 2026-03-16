@@ -38,6 +38,7 @@ function App ({ children }: AppProps) {
       theme={{
         algorithm: darkMode ? theme.darkAlgorithm : theme.defaultAlgorithm,
         token: {
+          colorText: darkMode ? colors.gray['200'] : colors.gray['800'],
           colorPrimary: darkMode ? colors.purple['400'] : colors.purple['500'],
           colorTextSecondary: colors.gray['500'],
           colorTextLabel: colors.gray['300'],
