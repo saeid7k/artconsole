@@ -120,17 +120,17 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
     const subtotal = Number(items.reduce((total, item) => total + (Number(item.price) * Number(item.quantity)), 0));
     const taxableSubtotal = Number(items.reduce((total, item) => total + (item.taxable ? (Number(item.price) * Number(item.quantity)) : 0), 0));
 
-    const shippingCost = Number(watchForm['available_extra_costs.shipping'] ? (watchForm.shipping_cost || 0) : 0);
+    const shippingCost = Number(watchForm.available_extra_costs?.shipping ? (watchForm.shipping_cost || 0) : 0);
     const shippingTaxable = Boolean(watchForm.shipping_taxable);
 
     const grossTotal = subtotal + shippingCost;
     const taxableTotal = taxableSubtotal + (shippingTaxable ? shippingCost : 0);
     const taxExcludedTotal = grossTotal - taxableSubtotal;
 
-    const discountRatio = watchForm['available_extra_costs.discount'] ? (
+    const discountRatio = watchForm.available_extra_costs?.discount ? (
         watchForm.discount_type === 'percentage' ? (Number(watchForm.discount_rate) / 100) : (Number(watchForm.discount_rate) / grossTotal)
       ) : 0;
-    const discountAmount = watchForm['available_extra_costs.discount'] ? (
+    const discountAmount = watchForm.available_extra_costs?.discount ? (
         watchForm.discount_type === 'fixed' ? Number(watchForm.discount_rate) : (Number(watchForm.discount_rate) * grossTotal / 100)
       ) : 0;
 
@@ -181,8 +181,10 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
             date: null,
             due_date: null,
             subtotal: 0,
-            'available_extra_costs.shipping': false,
-            'available_extra_costs.discount': false,
+            available_extra_costs: {
+              shipping: false,
+              discount: false,
+            },
             shipping_cost: 0,
             shipping_taxable: true,
             discount_type: 'fixed',
@@ -276,18 +278,18 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
             <div className="flex flex-col gap-3 pt-5">
               <div className="flex items-center gap-2">
                 <Form.Item
-                  name="available_extra_costs.shipping"
+                  name={["available_extra_costs", "shipping"]}
                   valuePropName="checked"
                   className="mb-0"
                 >
                   <Checkbox
-                    defaultChecked={watchForm['available_extra_costs.shipping']}
+                    defaultChecked={watchForm.available_extra_costs?.shipping}
                   >Shipping Cost</Checkbox>
                 </Form.Item>
                 <Form.Item
                   name="shipping_cost"
                   className="mb-0"
-                  hidden={!watchForm['available_extra_costs.shipping']}
+                  hidden={!watchForm.available_extra_costs?.shipping}
                 >
                   <Space.Compact>
                     <Space.Addon>{currencySymbol}</Space.Addon>
@@ -301,25 +303,25 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
                   name="shipping_taxable"
                   valuePropName="checked"
                   className="mb-0"
-                  hidden={!watchForm['available_extra_costs.shipping']}
+                  hidden={!watchForm.available_extra_costs?.shipping}
                 >
                   <Checkbox>Taxable</Checkbox>
                 </Form.Item>
               </div>
               <div className="flex items-center gap-2">
                 <Form.Item
-                  name="available_extra_costs.discount"
+                  name={["available_extra_costs", "discount"]}
                   valuePropName="checked"
                   className="mb-0"
                 >
                   <Checkbox
-                    defaultChecked={watchForm['available_extra_costs.discount']}
+                    defaultChecked={watchForm.available_extra_costs?.discount}
                   >Discount</Checkbox>
                 </Form.Item>
                 <Form.Item
                   name='discount_type'
                   className="mb-0"
-                  hidden={!watchForm['available_extra_costs.discount']}
+                  hidden={!watchForm.available_extra_costs?.discount}
                 >
                   <Segmented
                     options={[
@@ -331,9 +333,9 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
                   />
                 </Form.Item>
                 <Form.Item
-                  name="discount_rate"
+                  name='discount_rate'
                   className="mb-0"
-                  hidden={!watchForm['available_extra_costs.discount']}
+                  hidden={!watchForm.available_extra_costs?.discount}
                 >
                   <InputNumber />
                 </Form.Item>
@@ -343,6 +345,7 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
                 label="Notes"
                 className="w-full"
                 labelCol={{ span: 24 }}
+                rules={[{ max: 500, message: 'Notes cannot exceed 200 characters.' }]}
               >
                 <Input.TextArea rows={4} placeholder="Notes to the customer" />
               </Form.Item>
@@ -358,7 +361,7 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
                 </div>
               </FlexBox>
               <Divider dashed size="small" className="border-soft" />
-              <AnimatedContainer condition={watchForm['available_extra_costs.shipping']} type="fadeRight" speed="slow" >
+              <AnimatedContainer condition={watchForm.available_extra_costs?.shipping} type="fadeRight" speed="slow" >
                 <FlexBox alignItems="baseline" justifyContent="end" gap={3} className="w-[200px]" >
                   <div className="label">Shipping:</div>
                   <div className="w-[100px] text-end">
@@ -366,8 +369,8 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
                   </div>
                 </FlexBox>
               </AnimatedContainer>
-              {watchForm['available_extra_costs.shipping'] && <Divider dashed size="small" className="border-soft" />}
-              <AnimatedContainer condition={watchForm['available_extra_costs.discount']} type="fadeRight" speed="slow" >
+              {watchForm.available_extra_costs?.shipping && <Divider dashed size="small" className="border-soft" />}
+              <AnimatedContainer condition={watchForm.available_extra_costs?.discount} type="fadeRight" speed="slow" >
                 <FlexBox alignItems="baseline" justifyContent="end" gap={3} className="w-[200px]" >
                   <div className="label">Discount:</div>
                   <div className="w-[100px] text-end">
@@ -375,7 +378,7 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
                   </div>
                 </FlexBox>
               </AnimatedContainer>
-              {watchForm['available_extra_costs.discount'] && <Divider dashed size="small" className="border-soft" />}
+              {watchForm.available_extra_costs?.discount && <Divider dashed size="small" className="border-soft" />}
               {/* TAX Row */}
               <div className="flex flex-col sm:flex-row items-end sm:items-center gap-1">
                 {!taxesQuery.isLoading && (
