@@ -2,9 +2,11 @@ import { useApp } from "@/contexts/AppContext";
 import useTaxes from "@/hooks/useTaxes";
 import { useWindow } from "@/hooks/useWindow";
 import { InvoiceProps } from "@/types/invoice";
+import { InformationCircleIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
 import { useQuery } from "@tanstack/react-query";
-import { Button, Checkbox, DatePicker, Divider, Drawer, Form, Input, InputNumber, message, Segmented, Select, Space } from "antd";
+import { Button, Checkbox, DatePicker, Divider, Drawer, Form, Input, InputNumber, message, Popover, Segmented, Select, Space } from "antd";
 import axios from "axios";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
@@ -187,9 +189,10 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
             discount_rate: null,
             discount_amount: 0,
             tax_id: defaultTaxValue || null,
-            tax_rate: 13,
+            tax_rate: 0,
             tax_amount: 0,
             total: 0,
+            notes: null,
           }}
           onFinish={handleSubmit}
         >
@@ -267,6 +270,9 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
             setItems={setItems}
           />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+            {/* Options */}
+
             <div className="flex flex-col gap-3 pt-5">
               <div className="flex items-center gap-2">
                 <Form.Item
@@ -332,7 +338,18 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
                   <InputNumber />
                 </Form.Item>
               </div>
+              <Form.Item
+                name="notes"
+                label="Notes"
+                className="w-full"
+                labelCol={{ span: 24 }}
+              >
+                <Input.TextArea rows={4} placeholder="Notes to the customer" />
+              </Form.Item>
             </div>
+
+            {/* Totals Column */}
+
             <div className="w-full flex flex-col items-end xl:pe-5 box-border [&_.label]:mb-0">
               <FlexBox alignItems="baseline" justifyContent="end" gap={3} className="w-[200px]" >
                 <div className="label">Subtotal:</div>
@@ -368,20 +385,29 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
                     className="mb-0"
                   >
                     <Select
-                      placeholder="Tax Type"
+                      placeholder="Select Tax"
                       options={taxesOptions}
                       popupMatchSelectWidth={false}
                       onChange={(value) => {
                         const selectedTax = taxesQuery.data?.find(t => t.id === value);
                         form.setFieldValue('tax_rate', selectedTax ? selectedTax.rate : 0);
                       }}
+                      loading={taxesQuery.isLoading}
+                      disabled={taxesOptions.length === 0}
                     />
                   </Form.Item>
+                )}
+                {taxesOptions.length === 0 && (
+                  <Popover
+                    content="No tax found. Please create a tax first in gallery settings."
+                    children={<HugeiconsIcon icon={InformationCircleIcon} size={16} />}
+                  />
                 )}
                 <Form.Item
                   name="tax_rate"
                   label={null}
                   className="mb-0"
+                  hidden
                 >
                   <Space.Compact>
                     <Space.Addon>%</Space.Addon>
