@@ -18,7 +18,6 @@ class Invoice extends Model
     'due_date',
     'shipping',
     'tax_id',
-    'tax_name',
     'tax_rate',
     'subtotal',
     'available_extra_costs',
