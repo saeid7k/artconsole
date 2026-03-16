@@ -1,25 +1,21 @@
 import { ArtworkProps } from "@/types/artwork";
+import { formatCurrency, formatDimensions } from "@/utils/formatHelper";
 import { ArrowDown01Icon, Delete02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Button, Checkbox, Dropdown, Input, InputNumber, Menu, Table } from "antd";
+import { Button, Checkbox, Dropdown, FormInstance, Input, InputNumber, Menu, Table, Tooltip } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useState } from "react";
 import ArtworkFinderModal from "../Artworks/ArtworkFinderModal";
-import { usePage } from "@inertiajs/react";
-import { UsePageProps } from "@/types/usePage";
-import CONFIGS from "@/constants/configs.json";
-import { CURRENCIES } from "@/constants/currencies";
-import { formatCurrency, formatDimensions } from "@/utils/formatHelper";
 
 type Props = {
+  invoiceForm: FormInstance;
   items: any[];
   setItems: any;
 }
 
-function InvoiceTable({items, setItems}: Props) {
+function InvoiceItemsTable({invoiceForm, items, setItems}: Props) {
 
   const [showArtworkFinder, setShowArtworkFinder] = useState(false);
-  const currency = usePage<UsePageProps>().props.current_gallery?.meta?.currency || CONFIGS.defaults.currency
 
   const columns = [
     {
@@ -80,10 +76,10 @@ function InvoiceTable({items, setItems}: Props) {
       render: (value: number, record: any) => (
         <InputNumber
           defaultValue={value}
-          min={0}
+          // min={0}
           step={1}
           className="w-full text-end"
-          formatter={(value) => formatCurrency(value ?? 0, 2, currency)}
+          // formatter={(value) => formatCurrency(value ?? 0, 2, currency)}
           onChange={(value) => handleChange(record.key, 'price', value)}
         />
       ),
@@ -116,13 +112,16 @@ function InvoiceTable({items, setItems}: Props) {
       title: '',
       key: 'actions',
       render: (_: any, record: any) => (
-        <Button
-          variant="text"
-          color="danger"
-          shape="circle"
-          icon={<HugeiconsIcon icon={Delete02Icon} size={20} />}
-          onClick={() => setItems((prevData: any[]) => prevData.filter((item) => item.key !== record.key))}
-        />
+        <Tooltip title="Remove Item" placement="topLeft" mouseEnterDelay={1}>
+          <Button
+            variant="text"
+            color="danger"
+            shape="circle"
+            size="small"
+            icon={<HugeiconsIcon icon={Delete02Icon} size={20} />}
+            onClick={() => setItems((prevData: any[]) => prevData.filter((item) => item.key !== record.key))}
+          />
+        </Tooltip>
       ),
     }
   ];
@@ -201,7 +200,6 @@ function InvoiceTable({items, setItems}: Props) {
          </Dropdown>
       </div>
 
-
       {/* Components */}
 
       <ArtworkFinderModal
@@ -213,4 +211,4 @@ function InvoiceTable({items, setItems}: Props) {
   );
 }
 
-export default InvoiceTable;
+export default InvoiceItemsTable;
