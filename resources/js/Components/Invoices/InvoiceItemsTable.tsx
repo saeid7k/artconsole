@@ -77,6 +77,7 @@ function InvoiceItemsTable({invoiceForm, items, setItems}: Props) {
         <InputNumber
           defaultValue={value}
           // min={0}
+          max={99999999.99}
           step={1}
           className="w-full text-end"
           // formatter={(value) => formatCurrency(value ?? 0, 2, currency)}
