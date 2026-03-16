@@ -4,10 +4,11 @@ type Props = {
   type?: 'fadeDown' | 'fadeUp' | 'fadeRight' | 'fadeLeft';
   speed?: 'fast' | 'normal' | 'slow';
   condition: boolean;
+  className?: string;
   children: React.ReactNode;
 }
 
-function AnimatedContainer({ type = 'fadeDown', speed = 'normal', condition, children }: Props) {
+function AnimatedContainer({ type = 'fadeDown', speed = 'normal', condition, className, children }: Props) {
 
   const animateProps = {
     fadeDown: {
@@ -46,6 +47,7 @@ function AnimatedContainer({ type = 'fadeDown', speed = 'normal', condition, chi
           animate={animateProps[type].animate}
           exit={animateProps[type].exit}
           transition={{ duration: duration[speed] }}
+          className={className}
         >
           {children}
         </motion.div>
