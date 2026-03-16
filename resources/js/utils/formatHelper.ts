@@ -1,10 +1,9 @@
-import { DimensionsProps } from "@/types/dimensions";
-import { UsePageProps } from "@/types/usePage";
-import { usePage } from "@inertiajs/react";
-import dayjs from "dayjs";
 import CONFIGS from "@/constants/configs.json";
+import { DimensionsProps } from "@/types/dimensions";
+import dayjs from "dayjs";
 import { formatAddress } from "./addressHelper";
 import { keyToTitle, stringifyArray, stringifyObject } from "./stringHelper";
+
 
 function formatByKey(key: string, value: any): any {
   switch (key) {
@@ -73,19 +72,31 @@ function trimWebsite(website: string): string {
   return website.replace(/^(https?:\/\/)?(www\.)?/, '');
 }
 
-function formatCurrency(amount: number | string, maximumFractionDigits: number = 2, currency: string| null = null, locale: string = 'en-CA'): string {
+function formatCurrency(
+  amount: number | string,
+  maximumFractionDigits: number = 2,
+  currency: string | null = null,
+  locale: string = 'en-CA',
+  useParensForNegatives: boolean = true
+): string {
   if (amount === null || amount === undefined || amount === '') return '';
 
   const num = typeof amount === 'string' ? parseFloat(amount) : amount;
 
   if (isNaN(num)) return '';
 
-  return new Intl.NumberFormat(locale, {
+  const formatter = new Intl.NumberFormat(locale, {
     style: 'currency',
-    currency: currency || usePage<UsePageProps>().props.current_gallery?.meta?.currency || CONFIGS.defaults.currency || 'CAD',
+    currency: currency || CONFIGS.defaults.currency || 'CAD',
     minimumFractionDigits: 0,
     maximumFractionDigits: maximumFractionDigits,
-  }).format(num);
+  });
+
+  if (useParensForNegatives && num < 0) {
+    return `(${formatter.format(Math.abs(num))})`;
+  }
+
+  return formatter.format(num);
 }
 
 function formatDimensions({dimensions, showDepth = false}: {dimensions?: DimensionsProps | null; showDepth?: boolean;}): string {
