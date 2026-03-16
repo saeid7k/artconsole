@@ -126,7 +126,7 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
     const taxExcludedTotal = grossTotal - taxableSubtotal;
 
     const discountRatio = watchForm['available_extra_costs.discount'] ? (
-        watchForm.discount_type === 'percentage' ? Number(watchForm.discount_rate) : (Number(watchForm.discount_rate) / grossTotal)
+        watchForm.discount_type === 'percentage' ? (Number(watchForm.discount_rate) / 100) : (Number(watchForm.discount_rate) / grossTotal)
       ) : 0;
     const discountAmount = watchForm['available_extra_costs.discount'] ? (
         watchForm.discount_type === 'fixed' ? Number(watchForm.discount_rate) : (Number(watchForm.discount_rate) * grossTotal / 100)
