@@ -17,12 +17,12 @@ function useTaxes({ enableQuery = true }) {
     value: tax.id,
   })) || [];
 
-  const defaultTaxValue = taxesQuery.data?.find(t => t.default)?.id;
+  const defaultTaxId = taxesQuery.data?.find(t => t.default)?.id;
 
   return {
     taxesQuery,
     taxesOptions,
-    defaultTaxValue,
+    defaultTaxId,
   };
 }
 
