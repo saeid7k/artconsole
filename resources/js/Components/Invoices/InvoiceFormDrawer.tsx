@@ -271,79 +271,83 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
             items={items}
             setItems={setItems}
           />
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-10 gap-y-5 mt-5">
 
             {/* Options */}
 
-            <div className="flex flex-col gap-3 pt-5">
+            <div className="flex flex-col gap-3 border !border-dashed bg-light rounded-lg p-3">
               <div className="flex items-center gap-2">
                 <Form.Item
                   name={["available_extra_costs", "shipping"]}
                   valuePropName="checked"
-                  className="mb-0"
+                  className="mb-0 min-w-[120px]"
                 >
                   <Checkbox
                     defaultChecked={watchForm.available_extra_costs?.shipping}
                   >Shipping Cost</Checkbox>
                 </Form.Item>
-                <Form.Item
-                  name="shipping_cost"
-                  className="mb-0"
-                  hidden={!watchForm.available_extra_costs?.shipping}
-                >
-                  <Space.Compact>
-                    <Space.Addon>{currencySymbol}</Space.Addon>
-                    <InputNumber
-                      value={form.getFieldValue('shipping_cost')}
-                      onChange={(value) => form.setFieldValue('shipping_cost', value)}
-                    />
-                  </Space.Compact>
-                </Form.Item>
-                <Form.Item
-                  name="shipping_taxable"
-                  valuePropName="checked"
-                  className="mb-0"
-                  hidden={!watchForm.available_extra_costs?.shipping}
-                >
-                  <Checkbox>Taxable</Checkbox>
-                </Form.Item>
+                <AnimatedContainer condition={watchForm.available_extra_costs?.shipping} type="fadeRight" speed="slow" className="flex items-center gap-2" >
+                  <Form.Item
+                    name="shipping_cost"
+                    className="mb-0"
+                    hidden={!watchForm.available_extra_costs?.shipping}
+                  >
+                    <Space.Compact>
+                      <Space.Addon>{currencySymbol}</Space.Addon>
+                      <InputNumber
+                        value={form.getFieldValue('shipping_cost')}
+                        onChange={(value) => form.setFieldValue('shipping_cost', value)}
+                      />
+                    </Space.Compact>
+                  </Form.Item>
+                  <Form.Item
+                    name="shipping_taxable"
+                    valuePropName="checked"
+                    className="mb-0"
+                    hidden={!watchForm.available_extra_costs?.shipping}
+                  >
+                    <Checkbox>Taxable</Checkbox>
+                  </Form.Item>
+                </AnimatedContainer>
               </div>
               <div className="flex items-center gap-2">
                 <Form.Item
                   name={["available_extra_costs", "discount"]}
                   valuePropName="checked"
-                  className="mb-0"
+                  className="mb-0 min-w-[120px]"
                 >
                   <Checkbox
                     defaultChecked={watchForm.available_extra_costs?.discount}
                   >Discount</Checkbox>
                 </Form.Item>
-                <Form.Item
-                  name='discount_type'
-                  className="mb-0"
-                  hidden={!watchForm.available_extra_costs?.discount}
-                >
-                  <Segmented
-                    options={[
-                      { label: '%', value: 'percentage' },
-                      { label: currencySymbol, value: 'fixed' },
-                    ]}
-                    value={form.getFieldValue('discount_type')}
-                    onChange={(value) => form.setFieldValue('discount_type', value)}
-                  />
-                </Form.Item>
-                <Form.Item
-                  name='discount_rate'
-                  className="mb-0"
-                  hidden={!watchForm.available_extra_costs?.discount}
-                >
-                  <InputNumber />
-                </Form.Item>
+                <AnimatedContainer condition={watchForm.available_extra_costs?.discount} type="fadeRight" speed="slow" className="flex items-center gap-2" >
+                  <Form.Item
+                    name='discount_type'
+                    className="mb-0"
+                    hidden={!watchForm.available_extra_costs?.discount}
+                  >
+                    <Segmented
+                      options={[
+                        { label: '%', value: 'percentage' },
+                        { label: currencySymbol, value: 'fixed' },
+                      ]}
+                      value={form.getFieldValue('discount_type')}
+                      onChange={(value) => form.setFieldValue('discount_type', value)}
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    name='discount_rate'
+                    className="mb-0"
+                    hidden={!watchForm.available_extra_costs?.discount}
+                  >
+                    <InputNumber />
+                  </Form.Item>
+                </AnimatedContainer>
               </div>
               <Form.Item
                 name="notes"
                 label="Notes"
-                className="w-full"
+                className="w-full mb-0"
                 labelCol={{ span: 24 }}
                 rules={[{ max: 500, message: 'Notes cannot exceed 200 characters.' }]}
               >
