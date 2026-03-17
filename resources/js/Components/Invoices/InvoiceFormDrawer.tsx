@@ -26,7 +26,8 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
 
   const { windowWidth, breakpoint } = useWindow()
   const [form] = Form.useForm()
-  const { taxesOptions, defaultTaxValue, taxesQuery } = useTaxes({ enableQuery: show })
+  const watchForm = Form.useWatch([], form) ?? {}
+  const { taxesOptions, defaultTaxId, taxesQuery } = useTaxes({ enableQuery: show })
   const { currencySymbol } = useApp()
 
   const [items, setItems] = useState<any[]>([]);
@@ -56,14 +57,14 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
   // Set default tax
 
   useEffect(() => {
-    if (!selectedInvoice && defaultTaxValue) {
-      form.setFieldValue('tax_id', defaultTaxValue);
-      const selectedTax = taxesQuery.data?.find(t => t.id === defaultTaxValue);
+    if (!selectedInvoice && defaultTaxId && !watchForm.tax_id) {
+      form.setFieldValue('tax_id', defaultTaxId);
+      const selectedTax = taxesQuery.data?.find(t => t.id === defaultTaxId);
       if (selectedTax) {
         form.setFieldValue('tax_rate', selectedTax.rate);
       }
     }
-  }, [defaultTaxValue, selectedInvoice]);
+  }, [defaultTaxId, watchForm, selectedInvoice]);
 
   // Handlers
 
@@ -89,10 +90,11 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
           artwork_id: item.type === 'artwork' ? item.artwork.id : null,
           name: item.name,
           description: item.description,
-          quantity: item.quantity,
-          price: item.price,
+          quantity: Number(item.quantity),
+          price: Number(item.price),
           taxable: item.taxable,
-        }))
+        })),
+        tax_rate: Number(values.tax_rate) || 0,
       })
         .then(() => {
           message.success('Invoice created successfully');
@@ -108,9 +110,6 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
       .catch(e => { })
   }
 
-  // Watchers
-
-  const watchForm = Form.useWatch([], form) ?? {}
 
   // Calculate totals
 
@@ -190,7 +189,7 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
             discount_type: 'fixed',
             discount_rate: null,
             discount_amount: 0,
-            tax_id: defaultTaxValue || null,
+            tax_id: defaultTaxId || null,
             tax_rate: 0,
             tax_amount: 0,
             total: 0,
