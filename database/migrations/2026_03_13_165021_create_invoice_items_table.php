@@ -17,7 +17,7 @@ return new class extends Migration
       $table->string('type');
       $table->foreignId('artwork_id')->nullable()->constrained()->nullOnDelete();
       $table->string('name');
-      $table->string('description');
+      $table->string('description')->nullable();
       $table->integer('quantity');
       $table->decimal('price', 10, 2);
       $table->boolean('taxable')->default(true);
