@@ -114,5 +114,9 @@ function formatDimensions({dimensions, showDepth = false}: {dimensions?: Dimensi
   return dimensionString;
 }
 
-export { formatByKey, formatCurrency, formatDimensions, formatPhoneNumber, trimWebsite };
+function ucWords(str: string | null | undefined): string {
+  if (!str) return '';
+  return str.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+}
 
+export { formatByKey, formatCurrency, formatDimensions, formatPhoneNumber, trimWebsite, ucWords };
