@@ -1,62 +1,46 @@
-import ActionFooter from "@/Components/ActionFooter";
+import CONFIGS from "@/constants/configs.json";
 import { CURRENCIES_OPTIONS } from "@/constants/currencies";
 import { useGallerySettings } from "@/contexts/GallerySettingsContext";
-import { Form, message, Select } from "antd"
+import useSaveChip from "@/hooks/useSaveChip";
+import { useMutation } from "@tanstack/react-query";
+import { message, Select } from "antd";
 import axios from "axios";
-import { useEffect, useState } from "react";
-import CONFIGS from "@/constants/configs.json";
 
 function Currency() {
 
-  const { open, gallery } = useGallerySettings()
-  const [form] = Form.useForm()
-  const [isProcessing, setIsProcessing] = useState(false);
+  const { gallery } = useGallerySettings()
+  const { setSavingStatus, saveChipNode } = useSaveChip();
 
-  function handleSave() {
-    form
-      .validateFields()
-      .then(values => {
-        setIsProcessing(true);
-        axios.post(route('galleries.update-accounting', { gallery: gallery.id }), values)
-          .then((response) => {
-            message.success(response.data.message || 'Accounting settings updated successfully.');
-          })
-          .catch(error => {
-            message.error(error.response?.data?.message || 'Failed to update accounting settings.');
-          })
-          .finally(() => {
-            setIsProcessing(false);
-          });
-    });
-  }
-
-  useEffect(() => {
-    if (open) {
-      form.resetFields()
+  const setMetaMutation = useMutation({
+    mutationFn: ({ key, value }: { key: string; value: string }) => {
+      return axios.post(route("galleries.set-meta", { gallery: gallery.id }), { key, value });
+    },
+    onSuccess: () => {
+      setSavingStatus("saved");
+    },
+    onError: (err: any) => {
+      message.error(err.response.data.message || "An error occurred");
+      setSavingStatus("failed");
     }
-  }, [open]);
+  });
+
+  function handleChange(key: string, value: string) {
+    setSavingStatus("saving");
+    setMetaMutation.mutate({ key, value });
+  }
 
   return (
     <div>
-      <Form
-        form={form}
-        layout="vertical"
-        initialValues={{
-          currency: gallery?.meta?.currency || CONFIGS.defaults.currency,
-        }}
-        validateTrigger="onSubmit"
-      >
-        <Form.Item label="Currency" name="currency">
-          <Select
-            options={CURRENCIES_OPTIONS}
-            showSearch
-            defaultValue={CONFIGS.defaults.currency}
-          />
-        </Form.Item>
-      </Form>
-      <ActionFooter
-        save={handleSave}
-        isProcessing={isProcessing}
+      {saveChipNode}
+      <p className="label pe-20">
+        Set the currency to use for all financial transactions in this gallery. This will not convert existing amounts, so make sure to update any existing financial data accordingly.
+      </p>
+      <Select
+        options={CURRENCIES_OPTIONS}
+        popupMatchSelectWidth={false}
+        showSearch
+        defaultValue={gallery?.meta?.currency || CONFIGS.defaults.currency}
+        onChange={(value) => handleChange("currency", value)}
       />
     </div>
   )
