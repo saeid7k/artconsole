@@ -145,16 +145,19 @@ class GalleryController extends Controller
     );
   }
 
-  public function updateAccounting(Request $request, Gallery $gallery)
+  public function setMeta(Request $request, Gallery $gallery)
   {
     $this->authorize('update', $gallery);
 
     $request->validate([
-      'currency' => ['nullable', 'string', 'max:10'],
+      'key' => ['required', 'string'],
+      'value' => ['required', 'string'],
     ]);
 
-    $gallery->setMeta('currency', $request->input('currency'));
+    $gallery->setMeta($request->input('key'), $request->input('value'));
 
-    return response(['message' => 'Gallery accounting info updated successfully.']);
+    return Response()->json([
+      'message' => $request->input('key') . ' updated successfully'
+    ]);
   }
 }
