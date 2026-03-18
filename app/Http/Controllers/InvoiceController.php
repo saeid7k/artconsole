@@ -8,9 +8,23 @@ use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
 {
-  public function index()
+  public function index(Request $request)
   {
-    return inertia('Invoices/Index');
+    $this->authorize('viewAny', Invoice::class);
+    $user = $request->user();
+    $gallery = $user->currentGallery();
+    $invoices = $gallery->invoices()
+      ->with([
+        'contact' => function ($query) {
+          $query->select('id', 'firstname', 'lastname');
+        },
+      ])
+      ->latest()
+      ->paginate($request->per_page ?? 10)->withQueryString();
+
+    return inertia('Invoices/Index', [
+      'invoices' => $invoices,
+    ]);
   }
 
   public function nextInvoiceNumber()
