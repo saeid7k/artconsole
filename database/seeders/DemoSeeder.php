@@ -266,26 +266,26 @@ class DemoSeeder extends Seeder
 
     Tax::create([
       'gallery_id' => $this->firstGallery->id,
-      'name' => 'Goods and Services Tax',
+      'name' => 'GST',
       'rate' => 5.00,
-      'description' => 'Federal tax applied on most goods and services sold in Canada.',
-      'default' => true,
+      'description' => 'Goods and Services Tax.',
+      'default' => false,
     ]);
 
     Tax::create([
       'gallery_id' => $this->firstGallery->id,
-      'name' => 'Provincial Sales Tax',
+      'name' => 'PST',
       'rate' => 7.00,
-      'description' => 'Provincial sales tax applied in provinces like British Columbia and Manitoba.',
+      'description' => 'Provincial Sales Tax.',
       'default' => false,
     ]);
 
     Tax::create([
       'gallery_id' => $this->firstGallery->id,
-      'name' => 'Harmonized Sales Tax',
+      'name' => 'HST',
       'rate' => 13.00,
-      'description' => 'Single combined federal and provincial tax used in Ontario, replacing separate GST and PST.',
-      'default' => false,
+      'description' => 'Harmonized Sales Tax.',
+      'default' => true,
     ]);
 
     $this->command->info('✅' . ' 3 Canadian taxes created for first gallery (GST, PST, HST).');
