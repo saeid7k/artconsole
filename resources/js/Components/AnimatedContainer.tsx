@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 
 type Props = {
-  type?: 'fadeDown' | 'fadeUp' | 'fadeRight' | 'fadeLeft';
+  type?: 'fadeDown' | 'fadeUp' | 'fadeRight' | 'fadeLeft' | 'slideRight';
   speed?: 'fast' | 'normal' | 'slow';
   condition: boolean;
   className?: string;
@@ -30,7 +30,12 @@ function AnimatedContainer({ type = 'fadeDown', speed = 'normal', condition, cla
       initial: { opacity: 0, x: 10 },
       animate: { opacity: 1, x: 0 },
       exit: { opacity: 0, x: 10 }
-    }
+    },
+    slideRight: {
+      initial: { x: -20, opacity: 0 },
+      animate: { x: 0, opacity: 1 },
+      exit: { x: 20, opacity: 0 }
+    },
   }
 
   const duration = {
@@ -43,6 +48,7 @@ function AnimatedContainer({ type = 'fadeDown', speed = 'normal', condition, cla
     <AnimatePresence>
       {condition && (
         <motion.div
+          key='animated-container'
           initial={animateProps[type].initial}
           animate={animateProps[type].animate}
           exit={animateProps[type].exit}
