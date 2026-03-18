@@ -1,4 +1,5 @@
 import InvoiceFormDrawer from "@/Components/Invoices/InvoiceFormDrawer";
+import InvoiceTable from "@/Components/Invoices/InvoiceTable";
 import PageTitle from "@/Components/PageTitle";
 import AppLayout from "@/Layouts/AppLayout";
 import { PageProps } from "@/types";
@@ -18,6 +19,8 @@ function Index({ invoices }: { invoices: PageProps }) {
         createButtonDisabled={!user.has_edit_access}
         onCreateButtonClick={() => setShowInvoiceFormDrawer(true)}
       />
+
+      <InvoiceTable invoices={invoices} />
 
       {/* Components */}
 
