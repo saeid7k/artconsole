@@ -20,7 +20,7 @@ import ArtworksTable from "./Partials/ArtworksTable"
 function Index({ artworks, locations }: { artworks: PageProps, locations: Array<LocationProps> }) {
 
   const user = usePage().props.auth.user;
-  const { handleSearch, debouncedSearch } = useSearch('artworks.index');
+  const { debouncedSearch } = useSearch('artworks.index');
 
   // Switch Mode
 
@@ -90,7 +90,6 @@ function Index({ artworks, locations }: { artworks: PageProps, locations: Array<
         style={{ width: 200 }}
         size="middle"
         allowClear
-        onSearch={handleSearch}
         onChange={(e) => debouncedSearch(e.target.value, 1000)}
       />
     </div>
