@@ -50,6 +50,15 @@ function App ({ children }: AppProps) {
           // boxShadow: darkMode ? '0 1px 3px rgba(0, 0, 0, 0.9)' : '0 1px 3px rgba(0, 0, 0, 0.1)',
           boxShadowSecondary: darkMode ? '0 6px 16px 4px rgba(0, 0, 0, 0.9)' : '0 6px 16px 4px rgba(0, 0, 0, 0.1)',
           fontFamily: `'Segoe UI', sans-serif`,
+          blue: colors.blue[500],
+          purple: colors.purple[500],
+          cyan: colors.cyan[500],
+          green: colors.green[500],
+          pink: colors.pink[500],
+          red: colors.red[500],
+          orange: colors.orange[500],
+          yellow: colors.yellow[500],
+          lime: colors.lime[500],
         },
         components: {
           Layout: {
