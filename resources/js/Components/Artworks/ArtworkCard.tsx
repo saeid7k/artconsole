@@ -7,6 +7,7 @@ import imagePlaceholder from '~/resources/images/image-placeholder.svg';
 import FormattedDimensions from "../FormattedDimensions";
 import ArtworkTitleStack from "./ArtworkTitleStack";
 import ArtworkStatusTag from "./ArtworkStatusTag";
+import StyledCurrency from "../StyledCurrency";
 
 function ArtworkCard({ artwork }: { artwork: ArtworkProps }) {
 
@@ -41,7 +42,7 @@ function ArtworkCard({ artwork }: { artwork: ArtworkProps }) {
           showEdition={false}
         />
         <div className="flex justify-center items-center gap-2">
-          <div>{formatCurrency(artwork.price, 0)}</div>
+          <StyledCurrency value={artwork.price} />
           <ArtworkStatusTag
             status={artwork.status}
             fontSize="xs"

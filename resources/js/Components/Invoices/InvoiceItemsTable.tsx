@@ -6,6 +6,8 @@ import { Button, Checkbox, Dropdown, FormInstance, Input, InputNumber, Menu, Tab
 import TextArea from "antd/es/input/TextArea";
 import { useState } from "react";
 import ArtworkFinderModal from "../Artworks/ArtworkFinderModal";
+import { usePage } from "@inertiajs/react";
+import { UsePageProps } from "@/types/usePage";
 
 type Props = {
   invoiceForm: FormInstance;
@@ -15,6 +17,7 @@ type Props = {
 
 function InvoiceItemsTable({invoiceForm, items, setItems}: Props) {
 
+  const galleryCurrency = usePage<UsePageProps>().props.current_gallery?.meta?.currency
   const [showArtworkFinder, setShowArtworkFinder] = useState(false);
 
   const columns = [
@@ -80,7 +83,6 @@ function InvoiceItemsTable({invoiceForm, items, setItems}: Props) {
           max={99999999.99}
           step={1}
           className="w-full text-end"
-          // formatter={(value) => formatCurrency(value ?? 0, 2, currency)}
           onChange={(value) => handleChange(record.key, 'price', value)}
         />
       ),
@@ -92,7 +94,7 @@ function InvoiceItemsTable({invoiceForm, items, setItems}: Props) {
       render: (record: any) => (
         <Input
           className="font-semibold cursor-default"
-          value={formatCurrency(record.price * record.quantity)}
+          value={formatCurrency(record.price * record.quantity, galleryCurrency)}
           readOnly
         />
       ),

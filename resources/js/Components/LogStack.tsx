@@ -11,9 +11,12 @@ import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import FlexBox from "./Containers/FlexBox";
 import { dayjsUserTz } from "@/utils/dateTimeHelper";
+import { usePage } from "@inertiajs/react";
+import { UsePageProps } from "@/types/usePage";
 
 function LogStack({ log }: { log: ActivityLogProps }) {
 
+  const galleryMeta = usePage<UsePageProps>().props.current_gallery?.meta || {};
   const [showProperties, setShowProperties] = useState<boolean>(false);
 
   const causerName = (causer: ActivityLogProps['causer']) => {
@@ -59,7 +62,12 @@ function LogStack({ log }: { log: ActivityLogProps }) {
       <>
         {Object.entries(log.properties?.attributes || {}).map(([key, value]) => (
           <FlexBox key={key} gap={2} alignItems="start">
-            <label>{keyToTitle(key)}:</label><div className="line-clamp-2 truncate whitespace-normal !max-w-[400px]">{formatByKey(key, value)}</div>
+            <label>{keyToTitle(key)}:</label>
+            <div
+              className="line-clamp-2 truncate whitespace-normal !max-w-[400px]"
+            >
+              {formatByKey(key, value, galleryMeta)}
+            </div>
           </FlexBox>
         ))}
       </>
