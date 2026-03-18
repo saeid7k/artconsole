@@ -59,7 +59,11 @@ function TaxFormModal({ show, onClose, selectedTax }: Props) {
       <Form
         form={form}
         layout="vertical"
-        initialValues={selectedTax ? selectedTax : {}}
+        initialValues={selectedTax ? selectedTax : {
+          name: '',
+          rate: 0,
+          description: ''
+        }}
         className="mt-5"
         validateTrigger='onBlur'
         onFinish={handleSubmit}
