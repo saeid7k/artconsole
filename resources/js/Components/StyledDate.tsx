@@ -6,14 +6,15 @@ import FlexBox from "./Containers/FlexBox"
 type Props = {
   value: string;
   showIcon?: boolean;
+  showTime?: boolean;
 }
 
-function StyledDate({ value, showIcon = true }: Props) {
+function StyledDate({ value, showIcon = true, showTime = true }: Props) {
   return (
     <FlexBox>
       {showIcon && <HugeiconsIcon icon={Calendar03Icon} size={20} className="text-muted" />}
       <div>{dayjsUserTz(value).format('MMM D ,YYYY')}</div>
-      <div className="text-muted">{dayjsUserTz(value).format('h:mm A')}</div>
+      {showTime && <div className="text-muted">{dayjsUserTz(value).format('h:mm A')}</div>}
     </FlexBox>
   )
 }
