@@ -21,6 +21,7 @@ import { Card, Divider } from "antd";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 import ArtworkToolbar from "./Partials/ArtworkToolbar";
+import StyledCurrency from "@/Components/StyledCurrency";
 
 function Show ({ artwork }: { artwork: ArtworkProps }) {
 
@@ -77,9 +78,7 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
               />
               <div className="flex items-start gap-2">
                 {artwork.price ? (
-                  <div className="text-lg">
-                    {formatCurrency(artwork.price, 2)}
-                  </div>
+                  <StyledCurrency value={artwork.price} className="text-lg" />
                 ) : (
                   <div>
                     <em>Price on request</em>

@@ -21,6 +21,7 @@ import { Image, Table } from 'antd';
 import { useState } from 'react';
 import imagePlaceholder from '~/resources/images/image-placeholder.svg';
 import ArtworksActions from './ArtworksActions';
+import StyledCurrency from '@/Components/StyledCurrency';
 
 type LocationsProps = Array<{
   id: number;
@@ -128,7 +129,7 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
       sorter: true,
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
-      render: (text) => formatCurrency(text, 2),
+      render: (text) => <StyledCurrency value={text} />,
       // width: 250,
     },
     {
