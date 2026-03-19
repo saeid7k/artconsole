@@ -9,7 +9,7 @@ import axios from "axios";
 function Currency() {
 
   const { gallery } = useGallerySettings()
-  const { setSavingStatus, saveChipNode } = useSaveChip();
+  const { setSavingStatus, saveChipNode } = useSaveChip({ topOffset: 0 });
 
   const setMetaMutation = useMutation({
     mutationFn: ({ key, value }: { key: string; value: string }) => {
