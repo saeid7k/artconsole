@@ -3,8 +3,13 @@ import colors from "@/Themes/theme";
 import { ucWords } from "@/utils/formatHelper";
 import { Tag } from "antd";
 import { useEffect, useState } from "react";
+import { twMerge } from "tailwind-merge";
 
-function useSaveChip() {
+type Props = {
+  topOffset?: number;
+}
+
+function useSaveChip({ topOffset = 2 }: Props = {} ) {
 
   const [savingStatus, setSavingStatus] = useState<null | "saving" | "saved" | "failed">(null);
 
@@ -25,12 +30,17 @@ function useSaveChip() {
     default: colors.gray[500]
   }
 
+  const offsetClass = `top-${topOffset}`
+
   const saveChipNode = (
     <AnimatedContainer
       condition={!!savingStatus}
       type="slideRight"
       speed="slow"
-      className="absolute top-2 right-2 z-10"
+      className={twMerge(
+        "absolute top-2 right-2 z-10",
+        offsetClass
+      )}
     >
       <Tag
         color={textColor[savingStatus || "default"]}
