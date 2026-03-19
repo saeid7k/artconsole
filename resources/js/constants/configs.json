@@ -2,6 +2,7 @@
   "defaults": {
     "country": "Canada",
     "currency": "CAD",
+    "invoice_prefix": "INV",
     "access_level": "viewer"
   },
   "new_tag_timeout": 5
