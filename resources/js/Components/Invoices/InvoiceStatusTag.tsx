@@ -1,5 +1,6 @@
 import INVOICE_STATUSES from "@/constants/invoiceStatuses";
 import { Tag } from "antd";
+import FlexBox from "../Containers/FlexBox";
 
 type Props = {
   status: string;
@@ -12,13 +13,25 @@ function InvoiceStatusTag({ status, variant = "filled", fontSize = "sm", classNa
 
   const selectedStatus = INVOICE_STATUSES.find((s) => s.value === status);
 
+  const iconBgClass = () => {
+    switch (selectedStatus?.color) {
+      case 'black':
+        return 'bg-gray-900';
+      default:
+        return `bg-${selectedStatus?.color || 'gray'}-500`;
+    }
+  }
+
   return (
     <Tag
       color={selectedStatus?.color || 'default'}
       variant={variant}
       className={`text-${fontSize} font-semibold ${className || ''}`}
     >
-      {selectedStatus?.label || status}
+      <FlexBox>
+        <span className={`w-2 h-2 rounded-full ${iconBgClass()}`}></span>
+        {selectedStatus?.label || status}
+      </FlexBox>
     </Tag>
   );
 }
