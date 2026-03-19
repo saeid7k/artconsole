@@ -1,14 +1,16 @@
 import { useWindow } from "@/hooks/useWindow";
-import { paginate } from "@/utils/paginationHelper";
-import { Table, TableProps } from "antd";
-import StyledDate from "../StyledDate";
 import { ContactProps } from "@/types/contact";
-import { formatCurrency } from "@/utils/formatHelper";
+import { UsePageProps } from "@/types/usePage";
+import { paginate } from "@/utils/paginationHelper";
+import { usePage } from "@inertiajs/react";
+import { Table, TableProps } from "antd";
 import StyledCurrency from "../StyledCurrency";
+import StyledDate from "../StyledDate";
 import InvoiceStatusTag from "./InvoiceStatusTag";
 
 function InvoiceTable({ invoices }: any) {
 
+  const gallery = usePage<UsePageProps>()?.props?.current_gallery
   const { breakpoint } = useWindow()
 
   // Table columns
@@ -30,7 +32,7 @@ function InvoiceTable({ invoices }: any) {
       sorter: true,
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
-      render: (text: string) => <div>{text}</div>
+      render: (text: string) => <div>{gallery?.meta?.invoice_prefix}{text}</div>
     },
     {
       title: 'Customer',
@@ -48,7 +50,8 @@ function InvoiceTable({ invoices }: any) {
       sorter: true,
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
-      render: (text: string) => <StyledCurrency value={text} />
+      render: (text: string) => <StyledCurrency value={text} />,
+      align: "right"
     },
     {
       title: 'Status',
