@@ -1,14 +1,20 @@
 import { Tabs } from "antd"
 import Currency from "./Accounting/Currency"
 import Taxes from "./Accounting/Taxes"
+import Invoicing from "./Accounting/Invoicing"
 
 function Accounting() {
 
   return (
     <div>
       <Tabs
-        defaultActiveKey="taxes"
+        defaultActiveKey="invoicing"
         items={[
+          {
+            key: 'invoicing',
+            label: 'Invoicing',
+            children: <Invoicing />
+          },
           {
             key: 'taxes',
             label: 'Taxes',
