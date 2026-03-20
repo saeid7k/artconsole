@@ -49,6 +49,13 @@ class InvoiceController extends Controller
     ]);
   }
 
+  public function get(Invoice $invoice)
+  {
+    $this->authorize('view', $invoice);
+    $invoice->load('items.artwork', 'contact');
+    return response()->json($invoice);
+  }
+
   public function nextInvoiceNumber()
   {
     return response()->json([
