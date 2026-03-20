@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class InvoiceRequest extends FormRequest
 {
@@ -21,9 +22,11 @@ class InvoiceRequest extends FormRequest
    */
   public function rules(): array
   {
+    $galleryId = $this->invoice ? $this->invoice->gallery_id : $this->input('gallery_id');
+
     return [
       'contact_id' => 'required|exists:contacts,id',
-      'number' => 'required|string|max:100',
+      'number' => ['required', 'string', 'max:100', Rule::unique('invoices')->ignore($this->invoice)->where('gallery_id', $galleryId)],
       'date' => 'required|date',
       'due_date' => 'sometimes|nullable|date|after_or_equal:date',
       'items' => 'required|array|min:1',
@@ -50,6 +53,7 @@ class InvoiceRequest extends FormRequest
       'contact_id.required' => 'Select customer for the invoice.',
       'contact_id.exists' => 'The selected contact is invalid.',
       'number.required' => 'The invoice number is required.',
+      'number.unique' => 'The invoice number must be unique within the gallery.',
       'date.required' => 'The invoice date is required.',
       'date.date' => 'The invoice date must be a valid date.',
       'due_date.date' => 'The due date must be a valid date.',
