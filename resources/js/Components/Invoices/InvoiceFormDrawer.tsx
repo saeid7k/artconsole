@@ -30,7 +30,7 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
   const { taxesOptions, defaultTaxId, taxesQuery } = useTaxes({ enableQuery: show })
   const { currencySymbol } = useApp()
 
-  const [items, setItems] = useState<any[]>([]);
+  const [items, setItems] = useState<any[]>(selectedInvoice && selectedInvoice.items ? selectedInvoice.items : []);
   const [saving, setSaving] = useState(false);
 
   // Select Customer
@@ -249,6 +249,9 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
                 label="Invoice Date"
                 className="w-full"
                 labelCol={{ span: 8 }}
+                getValueProps={(value) => ({
+                  value: value ? dayjs(value) : null,
+                })}
                 rules={[
                   { required: true, message: 'Please select the invoice date' },
                 ]}
@@ -260,6 +263,9 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
                 label="Due Date"
                 className="w-full"
                 labelCol={{ span: 8 }}
+                getValueProps={(value) => ({
+                  value: value ? dayjs(value) : null,
+                })}
               >
                 <DatePicker className="w-full" />
               </Form.Item>
