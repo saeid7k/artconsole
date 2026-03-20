@@ -10,6 +10,7 @@ import { Button, Dropdown, Menu, message, Popconfirm, Tooltip } from "antd"
 import axios from "axios"
 import { useState } from "react"
 import ArtworkFormDrawer from "./ArtworkFormDrawer"
+import FlexBox from "@/Components/Containers/FlexBox"
 
 function ArtworksActions({ artwork }: { artwork: ArtworkProps }) {
 
@@ -48,9 +49,7 @@ function ArtworksActions({ artwork }: { artwork: ArtworkProps }) {
 
   return (
     <>
-      <div
-        className="flex items-center gap-1"
-      >
+      <FlexBox>
         <Tooltip title="View Artwork">
           <Button
             variant="text"
@@ -130,7 +129,7 @@ function ArtworksActions({ artwork }: { artwork: ArtworkProps }) {
             icon={<HugeiconsIcon icon={MoreHorizontalCircle01Icon} size={20} />}
           />
         </Dropdown>
-      </div>
+      </FlexBox>
 
       {/* Child Components */}
 
