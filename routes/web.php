@@ -141,6 +141,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/next-number', [App\Http\Controllers\InvoiceController::class, 'nextInvoiceNumber'])->name('next-number');
     Route::get('/{invoice}/get', [App\Http\Controllers\InvoiceController::class, 'get'])->name('get');
     Route::put('/{invoice}/update', [App\Http\Controllers\InvoiceController::class, 'update'])->name('update');
+    Route::delete('/{invoice}/delete', [App\Http\Controllers\InvoiceController::class, 'destroy'])->name('delete');
   });
 });
 
