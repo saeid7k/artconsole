@@ -18,4 +18,10 @@ class InvoicePolicy
     $gallery = $user->currentGallery();
     return $gallery ? $gallery->isMember($user) : false;
   }
+
+  public function view(User $user, $invoice): bool
+  {
+    $gallery = $invoice->gallery;
+    return $gallery ? $gallery->isMember($user) : false;
+  }
 }
