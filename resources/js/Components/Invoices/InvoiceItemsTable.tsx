@@ -122,7 +122,7 @@ function InvoiceItemsTable({invoiceForm, items, setItems}: Props) {
             shape="circle"
             size="small"
             icon={<HugeiconsIcon icon={Delete02Icon} size={20} />}
-            onClick={() => setItems((prevData: any[]) => prevData.filter((item) => item.key !== record.key))}
+            onClick={() => setItems((prevData: any[]) => prevData.filter((item) => item.key ? (item.key !== record.key) : (item.id !== record.id)))}
           />
         </Tooltip>
       ),
