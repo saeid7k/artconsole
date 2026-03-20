@@ -15,11 +15,21 @@ class InvoiceController extends Controller
     $gallery = $user->currentGallery();
     $invoices = $gallery->invoices()
       ->with([
-        'contact' => function ($query) {
-          $query->select('id', 'firstname', 'lastname');
-        },
-      ])
-      ->latest()
+          'contact' => function ($query) {
+            $query->select('id', 'firstname', 'lastname');
+          },
+        ])
+      ->when($request->sort_by, function ($q) use ($request) {
+          if ($request->sort_by === 'contact') {
+            $q->join('contacts', 'invoices.contact_id', '=', 'contacts.id')
+              ->orderBy('contacts.firstname', $request->sort_order ?? 'asc')
+              ->orderBy('contacts.lastname', $request->sort_order ?? 'asc');
+          } else {
+            $q->orderBy($request->sort_by, $request->sort_order ?? 'asc');
+          }
+        }, function ($q) {
+          $q->orderBy('id', 'desc');
+        })
       ->paginate($request->per_page ?? 10)->withQueryString();
 
     return inertia('Invoices/Index', [
