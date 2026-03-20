@@ -18,6 +18,7 @@ class InvoiceController extends Controller
           'contact' => function ($query) {
             $query->select('id', 'firstname', 'lastname');
           },
+          'items'
         ])
       ->when($request->search, function ($q) use ($request) {
         $search = '%' . strtolower($request->search) . '%';
