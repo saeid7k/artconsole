@@ -28,7 +28,7 @@ function InvoiceItemsTable({invoiceForm, items, setItems}: Props) {
       render: (type: string, record: any) => {
         if (type === 'artwork') {
           return (
-            <img src={record.artwork.main_image_thumb_url} alt={record.artwork.title} style={{ width: 50, height: 50, objectFit: 'cover' }} />
+            <img src={record.artwork?.main_image_thumb_url} alt={record.artwork?.title} style={{ width: 50, height: 50, objectFit: 'cover' }} />
           );
         }
         return null;
