@@ -1,9 +1,11 @@
 import { useApp } from "@/contexts/AppContext";
 import useTaxes from "@/hooks/useTaxes";
 import { useWindow } from "@/hooks/useWindow";
+import { PageProps } from "@/types";
+import { GalleryProps } from "@/types/gallery";
 import { InformationCircleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { router } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 import { useQuery } from "@tanstack/react-query";
 import { Button, Checkbox, DatePicker, Divider, Drawer, Form, Input, InputNumber, message, Popover, Segmented, Select, Space } from "antd";
 import axios from "axios";
@@ -28,6 +30,7 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null }: Props) {
   const watchForm = Form.useWatch([], form) ?? {}
   const { taxesOptions, defaultTaxId, taxesQuery } = useTaxes({ enableQuery: show })
   const { currencySymbol } = useApp()
+  const gallery = usePage<PageProps>().props?.current_gallery as GalleryProps;
 
   const [items, setItems] = useState<any[]>([]);
   const [saving, setSaving] = useState(false);
@@ -67,7 +70,7 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null }: Props) {
       form.resetFields();
       setItems([]);
     }
-  }, [editingInvoiceQuery.data])
+  }, [editingInvoiceQuery.data, show])
 
   // Select Customer
 
@@ -120,6 +123,7 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null }: Props) {
       let routeName = invoiceId ? 'invoices.update' : 'invoices.store';
       let payload = {
         ...values,
+        gallery_id: gallery.id,
         date: values.date ? dayjs(values.date).format('YYYY-MM-DD') : null,
         due_date: values.due_date ? dayjs(values.due_date).format('YYYY-MM-DD') : null,
         items: items.map((item) => ({
