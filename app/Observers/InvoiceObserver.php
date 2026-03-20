@@ -6,7 +6,7 @@ use App\Enums\InvoiceStatus;
 
 class InvoiceObserver
 {
-  public function created($invoice)
+  public function creating($invoice)
   {
     if (!$invoice->status) {
       $invoice->status = InvoiceStatus::default()->value;
@@ -14,6 +14,5 @@ class InvoiceObserver
     if (!$invoice->user_id) {
       $invoice->user_id = auth()->id();
     }
-    $invoice->saveQuietly();
   }
 }
