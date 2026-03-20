@@ -128,7 +128,7 @@ label, .label {
 }
 
 code {
-  color: theme('colors.purple.500');
+  color: var(--primary);
 }
 
 blockquote {
