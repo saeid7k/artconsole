@@ -1,3 +1,5 @@
+import { ContactProps } from "./contact";
+
 export interface InvoiceProps {
   id: number;
   gallery_id: number;
@@ -19,4 +21,8 @@ export interface InvoiceProps {
   created_at: string;
   updated_at: string;
   deleted_at?: string | null;
+
+  // Relationships
+  contact?: ContactProps | null;
+  items?: any[];
 }
