@@ -33,7 +33,7 @@ function InvoicesActions({ invoice } : { invoice: InvoiceProps }) {
       <InvoiceFormDrawer
         show={showEditDrawer}
         onClose={() => setShowEditDrawer(false)}
-        selectedInvoice={invoice}
+        invoiceId={invoice.id}
       />
     </>
   )

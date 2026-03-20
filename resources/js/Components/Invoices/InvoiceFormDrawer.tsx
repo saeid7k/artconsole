@@ -1,7 +1,6 @@
 import { useApp } from "@/contexts/AppContext";
 import useTaxes from "@/hooks/useTaxes";
 import { useWindow } from "@/hooks/useWindow";
-import { InvoiceProps } from "@/types/invoice";
 import { InformationCircleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
@@ -19,10 +18,10 @@ import InvoiceItemsTable from "./InvoiceItemsTable";
 type Props = {
   show: boolean;
   onClose: () => void;
-  selectedInvoice?: InvoiceProps | null;
+  invoiceId?: number | null;
 }
 
-function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
+function InvoiceFormDrawer({ show, onClose, invoiceId = null }: Props) {
 
   const { windowWidth, breakpoint } = useWindow()
   const [form] = Form.useForm()
@@ -30,8 +29,45 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
   const { taxesOptions, defaultTaxId, taxesQuery } = useTaxes({ enableQuery: show })
   const { currencySymbol } = useApp()
 
-  const [items, setItems] = useState<any[]>(selectedInvoice && selectedInvoice.items ? selectedInvoice.items : []);
+  const [items, setItems] = useState<any[]>([]);
   const [saving, setSaving] = useState(false);
+
+  // Fetch Editing Invoice
+
+  const editingInvoiceQuery = useQuery({
+    queryKey: ['editing-invoice', invoiceId],
+    queryFn: () => axios.get(route('invoices.get', { invoice: invoiceId })).then(res => res.data),
+    enabled: !!invoiceId && show,
+  })
+
+  useEffect(() => {
+    if (editingInvoiceQuery.data) {
+      const invoiceData = editingInvoiceQuery.data;
+      form.setFieldsValue({
+        contact_id: invoiceData.contact_id,
+        number: invoiceData.number,
+        date: invoiceData.date ? dayjs(invoiceData.date) : null,
+        due_date: invoiceData.due_date ? dayjs(invoiceData.due_date) : null,
+        available_extra_costs: {
+          shipping: invoiceData.shipping_cost > 0,
+          discount: invoiceData.discount_amount > 0,
+        },
+        shipping_cost: invoiceData.shipping_cost,
+        shipping_taxable: invoiceData.shipping_taxable,
+        discount_type: invoiceData.discount_type || 'fixed',
+        discount_rate: invoiceData.discount_rate || null,
+        discount_amount: invoiceData.discount_amount || 0,
+        tax_id: invoiceData.tax_id || null,
+        tax_rate: invoiceData.tax_rate || 0,
+        tax_amount: invoiceData.tax_amount || 0,
+        notes: invoiceData.notes || null,
+      });
+      setItems(invoiceData.items || []);
+    } else {
+      form.resetFields();
+      setItems([]);
+    }
+  }, [editingInvoiceQuery.data])
 
   // Select Customer
 
@@ -51,26 +87,26 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
         }
         return res.data.next_invoice_number;
       }),
-    enabled: show && !selectedInvoice,
+    enabled: show && !invoiceId,
   })
 
   // Set default tax
 
   useEffect(() => {
-    if (!selectedInvoice && defaultTaxId && !watchForm.tax_id) {
+    if (!invoiceId && defaultTaxId && !watchForm.tax_id) {
       form.setFieldValue('tax_id', defaultTaxId);
       const selectedTax = taxesQuery.data?.find(t => t.id === defaultTaxId);
       if (selectedTax) {
         form.setFieldValue('tax_rate', selectedTax.rate);
       }
     }
-  }, [defaultTaxId, watchForm, selectedInvoice]);
+  }, [defaultTaxId, watchForm, invoiceId]);
 
   // Handlers
 
   const handleClose = () => {
     form.resetFields();
-    setItems([]);
+    if (!invoiceId) setItems([]);
     onClose();
   }
 
@@ -81,7 +117,8 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
         return;
       }
       setSaving(true);
-      axios.post(route('invoices.store'), {
+      let routeName = invoiceId ? 'invoices.update' : 'invoices.store';
+      let payload = {
         ...values,
         date: values.date ? dayjs(values.date).format('YYYY-MM-DD') : null,
         due_date: values.due_date ? dayjs(values.due_date).format('YYYY-MM-DD') : null,
@@ -95,17 +132,32 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
           taxable: item.taxable,
         })),
         tax_rate: Number(values.tax_rate) || 0,
-      })
-        .then(() => {
-          message.success('Invoice created successfully');
-          form.resetFields();
-          onClose();
-          router.visit(route('invoices.index'), { preserveState: false })
-        })
-        .catch((err) => {
-          message.error(err?.response?.data?.message || 'Failed to create invoice');
-        })
-        .finally(() => { setSaving(false) })
+      }
+      if (invoiceId) {
+        axios.put(route(routeName, { invoice: invoiceId }), payload)
+          .then(() => {
+            message.success('Invoice updated successfully');
+            form.resetFields();
+            onClose();
+            router.visit(route('invoices.index'), { preserveState: false })
+          })
+          .catch((err) => {
+            message.error(err?.response?.data?.message || 'Failed to create invoice');
+          })
+          .finally(() => { setSaving(false) })
+      } else {
+        axios.post(route(routeName), payload)
+          .then(() => {
+            message.success('Invoice created successfully');
+            form.resetFields();
+            onClose();
+            router.visit(route('invoices.index'), { preserveState: false })
+          })
+          .catch((err) => {
+            message.error(err?.response?.data?.message || 'Failed to create invoice');
+          })
+          .finally(() => { setSaving(false) })
+      }
     })
       .catch(e => { })
   }
@@ -154,7 +206,7 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
   return (
     <>
       <Drawer
-        title={`${selectedInvoice ? 'Edit' : 'Create'} Invoice`}
+        title={`${invoiceId ? 'Edit' : 'Create'} Invoice`}
         placement="right"
         size={breakpoint == "xs" ? windowWidth : (Math.min(windowWidth * 0.9, 1280))}
         onClose={handleClose}
@@ -174,7 +226,7 @@ function InvoiceFormDrawer({ show, onClose, selectedInvoice = null }: Props) {
         <Form
           form={form}
           layout="horizontal"
-          initialValues={selectedInvoice ? selectedInvoice : {
+          initialValues={{
             contact_id: null,
             number: '',
             date: null,
