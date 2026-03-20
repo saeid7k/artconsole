@@ -79,4 +79,30 @@ class InvoiceController extends Controller
       'invoice' => $invoice
     ], 201);
   }
+
+  public function update(InvoiceRequest $request, Invoice $invoice)
+  {
+    $this->authorize('update', $invoice);
+    $invoice->update($request->all());
+
+    $existingItemIds = $invoice->items()->pluck('id')->toArray();
+    $submittedItemIds = collect($request->items)->pluck('id')->filter()->toArray();
+    $itemsToDelete = array_diff($existingItemIds, $submittedItemIds);
+    if (!empty($itemsToDelete)) {
+      $invoice->items()->whereIn('id', $itemsToDelete)->delete();
+    }
+
+    foreach ($request->items as $item) {
+      if (isset($item['id'])) {
+        $invoice->items()->where('id', $item['id'])->update($item);
+      } else {
+        $invoice->items()->create($item);
+      }
+    }
+
+    return response()->json([
+      'message' => 'Invoice updated successfully',
+      'invoice' => $invoice
+    ]);
+  }
 }
