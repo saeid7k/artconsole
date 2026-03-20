@@ -97,6 +97,10 @@ export default {
     				'5': 'hsl(var(--chart-5))'
     			},
           link: 'var(--text-link)',
+          black: {
+            DEFAULT: '#000000',
+            500: '#000000',
+          }
     		}
     	}
     },
