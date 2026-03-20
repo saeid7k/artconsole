@@ -19,6 +19,17 @@ class InvoiceController extends Controller
             $query->select('id', 'firstname', 'lastname');
           },
         ])
+      ->when($request->search, function ($q) use ($request) {
+        $search = '%' . strtolower($request->search) . '%';
+        $q->join('contacts', 'invoices.contact_id', '=', 'contacts.id')
+        ->where(function ($qq) use ($search) {
+          $qq->whereRaw('LOWER(number) LIKE ?', $search)
+            ->orWhereRaw('LOWER(total) LIKE ?', $search)
+            ->orWhereRaw('LOWER(notes) LIKE ?', $search)
+            ->orWhereRaw('LOWER(status) LIKE ?', $search)
+            ->orWhereRaw('CONCAT(LOWER(contacts.firstname), " ", LOWER(contacts.lastname)) LIKE ?', $search);
+        });
+      })
       ->when($request->sort_by, function ($q) use ($request) {
           if ($request->sort_by === 'contact') {
             $q->join('contacts', 'invoices.contact_id', '=', 'contacts.id')
@@ -28,7 +39,7 @@ class InvoiceController extends Controller
             $q->orderBy($request->sort_by, $request->sort_order ?? 'asc');
           }
         }, function ($q) {
-          $q->orderBy('id', 'desc');
+          $q->orderBy('invoices.id', 'desc');
         })
       ->paginate($request->per_page ?? 10)->withQueryString();
 
