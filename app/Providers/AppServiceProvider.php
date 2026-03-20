@@ -5,12 +5,14 @@ namespace App\Providers;
 use App\Models\Artwork;
 use App\Models\Gallery;
 use App\Models\InviteLink;
+use App\Models\Invoice;
 use App\Models\Location;
 use App\Models\Media;
 use App\Models\User;
 use App\Observers\ArtworkObserver;
 use App\Observers\GalleryObserver;
 use App\Observers\InviteLinkObserver;
+use App\Observers\InvoiceObserver;
 use App\Observers\LocationObserver;
 use App\Observers\MediaObserver;
 use App\Observers\UserObserver;
@@ -42,6 +44,7 @@ class AppServiceProvider extends ServiceProvider
         Artwork::observe(ArtworkObserver::class);
         Location::observe(LocationObserver::class);
         Media::observe(MediaObserver::class);
+        Invoice::observe(InvoiceObserver::class);
 
         Pdf::default()
           ->withBrowsershot(function (Browsershot $browsershot) {
