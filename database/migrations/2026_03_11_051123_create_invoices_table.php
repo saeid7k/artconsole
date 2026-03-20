@@ -42,6 +42,8 @@ return new class extends Migration
 
       $table->timestamps();
       $table->softDeletes();
+
+      $table->unique(['gallery_id', 'number']);
     });
   }
 
