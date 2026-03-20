@@ -7,6 +7,7 @@ import { Table, TableProps } from "antd";
 import StyledCurrency from "../StyledCurrency";
 import StyledDate from "../StyledDate";
 import InvoiceStatusTag from "./InvoiceStatusTag";
+import InvoicesActions from "./InvoicesActions";
 
 function InvoiceTable({ invoices }: any) {
 
@@ -62,7 +63,7 @@ function InvoiceTable({ invoices }: any) {
     {
       title: 'Actions',
       key: 'actions',
-      // render: (_: any, record: any) => <ReportsTableActions report={record} />,
+      render: (_: any, record: any) => <InvoicesActions invoice={record} />,
       fixed: ['xs', 'sm'].includes(breakpoint) ? undefined : 'right',
     }
   ]
