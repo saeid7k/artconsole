@@ -30,4 +30,10 @@ class InvoicePolicy
     $gallery = $invoice->gallery;
     return $gallery->hasEditAccess($user);
   }
+
+  public function delete(User $user, $invoice): bool
+  {
+    $gallery = $invoice->gallery;
+    return $gallery->hasEditAccess($user);
+  }
 }
