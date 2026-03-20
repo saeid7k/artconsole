@@ -68,10 +68,7 @@ class InvoiceController extends Controller
     $suer = auth()->user();
     $gallery = $suer->currentGallery();
 
-    $invoice = $gallery->invoices()->create($request->all() + [
-      'user_id' => $suer->id,
-      'status' => InvoiceStatus::default()->value,
-    ]);
+    $invoice = $gallery->invoices()->create($request->all());
 
     foreach ($request->items as $item) {
       $invoice->items()->create($item);
