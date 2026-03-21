@@ -48,6 +48,12 @@ class InvoiceController extends Controller
       ->when($request->customer, function ($q) use ($request) {
         $q->whereIn('contact_id', explode(',', $request->customer));
       })
+      ->when($request->date_from, function ($q) use ($request) {
+        $q->whereDate('date', '>=', $request->date_from);
+      })
+      ->when($request->date_to, function ($q) use ($request) {
+        $q->whereDate('date', '<=', $request->date_to);
+      })
       ->paginate($request->per_page ?? 10)->withQueryString();
 
     return inertia('Invoices/Index', [
