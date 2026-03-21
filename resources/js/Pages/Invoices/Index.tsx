@@ -1,4 +1,5 @@
 import InvoiceFormDrawer from "@/Components/Invoices/InvoiceFormDrawer";
+import InvoicesFilter from "@/Components/Invoices/InvoicesFilter";
 import InvoiceTable from "@/Components/Invoices/InvoiceTable";
 import PageTitle from "@/Components/PageTitle";
 import { useSearch } from "@/hooks/useSearch";
@@ -17,6 +18,7 @@ function Index({ invoices }: { invoices: PageProps }) {
 
   const renderToolbar = () => (
     <div className="flex items-start gap-2 flex-wrap">
+      <InvoicesFilter />
       <Search
         placeholder="search invoices..."
         style={{ width: 200 }}
