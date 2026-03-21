@@ -45,6 +45,9 @@ class InvoiceController extends Controller
       ->when($request->status, function ($q) use ($request) {
         $q->whereIn('status', explode(',', $request->status));
       })
+      ->when($request->customer, function ($q) use ($request) {
+        $q->whereIn('contact_id', explode(',', $request->customer));
+      })
       ->paginate($request->per_page ?? 10)->withQueryString();
 
     return inertia('Invoices/Index', [
@@ -132,5 +135,20 @@ class InvoiceController extends Controller
       'message' => 'Invoice status updated successfully',
       'invoice' => $invoice
     ]);
+  }
+
+  public function getInvoiceCustomers(Request $request)
+  {
+    $user = $request->user();
+    $gallery = $user->currentGallery();
+
+    $contacts = $gallery->contacts()
+      ->whereHas('invoices')
+      ->select('id', 'firstname', 'lastname')
+      ->orderBy('firstname')
+      ->orderBy('lastname')
+      ->get();
+
+    return response()->json($contacts);
   }
 }

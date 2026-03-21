@@ -10,6 +10,7 @@ function useFilters(routeName: string) {
     'medium',
     'style',
     'ownership',
+    'customer',
   ];
 
   const filters = (() => {
