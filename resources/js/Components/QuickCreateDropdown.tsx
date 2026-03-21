@@ -1,4 +1,4 @@
-import { AddSquareIcon, ContactIcon, ImageAdd02Icon } from "@hugeicons/core-free-icons";
+import { AddInvoiceIcon, AddSquareIcon, ContactIcon, ImageAdd02Icon, InvoiceIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
 import { Button, Dropdown, Menu } from "antd";
@@ -31,6 +31,18 @@ function QuickCreateDropdown() {
           <FlexBox gap={2} >
             <HugeiconsIcon icon={ContactIcon} size={20} />
             New Contact
+          </FlexBox>
+        </Menu.Item>
+        <Menu.Item key="new-invoice"
+          onClick={() => {router.visit(route('invoices.index'), {
+            data: {
+              action: 'create',
+            }
+          })}}
+        >
+          <FlexBox gap={2} >
+            <HugeiconsIcon icon={AddInvoiceIcon} size={20} />
+            New Invoice
           </FlexBox>
         </Menu.Item>
       </Menu>

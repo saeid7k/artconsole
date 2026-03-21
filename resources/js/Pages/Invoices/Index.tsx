@@ -5,9 +5,10 @@ import PageTitle from "@/Components/PageTitle";
 import { useSearch } from "@/hooks/useSearch";
 import AppLayout from "@/Layouts/AppLayout";
 import { PageProps } from "@/types";
+import { deleteQueryParam, getQueryParam } from "@/utils/urlHelper";
 import { usePage } from "@inertiajs/react";
 import Search from "antd/es/input/Search";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function Index({ invoices }: { invoices: PageProps }) {
 
@@ -15,6 +16,14 @@ function Index({ invoices }: { invoices: PageProps }) {
   const { debouncedSearch } = useSearch('invoices.index');
 
   const [ showInvoiceFormDrawer, setShowInvoiceFormDrawer ] = useState(false);
+
+  useEffect(() => {
+    let action = getQueryParam('action');
+    if (action === 'create') {
+      setShowInvoiceFormDrawer(true);
+      deleteQueryParam('action');
+    }
+  }, [])
 
   const renderToolbar = () => (
     <div className="flex items-start gap-2 flex-wrap">
