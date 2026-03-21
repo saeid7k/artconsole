@@ -33,8 +33,8 @@ class Invoice extends Model
   ];
 
   protected $casts = [
-    'date' => 'date',
-    'due_date' => 'date',
+    'date' => 'date:Y-m-d',
+    'due_date' => 'date:Y-m-d',
     'shipping' => 'object',
     'available_extra_costs' => 'object',
     'shipping_taxable' => 'boolean',
