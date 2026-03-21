@@ -27,6 +27,8 @@ const dayjsUserTz = (date?: string, userTimezone?: string) => {
 
   if (!date) {
     return dayjs().tz(userTimezone ?? tz);
+  } else if (!date.includes('T') && !date.includes(' ')) {
+    return dayjs(date);
   } else {
     return dayjs.utc(date).tz(userTimezone ?? tz);
   }
