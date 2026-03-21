@@ -31,7 +31,7 @@ function InvoiceStatusTag({ invoice, variant = "filled", fontSize = "base", clas
       items={INVOICE_STATUSES.map((s) => ({
         key: s.value,
         label: (
-          <FlexBox>
+          <FlexBox className="select-none">
             <span
               className='w-2 h-2 rounded-full'
               style={{
@@ -79,7 +79,7 @@ function InvoiceStatusTag({ invoice, variant = "filled", fontSize = "base", clas
         color={selectedStatus?.color || 'default'}
         variant={variant}
         className={twMerge(
-          'font-semibold cursor-pointer',
+          'font-semibold cursor-pointer select-none',
           `text-${fontSize}`,
           className
         )}
