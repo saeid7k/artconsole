@@ -42,6 +42,9 @@ class InvoiceController extends Controller
         }, function ($q) {
           $q->orderBy('invoices.id', 'desc');
         })
+      ->when($request->status, function ($q) use ($request) {
+        $q->whereIn('status', explode(',', $request->status));
+      })
       ->paginate($request->per_page ?? 10)->withQueryString();
 
     return inertia('Invoices/Index', [
