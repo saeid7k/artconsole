@@ -114,4 +114,20 @@ class InvoiceController extends Controller
       'message' => 'Invoice deleted successfully',
     ]);
   }
+
+  public function changeStatus(Request $request, Invoice $invoice)
+  {
+    $this->authorize('update', $invoice);
+
+    $request->validate([
+      'status' => 'required|in:' . InvoiceStatus::stringifyAll(),
+    ]);
+
+    $invoice->update(['status' => $request->status]);
+
+    return response()->json([
+      'message' => 'Invoice status updated successfully',
+      'invoice' => $invoice
+    ]);
+  }
 }
