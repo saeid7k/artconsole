@@ -81,7 +81,8 @@ function InvoiceTable({ invoices }: any) {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
-      render: (text: string) => <InvoiceStatusTag status={text} />
+      render: (text: string, record: any) => <InvoiceStatusTag invoice={record} />,
+      width: 180,
     },
     {
       title: 'Actions',
