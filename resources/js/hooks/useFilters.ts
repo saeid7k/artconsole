@@ -39,6 +39,21 @@ function useFilters(routeName: string) {
     router.get(route(routeName), Object.fromEntries(urlParams.entries()), { preserveState: true });
   }
 
+  function setFilters(filtersObject: { [key: string]: string[] }) {
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set('page', '1');
+
+    Object.entries(filtersObject).forEach(([key, value]) => {
+      if (value.length > 0) {
+        urlParams.set(key, value.join(',').toString());
+      } else {
+        urlParams.delete(key);
+      }
+    });
+
+    router.get(route(routeName), Object.fromEntries(urlParams.entries()), { preserveState: true });
+  }
+
   // Clear filters
 
   function clearFilters() {
@@ -57,7 +72,7 @@ function useFilters(routeName: string) {
 
   const filteredFieldsCount = Object.values(filters).filter((vals) => Array.isArray(vals) && vals.length > 0).length;
 
-  return { filters, setFilter, clearFilters, filteredFieldsCount };
+  return { filters, setFilter, setFilters, clearFilters, filteredFieldsCount };
 
 }
 
