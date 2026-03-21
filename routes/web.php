@@ -143,6 +143,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/{invoice}/update', [App\Http\Controllers\InvoiceController::class, 'update'])->name('update');
     Route::delete('/{invoice}/delete', [App\Http\Controllers\InvoiceController::class, 'destroy'])->name('delete');
     Route::put('/{invoice}/change-status', [App\Http\Controllers\InvoiceController::class, 'changeStatus'])->name('change-status');
+    Route::get('/get-customers', [App\Http\Controllers\InvoiceController::class, 'getInvoiceCustomers'])->name('get-customers');
   });
 });
 

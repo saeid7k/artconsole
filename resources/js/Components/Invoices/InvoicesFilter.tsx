@@ -1,9 +1,5 @@
-import { ARTWORK_CATEGORIES } from "@/constants/artworkCategories";
-import ARTWORK_STATUSES from "@/constants/artworkStatuses";
 import INVOICE_STATUSES from "@/constants/invoiceStatuses";
 import useFilters from "@/hooks/useFilters";
-import useLocations from "@/hooks/useLocations";
-import useTags from "@/hooks/useTags";
 import { useWindow } from "@/hooks/useWindow";
 import { FilterIcon, FilterRemoveIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -23,14 +19,45 @@ function InvoicesFilter() {
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  // Fetch Customers
+
+  const customersQuery = useQuery({
+    queryKey: ['invoice-customers'],
+    queryFn: () => axios.get('/invoices/get-customers').then(res => res.data),
+    enabled: true,
+    retry: false,
+  })
+
   // Renders
 
-  const renderStatusFilter = ({className = ''}) => {
+  const renderCustomerFilter = () => {
+    return (
+      <Select
+        mode="multiple"
+        options={customersQuery.data?.map((customer: any) => ({
+          label: customer.full_name,
+          value: customer.id.toString(),
+        })) || []}
+        className='min-w-[120px]'
+        popupMatchSelectWidth={false}
+        placeholder="Customer"
+        optionLabelProp="label"
+        showSearch={{
+          optionFilterProp: 'label',
+        }}
+        onChange={(value: string[]) => setFilter('customer', value ?? [])}
+        value={filters.customer?.map(String) || []}
+        loading={customersQuery.isLoading}
+      />
+    )
+  }
+
+  const renderStatusFilter = () => {
     return (
       <Select
         mode="multiple"
         options={INVOICE_STATUSES}
-        className={`min-w-[100px] ${className}`}
+        className='min-w-[100px]'
         popupMatchSelectWidth={false}
         placeholder="Status"
         optionLabelProp="label"
@@ -47,7 +74,8 @@ function InvoicesFilter() {
     <>
       {windowWidth > 1024 && (
         <>
-          {renderStatusFilter({})}
+          {renderCustomerFilter()}
+          {renderStatusFilter()}
         </>
       )}
 
@@ -88,11 +116,15 @@ function InvoicesFilter() {
         open={drawerOpen}
       >
         <div
-          className="flex flex-col gap-3"
+          className="flex flex-col gap-3 [&_.ant-select]:w-full"
         >
           <div>
+            <div className="label">Customer</div>
+            {renderCustomerFilter()}
+          </div>
+          <div>
             <div className="label">Status</div>
-            {renderStatusFilter({className: 'w-full'})}
+            {renderStatusFilter()}
           </div>
         </div>
       </Drawer>
