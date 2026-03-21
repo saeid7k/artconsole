@@ -11,6 +11,8 @@ function useFilters(routeName: string) {
     'style',
     'ownership',
     'customer',
+    'date_from',
+    'date_to',
   ];
 
   const filters = (() => {

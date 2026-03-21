@@ -4,15 +4,16 @@ import { useWindow } from "@/hooks/useWindow";
 import { FilterIcon, FilterRemoveIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useQuery } from "@tanstack/react-query";
-import { Badge, Button, Drawer, Select, Tooltip } from "antd";
+import { Badge, Button, DatePicker, Drawer, Select, Tooltip } from "antd";
 import axios from "axios";
+import dayjs from "dayjs";
 import { useState } from "react";
 
 function InvoicesFilter() {
 
   const { windowWidth } = useWindow();
 
-  const { filters, setFilter, clearFilters, filteredFieldsCount } = useFilters('invoices.index');
+  const { filters, setFilter, setFilters, clearFilters, filteredFieldsCount } = useFilters('invoices.index');
   const isFiltered = Object.values(filters).some((vals) => Array.isArray(vals) && vals.length > 0);
 
   // Filters Drawer
@@ -29,6 +30,40 @@ function InvoicesFilter() {
   })
 
   // Renders
+
+  const renderDateFilter = () => {
+    return (
+      <DatePicker.RangePicker
+        onChange={(dates, dateStrings) => {
+          if (!dates) {
+            setFilters({
+              date_from: [],
+              date_to: [],
+            });
+            return;
+          }
+          setFilters({
+            date_from: dateStrings[0] ? [dateStrings[0]] : [],
+            date_to: dateStrings[1] ? [dateStrings[1]] : [],
+          });
+        }}
+        presets={[
+          { label: 'Last 7 Days', value: [dayjs().add(-7, 'd'), dayjs()] },
+          { label: 'Last 14 Days', value: [dayjs().add(-14, 'd'), dayjs()] },
+          { label: 'Last 30 Days', value: [dayjs().add(-30, 'd'), dayjs()] },
+          { label: 'Last Week', value: [dayjs().add(-1, 'week').startOf('week'), dayjs().add(-1, 'week').endOf('week')] },
+          { label: 'This Week', value: [dayjs().startOf('week'), dayjs().endOf('week')] },
+          { label: 'This Month', value: [dayjs().startOf('month'), dayjs().endOf('month')] },
+          { label: 'Last Month', value: [dayjs().add(-1, 'month').startOf('month'), dayjs().add(-1, 'month').endOf('month')] },
+          { label: 'This Year', value: [dayjs().startOf('year'), dayjs().endOf('year')] },
+          { label: 'Last Year', value: [dayjs().add(-1, 'year').startOf('year'), dayjs().add(-1, 'year').endOf('year')] },
+        ]}
+        allowEmpty={[true, true]}
+        value={[filters.date_from[0] ? dayjs(filters.date_from[0]) : null, filters.date_to[0] ? dayjs(filters.date_to[0]) : null]}
+        className='min-w-[240px]'
+      />
+    )
+  }
 
   const renderCustomerFilter = () => {
     return (
@@ -74,6 +109,11 @@ function InvoicesFilter() {
     <>
       {windowWidth > 1024 && (
         <>
+          {windowWidth > 1280 && (
+            <>
+              {renderDateFilter()}
+            </>
+          )}
           {renderCustomerFilter()}
           {renderStatusFilter()}
         </>
@@ -116,8 +156,12 @@ function InvoicesFilter() {
         open={drawerOpen}
       >
         <div
-          className="flex flex-col gap-3 [&_.ant-select]:w-full"
+          className="flex flex-col gap-3 [&_.ant-select]:w-full [&_.ant-picker]:w-full"
         >
+          <div>
+            <div className="label">Date Range</div>
+            {renderDateFilter()}
+          </div>
           <div>
             <div className="label">Customer</div>
             {renderCustomerFilter()}
