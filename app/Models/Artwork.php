@@ -62,9 +62,13 @@ class Artwork extends Model implements HasMedia
     'acquisition_price' => 'decimal:2',
   ];
 
-  // Appends
+  /*
+  |=======================================================
+  | Accessors & Mutators
+  |=======================================================
+  */
 
-  protected $appends = ['abilities', 'main_image_url', 'main_image_thumb_url'];
+  protected $appends = ['abilities', 'main_image_url', 'main_image_thumb_url', 'invoice_description'];
 
   public function getAbilitiesAttribute(): array
   {
@@ -93,7 +97,13 @@ class Artwork extends Model implements HasMedia
     return $media ? $media->getUrl('thumb') : null;
   }
 
-  // Attributes
+  public function getInvoiceDescriptionAttribute(): string
+  {
+    $d = $this->title ?? '';
+    $d .= $this->formatted_dimensions ? "\n" . $this->formatted_dimensions : '';
+    $d .= $this->formatted_medium ? "\n" . $this->formatted_medium : '';
+    return $d;
+  }
 
   public function artistData(): Attribute
   {
