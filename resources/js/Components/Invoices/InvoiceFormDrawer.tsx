@@ -289,13 +289,17 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null }: Props) {
                   { max: 100, message: 'Invoice number cannot exceed 100 characters' },
                 ]}
               >
-                <Input
-                  placeholder="Invoice Number"
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    form.setFieldValue('number', value.replace(/\D/g, ''));
-                  }}
-                />
+                <Space.Compact>
+                  <Space.Addon className="whitespace-nowrap">{gallery?.meta?.invoice_prefix}</Space.Addon>
+                  <Input
+                    placeholder="Invoice Number"
+                    value={form.getFieldValue('number')}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      form.setFieldValue('number', value.replace(/\D/g, ''));
+                    }}
+                  />
+                </Space.Compact>
               </Form.Item>
               <Form.Item
                 name="date"

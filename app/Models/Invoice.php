@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\ConfigHelper;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -55,12 +56,19 @@ class Invoice extends Model
   |--------------------------------------------------------------------------
   */
 
+  protected $appends = ['invoice_number'];
+
   public function number() :Attribute
   {
     return Attribute::make(
       get: fn ($value) => str_pad($value, 5, '0', STR_PAD_LEFT),
       set: fn ($value) => str_pad($value, 5, '0', STR_PAD_LEFT)
     );
+  }
+
+  public function getInvoiceNumberAttribute(): string
+  {
+    return ($this->gallery->getMeta('invoice_prefix') ?? ConfigHelper::getDefault('invoice_prefix')) . $this->number;
   }
 
   /*
