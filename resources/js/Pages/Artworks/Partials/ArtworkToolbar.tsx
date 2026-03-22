@@ -1,11 +1,12 @@
 import FlexBox from "@/Components/Containers/FlexBox";
 import DocumentPreviewDrawer from "@/Components/DocumentPreviewDrawer";
+import InvoiceFormDrawer from "@/Components/Invoices/InvoiceFormDrawer";
 import MoveModal from "@/Components/MoveModal";
 import { ARTWORK_DOCUMENTS } from "@/constants/artworkDocuments";
 import useFilesUpload from "@/hooks/useFilesUpload";
 import { useWindow } from "@/hooks/useWindow";
 import { ArtworkProps } from "@/types/artwork";
-import { ArrowDataTransferHorizontalIcon, CopyIcon, Delete02Icon, DiplomaIcon, ImageAddIcon, MoreHorizontalCircle01Icon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
+import { ArrowDataTransferHorizontalIcon, CopyIcon, Delete02Icon, DiplomaIcon, ImageAddIcon, MoreHorizontalCircle01Icon, PencilEdit02Icon, SaveMoneyDollarIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
 import { useMutation } from "@tanstack/react-query";
@@ -25,6 +26,7 @@ function ArtworkToolbar({ artwork }: Props) {
   const [showEditDrawer, setShowEditDrawer] = useState(false)
   const [openMoveModal, setOpenMoveModal] = useState(false);
   const [showCoaPreview, setShowCoaPreview] = useState(false);
+  const [showInvoiceDrawer, setShowInvoiceDrawer] = useState(false);
 
   // Upload Images
 
@@ -102,6 +104,15 @@ function ArtworkToolbar({ artwork }: Props) {
             </Menu.Item>
           </>
         )}
+        <Menu.Item
+          key="sell"
+          onClick={() => setShowInvoiceDrawer(true)}
+        >
+          <FlexBox>
+            <HugeiconsIcon icon={SaveMoneyDollarIcon} size={20} />
+            Sell <div className="text-ghost">(Create Invoice)</div>
+          </FlexBox>
+        </Menu.Item>
         <Menu.Item
           key="coa"
           onClick={() => setShowCoaPreview(true)}
@@ -220,19 +231,6 @@ function ArtworkToolbar({ artwork }: Props) {
 
       {FilesInput}
 
-      <ArtworkFormDrawer
-        artwork={artwork}
-        show={showEditDrawer}
-        onClose={() => { setShowEditDrawer(false); router.reload() }}
-        mode="update"
-      />
-
-      <MoveModal
-        open={openMoveModal}
-        setOpen={setOpenMoveModal}
-        artwork={artwork}
-      />
-
       {/* Delete Confirmation Modal */}
 
       <Modal
@@ -252,11 +250,32 @@ function ArtworkToolbar({ artwork }: Props) {
         </div>
       </Modal>
 
+      {/* Components */}
+
+      <ArtworkFormDrawer
+        artwork={artwork}
+        show={showEditDrawer}
+        onClose={() => { setShowEditDrawer(false); router.reload() }}
+        mode="update"
+      />
+
+      <MoveModal
+        open={openMoveModal}
+        setOpen={setOpenMoveModal}
+        artwork={artwork}
+      />
+
       <DocumentPreviewDrawer
         artwork={artwork}
         document={ARTWORK_DOCUMENTS.find(doc => doc.value === 'coa')}
         show={showCoaPreview}
         onClose={() => setShowCoaPreview(false)}
+      />
+
+      <InvoiceFormDrawer
+        show={showInvoiceDrawer}
+        onClose={() => setShowInvoiceDrawer(false)}
+        selectedArtworksIds={[artwork.id]}
       />
     </>
   )
