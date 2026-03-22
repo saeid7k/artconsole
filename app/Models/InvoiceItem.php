@@ -24,6 +24,12 @@ class InvoiceItem extends Model
     'taxable' => 'boolean',
   ];
 
+  /*
+  |=======================================================
+  | Relationships
+  |=======================================================
+  */
+
   public function invoice(): BelongsTo
   {
     return $this->belongsTo(Invoice::class);
