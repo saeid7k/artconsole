@@ -21,16 +21,17 @@ type Props = {
   show: boolean;
   onClose: () => void;
   invoiceId?: number | null;
+  selectedArtworksIds?: number[];
 }
 
-function InvoiceFormDrawer({ show, onClose, invoiceId = null }: Props) {
+function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksIds = [] }: Props) {
 
+  const gallery = usePage<PageProps>().props?.current_gallery as GalleryProps;
+  const { currencySymbol } = useApp()
   const { windowWidth, breakpoint } = useWindow()
   const [form] = Form.useForm()
   const watchForm = Form.useWatch([], form) ?? {}
   const { taxesOptions, defaultTaxId, taxesQuery } = useTaxes({ enableQuery: show })
-  const { currencySymbol } = useApp()
-  const gallery = usePage<PageProps>().props?.current_gallery as GalleryProps;
 
   const [items, setItems] = useState<any[]>([]);
   const [saving, setSaving] = useState(false);
@@ -329,9 +330,9 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null }: Props) {
             </div>
           </div>
           <InvoiceItemsTable
-            invoiceForm={form}
             items={items}
             setItems={setItems}
+            selectedArtworksIds={selectedArtworksIds}
           />
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-10 gap-y-5 mt-5">
 
