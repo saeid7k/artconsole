@@ -510,4 +510,16 @@ class ArtworkController extends Controller
 
     return $pdf;
   }
+
+  public function get(Request $request)
+  {
+    $this->authorize('viewAny', Artwork::class);
+
+    $user = auth()->user();
+    $gallery = $user->currentGallery();
+    $idArray = explode(',', $request->input('ids', ''));
+    $artworks = $gallery->artworks()->whereIn('id', $idArray)->get();
+
+    return response()->json($artworks);
+  }
 }
