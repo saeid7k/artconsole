@@ -41,6 +41,7 @@ function Invoicing() {
           <Input
             defaultValue={gallery?.meta?.invoice_prefix || CONFIGS.defaults.invoice_prefix}
             onChange={(e) => handleChange("invoice_prefix", e.target.value)}
+            maxLength={10}
           />
         </Form.Item>
       </Form>
