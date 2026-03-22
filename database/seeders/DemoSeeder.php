@@ -6,6 +6,7 @@ use App\Enums\ReportType;
 use App\Models\Artwork;
 use App\Models\Contact;
 use App\Models\Gallery;
+use App\Models\Invoice;
 use App\Models\Report;
 use App\Models\Tax;
 use App\Models\User;
@@ -33,6 +34,7 @@ class DemoSeeder extends Seeder
     $this->createArtworks();
     $this->createReports();
     $this->createTaxes();
+    $this->createInvoices();
   }
 
   private function createAdmin(): void
@@ -61,8 +63,6 @@ class DemoSeeder extends Seeder
       $admin->addMediaFromString($photoData)->usingFileName('user-' . $admin->id . '-photo.jpg')->toMediaCollection('profile-photo');
     }
 
-    $this->command->info('✅' . ' Admin user created: ' . env('ADMIN_EMAIL', 'admin@example.com') . ' / 12345678');
-
     $this->firstGallery = Gallery::first();
     $this->firstGallery->address = [
       'unit' => $this->faker->secondaryAddress,
@@ -74,12 +74,12 @@ class DemoSeeder extends Seeder
     ];
     $this->firstGallery->save();
 
-    $this->command->info('✅' . ' First gallery address has been set.');
+    $this->command->info('✅' . ' Admin user created: ' . env('ADMIN_EMAIL', 'admin@example.com') . ' / 12345678');
   }
 
   private function createFakeUsers(): void
   {
-    $this->command->comment('Creating 10 fake users...');
+    $this->command->comment('Creating fake users...');
     User::factory(10)->create();
     $user = User::all();
     foreach ($user as $u) {
@@ -116,7 +116,7 @@ class DemoSeeder extends Seeder
 
   private function addMembers(): void
   {
-    $this->command->comment('Adding 3 members to the first gallery...');
+    $this->command->comment('Adding members...');
     $users = User::all();
     $this->firstGallery->addMember($users[1], 'editor');
     $this->firstGallery->addMember($users[2], 'viewer');
@@ -142,7 +142,7 @@ class DemoSeeder extends Seeder
 
   private function createArtworks(): void
   {
-    $this->command->comment('Creating artworks for all galleries...');
+    $this->command->comment('Creating artworks...');
     $this->allLocations = $this->allGalleries->flatMap(function (Gallery $gallery) {
       return $gallery->locations;
     });
@@ -187,12 +187,12 @@ class DemoSeeder extends Seeder
         }
       }
     }
-    $this->command->info('✅' . ' Sample images added to artworks in the first gallery.');
+    $this->command->info('✅' . ' Sample images added to artworks of the first gallery.');
   }
 
   private function createReports(): void
   {
-    $this->command->comment('Creating artworks label reports for first gallery...');
+    $this->command->comment('Creating reports...');
 
     $sizes = ['small', 'medium', 'large'];
     $artworkIds = Artwork::where('gallery_id', $this->firstGallery->id)->pluck('id')->toArray();
@@ -220,10 +220,6 @@ class DemoSeeder extends Seeder
       ]);
       (new ReportService($report))->generatePdf();
     }
-
-    $this->command->info('✅' . ' 5 artworks label reports created for first gallery.');
-
-    $this->command->comment('Creating inventory reports for first gallery...');
 
     // Inventory report 1: between label report 1 (subDays(5)) and label report 2 (subDays(4))
     $selectedIds = $this->faker->randomElements($artworkIds, min($this->faker->numberBetween(5, 30), count($artworkIds)));
@@ -257,12 +253,12 @@ class DemoSeeder extends Seeder
     ]);
     (new ReportService($report))->generatePdf();
 
-    $this->command->info('✅' . ' 2 inventory reports created for first gallery.');
+    $this->command->info('✅' . ' 5 artworks label reports and 2 inventory reports created for first gallery.');
   }
 
   private function createTaxes(): void
   {
-    $this->command->comment('Creating Canadian taxes for first gallery...');
+    $this->command->comment('Creating taxes...');
 
     Tax::create([
       'gallery_id' => $this->firstGallery->id,
@@ -289,5 +285,14 @@ class DemoSeeder extends Seeder
     ]);
 
     $this->command->info('✅' . ' 3 Canadian taxes created for first gallery (GST, PST, HST).');
+  }
+
+  private function createInvoices(): void
+  {
+    $this->command->comment('Creating invoices...');
+
+    Invoice::factory(10)->galleryId($this->firstGallery->id)->create();
+
+    $this->command->info('✅' . ' 10 invoices created for first gallery.');
   }
 }
