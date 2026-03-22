@@ -231,7 +231,7 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
           initialValues={{
             contact_id: null,
             number: '',
-            date: null,
+            date: dayjs(),
             due_date: null,
             subtotal: 0,
             available_extra_costs: {
