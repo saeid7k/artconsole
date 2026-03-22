@@ -188,7 +188,7 @@ function InvoiceItemsTable({ items, setItems, selectedArtworksIds = [] }: Props)
       <Table
         columns={columns}
         dataSource={items}
-        scroll={{ x: 'max-content' }}
+        scroll={{ x: 'max-content', y: 400 }}
         locale={{
           emptyText: 'Add artworks and other items.'
         }}
