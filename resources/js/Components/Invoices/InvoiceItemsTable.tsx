@@ -44,7 +44,7 @@ function InvoiceItemsTable({ items, setItems, selectedArtworksIds = [] }: Props)
         <Input
           defaultValue={text}
           placeholder="Item Name"
-          onChange={(e) => handleChange(record.key, 'name', e.target.value)}
+          onChange={(e) => handleChange(record.id, 'name', e.target.value)}
         />
       )
     },
@@ -57,7 +57,7 @@ function InvoiceItemsTable({ items, setItems, selectedArtworksIds = [] }: Props)
           defaultValue={text}
           placeholder="Item Description"
           rows={3}
-          onChange={(e) => handleChange(record.key, 'description', e.target.value)}
+          onChange={(e) => handleChange(record.id, 'description', e.target.value)}
         />
       )
     },
@@ -69,7 +69,7 @@ function InvoiceItemsTable({ items, setItems, selectedArtworksIds = [] }: Props)
         <InputNumber
           defaultValue={value}
           min={1}
-          onChange={(value) => handleChange(record.key, 'quantity', value)}
+          onChange={(value) => handleChange(record.id, 'quantity', value)}
         />
       ),
       onCell: () => ({ style: { width: '80px' } })
@@ -85,7 +85,7 @@ function InvoiceItemsTable({ items, setItems, selectedArtworksIds = [] }: Props)
           max={99999999.99}
           step={1}
           className="w-full text-end"
-          onChange={(value) => handleChange(record.key, 'price', value)}
+          onChange={(value) => handleChange(record.id, 'price', value)}
         />
       ),
       onCell: () => ({ style: { width: '150px' } })
@@ -109,7 +109,7 @@ function InvoiceItemsTable({ items, setItems, selectedArtworksIds = [] }: Props)
       render: (value: boolean, record: any) => (
         <Checkbox
           defaultChecked={value}
-          onChange={(e) => handleChange(record.key, 'taxable', e.target.checked)}
+          onChange={(e) => handleChange(record.id, 'taxable', e.target.checked)}
         />
       )
     },
@@ -124,7 +124,7 @@ function InvoiceItemsTable({ items, setItems, selectedArtworksIds = [] }: Props)
             shape="circle"
             size="small"
             icon={<HugeiconsIcon icon={Delete02Icon} size={20} />}
-            onClick={() => setItems((prevData: any[]) => prevData.filter((item) => item.key ? (item.key !== record.key) : (item.id !== record.id)))}
+            onClick={() => setItems((prevData: any[]) => prevData.filter((item) => item.id !== record.id))}
           />
         </Tooltip>
       ),
@@ -133,7 +133,7 @@ function InvoiceItemsTable({ items, setItems, selectedArtworksIds = [] }: Props)
 
   function addArtwork(artwork: ArtworkProps) {
     const newItem = {
-      key: Date.now(),
+      id: "new-" + Math.random().toString(36).substring(2),
       type: 'artwork',
       artwork: artwork,
       name: 'Original Artwork',
@@ -147,7 +147,7 @@ function InvoiceItemsTable({ items, setItems, selectedArtworksIds = [] }: Props)
 
   function addCustomItem() {
     const newItem = {
-      key: Date.now(),
+      id: "new-" + Math.random().toString(36).substring(2),
       type: 'custom',
       name: '',
       description: '',
@@ -158,10 +158,10 @@ function InvoiceItemsTable({ items, setItems, selectedArtworksIds = [] }: Props)
     setItems((prevItems: any[]) => [...prevItems, newItem]);
   }
 
-  function handleChange(itemKey: number, field: string, value: any) {
+  function handleChange(itemId: string, field: string, value: any) {
     setItems((prevItems: any[]) =>
       prevItems.map((item) =>
-        item.key === itemKey ? { ...item, [field]: value } : item
+        item.id === itemId ? { ...item, [field]: value } : item
       )
     );
   }
