@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Enums\InvoiceStatus;
+use App\Models\Invoice;
 
 class InvoiceObserver
 {
@@ -13,6 +14,9 @@ class InvoiceObserver
     }
     if (!$invoice->user_id) {
       $invoice->user_id = auth()->id();
+    }
+    if (!$invoice->number) {
+      $invoice->number = Invoice::nextInvoiceNumber($invoice->gallery);
     }
   }
 }
