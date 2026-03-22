@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Invoice extends Model
 {
+  use HasFactory;
+
   protected $fillable = [
     'gallery_id',
     'user_id',
@@ -109,5 +112,45 @@ class Invoice extends Model
     }
 
     return '00001';
+  }
+
+  public function calculateTotals()
+  {
+    $subtotal = $this->items->sum(function ($item) {
+      return $item->quantity * $item->price;
+    });
+    $taxableSubtotal = $this->items->where('taxable', true)->sum(function ($item) {
+      return $item->quantity * $item->price;
+    });
+
+    $shippingCost = $this->available_extra_costs?->shipping ? ($this->shipping_cost ?? 0) : 0;
+
+    $grossTotal = $subtotal + $shippingCost;
+    $taxableTotal = $taxableSubtotal + ($this->shipping_taxable ? $shippingCost : 0);
+
+    $discountRate = $this->discount_rate ?? 0;
+    $discountRatio = $this->available_extra_costs?->discount ?
+      ($this->discount_type === 'percentage' ? $discountRate / 100 : $discountRate / $grossTotal)
+      :
+      0;
+    $discountAmount = $this->discount_type === 'percentage' ? $discountRatio * $grossTotal : $discountRate;
+    $discountOfTaxable = $discountRatio * $taxableTotal;
+
+    $tax = ($taxableTotal - $discountOfTaxable) * ($this->tax_rate / 100);
+    $total = $grossTotal - $discountAmount + $tax;
+
+    $this->subtotal = $subtotal;
+    $this->shipping_cost = $shippingCost;
+    $this->discount_amount = $discountAmount;
+    $this->tax_amount = $tax;
+    $this->total = $total;
+
+    return [
+      'subtotal' => $subtotal,
+      'shipping_cost' => $shippingCost,
+      'discount_amount' => $discountAmount,
+      'tax_amount' => $tax,
+      'total' => $total,
+    ];
   }
 }
