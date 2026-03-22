@@ -97,10 +97,10 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null }: Props) {
 
   useEffect(() => {
     if (!invoiceId && defaultTaxId && !watchForm.tax_id) {
-      form.setFieldValue('tax_id', defaultTaxId);
-      const selectedTax = taxesQuery.data?.find(t => t.id === defaultTaxId);
-      if (selectedTax) {
-        form.setFieldValue('tax_rate', selectedTax.rate);
+      const defaultTax = taxesQuery.data?.find(t => t.id === defaultTaxId);
+      if (defaultTax) {
+        form.setFieldValue('tax_id', defaultTaxId);
+        form.setFieldValue('tax_rate', defaultTax.rate);
       }
     }
   }, [defaultTaxId, watchForm, invoiceId]);
@@ -180,20 +180,17 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null }: Props) {
 
     const grossTotal = subtotal + shippingCost;
     const taxableTotal = taxableSubtotal + (shippingTaxable ? shippingCost : 0);
-    const taxExcludedTotal = grossTotal - taxableSubtotal;
 
+    const discountRate = Number(watchForm.discount_rate) || 0;
     const discountRatio = watchForm.available_extra_costs?.discount ? (
-        watchForm.discount_type === 'percentage' ? (Number(watchForm.discount_rate) / 100) : (Number(watchForm.discount_rate) / grossTotal)
+        watchForm.discount_type === 'percentage' ? (discountRate / 100) : (discountRate / grossTotal)
       ) : 0;
-    const discountAmount = watchForm.available_extra_costs?.discount ? (
-        watchForm.discount_type === 'fixed' ? Number(watchForm.discount_rate) : (Number(watchForm.discount_rate) * grossTotal / 100)
-      ) : 0;
+    const discountAmount = watchForm.discount_type === 'percentage' ? discountRatio * grossTotal : discountRate;
 
     const discountOfTaxable = discountRatio * taxableTotal;
-    const discountOfNonTaxable = discountRatio * taxExcludedTotal;
 
     const tax = (taxableTotal - discountOfTaxable) * (taxRate / 100)
-    const total = subtotal + shippingCost - discountAmount + tax;
+    const total = grossTotal - discountAmount + tax;
     form.setFieldsValue({
       subtotal,
       shipping_cost: shippingCost,
@@ -245,7 +242,7 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null }: Props) {
             discount_type: 'fixed',
             discount_rate: null,
             discount_amount: 0,
-            tax_id: defaultTaxId || null,
+            tax_id: null,
             tax_rate: 0,
             tax_amount: 0,
             total: 0,
