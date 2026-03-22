@@ -135,7 +135,7 @@ function InvoiceItemsTable({invoiceForm, items, setItems}: Props) {
       type: 'artwork',
       artwork: artwork,
       name: 'Original Artwork',
-      description: artwork.title + '\n' + formatDimensions({ dimensions: artwork.dimensions, showDepth: true }) + '\n' + artwork.mediums?.join(', '),
+      description: artwork.invoice_description,
       quantity: 1,
       price: artwork.price,
       taxable: true,
