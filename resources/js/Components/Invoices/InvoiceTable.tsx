@@ -5,6 +5,8 @@ import { paginate } from "@/utils/paginationHelper";
 import { usePage } from "@inertiajs/react";
 import { Button, Table, TableProps } from "antd";
 import { useState } from "react";
+import FlexBox from "../Containers/FlexBox";
+import NewTag from "../NewTag";
 import StyledCurrency from "../StyledCurrency";
 import StyledDate from "../StyledDate";
 import InvoiceFormDrawer from "./InvoiceFormDrawer";
@@ -49,13 +51,16 @@ function InvoiceTable({ invoices }: any) {
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
       render: (text: string, record: any) => (
-        <Button
-          type="text"
-          size="small"
-          onClick={() => handleEditInvoice(record.id)}
-        >
-          <code>{record.invoice_number}</code>
-        </Button>
+        <FlexBox>
+          <Button
+            type="text"
+            size="small"
+            onClick={() => handleEditInvoice(record.id)}
+          >
+            <code>{record.invoice_number}</code>
+          </Button>
+          <NewTag dateRef={record.created_at} />
+        </FlexBox>
       )
     },
     {
