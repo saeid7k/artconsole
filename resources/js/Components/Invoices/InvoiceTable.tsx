@@ -54,7 +54,7 @@ function InvoiceTable({ invoices }: any) {
           size="small"
           onClick={() => handleEditInvoice(record.id)}
         >
-          <code>{gallery?.meta?.invoice_prefix}{text}</code>
+          <code>{record.invoice_number}</code>
         </Button>
       )
     },
