@@ -1,5 +1,5 @@
 import ARTWORK_STATUSES from "@/constants/artworkStatuses"
-import { ArrowDataTransferHorizontalIcon, GeometricShapes01Icon, KeyframesMultipleIcon, LayoutTable02Icon, NoteIcon } from "@hugeicons/core-free-icons"
+import { ArrowDataTransferHorizontalIcon, GeometricShapes01Icon, KeyframesMultipleIcon, LayoutTable02Icon, NoteIcon, SaveMoneyDollarIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router, usePage } from "@inertiajs/react"
 import { useMutation } from "@tanstack/react-query"
@@ -7,6 +7,7 @@ import { Button, Dropdown, Menu, message } from "antd"
 import axios from "axios"
 import { useState } from "react"
 import AnimatedContainer from "../AnimatedContainer"
+import InvoiceFormDrawer from "../Invoices/InvoiceFormDrawer"
 import MoveModal from "../MoveModal"
 import CreateInventoryReportDrawer from "../Reports/CreateInventoryReportDrawer"
 import CreateLabelsReportsDrawer from "../Reports/CreateLabelsReportsDrawer"
@@ -18,6 +19,7 @@ function ArtworksMassActions({ selectedIds }: { selectedIds: number[] }) {
   const [showMoveModal, setShowMoveModal] = useState(false)
   const [showCreateLabelsReportsDrawer, setShowCreateLabelsReportsDrawer] = useState(false)
   const [showCreateInventoryReportsDrawer, setShowCreateInventoryReportsDrawer] = useState(false)
+  const [showInvoiceDrawer, setShowInvoiceDrawer] = useState(false)
 
   const updateStatusMutation = useMutation({
     mutationFn: (status: string) => axios.post(route('artworks.mass-update-status'), {
@@ -58,6 +60,17 @@ function ArtworksMassActions({ selectedIds }: { selectedIds: number[] }) {
                   label: status.label,
                   onClick: () => updateStatusMutation.mutate(status.value)
                 })),
+                disabled: !user.has_edit_access
+              },
+              {
+                key: 'divider-reports',
+                type: 'divider',
+              },
+              {
+                key: 'sell',
+                icon: <HugeiconsIcon icon={SaveMoneyDollarIcon} size={16} />,
+                label: <div>Sell <span className="text-ghost">(Create Invoice)</span></div>,
+                onClick: () => setShowInvoiceDrawer(true),
                 disabled: !user.has_edit_access
               },
               {
@@ -115,6 +128,12 @@ function ArtworksMassActions({ selectedIds }: { selectedIds: number[] }) {
         preSelectedArtworkIds={selectedIds}
       />
     )}
+
+    <InvoiceFormDrawer
+      show={showInvoiceDrawer}
+      onClose={() => setShowInvoiceDrawer(false)}
+      selectedArtworksIds={selectedIds}
+    />
   </>)
 }
 
