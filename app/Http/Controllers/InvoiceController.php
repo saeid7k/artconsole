@@ -6,6 +6,7 @@ use App\Enums\InvoiceStatus;
 use App\Http\Requests\InvoiceRequest;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class InvoiceController extends Controller
 {
@@ -98,17 +99,17 @@ class InvoiceController extends Controller
     $invoice->update($request->all());
 
     $existingItemIds = $invoice->items()->pluck('id')->toArray();
-    $submittedItemIds = collect($request->items)->pluck('id')->filter()->toArray();
+    $submittedItemIds = collect($request->items)->pluck('id')->toArray();
     $itemsToDelete = array_diff($existingItemIds, $submittedItemIds);
     if (!empty($itemsToDelete)) {
       $invoice->items()->whereIn('id', $itemsToDelete)->delete();
     }
 
     foreach ($request->items as $item) {
-      if (isset($item['id'])) {
-        $invoice->items()->where('id', $item['id'])->update($item);
-      } else {
+      if (Str::startsWith($item['id'], 'new-')) {
         $invoice->items()->create($item);
+      } else {
+        $invoice->items()->where('id', $item['id'])->update($item);
       }
     }
 

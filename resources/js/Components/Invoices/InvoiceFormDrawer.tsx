@@ -128,6 +128,7 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
         date: values.date ? dayjs(values.date).format('YYYY-MM-DD') : null,
         due_date: values.due_date ? dayjs(values.due_date).format('YYYY-MM-DD') : null,
         items: items.map((item) => ({
+          id: item.id,
           type: item.type,
           artwork_id: item.type === 'artwork' ? item.artwork.id : null,
           name: item.name,
