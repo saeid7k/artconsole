@@ -16,7 +16,7 @@ return new class extends Migration
       $table->foreignId('invoice_id')->constrained()->cascadeOnDelete();
       $table->string('type');
       $table->foreignId('artwork_id')->nullable()->constrained()->nullOnDelete();
-      $table->string('name');
+      $table->string('name')->nullable();
       $table->string('description')->nullable();
       $table->integer('quantity');
       $table->decimal('price', 10, 2);
