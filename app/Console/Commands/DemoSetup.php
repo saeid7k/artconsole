@@ -57,7 +57,7 @@ class DemoSetup extends Command
 
     // Run queued jobs
     $this->comment('Processing queued jobs...');
-    $this->call('queue:work', ['--stop-when-empty' => true]);
+    $this->callSilent('queue:work', ['--stop-when-empty' => true]);
     $this->info('✅ Demo setup complete!');
   }
 }
