@@ -1,23 +1,26 @@
+import FlexBox from "@/Components/Containers/FlexBox"
 import DocumentPreviewDrawer from "@/Components/DocumentPreviewDrawer"
+import InvoiceFormDrawer from "@/Components/Invoices/InvoiceFormDrawer"
 import MoveModal from "@/Components/MoveModal"
 import { ARTWORK_DOCUMENTS } from "@/constants/artworkDocuments"
+import { PageProps } from "@/types"
 import { ArtworkProps } from "@/types/artwork"
-import { ArrowDataTransferHorizontalIcon, Copy01Icon, Delete02Icon, DiplomaIcon, MoreHorizontalCircle01Icon, PencilEdit02Icon, ViewIcon } from "@hugeicons/core-free-icons"
+import { ArrowDataTransferHorizontalIcon, Copy01Icon, Delete02Icon, DiplomaIcon, MoreHorizontalCircle01Icon, PencilEdit02Icon, SaveMoneyDollarIcon, ViewIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { router } from "@inertiajs/react"
+import { router, usePage } from "@inertiajs/react"
 import { useMutation } from "@tanstack/react-query"
 import { Button, Dropdown, Menu, message, Popconfirm, Tooltip } from "antd"
 import axios from "axios"
 import { useState } from "react"
 import ArtworkFormDrawer from "./ArtworkFormDrawer"
-import FlexBox from "@/Components/Containers/FlexBox"
 
 function ArtworksActions({ artwork }: { artwork: ArtworkProps }) {
 
-  // Edit Drawer
+  const user = usePage<PageProps>().props.auth.user;
 
   const [showEditDrawer, setShowEditDrawer] = useState(false)
   const [showCoaPreview, setShowCoaPreview] = useState(false);
+  const [showInvoiceDrawer, setShowInvoiceDrawer] = useState(false);
 
   const deleteMutation = useMutation({
     mutationFn: (artworkId: number) => axios.delete(route('artworks.destroy', artworkId)),
@@ -118,6 +121,16 @@ function ArtworksActions({ artwork }: { artwork: ArtworkProps }) {
                   disabled: !artwork.abilities.update,
                   onClick: () => copyMutation.mutate(artwork.id),
                 },
+                {
+                  type: 'divider',
+                },
+                {
+                  key: 'invoice',
+                  icon: <HugeiconsIcon icon={SaveMoneyDollarIcon} size={16} />,
+                  label: <div>Sell <span className="text-ghost">(Create Invoice)</span></div>,
+                  disabled: !user.has_edit_access,
+                  onClick: () => setShowInvoiceDrawer(true),
+                }
               ]}
             />
           }
@@ -131,7 +144,7 @@ function ArtworksActions({ artwork }: { artwork: ArtworkProps }) {
         </Dropdown>
       </FlexBox>
 
-      {/* Child Components */}
+      {/* Components */}
 
       <ArtworkFormDrawer
         artwork={artwork}
@@ -139,16 +152,24 @@ function ArtworksActions({ artwork }: { artwork: ArtworkProps }) {
         onClose={() => { setShowEditDrawer(false); router.reload() }}
         mode="update"
       />
+
       <MoveModal
         open={openMoveModal}
         setOpen={setOpenMoveModal}
         artwork={artwork}
       />
+
       <DocumentPreviewDrawer
         artwork={artwork}
         show={showCoaPreview}
         onClose={() => setShowCoaPreview(false)}
         document={ARTWORK_DOCUMENTS.find(doc => doc.value === 'coa')}
+      />
+
+      <InvoiceFormDrawer
+        show={showInvoiceDrawer}
+        onClose={() => setShowInvoiceDrawer(false)}
+        selectedArtworksIds={[artwork.id]}
       />
     </>
   )
