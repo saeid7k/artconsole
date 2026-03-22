@@ -1,21 +1,23 @@
 import { ArtworkProps } from "@/types/artwork";
-import { formatCurrency, formatDimensions } from "@/utils/formatHelper";
+import { UsePageProps } from "@/types/usePage";
+import { formatCurrency } from "@/utils/formatHelper";
 import { ArrowDown01Icon, Delete02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Button, Checkbox, Dropdown, FormInstance, Input, InputNumber, Menu, Table, Tooltip } from "antd";
-import TextArea from "antd/es/input/TextArea";
-import { useState } from "react";
-import ArtworkFinderModal from "../Artworks/ArtworkFinderModal";
 import { usePage } from "@inertiajs/react";
-import { UsePageProps } from "@/types/usePage";
+import { useQuery } from "@tanstack/react-query";
+import { Button, Checkbox, Dropdown, Input, InputNumber, Menu, Table, Tooltip } from "antd";
+import TextArea from "antd/es/input/TextArea";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import ArtworkFinderModal from "../Artworks/ArtworkFinderModal";
 
 type Props = {
-  invoiceForm: FormInstance;
   items: any[];
   setItems: any;
+  selectedArtworksIds?: number[];
 }
 
-function InvoiceItemsTable({invoiceForm, items, setItems}: Props) {
+function InvoiceItemsTable({ items, setItems, selectedArtworksIds = [] }: Props) {
 
   const galleryCurrency = usePage<UsePageProps>().props.current_gallery?.meta?.currency
   const [showArtworkFinder, setShowArtworkFinder] = useState(false);
@@ -163,6 +165,23 @@ function InvoiceItemsTable({invoiceForm, items, setItems}: Props) {
       )
     );
   }
+
+  // fetch pre selected artworks
+
+  const selectedArtworksQuery = useQuery({
+    queryKey: ['invoice-selected-artworks', selectedArtworksIds],
+    queryFn: () => axios.get(route('artworks.get'), { params: { ids: selectedArtworksIds.join(',') } })
+      .then(res => res.data),
+    enabled: selectedArtworksIds.length > 0
+  });
+
+  useEffect(() => {
+    if (selectedArtworksQuery?.data?.length > 0) {
+      selectedArtworksQuery.data.forEach((artwork: ArtworkProps) => {
+        addArtwork(artwork);
+      });
+    }
+  }, [selectedArtworksQuery?.data])
 
   return (
     <div>
