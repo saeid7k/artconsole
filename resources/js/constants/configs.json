@@ -1,6 +1,7 @@
 {
   "defaults": {
     "country": "Canada",
+    "timezone": "America/Toronto",
     "currency": "CAD",
     "invoice_prefix": "INV",
     "access_level": "viewer"
