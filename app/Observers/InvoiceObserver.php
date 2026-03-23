@@ -19,4 +19,27 @@ class InvoiceObserver
       $invoice->number = Invoice::nextInvoiceNumber($invoice->gallery);
     }
   }
+
+  public function saved($invoice)
+  {
+    // Change artwork status to "sold" if invoice is marked as paid and gallery setting is enabled
+
+    if (
+      $invoice->wasChanged('status')
+      && $invoice->status === InvoiceStatus::successful()->value
+      && $invoice->gallery->getMeta('auto_change_status_sold')
+    ) {
+      $invoice->artworks()->update(['status' => 'sold']);
+
+      foreach ($invoice->artworks as $artwork) {
+        activity()->performedOn($artwork)
+          ->causedBy(auth()->user())
+          ->withProperties([
+            'invoice_id' => $invoice->id,
+            'invoice_number' => $invoice->number,
+          ])
+          ->log('marked sale invoice as paid');
+      }
+    }
+  }
 }
