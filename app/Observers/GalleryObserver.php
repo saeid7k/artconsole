@@ -26,6 +26,9 @@ class GalleryObserver
       'is_primary' => true,
       'is_active' => true,
     ]);
+
+    // Set default settings
+    $gallery->setMeta('auto_change_status_sold', true);
   }
 
   /**

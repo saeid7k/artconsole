@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Helpers\AddressHelper;
+use App\Helpers\ConfigHelper;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 
@@ -21,6 +22,9 @@ class UserObserver
     if ($sampleLogo) {
       $gallery->addMediaFromString($sampleLogo)->usingFileName('gallery-' . $gallery->id . '-logo.svg')->toMediaCollection('gallery-logo');
     }
+
+    // Set User Settings
+    $user->setMeta('timezone', ConfigHelper::getDefault('timezone', config('app.timezone')));
   }
 
   /**
