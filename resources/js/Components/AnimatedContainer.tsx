@@ -2,13 +2,14 @@ import { AnimatePresence, motion } from "framer-motion";
 
 type Props = {
   type?: 'fadeDown' | 'fadeUp' | 'fadeRight' | 'fadeLeft' | 'slideRight';
-  speed?: 'fast' | 'normal' | 'slow';
+  speed?: 'fast' | 'normal' | 'slow' | 'slower' | 'slowest';
+  onlyInitial?: boolean;
   condition: boolean;
   className?: string;
   children: React.ReactNode;
 }
 
-function AnimatedContainer({ type = 'fadeDown', speed = 'normal', condition, className, children }: Props) {
+function AnimatedContainer({ type = 'fadeDown', speed = 'normal', onlyInitial = false, condition, className, children }: Props) {
 
   const animateProps = {
     fadeDown: {
@@ -41,7 +42,9 @@ function AnimatedContainer({ type = 'fadeDown', speed = 'normal', condition, cla
   const duration = {
     fast: 0.1,
     normal: 0.2,
-    slow: 0.3
+    slow: 0.3,
+    slower: 0.4,
+    slowest: 0.5
   }
 
   return (
@@ -51,7 +54,7 @@ function AnimatedContainer({ type = 'fadeDown', speed = 'normal', condition, cla
           key='animated-container'
           initial={animateProps[type].initial}
           animate={animateProps[type].animate}
-          exit={animateProps[type].exit}
+          exit={onlyInitial ? undefined : animateProps[type].exit}
           transition={{ duration: duration[speed] }}
           className={className}
         >
