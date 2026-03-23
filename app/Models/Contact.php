@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Helpers\AddressHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
@@ -37,7 +38,11 @@ class Contact extends Model implements HasMedia
     'relationship' => 'array',
   ];
 
-  // Appends
+  /*
+  |=======================================================
+  | Accessors & Mutators
+  |=======================================================
+  */
 
   protected $appends = ['abilities', 'full_name', 'formatted_address', 'business_formatted_address', 'photo'];
 
@@ -71,16 +76,20 @@ class Contact extends Model implements HasMedia
     return $media ? $media->getUrl() : null;
   }
 
-  // Relationships
+  /*
+  |=======================================================
+  | Relationships
+  |=======================================================
+  */
 
   public function gallery()
   {
     return $this->belongsTo(Gallery::class, 'gallery_id');
   }
 
-  public function owner()
+  public function creator(): BelongsTo
   {
-    return User::find($this->gallery->user_id);
+    return $this->belongsTo(User::class, 'user_id');
   }
 
   public function artworks()
@@ -93,7 +102,11 @@ class Contact extends Model implements HasMedia
     return $this->hasMany(Invoice::class);
   }
 
-  // Activity Log
+  /*
+  |=======================================================
+  | Activity Log
+  |=======================================================
+  */
 
   public function getActivitylogOptions(): LogOptions
   {

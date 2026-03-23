@@ -131,7 +131,11 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     return $currentGallery->hasEditAccess($this);
   }
 
-  // Relations
+  /*
+  |=======================================================
+  | Relationships
+  |=======================================================
+  */
 
   public function galleriesOwned(): HasMany
   {
@@ -194,6 +198,11 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
   public function invoices(): HasMany
   {
     return $this->hasMany(Invoice::class);
+  }
+
+  public function contacts(): HasMany
+  {
+    return $this->hasMany(Contact::class);
   }
 
   // Methods
