@@ -1,33 +1,13 @@
 import CONFIGS from "@/constants/configs.json";
 import { CURRENCIES_OPTIONS } from "@/constants/currencies";
 import { useGallerySettings } from "@/contexts/GallerySettingsContext";
-import useSaveChip from "@/hooks/useSaveChip";
-import { useMutation } from "@tanstack/react-query";
-import { message, Select } from "antd";
-import axios from "axios";
+import useGalleryMeta from "@/hooks/useGalleryMeta";
+import { Select } from "antd";
 
 function Currency() {
 
   const { gallery } = useGallerySettings()
-  const { setSavingStatus, saveChipNode } = useSaveChip({ topOffset: 0 });
-
-  const setMetaMutation = useMutation({
-    mutationFn: ({ key, value }: { key: string; value: string }) => {
-      return axios.post(route("galleries.set-meta", { gallery: gallery.id }), { key, value });
-    },
-    onSuccess: () => {
-      setSavingStatus("saved");
-    },
-    onError: (err: any) => {
-      message.error(err.response.data.message || "An error occurred");
-      setSavingStatus("failed");
-    }
-  });
-
-  function handleChange(key: string, value: string) {
-    setSavingStatus("saving");
-    setMetaMutation.mutate({ key, value });
-  }
+  const { saveChipNode, setMeta } = useGalleryMeta(gallery)
 
   return (
     <div>
@@ -40,7 +20,7 @@ function Currency() {
         popupMatchSelectWidth={false}
         showSearch
         defaultValue={gallery?.meta?.currency || CONFIGS.defaults.currency}
-        onChange={(value) => handleChange("currency", value)}
+        onChange={(value) => setMeta("currency", value)}
       />
     </div>
   )
