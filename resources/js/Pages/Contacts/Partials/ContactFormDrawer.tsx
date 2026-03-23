@@ -37,7 +37,7 @@ function ContactFormDrawer({ mode = 'create', contact = null, show, onClose }: P
           contact_id: mode == 'update' ? contact?.id : null,
         })
           .then((res) => {
-            message.success(res.data.message || `Profile ${mode === 'update' ? 'updated' : 'created'} successfully`)
+            message.success(res.data.message || `Contact ${mode === 'update' ? 'updated' : 'created'} successfully`)
             router.reload()
             handleClose()
           })
