@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Invoice extends Model
 {
@@ -100,6 +101,12 @@ class Invoice extends Model
   public function items(): HasMany
   {
     return $this->hasMany(InvoiceItem::class);
+  }
+
+  public function artworks(): HasManyThrough
+  {
+    return $this->hasManyThrough(Artwork::class, InvoiceItem::class, 'invoice_id', 'id', 'id', 'artwork_id')
+      ->where('invoice_items.type', 'artwork');
   }
 
   /*
