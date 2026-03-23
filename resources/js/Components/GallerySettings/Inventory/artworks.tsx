@@ -14,21 +14,21 @@ function Artworks() {
       <Form
         layout="vertical"
       >
-        <h4>Auto Update Status</h4>
+        <h4>Auto Change Status</h4>
         <Form.Item
-          name="auto_update_status_sold"
+          name="auto_change_status_sold"
         >
           <FlexBox>
             <Switch
-              id="auto-update-status-sold"
+              id="auto-change-status-sold"
               size="small"
-              defaultChecked={gallery?.meta?.auto_update_status_sold || false}
-              onChange={(checked) => setMeta("auto_update_status_sold", checked ? true : false)}
+              defaultChecked={gallery?.meta?.auto_change_status_sold || false}
+              onChange={(checked) => setMeta("auto_change_status_sold", checked ? true : false)}
             />
             <label
-              htmlFor="auto-update-status-sold"
+              htmlFor="auto-change-status-sold"
               className="text-body cursor-pointer"
-            >Update artwork status to <strong>Sold</strong> when included in a <strong>paid invoice</strong></label>
+            >Automatically change artwork status to <strong>Sold</strong> when included in a <strong>paid invoice</strong></label>
           </FlexBox>
         </Form.Item>
       </Form>
