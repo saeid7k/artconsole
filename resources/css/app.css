@@ -119,6 +119,10 @@ p {
   margin: 0.5rem 0;
 }
 
+h4 {
+  margin: 0.5rem 0;
+}
+
 label, .label {
   color: var(--text-label)
 }
