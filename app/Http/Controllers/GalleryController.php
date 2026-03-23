@@ -151,7 +151,7 @@ class GalleryController extends Controller
 
     $request->validate([
       'key' => ['required', 'string'],
-      'value' => ['required', 'string'],
+      'value' => ['required'],
     ]);
 
     $gallery->setMeta($request->input('key'), $request->input('value'));
