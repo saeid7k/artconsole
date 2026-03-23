@@ -27,6 +27,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/store', [App\Http\Controllers\ContactController::class, 'store'])->name('store');
     Route::post('/update-photo', [App\Http\Controllers\ContactController::class, 'updatePhoto'])->name('update-photo');
     Route::post('/store-update', [App\Http\Controllers\ContactController::class, 'storeUpdate'])->name('store-update');
+    Route::get('/fresh', [App\Http\Controllers\ContactController::class, 'getFresh'])->name('fresh');
+
     Route::get('/{contact}', [App\Http\Controllers\ContactController::class, 'show'])->name('show');
     Route::post('/{contact}/delete', [App\Http\Controllers\ContactController::class, 'destroy'])->name('delete');
     Route::post('/{contact}/update-relationships', [App\Http\Controllers\ContactController::class, 'updateRelationships'])->name('update-relationships');
