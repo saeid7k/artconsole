@@ -1,6 +1,7 @@
 import { useApp } from "@/contexts/AppContext";
 import useTaxes from "@/hooks/useTaxes";
 import { useWindow } from "@/hooks/useWindow";
+import ContactFormDrawer from "@/Pages/Contacts/Partials/ContactFormDrawer";
 import { PageProps } from "@/types";
 import { GalleryProps } from "@/types/gallery";
 import { InformationCircleIcon } from "@hugeicons/core-free-icons";
@@ -35,6 +36,7 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
 
   const [items, setItems] = useState<any[]>([]);
   const [saving, setSaving] = useState(false);
+  const [showContactForm, setShowContactForm] = useState(false);
 
   // Fetch Editing Invoice
 
@@ -168,7 +170,6 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
       .catch(e => { })
   }
 
-
   // Calculate totals
 
   function calculateTotals() {
@@ -205,6 +206,19 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
   useEffect(() => {
     calculateTotals();
   }, [items, watchForm])
+
+  // Set New Contact
+
+  const handleCloseContactForm = async () => {
+    setShowContactForm(false);
+    await axios.get(route('contacts.fresh'))
+      .then(res => {
+        if (res.data.id && !watchForm.contact_id) {
+          form.setFieldValue('contact_id', res.data.id);
+        }
+      })
+    contactsQuery.refetch();
+  }
 
   return (
     <>
@@ -252,21 +266,38 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
           }}
           onFinish={handleSubmit}
         >
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Form.Item
-                name="contact_id"
-                label="Select Customer"
-                className="w-full sm:max-w-[300px]"
-                hidden={watchForm.contact_id}
-              >
-                <Select
-                  options={contactsQuery.data?.map((contact: any) => ({ label: contact.full_name, value: contact.id }))}
-                  placeholder="Select Customer"
-                  showSearch={{ optionFilterProp: ['label', 'value'] }}
-                  loading={contactsQuery.isLoading}
-                />
-              </Form.Item>
+              <div className="flex flex-wrap gap-2">
+                <Form.Item
+                  name="contact_id"
+                  label="Select Customer"
+                  className="w-full sm:max-w-[300px]"
+                  hidden={watchForm.contact_id}
+                >
+                  <Select
+                    options={contactsQuery.data?.map((contact: any) => ({ label: contact.full_name, value: contact.id }))}
+                    placeholder="Select from contacts"
+                    showSearch={{ optionFilterProp: ['label', 'value'] }}
+                    loading={contactsQuery.isLoading}
+                  />
+                </Form.Item>
+                <AnimatedContainer
+                  condition={!watchForm.contact_id}
+                  type="fadeRight"
+                  speed="slowest"
+                  onlyInitial
+                >
+                  <Button
+                    type="dashed"
+                    size="middle"
+                    className="text-ghost"
+                    onClick={() => setShowContactForm(true)}
+                  >
+                    + New Contact
+                  </Button>
+                </AnimatedContainer>
+              </div>
               <AnimatedContainer
                 condition={!!watchForm.contact_id}
                 type="fadeRight"
@@ -525,6 +556,14 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
           </div>
         </Form>
       </Drawer>
+
+      {/* Components */}
+
+      <ContactFormDrawer
+        show={showContactForm}
+        onClose={handleCloseContactForm}
+        mode="create"
+      />
     </>
   )
 }
