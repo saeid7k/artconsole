@@ -23,6 +23,11 @@ enum InvoiceStatus: string
     return self::Draft;
   }
 
+  public static function successful(): self
+  {
+    return self::Paid;
+  }
+
   public static function stringifyAll(): string
   {
     return implode(',', array_map(fn($case) => $case->value, self::cases()));
