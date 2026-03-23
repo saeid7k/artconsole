@@ -248,4 +248,15 @@ class ContactController extends Controller
 
     return Response()->json($artists);
   }
+
+  public function getFresh(Request $request)
+  {
+    $user = $request->user();
+    $contact = $user->contacts()
+      ->where('created_at', '>=', now()->subMinute())
+      ->latest()
+      ->first();
+
+    return Response()->json($contact);
+  }
 }
