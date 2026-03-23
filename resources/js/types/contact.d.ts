@@ -2,6 +2,8 @@ import { Address, Business } from "./commonObjects";
 
 export interface ContactProps {
   id: number;
+  user_id: number | null;
+  gallery_id: number;
   firstname: string;
   lastname: string;
   email: string;
