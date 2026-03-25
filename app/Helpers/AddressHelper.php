@@ -2,7 +2,8 @@
 
 namespace App\Helpers;
 
-use function PHPUnit\Framework\isArray;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class AddressHelper
 {
@@ -50,20 +51,34 @@ class AddressHelper
 
   public static function addressToGeocode(string $address): ?array
   {
-    $geocoder = app('geocoder')->geocode($address)->get();
+    $apiKey = env('OPENCAGE_API_KEY');
 
-    if ($geocoder->isEmpty()) {
-      return null;
+    try {
+      $response = Http::get('https://api.opencagedata.com/geocode/v1/json', [
+        'q' => $address,
+        'key' => $apiKey,
+        'limit' => 1,
+        'no_annotations' => 0
+      ]);
+
+      if ($response->successful()) {
+        $data = $response->json();
+        if (!empty($data['results'])) {
+          $result = $data['results'][0];
+          return [
+            'lat' => $result['geometry']['lat'] ?? null,
+            'lng' => $result['geometry']['lng'] ?? null,
+            'postal_code' => $result['components']['postcode'] ?? null,
+            'timezone' => $result['annotations']['timezone']['name'] ?? null,
+          ];
+        }
+      } else {
+        Log::error('OpenCage API Error: ' . $response->body());
+      }
+    } catch (\Exception $e) {
+      Log::error('Geocoding exception: ' . $e->getMessage());
     }
-    $coordinates = $geocoder->first()->getCoordinates();
-    $postalCode = $geocoder->first()->getPostalCode();
-    $timezone = $geocoder->first()->getTimezone();
 
-    return [
-      'lat' => $coordinates->getLatitude(),
-      'lng' => $coordinates->getLongitude(),
-      'postal_code' => $postalCode,
-      'timezone' => $timezone,
-    ];
+    return null;
   }
 }
