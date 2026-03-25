@@ -23,9 +23,9 @@ enum InvoiceStatus: string
     return self::Draft;
   }
 
-  public static function successful(): self
+  public static function isSuccessful($value): bool
   {
-    return self::Paid;
+    return $value === self::Paid->value;
   }
 
   public static function stringifyAll(): string
