@@ -1,4 +1,3 @@
-import CONFIGS from "@/constants/configs.json";
 import { useGallerySettings } from "@/contexts/GallerySettingsContext";
 import useGalleryMeta from "@/hooks/useGalleryMeta";
 import { Form, Input } from "antd";
@@ -19,7 +18,7 @@ function Invoicing() {
           label="Invoice Prefix"
         >
           <Input
-            defaultValue={gallery?.meta?.invoice_prefix || CONFIGS.defaults.invoice_prefix}
+            defaultValue={gallery?.invoice_prefix}
             onChange={(e) => setMeta("invoice_prefix", e.target.value)}
             maxLength={10}
           />

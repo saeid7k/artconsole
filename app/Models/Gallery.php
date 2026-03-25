@@ -31,7 +31,7 @@ class Gallery extends Model implements HasMedia
 
   // Appends
 
-  protected $appends = [ 'abilities', 'members_count', 'logo', 'formatted_address', 'meta', 'currency' ];
+  protected $appends = [ 'abilities', 'members_count', 'logo', 'formatted_address', 'meta', 'currency', 'invoice_prefix' ];
 
   public function getAbilitiesAttribute()
   {
@@ -71,6 +71,19 @@ class Gallery extends Model implements HasMedia
       },
       set: function ($value) {
         $this->setMeta('currency', $value);
+        return $value;
+      }
+    );
+  }
+
+  public function invoicePrefix(): Attribute
+  {
+    return Attribute::make(
+      get: function () {
+        return $this->getMeta('invoice_prefix', ConfigHelper::getDefault('invoice_prefix'));
+      },
+      set: function ($value) {
+        $this->setMeta('invoice_prefix', $value);
         return $value;
       }
     );
