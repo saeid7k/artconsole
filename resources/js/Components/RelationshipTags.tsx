@@ -14,7 +14,7 @@ function RelationshipTags({ contact, manageButtonDelay = 2000 }: { contact: Cont
 
   const [relationships, setRelationships] = useState<Array<string>>(contact.relationship || []);
   const [showManageButton, setShowManageButton] = useState(false)
-  const hideManageButtonTimer = useRef<NodeJS.Timeout | null>(null);
+  const hideManageButtonTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const RelationTag = ({ relation, ...props }: { relation: string } & any) => {
     let color = RELATIONSHIPS.find(rel => rel.value === relation)?.color || 'default';
