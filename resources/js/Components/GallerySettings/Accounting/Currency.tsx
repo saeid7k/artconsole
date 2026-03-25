@@ -19,7 +19,7 @@ function Currency() {
         options={CURRENCIES_OPTIONS}
         popupMatchSelectWidth={false}
         showSearch
-        defaultValue={gallery?.meta?.currency || CONFIGS.defaults.currency}
+        defaultValue={gallery?.currency}
         onChange={(value) => setMeta("currency", value)}
       />
     </div>
