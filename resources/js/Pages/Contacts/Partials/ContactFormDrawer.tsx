@@ -61,6 +61,7 @@ function ContactFormDrawer({ mode = 'create', contact = null, show, onClose }: P
       extra={
         <Button type="primary" onClick={handleSave}>Save</Button>
       }
+      zIndex={1050}
       afterOpenChange={() => form.resetFields()}
     >
       <Form
