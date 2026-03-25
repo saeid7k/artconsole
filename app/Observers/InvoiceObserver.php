@@ -26,7 +26,7 @@ class InvoiceObserver
 
     if (
       $invoice->wasChanged('status')
-      && $invoice->status === InvoiceStatus::successful()->value
+      && InvoiceStatus::isSuccessful($invoice->status)
       && $invoice->gallery->getMeta('auto_change_status_sold')
     ) {
       $invoice->artworks()->update(['status' => 'sold']);
