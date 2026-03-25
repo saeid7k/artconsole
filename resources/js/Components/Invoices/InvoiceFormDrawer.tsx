@@ -323,7 +323,7 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
                 ]}
               >
                 <Space.Compact>
-                  <Space.Addon className="whitespace-nowrap">{gallery?.meta?.invoice_prefix}</Space.Addon>
+                  <Space.Addon className="whitespace-nowrap">{gallery?.invoice_prefix}</Space.Addon>
                   <Input
                     placeholder="Invoice Number"
                     value={form.getFieldValue('number')}
