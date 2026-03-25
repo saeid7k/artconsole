@@ -238,6 +238,7 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
             Save
           </Button>
         }
+        zIndex={1000}
         destroyOnHidden
       >
         <Form
