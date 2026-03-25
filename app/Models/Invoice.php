@@ -109,6 +109,11 @@ class Invoice extends Model
       ->where('invoice_items.type', 'artwork');
   }
 
+  public function payments(): HasMany
+  {
+    return $this->hasMany(Payment::class);
+  }
+
   /*
   |--------------------------------------------------------------------------
   | Methods
