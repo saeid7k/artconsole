@@ -10,7 +10,7 @@ import { Button, message, Popconfirm, Select, Table, TableProps, Tooltip } from 
 import axios from "axios"
 import dayjs from "dayjs"
 import localizedFormat from 'dayjs/plugin/localizedFormat'
-import { useEffect, useState } from "react"
+import { JSX, useEffect, useState } from "react"
 import UserStack from "../UserStack"
 import AddMemberModal from "./AddMemberModal"
 dayjs.extend(localizedFormat);

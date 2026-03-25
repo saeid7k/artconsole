@@ -2,7 +2,7 @@ import { router } from "@inertiajs/react";
 import { useMutation } from "@tanstack/react-query";
 import { message } from "antd";
 import axios from "axios";
-import { ChangeEvent, useCallback, useMemo, useRef } from "react";
+import { ChangeEvent, useRef } from "react";
 
 type Props = {
   url: string;
@@ -36,7 +36,7 @@ function useFilesUpload({ url, reloadOnSuccess = true }: Props) {
     },
   });
 
-  const onFileSelect = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+  const onFileSelect = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
 
     if (files && files.length > 0) {
@@ -44,13 +44,13 @@ function useFilesUpload({ url, reloadOnSuccess = true }: Props) {
       filesUploadMutation.mutate(fileArray);
     }
     event.target.value = '';
-  }, [filesUploadMutation])
+  }
 
   const triggerFilesSelect = () => {
     fileInputRef.current?.click();
   }
 
-  const FilesInput = useMemo(() => {
+  const FilesInput = () => {
     return (
       <input
         type="file"
@@ -61,7 +61,7 @@ function useFilesUpload({ url, reloadOnSuccess = true }: Props) {
         accept="image/*"
       />
     );
-  }, [onFileSelect]);
+  };
 
   return { triggerFilesSelect, FilesInput, filesUploadMutation };
 }

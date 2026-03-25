@@ -1,17 +1,17 @@
-import { createContext, useContext } from "react";
+import { createContext, use, useContext } from "react";
 
 const GallerySettingsContext = createContext<any>({})
 
 function GallerySettingsProvider({ value, children }: { value: any; children: React.ReactNode }) {
   return (
-    <GallerySettingsContext.Provider value={value}>
+    <GallerySettingsContext value={value}>
       {children}
-    </GallerySettingsContext.Provider>
+    </GallerySettingsContext>
   )
 }
 
 function useGallerySettings() {
-  return useContext(GallerySettingsContext);
+  return use(GallerySettingsContext);
 }
 
 export { GallerySettingsProvider, useGallerySettings };

@@ -1,17 +1,17 @@
-import { createContext, useContext } from "react";
+import { createContext, use, useContext } from "react";
 
 const ProfileContext = createContext<any>({})
 
 function ProfileProvider({ value, children }: { value: any; children: React.ReactNode }) {
   return (
-    <ProfileContext.Provider value={value}>
+    <ProfileContext value={value}>
       {children}
-    </ProfileContext.Provider>
+    </ProfileContext>
   )
 }
 
 function useProfile() {
-  return useContext(ProfileContext);
+  return use(ProfileContext);
 }
 
 export { ProfileProvider, useProfile };

@@ -11,7 +11,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { router } from '@inertiajs/react';
 import type { TableProps } from 'antd';
 import { Table } from 'antd';
-import { useState } from 'react';
+import { JSX, useState } from 'react';
 import ContactsActions from './ContactsActions';
 
 function ContactsTable({ contacts }: { contacts: PageProps }) {
