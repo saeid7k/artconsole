@@ -3,21 +3,31 @@ import { Address } from "./commonObjects";
 import { UserProps } from "./user";
 
 export interface GalleryProps {
+  // Main attributes
   id: number;
   user_id: number;
   name: string;
   about?: string | null;
   address?: Address | null;
-  logo?: string | null;
+  website?: string | null;
+  email?: string | null;
+
+  // Relationships
   pivot?: {
     access: accessLevelsType
   };
-  members_count?: number;
   members: UserProps[];
+
+  // Appends
   abilities?: {
     update: boolean;
     delete: boolean;
     manage_members: boolean;
   };
-  meta?: { [key: string]: any }
+  members_count?: number;
+  logo?: string | null;
+  formatted_address?: string | null;
+  meta?: { [key: string]: any };
+  currency?: string | null;
+  invoice_prefix?: string | null;
 }
