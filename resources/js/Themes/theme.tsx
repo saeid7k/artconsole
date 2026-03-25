@@ -1,11 +1,7 @@
-import resolveConfig from "tailwindcss/resolveConfig";
 import tailwindConfig from "~/tailwind.config.js";
+import defaultColors from 'tailwindcss/colors';
 
-// Get the full Tailwind config object
-const twConfig = resolveConfig(tailwindConfig);
-
-// Extract the theme colors
-const colors = twConfig.theme?.colors as Record<string, any> || {};
+const customColors = (tailwindConfig as any).theme?.extend?.colors || {};
+const colors = { ...defaultColors, ...customColors } as Record<string, any>;
 
 export { colors as default };
-
