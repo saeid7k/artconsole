@@ -1,17 +1,17 @@
-import { createContext, useContext } from "react";
+import { createContext, use, useContext } from "react";
 
 const ContactContext = createContext<any>({})
 
 function ContactProvider({ value, children }: { value: any; children: React.ReactNode }) {
   return (
-    <ContactContext.Provider value={value}>
+    <ContactContext value={value}>
       {children}
-    </ContactContext.Provider>
+    </ContactContext>
   )
 }
 
 function useContact() {
-  return useContext(ContactContext);
+  return use(ContactContext);
 }
 
 export { ContactProvider, useContact };

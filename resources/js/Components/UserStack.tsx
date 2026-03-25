@@ -6,7 +6,7 @@ type Props = {
   user: UserProps;
 };
 
-function UserStack({ user }: Props): JSX.Element {
+function UserStack({ user }: Props) {
   return (
     <div className='flex items-center gap-1'>
       <Avatar size={'small'} className='text-xs shrink-0' src={user.photo}>{getInitials(user.full_name)}</Avatar>

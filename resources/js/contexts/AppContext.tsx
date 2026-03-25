@@ -3,7 +3,7 @@ import { CURRENCIES } from '@/constants/currencies';
 import { UsePageProps } from '@/types/usePage';
 import { usePage } from '@inertiajs/react';
 import axios from 'axios';
-import { createContext, Dispatch, PropsWithChildren, SetStateAction, useContext, useEffect, useRef, useState } from 'react';
+import { createContext, Dispatch, PropsWithChildren, SetStateAction, use, useEffect, useRef, useState } from 'react';
 
 export type AppContextType = {
   sidebarCollapsed: boolean;
@@ -125,7 +125,7 @@ function AppProvider({ children }: PropsWithChildren) {
   const currencySymbol = CURRENCIES.find(c => c.code === currency)?.symbol || '$';
 
   return (
-    <AppContext.Provider
+    <AppContext
       value={{
         sidebarCollapsed,
         setSidebarCollapsed,
@@ -138,12 +138,12 @@ function AppProvider({ children }: PropsWithChildren) {
         currencySymbol
       }}>
       {children}
-    </AppContext.Provider>
+    </AppContext>
   );
 }
 
 function useApp() {
-  return useContext(AppContext);
+  return use(AppContext);
 }
 
 export { AppProvider as default, useApp };

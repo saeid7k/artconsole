@@ -9,6 +9,7 @@ import { router } from '@inertiajs/react';
 import type { TableProps } from 'antd';
 import { Table } from 'antd';
 import UsersActions from './UsersActions';
+import { JSX } from 'react';
 
 function UsersTable({ users }: { users: PageProps }) {
 

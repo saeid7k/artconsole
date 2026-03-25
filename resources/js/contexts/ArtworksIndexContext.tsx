@@ -1,17 +1,17 @@
-import { createContext, useContext } from "react";
+import { createContext, use, useContext } from "react";
 
 const ArtworkIndexContext = createContext<any>({})
 
 function ArtworkIndexProvider({ value, children }: { value: any; children: React.ReactNode }) {
   return (
-    <ArtworkIndexContext.Provider value={value}>
+    <ArtworkIndexContext value={value}>
       {children}
-    </ArtworkIndexContext.Provider>
+    </ArtworkIndexContext>
   )
 }
 
 function useArtworksIndex() {
-  return useContext(ArtworkIndexContext);
+  return use(ArtworkIndexContext);
 }
 
 export { ArtworkIndexProvider, useArtworksIndex };
