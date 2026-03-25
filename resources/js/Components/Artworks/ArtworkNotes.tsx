@@ -11,7 +11,7 @@ import Note from "../Notes/Note";
 function ArtworkNotes({ artwork }: { artwork: ArtworkProps }) {
 
   const [notes, setNotes] = useState(artwork.notes || []);
-  const saveTimerRef = useRef<NodeJS.Timeout[]>([]);
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   // add note
 
