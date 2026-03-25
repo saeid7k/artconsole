@@ -205,7 +205,16 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     return $this->hasMany(Contact::class);
   }
 
-  // Methods
+  public function payments(): HasMany
+  {
+    return $this->hasMany(Payment::class);
+  }
+
+  /*
+  |=======================================================
+  | Methods
+  |=======================================================
+  */
 
   public function is_admin()
   {
@@ -222,20 +231,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
     $this->setMeta('current_gallery_id', $galleryId);
   }
-
-  // Scopes
-
-  public function scopeVerified(Builder $query): void
-  {
-    $query->whereNotNull('email_verified_at');
-  }
-
-  public function scopeUnverified(Builder $query): void
-  {
-    $query->whereNull('email_verified_at');
-  }
-
-  // Activity Log
 
   public function getActivitylogOptions(): LogOptions
   {
@@ -255,5 +250,21 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             return $event;
         }
       });
+  }
+
+  /*
+  |=======================================================
+  | Scopes
+  |=======================================================
+  */
+
+  public function scopeVerified(Builder $query): void
+  {
+    $query->whereNotNull('email_verified_at');
+  }
+
+  public function scopeUnverified(Builder $query): void
+  {
+    $query->whereNull('email_verified_at');
   }
 }
