@@ -11,7 +11,7 @@ function Sidebar() {
   const { url, props } = usePage()
   const auth = props.auth as AuthProps
   const user = auth.user
-  const { sidebarCollapsed } = useApp()
+  const { sidebarCollapsed, darkMode } = useApp()
 
   const items = [
     { key: 'dashboard', icon: <HugeiconsIcon icon={DashboardBrowsingIcon} />, label: 'Dashboard', route: 'dashboard' },
@@ -82,7 +82,7 @@ function Sidebar() {
       style={{
         height: '100%',
         border: '1px solid',
-        borderColor: colors.slate['200'],
+        borderColor: darkMode ? colors.gray['600'] : colors.slate['200'],
         borderWidth: '0 1px 0 0',
         width: '100%',
         position: 'relative',
@@ -101,7 +101,7 @@ function Sidebar() {
 
       {user?.is_admin && (
         <>
-          <Divider className="!border-gray-200" >
+          <Divider>
             {!sidebarCollapsed && (
               <div className="text-sm font-light">Admin Area</div>
             )}

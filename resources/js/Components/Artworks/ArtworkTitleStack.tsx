@@ -127,7 +127,7 @@ function ArtworkTitleStack({
               <HugeiconsIcon
                 icon={SignatureIcon}
                 size={16}
-                color={artwork.signed ? colors.accent.DEFAULT : colors.muted.DEFAULT}
+                color={artwork.signed ? colors.accent.DEFAULT : colors.muted}
               />
             </Popover>
           )}
