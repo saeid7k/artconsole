@@ -5,6 +5,8 @@ import TopbarActions from "@/Components/TopbarActions";
 import AppProvider, { useApp } from "@/contexts/AppContext";
 import { useWindow } from "@/hooks/useWindow";
 import colors from "@/Themes/theme";
+import { oklchToHex } from "@/utils/colorHelper";
+import { StyleProvider } from '@ant-design/cssinjs';
 import { ArrowLeftDoubleFreeIcons, ArrowRightDoubleFreeIcons } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -34,105 +36,119 @@ function App ({ children }: AppProps) {
   }, [windowWidth])
 
   return (
-    <ConfigProvider
-      theme={{
-        algorithm: darkMode ? theme.darkAlgorithm : theme.defaultAlgorithm,
-        token: {
-          colorText: darkMode ? colors.gray['200'] : colors.gray['800'],
-          colorPrimary: darkMode ? colors.purple['400'] : colors.purple['500'],
-          colorTextSecondary: colors.gray['500'],
-          colorTextLabel: colors.gray['300'],
-          colorBgBase: darkMode ? colors.neutral['950'] : colors.gray['50'],
-          colorBgLayout: darkMode ? colors.gray['900'] : colors.gray['50'],
-          colorBgContainer: darkMode ? colors.gray['900'] : colors.white,
-          colorBgElevated: darkMode ? colors.gray['900'] : colors.white,
-          colorLinkHover: darkMode ? colors.blue['300'] : colors.blue['500'],
-          // boxShadow: darkMode ? '0 1px 3px rgba(0, 0, 0, 0.9)' : '0 1px 3px rgba(0, 0, 0, 0.1)',
-          boxShadowSecondary: darkMode ? '0 6px 16px 4px rgba(0, 0, 0, 0.9)' : '0 6px 16px 4px rgba(0, 0, 0, 0.1)',
-          fontFamily: `'Segoe UI', sans-serif`,
-          blue: colors.blue[500],
-          purple: colors.purple[500],
-          cyan: colors.cyan[500],
-          green: colors.green[500],
-          pink: colors.pink[500],
-          red: colors.red[500],
-          orange: colors.orange[500],
-          yellow: colors.yellow[500],
-          lime: colors.lime[500],
-        },
-        components: {
-          Layout: {
-            headerHeight: 48,
-            headerPadding: '4px 16px',
-            headerBg: darkMode ? colors.gray['800'] : colors.primary['50'],
-            siderBg: darkMode ? colors.gray['800'] : colors.primary['50'],
-            footerBg: darkMode ? colors.gray['800'] : colors.primary['50'],
+    <StyleProvider layer >
+      <ConfigProvider
+        theme={{
+          algorithm: darkMode ? theme.darkAlgorithm : theme.defaultAlgorithm,
+          token: {
+            colorText: darkMode ? colors.gray['200'] : colors.gray['800'],
+            colorPrimary: darkMode ? colors.primary['400'] : colors.primary['500'],
+            colorTextSecondary: colors.gray['500'],
+            colorTextLabel: colors.gray['300'],
+            colorBgBase: darkMode ? colors.neutral['950'] : colors.gray['50'],
+            colorBgLayout: darkMode ? colors.gray['900'] : colors.gray['50'],
+            colorBgContainer: darkMode ? colors.gray['900'] : colors.white,
+            colorBgElevated: darkMode ? colors.gray['900'] : colors.white,
+            colorLink: darkMode ? oklchToHex(colors.blue['400']) : oklchToHex(colors.blue['500']),
+            colorLinkHover: darkMode ? colors.blue['300'] : colors.blue['600'],
+            colorBorder: darkMode ? colors.gray['700'] : colors.gray['300'],
+            colorBorderSecondary: darkMode ? colors.gray['600'] : colors.gray['200'],
+            colorSplit: darkMode ? colors.gray['700'] : colors.gray['200'],
+            // boxShadow: darkMode ? '0 1px 3px rgba(0, 0, 0, 0.9)' : '0 1px 3px rgba(0, 0, 0, 0.1)',
+            boxShadowSecondary: darkMode ? '0 6px 16px 4px rgba(0, 0, 0, 0.9)' : '0 6px 16px 4px rgba(0, 0, 0, 0.1)',
+            fontFamily: `'Segoe UI', sans-serif`,
+            blue: oklchToHex(colors.blue[500]),
+            purple: oklchToHex(colors.purple[500]),
+            cyan: oklchToHex(colors.cyan[500]),
+            green: oklchToHex(colors.green[500]),
+            pink: oklchToHex(colors.pink[500]),
+            red: oklchToHex(colors.red[500]),
+            orange: oklchToHex(colors.orange[500]),
+            yellow: oklchToHex(colors.yellow[500]),
+            lime: oklchToHex(colors.lime[500]),
           },
-          Menu: {
-            colorBgContainer: darkMode ? colors.gray['800'] : colors.primary['50'],
-            itemActiveBg: darkMode ? colors.primary['800'] : colors.primary['100'],
-            itemSelectedBg: darkMode ? colors.primary['800'] : colors.primary['100'],
-            itemSelectedColor: darkMode ? colors.white : colors.primary['700'],
+          components: {
+            Layout: {
+              headerHeight: 48,
+              headerPadding: '4px 16px',
+              headerBg: darkMode ? colors.gray['800'] : colors.primary['50'],
+              siderBg: darkMode ? colors.gray['800'] : colors.primary['50'],
+              footerBg: darkMode ? colors.gray['800'] : colors.primary['50'],
+            },
+            Menu: {
+              colorBgContainer: darkMode ? colors.gray['800'] : colors.primary['50'],
+              itemActiveBg: darkMode ? colors.primary['800'] : colors.primary['100'],
+              itemSelectedBg: darkMode ? colors.primary['800'] : colors.primary['100'],
+              itemSelectedColor: darkMode ? colors.white : colors.primary['700'],
+              subMenuItemSelectedColor: darkMode ? colors.primary['300'] : colors.primary['700'],
+            },
+            Form: {
+              verticalLabelPadding: '0 0 4px',
+            },
+            Segmented: {
+              trackBg: darkMode ? colors.gray['800'] : colors.gray['200'],
+            },
+            Table: {
+              borderColor: darkMode ? colors.gray['700'] : colors.gray['200'],
+              headerSplitColor: darkMode ? colors.gray['700'] : colors.gray['300'],
+            },
+            Card: {
+              colorBorder: darkMode ? colors.gray['700'] : colors.gray['300'],
+            },
           },
-          Form: {
-            verticalLabelPadding: '0 0 4px',
-          },
-          Segmented: {
-            trackBg: darkMode ? colors.gray['800'] : colors.gray['200'],
-          }
-        },
-      }}
-    >
-      <QueryClientProvider client={new QueryClient()} >
-        <Layout className="fixed w-full h-full">
-          <Header
-            className={`flex justify-between items-center leading-normal sticky top-0 z-10 w-full transition-all ${
-              scrollY > 0 ? ' shadow-md' : ''
-            }`}
-          >
-            <div>
-              <GallerySwitch />
-            </div>
-            <TopbarActions />
-          </Header>
-          <Layout className="relative">
-            <Button
-              shape="circle"
-              type="default"
-              className={`absolute top-2 z-10`}
-              style={{ left: sidebarCollapsed ? collapsedWidth - 16 : expandedWidth - 16 }}
-              onClick={toggleSidebar}
+        }}
+      >
+        <QueryClientProvider client={new QueryClient()} >
+          <Layout className="fixed w-full h-full">
+            <Header
+              className={`flex justify-between items-center leading-normal sticky top-0 z-10 w-full transition-all ${
+                scrollY > 0 ? ' shadow-md' : ''
+              }`}
             >
-              <HugeiconsIcon size={20} icon={ArrowLeftDoubleFreeIcons} altIcon={ArrowRightDoubleFreeIcons} showAlt={sidebarCollapsed} />
-            </Button>
-            <Sider
-              // theme="light"
-              className="h-full overflow-y-auto overflow-x-visible"
-              collapsed={sidebarCollapsed}
-              collapsedWidth={collapsedWidth}
-              width={expandedWidth}
-            >
-              <Sidebar />
-            </Sider>
-            {/* <div className="relative h-full">
-            </div> */}
-            <Layout
-              className="overflow-y-auto my-1"
-            >
-              <Content
-                className="p-3 w-full m-x-auto min-h-max"
+              <div>
+                <GallerySwitch />
+              </div>
+              <TopbarActions />
+            </Header>
+            <Layout className="relative">
+              <Button
+                shape="circle"
+                type="default"
+                className={`absolute top-2 z-10`}
+                style={{ left: sidebarCollapsed ? collapsedWidth - 16 : expandedWidth - 16 }}
+                onClick={toggleSidebar}
               >
-                {children}
-              </Content>
+                <HugeiconsIcon size={20} icon={ArrowLeftDoubleFreeIcons} altIcon={ArrowRightDoubleFreeIcons} showAlt={sidebarCollapsed} />
+              </Button>
+              <Sider
+                // theme="light"
+                className="h-full overflow-y-auto overflow-x-visible"
+                collapsed={sidebarCollapsed}
+                collapsedWidth={collapsedWidth}
+                width={expandedWidth}
+              >
+                <Sidebar />
+              </Sider>
+              {/* <div className="relative h-full">
+              </div> */}
+              <Layout
+                className="overflow-y-auto my-1"
+              >
+                <Content
+                  className="p-3 w-full m-x-auto min-h-max"
+                >
+                  {children}
+                </Content>
+              </Layout>
             </Layout>
+            <Footer className="py-2">
+              <div className="text-center">...footer...</div>
+            </Footer>
           </Layout>
-          <Footer className="py-2">
-            <div className="text-center">...footer...</div>
-          </Footer>
-        </Layout>
-      </QueryClientProvider>
-      <ServerFlashMessage />
-    </ConfigProvider>
+        </QueryClientProvider>
+        <ServerFlashMessage />
+      </ConfigProvider>
+    </StyleProvider>
   )
 }
 

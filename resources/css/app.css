@@ -1,5 +1,7 @@
-@tailwind components;
-@tailwind utilities;
+@layer theme, base, antd, components, utilities;
+
+@import "tailwindcss";
+@config "../../tailwind.config.js";
 
 @font-face {
   font-family: 'EB Garamond';
@@ -36,55 +38,32 @@
   --text-soft: theme('colors.gray.600');
   --text-link: theme('colors.blue.500');
 
-  --primary: var(--primary-500);
-  --primary-foreground: hsl(210 20% 98%);
-  --primary-light: theme('colors.purple.50');
-  --primary-50: hsl(270 100% 97.5%);
-  /* #faf5ff */
-  --primary-100: hsl(270 100% 92.0%);
-  /* #f3e8ff */
-  --primary-200: hsl(270 100% 84.0%);
-  /* #e9d5ff */
-  --primary-300: hsl(270 95% 73.5%);
-  /* #d8b4fe */
-  --primary-400: hsl(270 91.7% 60.4%);
-  /* #c084fc */
-  --primary-500: hsl(262.1 83.3% 67.5%);
-  /* #a855f7 */
-  --primary-600: hsl(262.1 76.0% 58.2%);
-  /* #9333ea */
-  --primary-700: hsl(263.4 69.3% 50.2%);
-  /* #7e22ce */
-  --primary-800: hsl(263.5 61.6% 43.9%);
-  /* #6b21a8 */
-  --primary-900: hsl(264.4 55.0% 39.0%);
-  /* #581c87 */
+  --primary: theme('colors.primary.DEFAULT');
+  --primary-foreground: theme('colors.primary.foreground');
+  --primary-light: theme('colors.primary.light');
+  --primary-50: theme('colors.primary.50');
+  --primary-100: theme('colors.primary.100');
+  --primary-200: theme('colors.primary.200');
+  --primary-300: theme('colors.primary.300');
+  --primary-400: theme('colors.primary.400');
+  --primary-500: theme('colors.primary.500');
+  --primary-600: theme('colors.primary.600');
+  --primary-700: theme('colors.primary.700');
+  --primary-800: theme('colors.primary.800');
+  --primary-900: theme('colors.primary.900');
 
-  /* tailwind teal shades as accent */
-  --accent: hsl(174 100% 29.0%);
-  /* #0d9488 */
-  --accent-foreground: hsl(174 100% 98.0%);
-  /* #ecfeff */
-  --accent-50: hsl(166 100% 97.0%);
-  /* #f0fdfa */
-  --accent-100: hsl(167 85.7% 89.2%);
-  /* #ccfbf1 */
-  --accent-200: hsl(168 84.2% 78.4%);
-  /* #99f6e4 */
-  --accent-300: hsl(170 77.8% 64.7%);
-  /* #5eead4 */
-  --accent-400: hsl(172 66.7% 50.6%);
-  /* #2dd4bf */
-  --accent-500: hsl(173 80.0% 40.0%);
-  /* #14b8a6 */
-  --accent-600: hsl(174 83.3% 31.4%);
-  /* #0d9488 */
-  --accent-700: hsl(175 75.0% 25.5%);
-  /* #0f766e */
-  --accent-800: hsl(176 69.2% 19.6%);
-  /* #115e59 */
-  --accent-900: hsl(177 80.0% 14.5%);
-  /* #134e4a */
+  --accent: theme('colors.accent.DEFAULT');
+  --accent-foreground: theme('colors.accent.foreground');
+  --accent-50: theme('colors.accent.50');
+  --accent-100: theme('colors.accent.100');
+  --accent-200: theme('colors.accent.200');
+  --accent-300: theme('colors.accent.300');
+  --accent-400: theme('colors.accent.400');
+  --accent-500: theme('colors.accent.500');
+  --accent-600: theme('colors.accent.600');
+  --accent-700: theme('colors.accent.700');
+  --accent-800: theme('colors.accent.800');
+  --accent-900: theme('colors.accent.900');
 
   --tw-translate-x: 0;
   --tw-translate-y: 0;
@@ -108,7 +87,7 @@
 
   --primary: var(--primary-400);
   --primary-foreground: var(--primary-900);
-  --primary-light: theme('colors.purple.900');
+  --primary-light: var(--primary-900);
 }
 
 body {

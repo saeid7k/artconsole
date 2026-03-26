@@ -84,7 +84,7 @@ function ArtworkNotes({ artwork }: { artwork: ArtworkProps }) {
         onClick={addNote}
       >
         <FlexBox direction="col" className="text-muted" >
-          <HugeiconsIcon icon={AddIcon} size={64} strokeWidth={0.5} color={colors.muted.DEFAULT} />
+          <HugeiconsIcon icon={AddIcon} size={64} strokeWidth={0.5} color={colors.muted} />
           <div className="text-lg">Add Note</div>
         </FlexBox>
       </div>
