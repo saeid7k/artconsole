@@ -53,6 +53,7 @@ function App ({ children }: AppProps) {
             colorLinkHover: darkMode ? colors.blue['300'] : colors.blue['600'],
             colorBorder: darkMode ? colors.gray['700'] : colors.gray['300'],
             colorBorderSecondary: darkMode ? colors.gray['600'] : colors.gray['200'],
+            colorBorderDisabled: darkMode ? colors.gray['700'] : colors.gray['300'],
             colorSplit: darkMode ? colors.gray['700'] : colors.gray['200'],
             // boxShadow: darkMode ? '0 1px 3px rgba(0, 0, 0, 0.9)' : '0 1px 3px rgba(0, 0, 0, 0.1)',
             boxShadowSecondary: darkMode ? '0 6px 16px 4px rgba(0, 0, 0, 0.9)' : '0 6px 16px 4px rgba(0, 0, 0, 0.1)',
