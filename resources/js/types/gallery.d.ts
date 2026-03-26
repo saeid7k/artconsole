@@ -28,6 +28,6 @@ export interface GalleryProps {
   logo?: string | null;
   formatted_address?: string | null;
   meta?: { [key: string]: any };
-  currency?: string | null;
+  currency: string;
   invoice_prefix?: string | null;
 }
