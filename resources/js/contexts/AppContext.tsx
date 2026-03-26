@@ -120,8 +120,8 @@ function AppProvider({ children }: PropsWithChildren) {
 
   // Currency
 
-  const galleryCurrency = usePage<UsePageProps>().props.current_gallery?.meta?.currency
-  const currency = galleryCurrency || CONFIGS.defaults.currency || 'CAD';
+  const gallery = usePage<UsePageProps>().props.current_gallery
+  const currency = gallery?.currency
   const currencySymbol = CURRENCIES.find(c => c.code === currency)?.symbol || '$';
 
   return (
