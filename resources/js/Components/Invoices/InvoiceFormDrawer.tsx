@@ -17,6 +17,7 @@ import ContactWidget from "../Contacts/ContactWidget";
 import FlexBox from "../Containers/FlexBox";
 import StyledCurrency from "../StyledCurrency";
 import InvoiceItemsTable from "./InvoiceItemsTable";
+import PaymentFormModal from "./PaymentFormModal";
 
 type Props = {
   show: boolean;
@@ -37,6 +38,7 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
   const [items, setItems] = useState<any[]>([]);
   const [saving, setSaving] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   // Fetch Editing Invoice
 
@@ -268,7 +270,7 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
           onFinish={handleSubmit}
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
+            <div className="mb-3">
               <div className="flex flex-wrap gap-2">
                 <Form.Item
                   name="contact_id"
@@ -316,7 +318,7 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
               <Form.Item
                 name="number"
                 label="Number"
-                className="w-full"
+                className="w-full mb-3"
                 labelCol={{ span: 8 }}
                 rules={[
                   { required: true, message: 'Please enter the invoice number' },
@@ -338,7 +340,7 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
               <Form.Item
                 name="date"
                 label="Invoice Date"
-                className="w-full"
+                className="w-full mb-3"
                 labelCol={{ span: 8 }}
                 getValueProps={(value) => ({
                   value: value ? dayjs(value) : null,
@@ -352,7 +354,7 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
               <Form.Item
                 name="due_date"
                 label="Due Date"
-                className="w-full"
+                className="w-full mb-3"
                 labelCol={{ span: 8 }}
                 getValueProps={(value) => ({
                   value: value ? dayjs(value) : null,
@@ -453,107 +455,121 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
 
             {/* Totals Column */}
 
-            <div className="w-full flex flex-col items-end xl:pe-5 box-border [&_.label]:mb-0">
-              <FlexBox alignItems="baseline" justifyContent="end" gap={3} className="w-[200px]" >
-                <div className="label">Subtotal:</div>
-                <div className="w-[100px] text-end">
-                  <StyledCurrency value={watchForm.subtotal} />
-                </div>
-              </FlexBox>
-              <Divider dashed size="small" className="border-soft" />
-              <AnimatedContainer condition={watchForm.available_extra_costs?.shipping} type="fadeRight" speed="slow" >
+            <div className="w-full xl:pe-5">
+              <div className="flex flex-col items-end box-border [&_.label]:mb-0">
                 <FlexBox alignItems="baseline" justifyContent="end" gap={3} className="w-[200px]" >
-                  <div className="label">Shipping:</div>
+                  <div className="label">Subtotal:</div>
                   <div className="w-[100px] text-end">
-                    <StyledCurrency value={watchForm.shipping_cost} />
+                    <StyledCurrency value={watchForm.subtotal} />
                   </div>
                 </FlexBox>
-              </AnimatedContainer>
-              {watchForm.available_extra_costs?.shipping && <Divider dashed size="small" className="border-soft" />}
-              <AnimatedContainer condition={watchForm.available_extra_costs?.discount} type="fadeRight" speed="slow" >
-                <FlexBox alignItems="baseline" justifyContent="end" gap={3} className="w-[200px]" >
-                  <div className="label">Discount:</div>
-                  <div className="w-[100px] text-end">
-                    <StyledCurrency value={watchForm.discount_amount} />
-                  </div>
-                </FlexBox>
-              </AnimatedContainer>
-              {watchForm.available_extra_costs?.discount && <Divider dashed size="small" className="border-soft" />}
-              {/* TAX Row */}
-              <div className="flex flex-col sm:flex-row items-end sm:items-center gap-1">
-                {!taxesQuery.isLoading && (
+                <Divider dashed size="small" className="border-soft" />
+                <AnimatedContainer condition={watchForm.available_extra_costs?.shipping} type="fadeRight" speed="slow" >
+                  <FlexBox alignItems="baseline" justifyContent="end" gap={3} className="w-[200px]" >
+                    <div className="label">Shipping:</div>
+                    <div className="w-[100px] text-end">
+                      <StyledCurrency value={watchForm.shipping_cost} />
+                    </div>
+                  </FlexBox>
+                </AnimatedContainer>
+                {watchForm.available_extra_costs?.shipping && <Divider dashed size="small" className="border-soft" />}
+                <AnimatedContainer condition={watchForm.available_extra_costs?.discount} type="fadeRight" speed="slow" >
+                  <FlexBox alignItems="baseline" justifyContent="end" gap={3} className="w-[200px]" >
+                    <div className="label">Discount:</div>
+                    <div className="w-[100px] text-end">
+                      <StyledCurrency value={watchForm.discount_amount} />
+                    </div>
+                  </FlexBox>
+                </AnimatedContainer>
+                {watchForm.available_extra_costs?.discount && <Divider dashed size="small" className="border-soft" />}
+                {/* TAX Row */}
+                <div className="flex flex-col sm:flex-row items-end sm:items-center gap-1">
+                  {!taxesQuery.isLoading && (
+                    <Form.Item
+                      name="tax_id"
+                      label="Tax Type"
+                      className="mb-0"
+                    >
+                      <Select
+                        placeholder="Select Tax"
+                        options={taxesOptions}
+                        popupMatchSelectWidth={false}
+                        onChange={(value) => {
+                          const selectedTax = taxesQuery.data?.find(t => t.id === value);
+                          form.setFieldValue('tax_rate', selectedTax ? selectedTax.rate : 0);
+                        }}
+                        loading={taxesQuery.isLoading}
+                        disabled={taxesOptions.length === 0}
+                      />
+                    </Form.Item>
+                  )}
+                  {taxesOptions.length === 0 && (
+                    <Popover
+                      content="No tax found. Please create a tax first in gallery settings."
+                      children={<HugeiconsIcon icon={InformationCircleIcon} size={16} />}
+                    />
+                  )}
                   <Form.Item
-                    name="tax_id"
-                    label="Tax Type"
+                    name="tax_rate"
+                    label={null}
                     className="mb-0"
+                    hidden
                   >
-                    <Select
-                      placeholder="Select Tax"
-                      options={taxesOptions}
-                      popupMatchSelectWidth={false}
-                      onChange={(value) => {
-                        const selectedTax = taxesQuery.data?.find(t => t.id === value);
-                        form.setFieldValue('tax_rate', selectedTax ? selectedTax.rate : 0);
-                      }}
-                      loading={taxesQuery.isLoading}
-                      disabled={taxesOptions.length === 0}
-                    />
+                    <Space.Compact>
+                      <Space.Addon>%</Space.Addon>
+                      <InputNumber
+                        placeholder="Tax Rate"
+                        value={watchForm.tax_rate}
+                        readOnly
+                        className="w-[60px]"
+                      />
+                    </Space.Compact>
                   </Form.Item>
-                )}
-                {taxesOptions.length === 0 && (
-                  <Popover
-                    content="No tax found. Please create a tax first in gallery settings."
-                    children={<HugeiconsIcon icon={InformationCircleIcon} size={16} />}
-                  />
-                )}
-                <Form.Item
-                  name="tax_rate"
-                  label={null}
-                  className="mb-0"
-                  hidden
-                >
-                  <Space.Compact>
-                    <Space.Addon>%</Space.Addon>
-                    <InputNumber
-                      placeholder="Tax Rate"
-                      value={watchForm.tax_rate}
-                      readOnly
-                      className="w-[60px]"
-                    />
-                  </Space.Compact>
-                </Form.Item>
-                <FlexBox alignItems="baseline" justifyContent="end" gap={3} className="w-[200px]" >
-                  <div className="label">Tax:</div>
+                  <FlexBox alignItems="baseline" justifyContent="end" gap={3} className="w-[200px]" >
+                    <div className="label">Tax:</div>
+                    <div className="w-[100px] text-end">
+                      <StyledCurrency value={watchForm.tax_amount} />
+                    </div>
+                  </FlexBox>
+                </div>
+                <Divider dashed size="small" className="border-soft" />
+                <div className="flex justify-end items-baseline gap-3 w-[200px] font-bold text-base" >
+                  <div className="label">Total:</div>
                   <div className="w-[100px] text-end">
-                    <StyledCurrency value={watchForm.tax_amount} />
+                    <StyledCurrency value={watchForm.total} />
                   </div>
-                </FlexBox>
-              </div>
-              <Divider dashed size="small" className="border-soft" />
-              <div className="flex justify-end items-baseline gap-3 w-[200px] font-bold text-base" >
-                <div className="label">Total:</div>
-                <div className="w-[100px] text-end">
-                  <StyledCurrency value={watchForm.total} />
                 </div>
               </div>
 
               {/* Hidden Fields */}
-              <Form.Item name="subtotal" hidden >
-                <Input />
-              </Form.Item>
-              <Form.Item name="shipping_cost" hidden >
-                <Input />
-              </Form.Item>
-              <Form.Item name="discount_amount" hidden >
-                <Input />
-              </Form.Item>
-              <Form.Item name="tax_amount" hidden >
-                <Input />
-              </Form.Item>
-              <Form.Item name="total" hidden >
-                <Input />
-              </Form.Item>
+              <div>
+                <Form.Item name="subtotal" hidden >
+                  <Input />
+                </Form.Item>
+                <Form.Item name="shipping_cost" hidden >
+                  <Input />
+                </Form.Item>
+                <Form.Item name="discount_amount" hidden >
+                  <Input />
+                </Form.Item>
+                <Form.Item name="tax_amount" hidden >
+                  <Input />
+                </Form.Item>
+                <Form.Item name="total" hidden >
+                  <Input />
+                </Form.Item>
+              </div>
+
+              {/* Payments */}
+              <div className="mt-5">
+                <div className="flex justify-end">
+                  <Button onClick={() => setShowPaymentModal(true)}>
+                    Record Payment
+                  </Button>
+                </div>
+              </div>
             </div>
+
           </div>
         </Form>
       </Drawer>
@@ -564,6 +580,12 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
         show={showContactForm}
         onClose={handleCloseContactForm}
         mode="create"
+      />
+
+      <PaymentFormModal
+        open={showPaymentModal}
+        onClose={() => setShowPaymentModal(false)}
+        invoice={editingInvoiceQuery.data}
       />
     </>
   )
