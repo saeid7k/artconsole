@@ -1,9 +1,9 @@
+import { DEFAULT_PAYMENT_METHOD, PAYMENT_METHODS } from "@/constants/paymentMethods";
 import { useApp } from "@/contexts/AppContext";
 import { InvoiceProps } from "@/types/invoice";
-import { DatePicker, Form, InputNumber, Modal, Space } from "antd";
+import { DatePicker, Form, InputNumber, Modal, Select, Space } from "antd";
 import { useForm } from "antd/es/form/Form";
 import SpaceAddon from "antd/es/space/Addon";
-import Compact from "antd/es/space/Compact";
 
 type Props = {
   open: boolean;
@@ -30,6 +30,7 @@ function PaymentFormModal({ open, onClose, invoice }: Props) {
         className="pt-3"
         initialValues={{
           amount: invoice?.total,
+          payment_method: DEFAULT_PAYMENT_METHOD.value,
         }}
       >
         <Form.Item
@@ -52,6 +53,15 @@ function PaymentFormModal({ open, onClose, invoice }: Props) {
               onChange={(value) => form.setFieldsValue({ amount: value })}
             />
           </Space.Compact>
+        </Form.Item>
+        <Form.Item
+          name='payment_method'
+          label='Payment Method'
+        >
+          <Select
+            options={PAYMENT_METHODS}
+            defaultValue={DEFAULT_PAYMENT_METHOD.value}
+          />
         </Form.Item>
       </Form>
     </Modal>
