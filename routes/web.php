@@ -148,6 +148,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/{invoice}/change-status', [App\Http\Controllers\InvoiceController::class, 'changeStatus'])->name('change-status');
     Route::get('/get-customers', [App\Http\Controllers\InvoiceController::class, 'getInvoiceCustomers'])->name('get-customers');
   });
+
+  Route::prefix('payments')->name('payments.')->group(function () {
+    Route::post('/store', [App\Http\Controllers\PaymentController::class, 'store'])->name('store');
+  });
 });
 
 Route::middleware(['auth', Admin::class])->group(function () {
