@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PaymentRequest;
-use Illuminate\Http\Request;
+use App\Models\Payment;
 
 class PaymentController extends Controller
 {
-  // TODO: Add authorization checks
   public function store(PaymentRequest $request)
   {
+    $this->authorize('store', Payment::class);
     $user = $request->user();
     $payment = $user->payments()->create($request->validated());
 
