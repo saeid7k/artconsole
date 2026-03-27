@@ -9,7 +9,7 @@ class PaymentController extends Controller
 {
   public function store(PaymentRequest $request)
   {
-    $this->authorize('create', Payment::class);
+    $this->authorize('store', Payment::class);
     $user = $request->user();
     $payment = $user->payments()->create($request->validated());
 
