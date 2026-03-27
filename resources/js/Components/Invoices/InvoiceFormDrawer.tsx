@@ -16,6 +16,7 @@ import AnimatedContainer from "../AnimatedContainer";
 import ContactWidget from "../Contacts/ContactWidget";
 import FlexBox from "../Containers/FlexBox";
 import StyledCurrency from "../StyledCurrency";
+import StyledDivider from "../StyledDivider";
 import InvoiceItemsTable from "./InvoiceItemsTable";
 import InvoicePaymentsTable from "./InvoicePaymentsTable";
 import PaymentFormModal from "./PaymentFormModal";
@@ -577,10 +578,10 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
 
               {/* Payments */}
               {invoiceId && (
-                <div className="">
+                <div>
                   {editingInvoiceQuery.data?.payments && editingInvoiceQuery.data.payments.length > 0 && (
                     <>
-                      <div className="label">Payments</div>
+                      <StyledDivider dashed lineColor="soft" >Payments</StyledDivider>
                       <InvoicePaymentsTable payments={editingInvoiceQuery.data?.payments || []} />
                     </>
                   )}
