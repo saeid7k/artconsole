@@ -22,6 +22,11 @@ export interface InvoiceProps {
   updated_at: string;
   deleted_at?: string | null;
 
+  // Appended Attributes
+  invoice_number: string;
+  amount_paid: number;
+  amount_due: number;
+
   // Relationships
   contact?: ContactProps | null;
   items?: any[];
