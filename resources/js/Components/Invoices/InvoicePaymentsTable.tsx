@@ -1,7 +1,11 @@
+import { PAYMENT_METHODS } from "@/constants/paymentMethods";
 import { PaymentProps } from "@/types/payment";
 import { keyToTitle } from "@/utils/stringHelper";
-import { Table, TableProps } from "antd";
+import { Delete02Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Button, Table, TableProps, Tooltip } from "antd";
 import dayjs from "dayjs";
+import FlexBox from "../Containers/FlexBox";
 import StyledCurrency from "../StyledCurrency";
 
 type Props = {
@@ -32,8 +36,19 @@ function InvoicePaymentsTable({ payments }: Props) {
       key: 'method',
       sorter: (a: PaymentProps, b: PaymentProps) => (a.payment_method || '').localeCompare(b.payment_method || ''),
       showSorterTooltip: false,
+      filters: PAYMENT_METHODS.map(method => ({ text: keyToTitle(method.label), value: method.value })),
+      onFilter: (value, record) => record.payment_method === value,
       render: (method: string) => keyToTitle(method),
     },
+    {
+      title: '',
+      key: 'actions',
+      render: () => <FlexBox>
+        <Tooltip title="Delete Payment" mouseEnterDelay={0.5} placement="topRight">
+          <Button variant="text" color="danger" size="small" shape="circle" icon={<HugeiconsIcon icon={Delete02Icon} size={16} />} />
+        </Tooltip>
+      </FlexBox>
+    }
   ];
 
   return (
@@ -44,6 +59,10 @@ function InvoicePaymentsTable({ payments }: Props) {
       pagination={false}
       size="small"
       className="[&_th]:!bg-[#fff0]"
+      scroll={{
+        x: 'max-content',
+        y: 200,
+      }}
     />
   );
 }
