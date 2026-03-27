@@ -57,7 +57,7 @@ class Invoice extends Model
   |--------------------------------------------------------------------------
   */
 
-  protected $appends = ['invoice_number'];
+  protected $appends = ['invoice_number', 'amount_paid', 'amount_due'];
 
   public function number() :Attribute
   {
@@ -69,7 +69,17 @@ class Invoice extends Model
 
   public function getInvoiceNumberAttribute(): string
   {
-    return ($this->gallery->getMeta('invoice_prefix') ?? ConfigHelper::getDefault('invoice_prefix')) . $this->number;
+    return $this->gallery->invoice_prefix . $this->number;
+  }
+
+  public function getAmountPaidAttribute(): float
+  {
+    return $this->payments->sum('amount');
+  }
+
+  public function getAmountDueAttribute(): float
+  {
+    return $this->total - $this->amount_paid;
   }
 
   /*
