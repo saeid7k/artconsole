@@ -43,6 +43,7 @@ function InvoicePaymentsTable({ payments }: Props) {
       rowKey="id"
       pagination={false}
       size="small"
+      className="[&_th]:!bg-[#fff0]"
     />
   );
 }
