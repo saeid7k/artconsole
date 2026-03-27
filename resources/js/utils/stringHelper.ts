@@ -16,7 +16,7 @@ function getInitials(name: string): string {
   return initials;
 }
 
-function keyToTitle(key: string): string {
+function keyToTitle(key: string | null | undefined): string {
   if (!key) {
     return '';
   }
