@@ -28,6 +28,7 @@
 }
 
 :root {
+  --color-base: theme('colors.white');
   --bg-light: theme('colors.gray.50');
   --bg-soft: theme('colors.gray.100');
   --border-light: theme('colors.gray.200');
@@ -75,6 +76,7 @@
 }
 
 :root[data-theme='dark'] {
+  --color-base: theme('colors.black');
   --bg-light: theme('colors.slate.800');
   --bg-gray: theme('colors.slate.700');
   --border-light: theme('colors.neutral.700');
@@ -129,6 +131,10 @@ blockquote {
   color: var(--text-muted);
   font-weight: 300;
   font-size: small;
+}
+
+.bg-base {
+  background-color: var(--color-base);
 }
 
 .bg-light {
