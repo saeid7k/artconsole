@@ -17,6 +17,7 @@ import ContactWidget from "../Contacts/ContactWidget";
 import FlexBox from "../Containers/FlexBox";
 import StyledCurrency from "../StyledCurrency";
 import InvoiceItemsTable from "./InvoiceItemsTable";
+import InvoicePaymentsTable from "./InvoicePaymentsTable";
 import PaymentFormModal from "./PaymentFormModal";
 
 type Props = {
@@ -240,6 +241,7 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
             Save
           </Button>
         }
+        loading={editingInvoiceQuery.isLoading}
         zIndex={1000}
         destroyOnHidden
       >
@@ -574,13 +576,21 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
               </div>
 
               {/* Payments */}
-              <div className="mt-5">
-                <div className="flex justify-end">
-                  <Button onClick={() => setShowPaymentModal(true)}>
-                    Record a Payment
-                  </Button>
+              {invoiceId && (
+                <div className="">
+                  {editingInvoiceQuery.data?.payments && editingInvoiceQuery.data.payments.length > 0 && (
+                    <>
+                      <div className="label">Payments</div>
+                      <InvoicePaymentsTable payments={editingInvoiceQuery.data?.payments || []} />
+                    </>
+                  )}
+                  <div className="flex justify-end mt-3">
+                    <Button onClick={() => setShowPaymentModal(true)}>
+                      Record a Payment
+                    </Button>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
           </div>
