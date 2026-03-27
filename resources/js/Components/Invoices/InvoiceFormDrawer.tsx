@@ -581,7 +581,7 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
                 <div>
                   {editingInvoiceQuery.data?.payments && editingInvoiceQuery.data.payments.length > 0 && (
                     <>
-                      <StyledDivider dashed lineColor="soft" >Payments</StyledDivider>
+                      <StyledDivider lineColor="soft" >Payments</StyledDivider>
                       <InvoicePaymentsTable payments={editingInvoiceQuery.data?.payments || []} />
                     </>
                   )}
