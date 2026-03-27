@@ -117,7 +117,7 @@ function InvoiceItemsTable({ items, setItems, selectedArtworksIds = [] }: Props)
       title: '',
       key: 'actions',
       render: (_: any, record: any) => (
-        <Tooltip title="Remove Item" placement="topLeft" mouseEnterDelay={1}>
+        <Tooltip title="Remove Item" placement="topRight" mouseEnterDelay={1}>
           <Button
             variant="text"
             color="danger"
