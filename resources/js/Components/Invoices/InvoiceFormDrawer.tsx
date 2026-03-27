@@ -533,10 +533,23 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
                   </FlexBox>
                 </div>
                 <Divider dashed size="small" className="border-soft" />
+                {/* Total & Due */}
                 <div className="flex justify-end items-baseline gap-3 w-[200px] font-bold text-base" >
                   <div className="label">Total:</div>
                   <div className="w-[100px] text-end">
                     <StyledCurrency value={watchForm.total} />
+                  </div>
+                </div>
+                <div className="flex justify-end items-baseline gap-3 w-[250px]" >
+                  <div className="label">Amount Paid:</div>
+                  <div className="w-[100px] text-end">
+                    <StyledCurrency value={editingInvoiceQuery.data?.amount_paid} />
+                  </div>
+                </div>
+                <div className="flex justify-end items-baseline gap-3 w-[250px]" >
+                  <div className="label">Amount Due:</div>
+                  <div className="w-[100px] text-end">
+                    <StyledCurrency value={editingInvoiceQuery.data?.amount_due} />
                   </div>
                 </div>
               </div>
@@ -564,7 +577,7 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
               <div className="mt-5">
                 <div className="flex justify-end">
                   <Button onClick={() => setShowPaymentModal(true)}>
-                    Record Payment
+                    Record a Payment
                   </Button>
                 </div>
               </div>
@@ -584,7 +597,10 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
 
       <PaymentFormModal
         open={showPaymentModal}
-        onClose={() => setShowPaymentModal(false)}
+        onClose={() => {
+          setShowPaymentModal(false);
+          editingInvoiceQuery.refetch();
+        }}
         invoice={editingInvoiceQuery.data}
       />
     </>
