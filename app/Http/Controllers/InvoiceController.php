@@ -78,6 +78,7 @@ class InvoiceController extends Controller
 
   public function store(InvoiceRequest $request)
   {
+    $this->authorize('store', Invoice::class);
     $suer = auth()->user();
     $gallery = $suer->currentGallery();
 

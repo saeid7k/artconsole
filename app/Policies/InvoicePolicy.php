@@ -25,6 +25,12 @@ class InvoicePolicy
     return $gallery ? $gallery->isMember($user) : false;
   }
 
+  public function store(User $user): bool
+  {
+    $gallery = $user->currentGallery();
+    return $gallery ? $gallery->hasEditAccess($user) : false;
+  }
+
   public function update(User $user, $invoice): bool
   {
     $gallery = $invoice->gallery;
