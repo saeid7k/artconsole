@@ -2,15 +2,19 @@
 
 namespace App\Observers;
 
+use App\Services\InvoiceService;
+
 class PaymentObserver
 {
   public function saved($payment)
   {
-    $payment->invoice->updatePaymentStatus();
+    $invoiceService = new InvoiceService($payment->invoice);
+    $invoiceService->autoUpdateStatus();
   }
 
   public function deleted($payment)
   {
-    $payment->invoice->updatePaymentStatus();
+    $invoiceService = new InvoiceService($payment->invoice);
+    $invoiceService->autoUpdateStatus();
   }
 }

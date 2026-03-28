@@ -195,18 +195,4 @@ class Invoice extends Model
       'total' => $total,
     ];
   }
-
-  public function updatePaymentStatus()
-  {
-    $amountPaid = $this->amount_paid;
-    $total = $this->total;
-
-    if ($amountPaid >= $total) {
-      $this->status = InvoiceStatus::Paid->value;
-    } elseif ($amountPaid > 0) {
-      $this->status = InvoiceStatus::PartiallyPaid->value;
-    }
-
-    $this->save();
-  }
 }
