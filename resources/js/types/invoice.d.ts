@@ -1,4 +1,5 @@
 import { ContactProps } from "./contact";
+import { PaymentProps } from "./payment";
 
 export interface InvoiceProps {
   id: number;
@@ -30,4 +31,5 @@ export interface InvoiceProps {
   // Relationships
   contact?: ContactProps | null;
   items?: any[];
+  payments?: PaymentProps[];
 }
