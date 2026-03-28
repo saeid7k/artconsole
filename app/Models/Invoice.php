@@ -57,7 +57,7 @@ class Invoice extends Model
   |--------------------------------------------------------------------------
   */
 
-  protected $appends = ['invoice_number', 'amount_paid', 'amount_due'];
+  protected $appends = ['invoice_number', 'amount_paid', 'amount_due', 'due_remaining_days'];
 
   public function number() :Attribute
   {
@@ -80,6 +80,18 @@ class Invoice extends Model
   public function getAmountDueAttribute(): float
   {
     return $this->total - $this->amount_paid;
+  }
+
+  public function getDueRemainingDaysAttribute(): ?int
+  {
+    if (!$this->due_date) {
+      return null;
+    }
+
+    $today = now()->startOfDay();
+    $dueDate = $this->due_date->startOfDay();
+
+    return $today->diffInDays($dueDate, false);
   }
 
   /*
