@@ -2,13 +2,14 @@ import { Divider } from "antd";
 
 type Props = {
   variant?: 'default'|'light';
+  size?: 'small' | 'middle' | 'medium' | 'large';
   dashed?: boolean;
   lineColor?: 'soft' | 'light';
   rootClassName?: string;
   children?: React.ReactNode;
 }
 
-function StyledDivider({ variant = 'default', dashed = false, lineColor = 'light', rootClassName = '', children }: Props) {
+function StyledDivider({ variant = 'default', size, dashed = false, lineColor = 'light', rootClassName = '', children }: Props) {
   const variantClasses = {
     default: '',
     light: 'text-muted font-light tracking-wide',
@@ -24,6 +25,7 @@ function StyledDivider({ variant = 'default', dashed = false, lineColor = 'light
       plain
       className={rootClassName + ' ' + lineColorClasses[lineColor]}
       dashed={dashed}
+      size={size || undefined}
     >
       <div className={variantClasses[variant]}>
         {children}
