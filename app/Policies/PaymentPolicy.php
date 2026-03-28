@@ -11,4 +11,10 @@ class PaymentPolicy
     $gallery = $user->currentGallery();
     return $gallery ? $gallery->hasEditAccess($user) : false;
   }
+
+  public function delete(User $user, $payment): bool
+  {
+    $gallery = $payment->gallery;
+    return $gallery ? $gallery->hasEditAccess($user) : false;
+  }
 }
