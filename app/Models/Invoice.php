@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Helpers\ConfigHelper;
+use App\Enums\InvoiceStatus;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -194,5 +194,19 @@ class Invoice extends Model
       'tax_amount' => $tax,
       'total' => $total,
     ];
+  }
+
+  public function updatePaymentStatus()
+  {
+    $amountPaid = $this->amount_paid;
+    $total = $this->total;
+
+    if ($amountPaid >= $total) {
+      $this->status = InvoiceStatus::Paid->value;
+    } elseif ($amountPaid > 0) {
+      $this->status = InvoiceStatus::PartiallyPaid->value;
+    }
+
+    $this->save();
   }
 }
