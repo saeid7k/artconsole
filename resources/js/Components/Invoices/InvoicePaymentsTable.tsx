@@ -4,7 +4,7 @@ import { keyToTitle } from "@/utils/stringHelper";
 import { Delete02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useMutation } from "@tanstack/react-query";
-import { Button, message, Table, TableProps, Tooltip } from "antd";
+import { Button, Empty, message, Table, TableProps, Tooltip } from "antd";
 import axios from "axios";
 import dayjs from "dayjs";
 import FlexBox from "../Containers/FlexBox";
@@ -74,6 +74,12 @@ function InvoicePaymentsTable({ payments, onUpdate }: Props) {
       </FlexBox>
     }
   ];
+
+  if (payments.length === 0) {
+    return (
+      <Empty description="No payments recorded yet" />
+    );
+  }
 
   return (
     <Table
