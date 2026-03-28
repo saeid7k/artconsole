@@ -3,16 +3,32 @@ import { PaymentProps } from "@/types/payment";
 import { keyToTitle } from "@/utils/stringHelper";
 import { Delete02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Button, Table, TableProps, Tooltip } from "antd";
+import { useMutation } from "@tanstack/react-query";
+import { Button, message, Table, TableProps, Tooltip } from "antd";
+import axios from "axios";
 import dayjs from "dayjs";
 import FlexBox from "../Containers/FlexBox";
 import StyledCurrency from "../StyledCurrency";
 
 type Props = {
   payments: PaymentProps[];
+  onUpdate?: () => void;
 };
 
-function InvoicePaymentsTable({ payments }: Props) {
+function InvoicePaymentsTable({ payments, onUpdate }: Props) {
+
+  const deleteMutation = useMutation({
+    mutationKey: ['deletePayment'],
+    mutationFn: (paymentId: number) => axios.delete(route('payments.destroy', paymentId)),
+    onSuccess: (response) => {
+      message.success(response.data?.message || 'Payment deleted successfully');
+      if (onUpdate) onUpdate();
+    },
+    onError: (error: any) => {
+      message.error(error.response?.data?.message || 'Failed to delete payment');
+    }
+  });
+
   const columns: TableProps<PaymentProps>['columns'] = [
     {
       title: 'Date',
@@ -43,9 +59,16 @@ function InvoicePaymentsTable({ payments }: Props) {
     {
       title: '',
       key: 'actions',
-      render: () => <FlexBox>
+      render: (record: PaymentProps) => <FlexBox>
         <Tooltip title="Delete Payment" mouseEnterDelay={0.5} placement="topRight">
-          <Button variant="text" color="danger" size="small" shape="circle" icon={<HugeiconsIcon icon={Delete02Icon} size={16} />} />
+          <Button
+            variant="text"
+            color="danger"
+            size="small"
+            shape="circle"
+            icon={<HugeiconsIcon icon={Delete02Icon} size={16} />}
+            onClick={() => deleteMutation.mutate(record.id)}
+          />
         </Tooltip>
       </FlexBox>
     }
@@ -62,6 +85,25 @@ function InvoicePaymentsTable({ payments }: Props) {
       scroll={{
         x: 'max-content',
         y: 200,
+      }}
+      summary={(pageData) => {
+        let totalPaid = 0;
+        pageData.forEach(({ amount }) => {
+          totalPaid += Number(amount);
+        });
+
+        return (
+          <Table.Summary fixed>
+            <Table.Summary.Row>
+              <Table.Summary.Cell index={0}>
+                <div className="font-bold">Total Paid</div>
+              </Table.Summary.Cell>
+              <Table.Summary.Cell index={1}>
+                <StyledCurrency value={totalPaid} className="font-bold" />
+              </Table.Summary.Cell>
+            </Table.Summary.Row>
+          </Table.Summary>
+        );
       }}
     />
   );
