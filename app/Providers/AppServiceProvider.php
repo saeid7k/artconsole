@@ -9,6 +9,7 @@ use App\Models\InviteLink;
 use App\Models\Invoice;
 use App\Models\Location;
 use App\Models\Media;
+use App\Models\Payment;
 use App\Models\User;
 use App\Observers\ArtworkObserver;
 use App\Observers\ContactObserver;
@@ -17,6 +18,7 @@ use App\Observers\InviteLinkObserver;
 use App\Observers\InvoiceObserver;
 use App\Observers\LocationObserver;
 use App\Observers\MediaObserver;
+use App\Observers\PaymentObserver;
 use App\Observers\UserObserver;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -48,6 +50,7 @@ class AppServiceProvider extends ServiceProvider
         Media::observe(MediaObserver::class);
         Invoice::observe(InvoiceObserver::class);
         Contact::observe(ContactObserver::class);
+        Payment::observe(PaymentObserver::class);
 
         Pdf::default()
           ->withBrowsershot(function (Browsershot $browsershot) {
