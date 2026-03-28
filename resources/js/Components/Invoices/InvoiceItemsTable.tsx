@@ -56,7 +56,7 @@ function InvoiceItemsTable({ items, setItems, selectedArtworksIds = [] }: Props)
         <TextArea
           defaultValue={text}
           placeholder="Item Description"
-          rows={3}
+          rows={record.type === 'artwork' ? 3 : 1}
           onChange={(e) => handleChange(record.id, 'description', e.target.value)}
         />
       )
