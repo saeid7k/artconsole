@@ -9,6 +9,7 @@ class InvoiceObserver
 {
   public function creating($invoice)
   {
+    // Set default values for new invoices
     if (!$invoice->status) {
       $invoice->status = InvoiceStatus::default()->value;
     }
@@ -23,7 +24,6 @@ class InvoiceObserver
   public function saved($invoice)
   {
     // Change artwork status to "sold" if invoice is marked as paid and gallery setting is enabled
-
     if (
       $invoice->wasChanged('status')
       && InvoiceStatus::isSuccessful($invoice->status)
