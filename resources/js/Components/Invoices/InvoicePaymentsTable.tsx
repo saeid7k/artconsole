@@ -45,6 +45,7 @@ function InvoicePaymentsTable({ payments, onUpdate }: Props) {
       sorter: (a: PaymentProps, b: PaymentProps) => a.amount - b.amount,
       showSorterTooltip: false,
       render: (amount: number) => <StyledCurrency value={amount} />,
+      align: 'right',
     },
     {
       title: 'Method',
@@ -98,7 +99,7 @@ function InvoicePaymentsTable({ payments, onUpdate }: Props) {
               <Table.Summary.Cell index={0}>
                 <div className="font-bold">Total Paid</div>
               </Table.Summary.Cell>
-              <Table.Summary.Cell index={1}>
+              <Table.Summary.Cell index={1} className="text-right">
                 <StyledCurrency value={totalPaid} className="font-bold" />
               </Table.Summary.Cell>
             </Table.Summary.Row>

@@ -16,10 +16,7 @@ import AnimatedContainer from "../AnimatedContainer";
 import ContactWidget from "../Contacts/ContactWidget";
 import FlexBox from "../Containers/FlexBox";
 import StyledCurrency from "../StyledCurrency";
-import StyledDivider from "../StyledDivider";
 import InvoiceItemsTable from "./InvoiceItemsTable";
-import InvoicePaymentsTable from "./InvoicePaymentsTable";
-import PaymentFormModal from "./PaymentFormModal";
 
 type Props = {
   show: boolean;
@@ -536,23 +533,11 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
                   </FlexBox>
                 </div>
                 <Divider dashed size="small" className="border-soft" />
-                {/* Total & Due */}
+                {/* Total */}
                 <div className="flex justify-end items-baseline gap-3 w-[200px] font-bold text-base" >
                   <div className="label">Total:</div>
                   <div className="w-[100px] text-end">
                     <StyledCurrency value={watchForm.total} />
-                  </div>
-                </div>
-                <div className="flex justify-end items-baseline gap-3 w-[250px]" >
-                  <div className="label">Amount Paid:</div>
-                  <div className="w-[100px] text-end">
-                    <StyledCurrency value={editingInvoiceQuery.data?.amount_paid} />
-                  </div>
-                </div>
-                <div className="flex justify-end items-baseline gap-3 w-[250px]" >
-                  <div className="label">Amount Due:</div>
-                  <div className="w-[100px] text-end">
-                    <StyledCurrency value={editingInvoiceQuery.data?.amount_due} />
                   </div>
                 </div>
               </div>
@@ -575,26 +560,6 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
                   <Input />
                 </Form.Item>
               </div>
-
-              {/* Payments */}
-              {invoiceId && (
-                <div>
-                  {editingInvoiceQuery.data?.payments && editingInvoiceQuery.data.payments.length > 0 && (
-                    <div className="mt-10">
-                      <StyledDivider lineColor="soft" >Payments</StyledDivider>
-                      <InvoicePaymentsTable
-                        payments={editingInvoiceQuery.data?.payments || []}
-                        onUpdate={() => editingInvoiceQuery.refetch()}
-                      />
-                    </div>
-                  )}
-                  <div className="flex justify-end mt-3">
-                    <Button onClick={() => setShowPaymentModal(true)}>
-                      Record a Payment
-                    </Button>
-                  </div>
-                </div>
-              )}
             </div>
 
           </div>
@@ -607,15 +572,6 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
         show={showContactForm}
         onClose={handleCloseContactForm}
         mode="create"
-      />
-
-      <PaymentFormModal
-        open={showPaymentModal}
-        onClose={() => {
-          setShowPaymentModal(false);
-          editingInvoiceQuery.refetch();
-        }}
-        invoice={editingInvoiceQuery.data}
       />
     </>
   )

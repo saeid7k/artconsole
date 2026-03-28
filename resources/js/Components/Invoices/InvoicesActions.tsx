@@ -1,5 +1,5 @@
 import { InvoiceProps } from "@/types/invoice";
-import { Delete02Icon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
+import { Delete02Icon, Payment02Icon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
 import { useQuery } from "@tanstack/react-query";
@@ -8,12 +8,14 @@ import axios from "axios";
 import { useState } from "react";
 import FlexBox from "../Containers/FlexBox";
 import InvoiceFormDrawer from "./InvoiceFormDrawer";
+import InvoicePaymentsDrawer from "./InvoicePaymentsDrawer";
 
 function InvoicesActions({ invoice } : { invoice: InvoiceProps }) {
 
   const user = usePage().props.auth.user;
 
   const [showEditDrawer, setShowEditDrawer] = useState(false);
+  const [showPaymentsDrawer, setShowPaymentsDrawer] = useState(false);
 
   // Delete
 
@@ -47,6 +49,15 @@ function InvoicesActions({ invoice } : { invoice: InvoiceProps }) {
             disabled={!user.has_edit_access}
           />
         </Tooltip>
+        <Tooltip title="Payments">
+          <Button
+            variant="text"
+            color='blue'
+            shape="circle"
+            icon={<HugeiconsIcon icon={Payment02Icon} size={20} />}
+            onClick={() => setShowPaymentsDrawer(true)}
+          />
+        </Tooltip>
         <Tooltip title="Delete">
           <Button
             variant="text"
@@ -65,6 +76,12 @@ function InvoicesActions({ invoice } : { invoice: InvoiceProps }) {
         show={showEditDrawer}
         onClose={() => setShowEditDrawer(false)}
         invoiceId={invoice.id}
+      />
+
+      <InvoicePaymentsDrawer
+        show={showPaymentsDrawer}
+        onClose={() => setShowPaymentsDrawer(false)}
+        invoice={invoice}
       />
     </>
   )
