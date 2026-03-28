@@ -151,6 +151,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
   Route::prefix('payments')->name('payments.')->group(function () {
     Route::post('/store', [App\Http\Controllers\PaymentController::class, 'store'])->name('store');
+    Route::delete('/{payment}/delete', [App\Http\Controllers\PaymentController::class, 'destroy'])->name('destroy');
   });
 });
 

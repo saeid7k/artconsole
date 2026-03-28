@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class Payment extends Model
 {
@@ -21,6 +22,12 @@ class Payment extends Model
     'payment_date' => 'date:Y-m-d',
   ];
 
+  /*
+  |=======================================================
+  | Relationships
+  |=======================================================
+  */
+
   public function invoice(): BelongsTo
   {
     return $this->belongsTo(Invoice::class);
@@ -29,5 +36,17 @@ class Payment extends Model
   public function user(): BelongsTo
   {
     return $this->belongsTo(User::class);
+  }
+
+  public function gallery(): HasOneThrough
+  {
+    return $this->hasOneThrough(
+      Gallery::class,
+      Invoice::class,
+      'id',
+      'id',
+      'invoice_id',
+      'gallery_id'
+    );
   }
 }
