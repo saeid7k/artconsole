@@ -10,5 +10,10 @@ const INVOICE_STATUSES = [
 
 const DEFAULT_INVOICE_STATUS = INVOICE_STATUSES.find(status => status.default) || INVOICE_STATUSES[0];
 
-export { INVOICE_STATUSES as default, DEFAULT_INVOICE_STATUS };
+const PENDING_INVOICE_STATUSES = [
+  'sent',
+  'partially_paid',
+  'overdue',
+]
 
+export { INVOICE_STATUSES as default, DEFAULT_INVOICE_STATUS, PENDING_INVOICE_STATUSES };
