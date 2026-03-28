@@ -1,5 +1,5 @@
 import { InvoiceProps } from "@/types/invoice";
-import { Delete02Icon, Payment02Icon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
+import { CreditCardPosIcon, Delete02Icon, Payment01Icon, Payment02Icon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
 import { useQuery } from "@tanstack/react-query";
@@ -54,7 +54,7 @@ function InvoicesActions({ invoice } : { invoice: InvoiceProps }) {
             variant="text"
             color='blue'
             shape="circle"
-            icon={<HugeiconsIcon icon={Payment02Icon} size={20} />}
+            icon={<HugeiconsIcon icon={Payment01Icon} size={20} />}
             onClick={() => setShowPaymentsDrawer(true)}
           />
         </Tooltip>

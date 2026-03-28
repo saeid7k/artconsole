@@ -79,7 +79,7 @@ function InvoiceStatusTag({ invoice, variant = "filled", fontSize = "base", clas
         color={selectedStatus?.color || 'default'}
         variant={variant}
         className={twMerge(
-          'font-semibold cursor-pointer select-none',
+          'font-semibold cursor-pointer select-none w-max',
           `text-${fontSize}`,
           className
         )}
