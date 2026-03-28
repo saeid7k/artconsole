@@ -580,10 +580,13 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
               {invoiceId && (
                 <div>
                   {editingInvoiceQuery.data?.payments && editingInvoiceQuery.data.payments.length > 0 && (
-                    <>
+                    <div className="mt-10">
                       <StyledDivider lineColor="soft" >Payments</StyledDivider>
-                      <InvoicePaymentsTable payments={editingInvoiceQuery.data?.payments || []} />
-                    </>
+                      <InvoicePaymentsTable
+                        payments={editingInvoiceQuery.data?.payments || []}
+                        onUpdate={() => editingInvoiceQuery.refetch()}
+                      />
+                    </div>
                   )}
                   <div className="flex justify-end mt-3">
                     <Button onClick={() => setShowPaymentModal(true)}>
