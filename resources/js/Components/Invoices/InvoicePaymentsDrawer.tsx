@@ -31,8 +31,11 @@ function InvoicePaymentsDrawer({ show, onClose, invoice }: Props) {
           payments={invoice.payments || []}
           onUpdate={() => router.reload()}
         />
-        <div className="flex justify-end mt-3">
-          <Button onClick={() => setOpenPaymentModal(true)}>
+        <div className="flex justify-center mt-10">
+          <Button
+            type="primary"
+            onClick={() => setOpenPaymentModal(true)}
+          >
             Record a Payment
           </Button>
         </div>
