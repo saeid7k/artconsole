@@ -29,5 +29,12 @@ class InvoiceObserver
     if ($invoice->wasChanged('total') || $invoice->wasChanged('due_date')) {
       $invoiceService->autoUpdateStatus();
     }
+
+    if (
+      $invoice->wasChanged('status')
+      && InvoiceStatus::isSuccessful($invoice->status)
+    ) {
+      $invoiceService->markArtworksAsSold();
+    }
   }
 }

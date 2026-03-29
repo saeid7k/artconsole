@@ -21,6 +21,8 @@ class InvoiceService
       $this->invoice->status = InvoiceStatus::Paid->value;
     } elseif ($amountPaid > 0) {
       $this->invoice->status = InvoiceStatus::PartiallyPaid->value;
+    } else {
+      $this->invoice->status = InvoiceStatus::Draft->value;
     }
 
     // set to overdue if past due date and not fully paid
@@ -32,17 +34,18 @@ class InvoiceService
       $this->invoice->status = InvoiceStatus::Overdue->value;
     }
 
-    $this->markArtworksAsSold();
+    if (
+      $this->invoice->isDirty('status')
+      && InvoiceStatus::isSuccessful($this->invoice->status)
+    ) {
+      $this->markArtworksAsSold();
+    }
     $this->invoice->saveQuietly();
   }
 
-  private function markArtworksAsSold()
+  public function markArtworksAsSold()
   {
-    if (
-      ($this->invoice->isDirty('status') || $this->invoice->wasChanged('status'))
-      && InvoiceStatus::isSuccessful($this->invoice->status)
-      && $this->invoice->gallery->getMeta('auto_change_status_sold')
-    ) {
+    if ($this->invoice->gallery->getMeta('auto_change_status_sold')) {
       $this->invoice->artworks()->update(['status' => 'sold']);
 
       foreach ($this->invoice->artworks as $artwork) {
