@@ -1,15 +1,14 @@
-import { useArtworkShow } from "@/contexts/ArtworkShowContext";
+import { ArtworkProps } from "@/types/artwork";
 import { DocumentProps } from "@/types/document";
 import { downloadFile } from "@/utils/downloadHelper";
 import { PdfIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useMutation } from "@tanstack/react-query";
-import { Button, Divider, Drawer, Tooltip } from "antd";
+import { Button, Divider, Drawer } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import FlexBox from "./Containers/FlexBox";
 import LoadingSpinner from "./LoadingSpinner";
-import { ArtworkProps } from "@/types/artwork";
 
 type Props = {
   artwork: ArtworkProps;
