@@ -3,6 +3,7 @@ import ArtworkStatusTag from '@/Components/Artworks/ArtworkStatusTag';
 import ArtworkTitleStack from '@/Components/Artworks/ArtworkTitleStack';
 import CopyToClipboard from '@/Components/CopyToClipboard';
 import LocationStack from '@/Components/Locations/LocationStack';
+import StyledCurrency from '@/Components/StyledCurrency';
 import { ARTWORK_CATEGORIES } from '@/constants/artworkCategories';
 import ARTWORK_STATUSES from '@/constants/artworkStatuses';
 import { useArtworksIndex } from '@/contexts/ArtworksIndexContext';
@@ -10,18 +11,16 @@ import useFilters from '@/hooks/useFilters';
 import { useWindow } from '@/hooks/useWindow';
 import { PageProps } from '@/types';
 import { ArtworkProps } from '@/types/artwork';
-import { formatCurrency } from '@/utils/formatHelper';
 import { paginate } from '@/utils/paginationHelper';
 import { keyToTitle } from '@/utils/stringHelper';
 import { ViewIcon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Link, router } from '@inertiajs/react';
 import type { TableProps } from 'antd';
-import { Image, Table } from 'antd';
+import { Button, Image, Table, Tooltip } from 'antd';
 import { useState } from 'react';
 import imagePlaceholder from '~/resources/images/image-placeholder.svg';
 import ArtworksActions from './ArtworksActions';
-import StyledCurrency from '@/Components/StyledCurrency';
 
 type LocationsProps = Array<{
   id: number;
@@ -86,7 +85,24 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
       sorter: true,
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
-      render: (_, record) => <ArtworkTitleStack artwork={record as ArtworkProps} showYear={false} showSigned={false} />,
+      render: (_, record) => (
+        <div className="flex items-center justify-between gap-2">
+          <ArtworkTitleStack artwork={record as ArtworkProps} showYear={false} showSigned={false} />
+          <Tooltip
+            title="View Artwork"
+          >
+            <Button
+              variant="text"
+              size="small"
+              shape='circle'
+              color='blue'
+              icon={<HugeiconsIcon icon={ViewIcon} size={20} />}
+              onClick={() => router.get(route('artworks.show', record.id))}
+              className='opacity-0 group-hover:opacity-100'
+            />
+          </Tooltip>
+        </div>
+      ),
       // width: 250,
     },
     {
@@ -186,6 +202,7 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
         }
       }}
       loading={paginationLoading}
+      rowClassName='group'
     />
   )
 }
