@@ -68,7 +68,7 @@ function ArtworkTitleStack({
             'text-body font-semibold',
             titleFontSizeClass[size],
             serifTitle ? 'font-serif' : '',
-            (linkedTitle && !disableLinks) ? '' : 'pointer-events-none'
+            (linkedTitle && !disableLinks) ? 'hover:!text-blue-500' : 'pointer-events-none'
           )}
           href={route('artworks.show', artwork.id)}
         >
