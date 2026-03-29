@@ -29,7 +29,13 @@ function ReportPreviewDrawer({ report, show, onClose }: Props) {
 
   return(
     <Drawer
-      title={<FlexBox>{report.name}<Divider orientation="vertical" /><div className="text-primary">Preview</div></FlexBox>}
+      title={
+        <FlexBox wrapping="wrap" >
+          {report.name}
+          <Divider orientation="vertical" />
+          <div className="text-primary">Preview</div>
+        </FlexBox>
+      }
       placement="right"
       onClose={onClose}
       open={show}
@@ -37,12 +43,12 @@ function ReportPreviewDrawer({ report, show, onClose }: Props) {
       defaultSize={800}
       extra={
         <Button
-          variant="text"
-          shape="circle"
-          color="red"
+          type="primary"
           onClick={handleDownload}
-          icon={<HugeiconsIcon icon={Pdf01Icon} />}
-        />
+          icon={<HugeiconsIcon icon={Pdf01Icon} size={20} />}
+        >
+          Download
+        </Button>
       }
     >
       <iframe

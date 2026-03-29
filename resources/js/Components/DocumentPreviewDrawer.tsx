@@ -53,7 +53,7 @@ function DocumentPreviewDrawer({ artwork, document, show, onClose }: Props) {
 
   const renderTitle = () => {
     return (
-      <FlexBox>
+      <FlexBox wrapping="wrap" >
         {document?.label}
         <Divider orientation="vertical" />
         <div className="text-primary">{artwork?.title}</div>
@@ -63,15 +63,13 @@ function DocumentPreviewDrawer({ artwork, document, show, onClose }: Props) {
 
   const renderToolbar = () => {
     return (
-      <Tooltip title="Download PDF" placement="bottomLeft" >
-        <Button
-          variant="text"
-          color="red"
-          shape="circle"
-          icon={<HugeiconsIcon icon={PdfIcon} />}
-          onClick={handleDownload}
-        />
-      </Tooltip>
+      <Button
+        type="primary"
+        icon={<HugeiconsIcon icon={PdfIcon} size={20} />}
+        onClick={handleDownload}
+      >
+        Download
+      </Button>
     )
   }
 
