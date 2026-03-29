@@ -1,9 +1,9 @@
 import { InvoiceProps } from "@/types/invoice";
-import { CreditCardPosIcon, Delete02Icon, Payment01Icon, Payment02Icon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
+import { Delete02Icon, MoreHorizontalCircle01Icon, Payment01Icon, PdfIcon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
 import { useQuery } from "@tanstack/react-query";
-import { Button, message, Tooltip } from "antd";
+import { Button, Dropdown, Menu, message, Tooltip } from "antd";
 import axios from "axios";
 import { useState } from "react";
 import FlexBox from "../Containers/FlexBox";
@@ -58,16 +58,38 @@ function InvoicesActions({ invoice } : { invoice: InvoiceProps }) {
             onClick={() => setShowPaymentsDrawer(true)}
           />
         </Tooltip>
-        <Tooltip title="Delete">
+        <Tooltip title="Download PDF" placement="topRight">
           <Button
             variant="text"
-            color='danger'
+            color='red'
             shape="circle"
-            icon={<HugeiconsIcon icon={Delete02Icon} size={20} />}
-            onClick={handleDelete}
-            disabled={!user.has_edit_access}
+            icon={<HugeiconsIcon icon={PdfIcon} size={20} />}
+            // onClick={handleDownload}
           />
         </Tooltip>
+        <Dropdown
+          trigger={['click']}
+          popupRender={() =>
+            <Menu
+              items={[
+                {
+                  key: 'delete',
+                  icon: <HugeiconsIcon icon={Delete02Icon} size={16} />,
+                  label: 'Delete Invoice',
+                  onClick: handleDelete,
+                  disabled: !user.has_edit_access
+                },
+              ]}
+            />
+          }
+        >
+          <Button
+            variant="text"
+            color='default'
+            shape="circle"
+            icon={<HugeiconsIcon icon={MoreHorizontalCircle01Icon} size={20} />}
+          />
+        </Dropdown>
       </FlexBox>
 
       {/* Components */}
