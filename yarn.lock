@@ -433,15 +433,15 @@
     "@tanstack/react-virtual" "^3.13.9"
     use-sync-external-store "^1.5.0"
 
-"@hugeicons/core-free-icons@^1.0.14":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@hugeicons/core-free-icons/-/core-free-icons-1.2.1.tgz#c741eaa8bbf1453e9282a64c19a8bbcc8cef5f19"
-  integrity sha512-ho0QdGMkgL+kt+QsZocCsKvJou1rfyVQWARrxIhNLi+9tCKayUUtD9jlHgioaRphmskSl84TxrDm9Ae0G4Uu1g==
+"@hugeicons/core-free-icons@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@hugeicons/core-free-icons/-/core-free-icons-4.0.0.tgz#ff31fde8a3cb6dffc63b1f2bce855f91a139d2d6"
+  integrity sha512-bzfbKumv3ke3ajbe2MyXi9i0I/cdsZ6n/mO9EfIPNSL++pHLqs7nSGRIVUtjF4xrrEyVkfhxssv4Jek8DPA6gA==
 
-"@hugeicons/react@^1.0.5":
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/@hugeicons/react/-/react-1.1.5.tgz#6a3aa1a0e972fb366e7e076e2b68d3a9e79a95e8"
-  integrity sha512-JX/iDz3oO7hWdVqbjwFwRrAjHk8h2vI+mBkNzp4JcXG3t4idoupfjon73nLOA7cr27m0M8hrRC1Q2h6nEBGKVA==
+"@hugeicons/react@^1.1.6":
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/@hugeicons/react/-/react-1.1.6.tgz#18482015b150d8559f0c45a4303286ccb287d9f5"
+  integrity sha512-c2LhXJMAW5wN1pC/smBXG0YPqUON6ceR/ZdXHCjEI9KvB+hjtqYjmzIxok5hAQOeXGz0WtORgCQMzqewFKAZwg==
 
 "@inertiajs/core@2.3.17":
   version "2.3.17"
