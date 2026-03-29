@@ -1,10 +1,12 @@
+import { PENDING_INVOICE_STATUSES } from "@/constants/invoiceStatuses";
 import { useWindow } from "@/hooks/useWindow";
 import { ContactProps } from "@/types/contact";
-import { UsePageProps } from "@/types/usePage";
 import { paginate } from "@/utils/paginationHelper";
-import { usePage } from "@inertiajs/react";
+import { PanelLeftOpen } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Button, Table, TableProps } from "antd";
 import { useState } from "react";
+import { twMerge } from "tailwind-merge";
 import FlexBox from "../Containers/FlexBox";
 import NewTag from "../NewTag";
 import StyledCurrency from "../StyledCurrency";
@@ -12,8 +14,6 @@ import StyledDate from "../StyledDate";
 import InvoiceFormDrawer from "./InvoiceFormDrawer";
 import InvoiceStatusTag from "./InvoiceStatusTag";
 import InvoicesActions from "./InvoicesActions";
-import { PENDING_INVOICE_STATUSES } from "@/constants/invoiceStatuses";
-import { twMerge } from "tailwind-merge";
 
 function InvoiceTable({ invoices }: any) {
 
@@ -57,6 +57,8 @@ function InvoiceTable({ invoices }: any) {
             type="text"
             size="small"
             onClick={() => handleEditInvoice(record.id)}
+            icon={<HugeiconsIcon icon={PanelLeftOpen} size={20} className="text-muted opacity-0 group-hover:!opacity-100 transition" />}
+            iconPlacement="end"
           >
             <code>{record.invoice_number}</code>
           </Button>
@@ -151,6 +153,7 @@ function InvoiceTable({ invoices }: any) {
             sorter,
           })
         }}
+        rowClassName='group'
       />
 
       {/* Components */}
