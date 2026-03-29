@@ -1,6 +1,7 @@
 import { PENDING_INVOICE_STATUSES } from "@/constants/invoiceStatuses";
 import { useWindow } from "@/hooks/useWindow";
 import { ContactProps } from "@/types/contact";
+import { InvoiceProps } from "@/types/invoice";
 import { paginate } from "@/utils/paginationHelper";
 import { PanelLeftOpen } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -12,6 +13,7 @@ import NewTag from "../NewTag";
 import StyledCurrency from "../StyledCurrency";
 import StyledDate from "../StyledDate";
 import InvoiceFormDrawer from "./InvoiceFormDrawer";
+import InvoicePreviewDrawer from "./InvoicePreviewDrawer";
 import InvoiceStatusTag from "./InvoiceStatusTag";
 import InvoicesActions from "./InvoicesActions";
 
@@ -21,6 +23,8 @@ function InvoiceTable({ invoices }: any) {
 
   const [showInvoiceFormDrawer, setShowInvoiceFormDrawer] = useState(false)
   const [editingInvoice, setEditingInvoice] = useState<number | null>(null)
+  const [previewingInvoice, setPreviewingInvoice] = useState<InvoiceProps | null>(null)
+  const [showInvoicePreviewDrawer, setShowInvoicePreviewDrawer] = useState(false)
 
   function handleEditInvoice(invoiceId: number) {
     setEditingInvoice(invoiceId)
@@ -56,7 +60,10 @@ function InvoiceTable({ invoices }: any) {
           <Button
             type="text"
             size="small"
-            onClick={() => handleEditInvoice(record.id)}
+            onClick={() => {
+              setPreviewingInvoice(record)
+              setShowInvoicePreviewDrawer(true)
+            }}
             icon={<HugeiconsIcon icon={PanelLeftOpen} size={20} className="text-muted opacity-0 group-hover:!opacity-100 transition" />}
             iconPlacement="end"
           >
@@ -162,6 +169,12 @@ function InvoiceTable({ invoices }: any) {
         show={showInvoiceFormDrawer}
         onClose={() => handleCloseInvoiceFormDrawer()}
         invoiceId={editingInvoice}
+      />
+
+      <InvoicePreviewDrawer
+        show={showInvoicePreviewDrawer}
+        onClose={() => setShowInvoicePreviewDrawer(false)}
+        invoice={previewingInvoice as InvoiceProps}
       />
     </>
   )
