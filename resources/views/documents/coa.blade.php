@@ -28,16 +28,14 @@
       font-display: swap;
     }
     @font-face {
-      font-family: 'Tangerine';
+      font-family: 'Tangerine Regular';
       src: url("data:font/woff2;base64,{{ $fontTangerineRegularBase64 }}") format('woff2');
-      font-weight: 400;
       font-style: normal;
       font-display: swap;
     }
     @font-face {
-      font-family: 'Tangerine';
+      font-family: 'Tangerine Bold';
       src: url("data:font/woff2;base64,{{ $fontTangerineBoldBase64 }}") format('woff2');
-      font-weight: 700;
       font-style: normal;
       font-display: swap;
     }
@@ -61,7 +59,7 @@
 
     .container {
       position: relative;
-      padding: 0.75in;
+      padding: 1in 0.75in 0.75in;
       width: auto;
       height: 100%;
       box-sizing: border-box;
@@ -75,8 +73,7 @@
       width: max-content;
       text-align: center;
       margin: 0 auto 0.5in;
-      font-family: 'Tangerine';
-      /* text-transform: uppercase; */
+      font-family: 'Tangerine Regular';
     }
 
     .description {
@@ -133,8 +130,8 @@
   <div class="wrapper">
     <div class="container">
       <div class="header">
-        <h1 style="margin-bottom: 0.25in; font-size:48pt;">Certificate of Authenticity</h1>
-        <h3 style="margin: 0; font-size: 24pt;">of Original Artwork</h3>
+        <div style="margin-bottom: 0.25in; font-size:48pt;">Certificate of Authenticity</div>
+        <div style="margin: 0; font-size: 24pt;">of Original Artwork</div>
       </div>
       <div class="description">
         This is to certify that the artwork identified herein is an original and authentic work of art. The artist reserves all copyright and reproduction rights.
