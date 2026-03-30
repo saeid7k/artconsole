@@ -2,10 +2,10 @@ import { InvoiceProps } from "@/types/invoice";
 import { downloadFile } from "@/utils/downloadHelper";
 import { PdfIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Button, Divider, Drawer } from "antd";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import FlexBox from "../Containers/FlexBox";
 import LoadingSpinner from "../LoadingSpinner";
 
@@ -17,39 +17,38 @@ type Props = {
 
 function InvoicePreviewDrawer({ invoice, show, onClose }: Props) {
 
-  const [htmlContent, setHtmlContent] = useState<string | null>(null);
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
-  const renderMutation = useMutation({
-    mutationFn: () => axios.post(route('invoices.render', { invoice: invoice?.id })),
-    onSuccess: (res: any) => {
-      setHtmlContent(res.data);
-    },
-    onError: (err: any) => {
-    }
+  const renderQuery = useQuery({
+    queryKey: ['invoices', 'render', invoice?.id],
+    queryFn: () => axios.get(route('invoices.download', { invoice: invoice?.id }), { responseType: 'blob' })
+      .then(res => {
+        let url = URL.createObjectURL(new Blob([res.data], { type: 'application/pdf' }));
+        setPdfUrl(url);
+        return res.data;
+      }),
+    enabled: show && !!invoice,
   });
 
   function handleDownload() {
-    if (!invoice) return;
+    if (!pdfUrl) return;
     downloadFile({
-      url: route('invoices.download', { invoice: invoice?.id }),
+      url: pdfUrl,
       fileName: `Invoice - ${invoice?.invoice_number}.pdf`
     })
   }
 
-  useEffect(() => {
-    if (show && invoice) {
-      renderMutation.mutate();
-    } else {
-      setHtmlContent(null);
-    }
-  }, [show, invoice]);
+  function handleClose() {
+    setPdfUrl(null);
+    onClose();
+  }
 
   // Renders
 
   const renderTitle = () => {
     return (
       <FlexBox wrapping="wrap" >
-        <div>Invoice</div>
+        <div>Invoice Preview</div>
         <Divider orientation="vertical" />
         <div className="text-primary">{invoice?.invoice_number}</div>
       </FlexBox>
@@ -71,20 +70,20 @@ function InvoicePreviewDrawer({ invoice, show, onClose }: Props) {
   return (
     <Drawer
       open={show}
-      onClose={onClose}
+      onClose={handleClose}
       title={renderTitle()}
       extra={renderToolbar()}
       resizable
-      defaultSize={1280}
+      defaultSize={1024}
     >
-      {renderMutation.isPending && (
+      {renderQuery.isFetching && (
         <LoadingSpinner size="large" className="py-20" />
       )}
-      {(invoice && htmlContent) && (
-        <div
-          dangerouslySetInnerHTML={{ __html: htmlContent || '' }}
-          className="scale-75 xl:scale-90 origin-top-left"
-        ></div>
+      {(invoice && pdfUrl) && (
+        <iframe
+          src={pdfUrl || ''}
+          className="w-full h-[80vh] border"
+        ></iframe>
       )}
     </Drawer>
   );

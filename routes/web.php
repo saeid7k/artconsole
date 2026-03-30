@@ -147,6 +147,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/{invoice}/delete', [App\Http\Controllers\InvoiceController::class, 'destroy'])->name('delete');
     Route::put('/{invoice}/change-status', [App\Http\Controllers\InvoiceController::class, 'changeStatus'])->name('change-status');
     Route::get('/get-customers', [App\Http\Controllers\InvoiceController::class, 'getInvoiceCustomers'])->name('get-customers');
+    Route::get('/{invoice}/render', [App\Http\Controllers\InvoiceController::class, 'render'])->name('render');
+    Route::get('/{invoice}/download', [App\Http\Controllers\InvoiceController::class, 'download'])->name('download');
   });
 
   Route::prefix('payments')->name('payments.')->group(function () {
