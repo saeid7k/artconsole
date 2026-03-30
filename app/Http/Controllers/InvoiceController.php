@@ -7,6 +7,9 @@ use App\Http\Requests\InvoiceRequest;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Spatie\LaravelPdf\Enums\Format;
+
+use function Spatie\LaravelPdf\Support\pdf;
 
 class InvoiceController extends Controller
 {
@@ -158,5 +161,23 @@ class InvoiceController extends Controller
       ->get();
 
     return response()->json($contacts);
+  }
+
+  public function download(Invoice $invoice)
+  {
+    $this->authorize('view', $invoice);
+
+    $invoice->load('items.artwork', 'contact');
+
+    $pdf = pdf()
+      ->view('Invoices/invoice', [
+        'invoice' => $invoice,
+      ])
+      ->headerView('Invoices/invoice-header', ['invoice' => $invoice])
+      ->margins(1, 0.5, 1, 0.5, 'in')
+      ->format(Format::Letter)
+      ->portrait();
+
+    return $pdf;
   }
 }
