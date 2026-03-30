@@ -13,6 +13,11 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
+  server: {
+    watch: {
+      ignored: ['**/*.php'],
+    },
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'resources/js'),
