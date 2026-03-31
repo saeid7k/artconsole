@@ -148,13 +148,13 @@ function General() {
               onChange={handleChangeLogo}
               customRequest={() => {}}
             >
-              {gallery?.logo ? (
-                <img draggable={false} src={gallery.logo} alt="avatar" style={{ width: '100%' }} />
+              {gallery?.logo_url ? (
+                <img draggable={false} src={gallery.logo_url} alt="avatar" style={{ width: '100%' }} />
               ) : (
                 uploadButton
               )}
             </Upload>
-            {gallery?.logo && (
+            {gallery?.logo_url && (
               <div>
                 <Tooltip title="Remove Logo">
                   <Button

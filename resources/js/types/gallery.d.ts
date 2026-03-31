@@ -25,7 +25,7 @@ export interface GalleryProps {
     manage_members: boolean;
   };
   members_count?: number;
-  logo?: string | null;
+  logo_url?: string | null;
   formatted_address?: string | null;
   meta?: { [key: string]: any };
   currency: string;
