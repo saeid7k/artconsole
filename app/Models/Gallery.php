@@ -31,7 +31,7 @@ class Gallery extends Model implements HasMedia
 
   // Appends
 
-  protected $appends = [ 'abilities', 'members_count', 'logo', 'formatted_address', 'meta', 'currency', 'invoice_prefix' ];
+  protected $appends = [ 'abilities', 'members_count', 'logo_url', 'formatted_address', 'meta', 'currency', 'invoice_prefix' ];
 
   public function getAbilitiesAttribute()
   {
@@ -47,9 +47,9 @@ class Gallery extends Model implements HasMedia
     return $this->members()->count();
   }
 
-  public function getLogoAttribute(): ?string
+  public function getLogoUrlAttribute(): ?string
   {
-    $media = $this->getLastMedia('gallery-logo');
+    $media = $this->logo();
     return $media ? $media->getUrl() : null;
   }
 
@@ -89,7 +89,11 @@ class Gallery extends Model implements HasMedia
     );
   }
 
-  // Relationships
+  /*
+  |=======================================================
+  | Relationships
+  |=======================================================
+  */
 
   public function owner()
   {
@@ -152,7 +156,16 @@ class Gallery extends Model implements HasMedia
     return $this->hasMany(Invoice::class);
   }
 
-  // Methods
+  /*
+  |=======================================================
+  | Methods
+  |=======================================================
+  */
+
+  public function logo()
+  {
+    return $this->getLastMedia('gallery-logo');
+  }
 
   public function isMember(User $user)
   {

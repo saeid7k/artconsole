@@ -17,7 +17,7 @@ function GalleryAvatar({ gallery, size = 'default', shape = 'square', shadow, bo
 
   return (
     <Avatar
-      src={gallery?.logo}
+      src={gallery?.logo_url}
       shape={shape}
       size={size}
       className={twMerge(
