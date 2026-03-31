@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\InvoiceStatus;
+use App\Helpers\AddressHelper;
 use App\Http\Requests\InvoiceRequest;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
@@ -168,13 +169,16 @@ class InvoiceController extends Controller
     $this->authorize('view', $invoice);
 
     $invoice->load('items.artwork', 'contact');
+    $galleryLogo = $invoice->gallery->logo()->base64Content();
+    $gallery = $invoice->gallery;
+    $gallery->formatted_address_two_line = AddressHelper::formatAddress($gallery->address, 2);
 
     $pdf = pdf()
       ->view('Invoices/invoice', [
         'invoice' => $invoice,
       ])
-      ->headerView('Invoices/invoice-header', ['invoice' => $invoice])
-      ->margins(1, 0.5, 1, 0.5, 'in')
+      ->headerView('Invoices/invoice-header', ['invoice' => $invoice, 'gallery' => $gallery, 'galleryLogo' => $galleryLogo])
+      ->margins(2.25, 0, 1, 0, 'in')
       ->format(Format::Letter)
       ->portrait();
 
