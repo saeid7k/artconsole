@@ -14,7 +14,7 @@ class AddressHelper
     return array_keys($provincesData['Canada']['provinces']);
   }
 
-  public static function formatAddress($address): string
+  public static function formatAddress($address, int $lines = 1): string
   {
     if (!$address || empty((array) $address)) {
       return '';
@@ -32,7 +32,12 @@ class AddressHelper
     $country = property_exists($address, 'country') ? $address->country : null;
 
     $formatted = $unit ? $street . ' - ' . $unit : $street;
-    $formatted .= $city ? ', ' . $city : '';
+    if ($lines == 2) {
+      $formatted .= "\n";
+    } else {
+      $formatted .= ', ';
+    }
+    $formatted .= $city ? $city : '';
     $formatted .= $province ? ', ' . $province : '';
     $formatted .= $postal_code ? ' ' . self::formatPostalCode($postal_code) : '';
     $formatted .= $country ? ', ' . $country : '';
