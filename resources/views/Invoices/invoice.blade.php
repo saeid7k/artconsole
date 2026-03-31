@@ -16,7 +16,7 @@
       font-family: 'Segoe UI', sans-serif;
       line-height: 1.5em;
       box-sizing: border-box;
-      padding: 0.5in;
+      padding: 0 0.5in;
     }
 
     .header {
@@ -33,7 +33,7 @@
 
 <body>
   <div class="wrapper border">
-    <div style="background-color: #ccc;">
+    <div>
       body
     </div>
   </div>
