@@ -172,13 +172,14 @@ class InvoiceController extends Controller
     $galleryLogo = $invoice->gallery->logo()->base64Content();
     $gallery = $invoice->gallery;
     $gallery->formatted_address_two_line = AddressHelper::formatAddress($gallery->address, 2);
+    $invoice->contact->formatted_address_two_line = AddressHelper::formatAddress($invoice->contact->address, 2);
 
     $pdf = pdf()
       ->view('Invoices/invoice', [
         'invoice' => $invoice,
       ])
       ->headerView('Invoices/invoice-header', ['invoice' => $invoice, 'gallery' => $gallery, 'galleryLogo' => $galleryLogo])
-      ->margins(2.25, 0, 1, 0, 'in')
+      ->margins(5, 0, 1, 0, 'in')
       ->format(Format::Letter)
       ->portrait();
 
