@@ -64,15 +64,21 @@ class DemoSeeder extends Seeder
     }
 
     $this->firstGallery = Gallery::first();
-    $this->firstGallery->address = [
-      'unit' => $this->faker->secondaryAddress,
-      'street' => $this->faker->streetAddress,
-      'city' => 'Toronto',
-      'province' => 'ON',
-      'postal_code' => str_replace([' ', '-'], '', $this->faker->postcode),
-      'country' => 'Canada',
-    ];
-    $this->firstGallery->save();
+    $this->firstGallery->update([
+      'address' => [
+        'unit' => $this->faker->secondaryAddress,
+        'street' => $this->faker->streetAddress,
+        'city' => 'Toronto',
+        'province' => 'ON',
+        'postal_code' => str_replace([' ', '-'], '', $this->faker->postcode),
+        'country' => 'Canada',
+      ],
+      'about' => $this->faker->paragraph,
+      'country_code' => '+1',
+      'phone' => $this->faker->numerify('437#######'),
+      'website' => $this->faker->domainName,
+      'email' => $this->faker->unique()->safeEmail,
+    ]);
 
     $this->command->info('✅' . ' Admin user created: ' . env('ADMIN_EMAIL', 'admin@example.com') . ' / 12345678');
   }
