@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Number;
+
 class FormatHelper
 {
   public static function toFloat(string|null $value): float|null
@@ -67,5 +69,10 @@ class FormatHelper
     }
 
     return $countryCode.' '.$phone;
+  }
+
+  public static function formatCurrency($amount, $currency = 'USD'): string
+  {
+    return Number::currency($amount, in: $currency == 'CAD' ? 'USD' : $currency);
   }
 }
