@@ -1,3 +1,4 @@
+import { FORM_RULES } from "@/constants/formRules";
 import { LOCATION_TYPES } from "@/constants/locationTypes";
 import { LocationProps } from "@/types/location";
 import { Cancel01Icon } from "@hugeicons/core-free-icons";
@@ -5,9 +6,8 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { router } from "@inertiajs/react";
 import { Checkbox, Divider, Form, Input, message, Modal, Select } from "antd";
 import axios from "axios";
-import AddressFields from "../Fields/AddressFields";
+import AddressFields from "../FormFields/AddressFields";
 import StyledDivider from "../StyledDivider";
-import { FORM_RULES } from "@/constants/formRules";
 
 type Props = {
   open: boolean;

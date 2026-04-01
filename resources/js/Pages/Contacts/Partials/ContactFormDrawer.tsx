@@ -1,10 +1,10 @@
-import AddressFields from "@/Components/Fields/AddressFields";
+import AddressFields from "@/Components/FormFields/AddressFields";
 import COUNTRIES from "@/constants/countries.json";
 import { FORM_RULES } from "@/constants/formRules";
 import RELATIONSHIPS from "@/constants/relationships";
 import { ContactProps } from "@/types/contact";
 import { router } from "@inertiajs/react";
-import { Button, Checkbox, DatePicker, Divider, Drawer, Form, Input, message, Select, Tabs } from "antd";
+import { Button, Checkbox, DatePicker, Divider, Drawer, Form, Input, message, Tabs } from "antd";
 import axios from "axios";
 import dayjs from "dayjs";
 

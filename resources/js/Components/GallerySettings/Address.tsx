@@ -1,12 +1,12 @@
 import { useGallerySettings } from "@/contexts/GallerySettingsContext"
+import { formatAddress } from "@/utils/addressHelper"
 import { router } from "@inertiajs/react"
 import { Form, message } from "antd"
 import axios from "axios"
 import { useEffect, useRef, useState } from "react"
 import ActionFooter from "../ActionFooter"
-import AddressFields from "../Fields/AddressFields"
+import AddressFields from "../FormFields/AddressFields"
 import GoogleMap from "../GoogleMap"
-import { formatAddress } from "@/utils/addressHelper"
 
 function Address() {
 
