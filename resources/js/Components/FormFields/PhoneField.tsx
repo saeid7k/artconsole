@@ -5,8 +5,8 @@ import { Form, Input, Select, Space } from "antd";
 type Props = {
   form: ReturnType<typeof Form.useForm>[0];
   fieldNames?: {
-    country_code: string;
-    phone: string;
+    country_code: string | string[];
+    phone: string | string[];
   }
 }
 
@@ -17,7 +17,8 @@ const defaultFieldNames = {
 
 function PhoneField({ form, fieldNames = defaultFieldNames }: Props) {
 
-  const watchForm = Form.useWatch(undefined, form);
+  const watchCountryCode = Form.useWatch(fieldNames.country_code, form);
+  const watchPhone = Form.useWatch(fieldNames.phone, form);
 
   return (
     <Form.Item
@@ -51,12 +52,12 @@ function PhoneField({ form, fieldNames = defaultFieldNames }: Props) {
               width: 'max-content',
             }}
             onChange={(value) => { form.setFieldValue(fieldNames.country_code, value) }}
-            value={watchForm?.[fieldNames.country_code] || '+1'}
+            value={watchCountryCode || '+1'}
           />
         </Form.Item>
         <Input
           placeholder="Enter phone number"
-          value={watchForm?.[fieldNames.phone]}
+          value={watchPhone}
         />
       </Space.Compact>
     </Form.Item>
