@@ -16,19 +16,15 @@ class GalleryController extends Controller
       'logo' => 'nullable|image|max:10240',
       'name' => 'required|string|max:255',
       'about' => 'nullable|string|max:1000',
-      'website' => 'nullable|string|max:255',
-      'email' => 'nullable|email|max:255',
+      'country_code' => 'nullable|string|max:10',
+      'phone' => 'nullable|string|max:20',
+      'website' => 'nullable|string|max:100',
+      'email' => 'nullable|email|max:100',
     ]);
 
     $user = $request->user();
 
-    $gallery = Gallery::create([
-      'user_id' => $user->id,
-      'name' => $request->input('name'),
-      'about' => $request->input('about'),
-      'website' => $request->input('website'),
-      'email' => $request->input('email'),
-    ]);
+    $gallery = Gallery::create($request->all() + ['user_id' => $user->id]);
 
     $gallery->addMediaFromRequest('logo')
       ->toMediaCollection('gallery-logo');
@@ -83,8 +79,10 @@ class GalleryController extends Controller
     $request->validate([
       'name' => 'required|string|max:255',
       'about' => 'nullable|string|max:1000',
-      'website' => 'nullable|string|max:255',
-      'email' => 'nullable|email|max:255',
+      'country_code' => 'nullable|string|max:10',
+      'phone' => 'nullable|string|max:20',
+      'website' => 'nullable|string|max:100',
+      'email' => 'nullable|email|max:100',
     ]);
 
     $gallery->update($request->all());

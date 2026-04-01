@@ -15,11 +15,13 @@ return new class extends Migration
     Schema::create('galleries', function (Blueprint $table) {
       $table->id();
       $table->foreignIdFor(User::class)->nullable()->constrained()->nullOnDelete();
-      $table->string('name');
+      $table->string('name', 255);
       $table->text('about')->nullable();
       $table->json('address')->nullable();
-      $table->string('website')->nullable();
-      $table->string('email')->nullable();
+      $table->string('country_code', 10)->nullable();
+      $table->string('phone', 20)->nullable();
+      $table->string('website', 100)->nullable();
+      $table->string('email', 100)->nullable();
       $table->timestamps();
     });
   }
