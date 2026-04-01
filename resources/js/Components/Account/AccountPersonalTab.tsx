@@ -6,7 +6,7 @@ import { Button, Divider, Form, Input, message } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import FlexBox from "../Containers/FlexBox";
-import AddressFields from "../Fields/AddressFields";
+import AddressFields from "../FormFields/AddressFields";
 
 function AccountPersonalTab() {
 
