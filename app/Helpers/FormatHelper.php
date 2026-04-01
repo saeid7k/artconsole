@@ -63,9 +63,9 @@ class FormatHelper
     $digits = preg_replace('/\D+/', '', $phone);
 
     if (strlen($digits) === 10 && $countryCode === '+1') {
-      return '('.substr($digits, 0, 3).') '.substr($digits, 3, 3).'-'.substr($digits, 6);
+      return $countryCode.' ('.substr($digits, 0, 3).') '.substr($digits, 3, 3).'-'.substr($digits, 6);
     }
 
-    return $phone;
+    return $countryCode.' '.$phone;
   }
 }

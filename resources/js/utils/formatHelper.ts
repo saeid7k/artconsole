@@ -56,10 +56,10 @@ function formatPhoneNumber(phoneNumber: string, countryCode: string = '+1'): str
     const part_1 = normalized.slice(0, 3);
     const part_2 = normalized.slice(3, 6);
     const part_3 = normalized.slice(6);
-    return `(${part_1}) ${part_2}-${part_3}`;
+    return `${countryCode} (${part_1}) ${part_2}-${part_3}`;
   }
 
-  return phoneNumber; // Return the original input if it doesn't match the expected format
+  return `${countryCode} ${phoneNumber}`;
 }
 
 function trimWebsite(website: string): string {
