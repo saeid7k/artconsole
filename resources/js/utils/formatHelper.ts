@@ -46,20 +46,17 @@ function formatByKey(key: string, value: any, galleryMeta?: any): any {
   }
 }
 
-function formatPhoneNumber(phoneNumber: string): string {
+function formatPhoneNumber(phoneNumber: string, countryCode: string = '+1'): string {
   if (!phoneNumber) return '';
 
-  // Remove all non-numeric characters
   const cleaned = phoneNumber.replace(/\D/g, '');
-
-  // remove leading 1 if present
   const normalized = cleaned.length === 11 && cleaned.startsWith('1') ? cleaned.slice(1) : cleaned;
 
-  // Check if the input is of correct length
-  const match = normalized.match(/^(\d{3})(\d{3})(\d{4})$/);
-
-  if (match) {
-    return `(${match[1]}) ${match[2]}-${match[3]}`;
+  if (normalized.length === 10 && countryCode === '+1') {
+    const part_1 = normalized.slice(0, 3);
+    const part_2 = normalized.slice(3, 6);
+    const part_3 = normalized.slice(6);
+    return `(${part_1}) ${part_2}-${part_3}`;
   }
 
   return phoneNumber; // Return the original input if it doesn't match the expected format
