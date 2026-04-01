@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Gallery;
 use App\Models\Media;
+use App\Rules\Phone;
 use Illuminate\Http\Request;
 
 class GalleryController extends Controller
@@ -17,7 +18,7 @@ class GalleryController extends Controller
       'name' => 'required|string|max:255',
       'about' => 'nullable|string|max:1000',
       'country_code' => 'nullable|string|max:10',
-      'phone' => 'nullable|string|max:20',
+      'phone' => ['nullable', new Phone()],
       'website' => 'nullable|string|max:100',
       'email' => 'nullable|email|max:100',
     ]);
@@ -80,7 +81,7 @@ class GalleryController extends Controller
       'name' => 'required|string|max:255',
       'about' => 'nullable|string|max:1000',
       'country_code' => 'nullable|string|max:10',
-      'phone' => 'nullable|string|max:20',
+      'phone' => ['nullable', new Phone()],
       'website' => 'nullable|string|max:100',
       'email' => 'nullable|email|max:100',
     ]);
