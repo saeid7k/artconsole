@@ -16,6 +16,7 @@ class ContactFactory extends Factory
       'firstname' => $this->faker->firstName,
       'lastname' => $this->faker->lastName,
       'email' => $this->faker->unique()->safeEmail,
+      'country_code' => '+1',
       'phone' => $this->faker->numerify(mt_rand(2,9) . str_repeat('#', 9)),
       'address' => [
         'unit' => $this->faker->secondaryAddress,
@@ -38,6 +39,7 @@ class ContactFactory extends Factory
           'postal_code' => str_replace([' ', '-'], '', $this->faker->postcode),
           'country' => 'Canada',
         ],
+        'country_code' => '+1',
         'phone' => $this->faker->numerify(mt_rand(2,9) . str_repeat('#', 9)),
         'email' => $this->faker->companyEmail,
         'website' => str_replace('www.', '', parse_url($this->faker->url, PHP_URL_HOST)),
