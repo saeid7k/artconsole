@@ -1,6 +1,8 @@
 import LogoBox from '@/Components/LogoBox';
 import ServerFlashMessage from '@/Components/ServerFlashMessage';
 import colors from '@/Themes/theme';
+import { oklchToHex } from '@/utils/colorHelper';
+import { StyleProvider } from '@ant-design/cssinjs';
 import { Link } from '@inertiajs/react';
 import { Card, ConfigProvider } from 'antd';
 import { PropsWithChildren } from 'react';
@@ -24,24 +26,22 @@ function Guest({ children }: PropsWithChildren) {
 
 export default function GuestLayout({ children }: PropsWithChildren) {
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          // Seed Token
-          colorBgLayout: colors.white,
-          colorPrimary: colors.purple['500'],
-          colorTextSecondary: colors.gray['500'],
-          colorTextLabel: colors.gray['300'],
-
-          // Alias Token
-          // colorBgContainer: '#f6ffed',
-        },
-      }}
-    >
-      <Guest>
-        {children}
-      </Guest>
-      <ServerFlashMessage />
-    </ConfigProvider>
+    <StyleProvider layer >
+      <ConfigProvider
+        theme={{
+          token: {
+            colorBgLayout: colors.white,
+            colorPrimary: colors.primary['500'],
+            colorTextSecondary: oklchToHex(colors.gray['500']),
+            colorTextLabel: oklchToHex(colors.gray['300']),
+          },
+        }}
+      >
+        <Guest>
+          {children}
+        </Guest>
+        <ServerFlashMessage />
+      </ConfigProvider>
+    </StyleProvider>
   )
 }
