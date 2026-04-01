@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Helpers\AddressHelper;
+use App\Helpers\FormatHelper;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,10 +23,11 @@ class Contact extends Model implements HasMedia
     'gallery_id',
     'firstname',
     'lastname',
-    'email',
-    'phone',
     'address',
+    'country_code',
+    'phone',
     'website',
+    'email',
     'relationship',
     'business',
     'birthday',
@@ -44,7 +47,7 @@ class Contact extends Model implements HasMedia
   |=======================================================
   */
 
-  protected $appends = ['abilities', 'full_name', 'formatted_address', 'business_formatted_address', 'photo'];
+  protected $appends = ['abilities', 'full_name', 'formatted_address', 'business_formatted_address', 'photo', 'formatted_phone_number'];
 
   public function getAbilitiesAttribute(): array
   {
@@ -74,6 +77,22 @@ class Contact extends Model implements HasMedia
   {
     $media = $this->getLastMedia('contact-photo');
     return $media ? $media->getUrl() : null;
+  }
+
+  public function phone(): Attribute
+  {
+    return Attribute::make(
+      get: fn ($value) => $value,
+      set: function ($value) {
+        $cleanedValue = preg_replace('/[^0-9+]/', '', $value);
+        return $cleanedValue;
+      }
+    );
+  }
+
+  public function getFormattedPhoneNumberAttribute(): string
+  {
+    return FormatHelper::formatPhoneNumber($this->phone, $this->country_code);
   }
 
   /*

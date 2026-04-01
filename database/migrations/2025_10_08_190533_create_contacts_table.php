@@ -17,10 +17,11 @@ return new class extends Migration
       $table->foreignId('gallery_id')->constrained()->cascadeOnDelete();
       $table->string('firstname')->nullable();
       $table->string('lastname')->nullable();
-      $table->string('email')->nullable();
-      $table->string('phone')->nullable();
       $table->json('address')->nullable();
-      $table->string('website')->nullable();
+      $table->string('country_code', 10)->nullable();
+      $table->string('phone', 20)->nullable();
+      $table->string('website', 100)->nullable();
+      $table->string('email', 100)->nullable();
       $table->json('relationship')->nullable();
       $table->json('business')->nullable();
       $table->date('birthday')->nullable();

@@ -17,7 +17,9 @@ class ContactStoreUpdateRequest extends FormRequest
     return [
       'firstname' => ['required', 'string', 'max:255'],
       'lastname' => ['nullable', 'string', 'max:255'],
-      'email' => ['nullable', 'string', 'email', 'max:255'],
+      'email' => ['nullable', 'string', 'email', 'max:100'],
+      'website' => ['nullable', 'string', 'url', 'max:100'],
+      'country_code' => ['nullable', 'string', 'max:10'],
       'phone' => ['nullable', new Phone()],
       'relationship' => ['nullable', 'array'],
       // 'address' => ['nullable'],

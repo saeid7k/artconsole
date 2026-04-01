@@ -6,6 +6,7 @@ use App\Helpers\DataHelper;
 use App\Http\Requests\ContactStoreUpdateRequest;
 use App\Models\Contact;
 use App\Models\Media;
+use App\Rules\Phone;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
@@ -87,10 +88,11 @@ class ContactController extends Controller
       'name' => ['required_without_all:firstname,lastname', 'string', 'max:255'],
       'firstname' => ['required_without_all:name,lastname', 'string', 'max:255'],
       'lastname' => ['required_without_all:name,firstname', 'string', 'max:255'],
-      'email' => ['nullable', 'email', 'max:255'],
-      'phone' => ['nullable', 'string', 'max:50'],
+      'email' => ['nullable', 'email', 'max:100'],
+      'country_code' => ['nullable', 'string', 'max:10'],
+      'phone' => ['nullable', new Phone()],
       'address' => ['nullable', 'array'],
-      'website' => ['nullable', 'url', 'max:255'],
+      'website' => ['nullable', 'url', 'max:100'],
       'relationship' => ['nullable', 'array'],
       'business' => ['nullable', 'array'],
       'birthday' => ['nullable', 'date'],
