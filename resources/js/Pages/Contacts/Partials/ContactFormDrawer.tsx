@@ -1,6 +1,5 @@
 import AddressFields from "@/Components/FormFields/AddressFields";
-import COUNTRIES from "@/constants/countries.json";
-import { FORM_RULES } from "@/constants/formRules";
+import PhoneField from "@/Components/FormFields/PhoneField";
 import RELATIONSHIPS from "@/constants/relationships";
 import { ContactProps } from "@/types/contact";
 import { router } from "@inertiajs/react";
@@ -80,7 +79,7 @@ function ContactFormDrawer({ mode = 'create', contact = null, show, onClose }: P
       >
         <Tabs defaultActiveKey="personal" type="card" >
           <Tabs.TabPane tab="Personal" key="personal">
-            <div className="sm:flex gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Form.Item
                 label="First Name"
                 name="firstname"
@@ -88,7 +87,6 @@ function ContactFormDrawer({ mode = 'create', contact = null, show, onClose }: P
                   { required: true, message: 'First Name is required' },
                   { max: 255, message: 'First Name cannot exceed 255 characters' }
                 ]}
-                className="sm:w-1/2"
               >
                 <Input />
               </Form.Item>
@@ -98,29 +96,18 @@ function ContactFormDrawer({ mode = 'create', contact = null, show, onClose }: P
                 rules={[
                   { max: 255, message: 'Last Name cannot exceed 255 characters' }
                 ]}
-                className="sm:w-1/2"
               >
                 <Input />
               </Form.Item>
             </div>
-            <div className="sm:flex gap-4">
-              <Form.Item
-                name="phone"
-                label="Phone"
-                rules={FORM_RULES.phone}
-                className="sm:w-1/2"
-              >
-                <Input
-                  addonBefore={COUNTRIES.find(country => country.name === watchCountry)?.dialCode}
-                />
-              </Form.Item>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <PhoneField form={form} />
               <Form.Item
                 name="email"
                 label="Email"
                 rules={[
                   { type: 'email', message: 'Email is not valid' },
                 ]}
-                className="sm:w-1/2"
               >
                 <Input />
               </Form.Item>
@@ -170,16 +157,13 @@ function ContactFormDrawer({ mode = 'create', contact = null, show, onClose }: P
               </Form.Item>
             </div>
             <div className="sm:flex gap-4">
-              <Form.Item
-                name={['business', 'phone']}
-                label="Business Phone"
-                rules={FORM_RULES.phone}
-                className="sm:w-1/3"
-              >
-                <Input
-                  addonBefore={COUNTRIES.find(country => country.name === watchBusinessCountry)?.dialCode}
-                />
-              </Form.Item>
+              <PhoneField
+                form={form}
+                fieldNames={{
+                  country_code: ['business', 'country_code'],
+                  phone: ['business', 'phone']
+                }}
+              />
               <Form.Item
                 name={['business', 'email']}
                 label="Business Email"
@@ -194,7 +178,7 @@ function ContactFormDrawer({ mode = 'create', contact = null, show, onClose }: P
                 name={['business', 'website']}
                 label="Business Website"
                 rules={[
-                  { type: 'url', message: 'Website is not valid' },
+                  { max: 100, message: 'Website cannot exceed 100 characters' },
                 ]}
                 className="sm:w-1/3"
               >
