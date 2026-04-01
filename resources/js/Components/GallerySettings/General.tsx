@@ -1,16 +1,15 @@
-import COUNTRIES from "@/constants/countries.json"
-import { FORM_RULES } from "@/constants/formRules"
 import { useGallerySettings } from "@/contexts/GallerySettingsContext"
 import { trimWebsite } from "@/utils/formatHelper"
 import { Add01Icon, Delete02Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router } from "@inertiajs/react"
-import { Button, Form, GetProp, Input, message, Select, Space, Tooltip, Upload, UploadProps } from "antd"
+import { Button, Form, GetProp, Input, message, Tooltip, Upload, UploadProps } from "antd"
 import { useWatch } from "antd/es/form/Form"
 import TextArea from "antd/es/input/TextArea"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import ActionFooter from "../ActionFooter"
+import PhoneField from "../FormFields/PhoneField"
 import LoadingSpinner from "../LoadingSpinner"
 
 function General() {
@@ -194,46 +193,7 @@ function General() {
           />
         </Form.Item>
 
-        <Form.Item
-          label="Phone"
-          name="phone"
-          normalize={(value) => (value ? value.replace(/\D/g, '') : '')}
-          rules={FORM_RULES.phone}
-        >
-          <Space.Compact
-            className="w-full"
-          >
-            <Form.Item
-              name="country_code"
-              noStyle
-            >
-              <Select
-                defaultValue="+1"
-                options={
-                  COUNTRIES.map((country) => ({
-                    key: country.iso,
-                    label: `${country.name} (${country.dialCode})`,
-                    value: country.dialCode,
-                  }))
-                }
-                showSearch={{
-                  optionFilterProp: 'label',
-                }}
-                labelRender={(option) => option.value}
-                popupMatchSelectWidth={false}
-                style={{
-                  width: 'max-content',
-                }}
-                onChange={(value) => { form.setFieldValue('country_code', value) }}
-                value={watchForm?.country_code || '+1'}
-              />
-            </Form.Item>
-            <Input
-              placeholder="Enter phone number"
-              value={watchForm?.phone}
-            />
-          </Space.Compact>
-        </Form.Item>
+        <PhoneField form={form} />
 
         <Form.Item
           label="Website"
