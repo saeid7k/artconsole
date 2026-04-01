@@ -32,6 +32,7 @@ class ContactStoreUpdateRequest extends FormRequest
       // 'business' => ['nullable'],
       'business.name' => ['nullable', 'string', 'max:255'],
       'business.title' => ['nullable', 'string', 'max:255'],
+      'business.country_code' => ['nullable', 'string', 'max:10'],
       'business.phone' => ['nullable', new Phone()],
       'business.email' => ['nullable', 'string', 'email', 'max:255'],
       'business.website' => ['nullable', 'string', 'max:255'],
