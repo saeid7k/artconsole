@@ -177,9 +177,10 @@ class InvoiceController extends Controller
     $pdf = pdf()
       ->view('Invoices/invoice', [
         'invoice' => $invoice,
+        'gallery' => $gallery,
       ])
       ->headerView('Invoices/invoice-header', ['invoice' => $invoice, 'gallery' => $gallery, 'galleryLogo' => $galleryLogo])
-      ->margins(5, 0, 1, 0, 'in')
+      ->margins(3.5, 0, 1, 0, 'in')
       ->format(Format::Letter)
       ->portrait();
 
