@@ -3,6 +3,9 @@
   $fontTangerineRegularBase64 = base64_encode(file_get_contents(Vite::asset('resources/fonts/Tangerine-Regular.woff2')));
   $fontTangerineBoldBase64 = base64_encode(file_get_contents(Vite::asset('resources/fonts/Tangerine-Bold.woff2')));
   $fontSegoeUiBase64 = base64_encode(file_get_contents(Vite::asset('resources/fonts/SegoeUI.woff2')));
+  $invoiceDate = Carbon\Carbon::parse($invoice->date)->format('F j, Y');
+  $dueDate = Carbon\Carbon::parse($invoice->due_date)->format('F j, Y');
+  $amountDue = \App\Helpers\FormatHelper::formatCurrency($invoice->amount_due, $gallery->currency);
 @endphp
 
 <!DOCTYPE html>
@@ -37,7 +40,7 @@
 
     .wrapper {
       width: 8.5in;
-      height: 2.25in;
+      height: 2.75in;
       font-size: 8pt;
       font-family: 'Segoe UI', sans-serif;
       line-height: 1.5em;
@@ -87,7 +90,14 @@
       overflow: hidden;
     }
     .bg-light {
-      background-color: #eeeeee;
+      background-color: #f4f4f4;
+    }
+    .label{
+      font-weight: bold;
+    }
+    .invoice-number-col .label {
+      display: inline-block;
+      width: 1in;
     }
   </style>
 </head>
@@ -106,13 +116,19 @@
     </div>
     <div class="summary-row bg-light" >
       <div>
-        <b>Bill To</b>
+        <div><span class="label">Bill To:</span></div>
         <div>{{ $invoice->contact->full_name }}</div>
         <div>{!! nl2br($invoice->contact->formatted_address_two_line) !!}</div>
         <div>{{ $invoice->contact->formatted_phone_number }}</div>
       </div>
-      <div>ship to</div>
-      <div>inv summary</div>
+      <div></div>
+      <div class="invoice-number-col">
+        <div>&nbsp;</div>
+        <div><span class="label">Invoice #:</span> {{ $invoice->invoice_number }}</div>
+        <div><span class="label">Invoice Date:</span> {{ $invoiceDate }}</div>
+        <div><span class="label">Due Date:</span> {{ $dueDate }}</div>
+        <div><span class="label">Amount Due:</span> {{ $amountDue }}</div>
+      </div>
     </div>
   </div>
 </body>
