@@ -74,7 +74,7 @@ function InvoicePreviewDrawer({ invoice, show, onClose }: Props) {
       title={renderTitle()}
       extra={renderToolbar()}
       resizable
-      defaultSize={1024}
+      defaultSize={700}
     >
       {renderQuery.isFetching && (
         <LoadingSpinner size="large" className="py-20" />
