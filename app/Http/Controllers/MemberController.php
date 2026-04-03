@@ -83,6 +83,18 @@ class MemberController extends Controller
       ], 422);
     }
 
+    if ($request->member_id == $request->user()->id) {
+      return response([
+        'message' => 'Cannot change your own access level.',
+      ], 422);
+    }
+
+    if ($request->input('access') == 'owner' && $gallery->user_id != $request->user()->id) {
+      return response([
+        'message' => 'Only the gallery creator can assign owner access level.',
+      ], 422);
+    }
+
     $member = $gallery->members()->where('users.id', $request->member_id)->first();
 
     if (!$member) {
@@ -107,6 +119,12 @@ class MemberController extends Controller
     if ($memberId == $gallery->user_id) {
       return response([
         'message' => 'Cannot remove the gallery creator from members.',
+      ], 422);
+    }
+
+    if ($memberId == $request->user()->id) {
+      return response([
+        'message' => 'Cannot remove yourself from members.',
       ], 422);
     }
 

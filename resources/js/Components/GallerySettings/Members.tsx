@@ -13,11 +13,13 @@ import localizedFormat from 'dayjs/plugin/localizedFormat'
 import { JSX, useEffect, useState } from "react"
 import UserStack from "../UserStack"
 import AddMemberModal from "./AddMemberModal"
+import { usePage } from "@inertiajs/react"
 dayjs.extend(localizedFormat);
 
 function Members() {
 
   const { gallery, open } = useGallerySettings()
+  const user = usePage()?.props?.auth?.user
 
   const [members, setMembers] = useState<UserProps[]>([])
   const [invitations, setInvitations] = useState<InviteLinkProps[]>([])
@@ -121,14 +123,14 @@ function Members() {
               defaultValue={text}
               value={text}
               onChange={(value) => changeAccessLevel((record as UserProps).id, value)}
-              disabled={gallery.user_id == record.id}
-            >
-              {ACCESS_LEVELS.map(level => (
-                <Select.Option key={level.name} value={level.name}>
-                  {ucFirst(level.name)}
-                </Select.Option>
-              ))}
-            </Select>
+              disabled={gallery.user_id == record.id || user.id == record.id}
+              options={
+                ACCESS_LEVELS.filter(level => level.name !== 'owner' || gallery.user_id == user.id).map(level => ({
+                  value: level.name,
+                  label: ucFirst(level.name),
+                }))
+              }
+            />
           ) : (
             <>{ucFirst(text)}</>
           )}
@@ -141,7 +143,7 @@ function Members() {
       key: 'actions',
       render: (_, record) => (
         <div className="flex justify-end">
-          {gallery.user_id !== record.id && gallery.abilities.manage_members && (
+          {gallery.user_id !== record.id && user.id !== record.id && gallery.abilities.manage_members && (
             <Tooltip title="Remove Member">
               <Popconfirm
                 title="Remove the member"
