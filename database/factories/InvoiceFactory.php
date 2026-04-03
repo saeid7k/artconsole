@@ -27,7 +27,7 @@ class InvoiceFactory extends Factory
     } else {
       static::$currentDate->addDays(2);
     }
-    $dueDate = static::$currentDate->copy()->addDays(7);
+    $dueDate = static::$currentDate->copy()->addMonth();
 
     return [
       'gallery_id' => $gallery->id,
@@ -47,7 +47,7 @@ class InvoiceFactory extends Factory
       'due_date' => $dueDate->format('Y-m-d'),
       'tax_id' => $tax->id,
       'tax_rate' => $tax->rate,
-      'status' => InvoiceStatus::default()->value,
+      'status' => $this->faker->randomElement(['draft', 'sent']),
       'notes' => $this->faker->paragraph,
     ];
   }
