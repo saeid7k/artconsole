@@ -4,6 +4,7 @@
   $discount = \App\Helpers\FormatHelper::formatCurrency($invoice->discount_amount, $gallery->currency);
   $taxAmount = \App\Helpers\FormatHelper::formatCurrency($invoice->tax_amount, $gallery->currency);
   $total = \App\Helpers\FormatHelper::formatCurrency($invoice->total, $gallery->currency);
+  $amountDue = \App\Helpers\FormatHelper::formatCurrency($invoice->amount_due, $gallery->currency);
 @endphp
 
 <!DOCTYPE html>
@@ -57,6 +58,17 @@
       padding: 0 4px;
       width: 2in;
       place-self: end;
+    }
+    #payments-container {
+      margin: 0.125in 0;
+      padding: 0.125in 0;
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+    }
+    .payment-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 4px;
     }
     .border {
       border: 1px solid #ccc;
@@ -124,6 +136,30 @@
           <b>Total:</b>
           <b>{{ $total }}</b>
         </div>
+        @if ($invoice->payments->isNotEmpty())
+          <div id="payments-container">
+            <b>Payments</b>
+            @foreach ($invoice->payments as $payment)
+              <div class="payment-row">
+                <div>
+                  <div>
+                    <span>{{ $payment->payment_date->format('M d, Y') }}</span>
+                    <span> | </span>
+                    <span>{{ \App\Enums\PaymentMethod::from($payment->payment_method)->label() }}</span>
+                  </div>
+                  @if ($payment->reference)
+                    <div style="padding-left: 0.125in; line-height: 1em;">Reference: {{ $payment->reference }}</div>
+                  @endif
+                </div>
+                <span>{{ \App\Helpers\FormatHelper::formatCurrency($payment->amount, $gallery->currency) }}</span>
+              </div>
+            @endforeach
+          </div>
+          <div class="totals-row">
+            <b>Amount Due:</b>
+            <b>{{ $amountDue }}</b>
+          </div>
+        @endif
       </div>
     </div>
   </div>
