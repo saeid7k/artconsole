@@ -29,6 +29,7 @@ class UserFactory extends Factory
             'lastname' => fake()->lastName(),
             'username' => fake()->unique()->userName(),
             'email' => fake()->unique()->safeEmail(),
+            'country_code' => '+1',
             'phone' => $this->faker->numerify(mt_rand(2,9) . str_repeat('#', 9)),
             'website' => str_replace('www.', '', parse_url($this->faker->url, PHP_URL_HOST)),
             'address' => [

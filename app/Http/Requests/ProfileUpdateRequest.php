@@ -26,6 +26,7 @@ class ProfileUpdateRequest extends FormRequest
           'max:255',
           Rule::unique(User::class)->ignore($this->user()->id),
         ],
+        'country_code' => ['nullable', 'string', 'max:10'],
         'phone' => ['nullable', new Phone()],
         'website' => ['nullable', 'string', 'max:255'],
         // 'address' => ['nullable'],
@@ -48,6 +49,8 @@ class ProfileUpdateRequest extends FormRequest
 
         'lastname.string' => 'Last name must be a valid text.',
         'lastname.max' => 'Last name may not be greater than 255 characters.',
+
+        'country_code.max' => 'Country code may not be greater than 10 characters.',
 
         'email.required' => 'Email address is required.',
         'email.email' => 'Please provide a valid email address.',

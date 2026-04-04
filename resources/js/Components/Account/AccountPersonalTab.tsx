@@ -7,6 +7,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import FlexBox from "../Containers/FlexBox";
 import AddressFields from "../FormFields/AddressFields";
+import PhoneField from "../FormFields/PhoneField";
 
 function AccountPersonalTab() {
 
@@ -14,8 +15,6 @@ function AccountPersonalTab() {
   const { profileTriggerCounter } = useProfile()
   const [form] = Form.useForm()
   const [isSaving, setIsSaving] = useState(false)
-
-  const watchCountry = Form.useWatch(['address', 'country'], form);
 
   function handleSave() {
     form
@@ -48,13 +47,7 @@ function AccountPersonalTab() {
       layout="vertical"
       className="w-full"
       form={form}
-      initialValues={{
-        firstname: user.firstname,
-        lastname: user.lastname,
-        email: user.email,
-        phone: user.phone,
-        address: user.address,
-      }}
+      initialValues={{...user}}
       onKeyDown={(e: React.KeyboardEvent<HTMLFormElement>) => {
         if (e.key === 'Enter') {
           e.preventDefault()
@@ -62,7 +55,6 @@ function AccountPersonalTab() {
         }
       }}
       validateTrigger='onBlur'
-    // onValuesChange={handleValuesChange}
     >
       <div className="sm:flex gap-4">
         <Form.Item
@@ -87,7 +79,7 @@ function AccountPersonalTab() {
           <Input />
         </Form.Item>
       </div>
-      <div className="sm:flex gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Form.Item
           name="email"
           label="Email"
@@ -95,22 +87,10 @@ function AccountPersonalTab() {
             { required: true, message: 'Email is required' },
             { type: 'email', message: 'Email is not valid' },
           ]}
-          className="sm:w-1/2"
         >
           <Input disabled />
         </Form.Item>
-        <Form.Item
-          name="phone"
-          label="Phone"
-          rules={[
-            { max: 20, message: 'Phone number cannot exceed 20 characters' }
-          ]}
-          className="sm:w-1/2"
-        >
-          <Input
-            addonBefore={COUNTRIES.find(country => country.name === watchCountry)?.dialCode}
-          />
-        </Form.Item>
+        <PhoneField form={form} />
       </div>
       <Divider plain >Address</Divider>
       <AddressFields />
