@@ -95,6 +95,10 @@ function App ({ children }: AppProps) {
             Card: {
               colorBorder: darkMode ? oklchToHex(colors.gray['700']) : oklchToHex(colors.gray['300']),
             },
+            Pagination: {
+              colorLink: darkMode ? colors.primary['400'] : colors.primary['500'],
+              colorLinkHover: darkMode ? colors.primary['300'] : colors.primary['600'],
+            },
           },
         }}
       >
