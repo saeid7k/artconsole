@@ -121,7 +121,6 @@ function App ({ children }: AppProps) {
                 <HugeiconsIcon size={20} icon={ArrowLeftDoubleFreeIcons} altIcon={ArrowRightDoubleFreeIcons} showAlt={sidebarCollapsed} />
               </Button>
               <Sider
-                // theme="light"
                 className="h-full overflow-y-auto overflow-x-visible"
                 collapsed={sidebarCollapsed}
                 collapsedWidth={collapsedWidth}
@@ -129,8 +128,6 @@ function App ({ children }: AppProps) {
               >
                 <Sidebar />
               </Sider>
-              {/* <div className="relative h-full">
-              </div> */}
               <Layout
                 className="overflow-y-auto my-1"
               >
