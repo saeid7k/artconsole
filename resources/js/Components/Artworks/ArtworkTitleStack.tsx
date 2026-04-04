@@ -29,7 +29,7 @@ function ArtworkTitleStack({
   rootClassName,
   linkedTitle = true,
   serifTitle = false,
-  artistTooltipPlacement = "bottom",
+  artistTooltipPlacement = "right",
   showArtist = true,
   showEdition = true,
   showSigned = true,
@@ -95,7 +95,7 @@ function ArtworkTitleStack({
             <Tooltip title="View Artist Profile" mouseEnterDelay={0.5} placement={artistTooltipPlacement}>
               <Link
                 className={twMerge(
-                  "text-accent",
+                  "!text-accent hover:!text-accent-700",
                   disableLinks ? 'pointer-events-none' : ''
                 )}
                 href={route('contacts.show', artwork.artist.id)}
