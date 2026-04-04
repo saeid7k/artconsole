@@ -3,8 +3,10 @@
     "country": "Canada",
     "timezone": "America/Toronto",
     "currency": "CAD",
+    "access_level": "viewer",
     "invoice_prefix": "INV",
-    "access_level": "viewer"
+    "invoice_notes": "The Gallery/Artist retains all reproduction rights and copyright to the artwork. Possession of the work does not grant the right to reproduce or commercially exploit the image.",
+    "invoice_footer": "Thank you for your business!"
   },
   "new_tag_timeout": 5
 }
