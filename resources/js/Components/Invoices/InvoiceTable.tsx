@@ -72,7 +72,7 @@ function InvoiceTable({ invoices }: Props) {
           <Tooltip title='View Contact Card' mouseEnterDelay={0.5} >
             <Link
               href={route('contacts.show', record.id)}
-              className="text-body"
+              className="body-link"
             >
               {record?.full_name}
             </Link>
