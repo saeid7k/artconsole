@@ -64,11 +64,12 @@ function Show({ contact }: { contact: ContactProps }) {
             <Tooltip title="Edit Contact" mouseEnterDelay={1} >
               <Button
                 type="text"
-                shape="circle"
+                shape="square"
                 onClick={() => setShowEditDrawer(true)}
                 disabled={!contact.abilities.update}
+                icon={<HugeiconsIcon icon={PencilEdit02Icon} size={20} />}
               >
-                <HugeiconsIcon icon={PencilEdit02Icon} size={20} />
+                Edit
               </Button>
             </Tooltip>
           </div>
