@@ -48,7 +48,7 @@ class InvoiceFactory extends Factory
       'tax_id' => $tax->id,
       'tax_rate' => $tax->rate,
       'status' => $this->faker->randomElement(['draft', 'sent']),
-      'notes' => $this->faker->paragraph,
+      'notes' => $this->faker->optional(0.1)->paragraph,
     ];
   }
 
