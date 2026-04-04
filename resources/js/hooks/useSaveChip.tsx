@@ -1,5 +1,6 @@
 import AnimatedContainer from "@/Components/AnimatedContainer";
 import colors from "@/Themes/theme";
+import { oklchToHex } from "@/utils/colorHelper";
 import { ucWords } from "@/utils/formatHelper";
 import { Tag } from "antd";
 import { useEffect, useState } from "react";
@@ -24,10 +25,10 @@ function useSaveChip({ topOffset = 2 }: Props = {} ) {
   }, [savingStatus])
 
   const textColor = {
-    saving: colors.blue[500],
-    saved: colors.green[500],
-    failed: colors.red[500],
-    default: colors.gray[500]
+    saving: oklchToHex(colors.blue[500]),
+    saved: oklchToHex(colors.green[500]),
+    failed: oklchToHex(colors.red[500]),
+    default: oklchToHex(colors.gray[500])
   }
 
   const offsetClass = `top-${topOffset}`
