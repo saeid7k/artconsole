@@ -10,4 +10,10 @@ class ConfigHelper
       $configsData = json_decode($configsFile, true);
       return $configsData['defaults'][$key] ?? null;
     }
+
+    public static function getBusinessInfo()
+    {
+      $businessInfoFile = file_get_contents(resource_path('/js/constants/business_info.json'));
+      return json_decode($businessInfoFile, true);
+    }
 }
