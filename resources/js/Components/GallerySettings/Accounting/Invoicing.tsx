@@ -1,6 +1,8 @@
 import { useGallerySettings } from "@/contexts/GallerySettingsContext";
 import useGalleryMeta from "@/hooks/useGalleryMeta";
 import { Form, Input } from "antd";
+import TextArea from "antd/es/input/TextArea";
+import CONFIGS from "@/constants/configs.json";
 
 function Invoicing() {
 
@@ -21,6 +23,30 @@ function Invoicing() {
             defaultValue={gallery?.invoice_prefix}
             onChange={(e) => setMeta("invoice_prefix", e.target.value)}
             maxLength={10}
+          />
+        </Form.Item>
+        <Form.Item
+          label="Default Invoice Notes"
+        >
+          <TextArea
+            defaultValue={gallery?.meta?.default_invoice_notes || CONFIGS.defaults.invoice_notes}
+            onChange={(e) => setMeta("default_invoice_notes", e.target.value)}
+            maxLength={500}
+          />
+        </Form.Item>
+        <Form.Item
+          label="Invoices Footer"
+          rules={[
+            {
+              max: 100,
+              message: "Invoices Footer cannot exceed 100 characters"
+            }
+          ]}
+        >
+          <TextArea
+            defaultValue={gallery?.meta?.invoice_footer || CONFIGS.defaults.invoice_footer}
+            onChange={(e) => setMeta("invoice_footer", e.target.value)}
+            maxLength={100}
           />
         </Form.Item>
       </Form>
