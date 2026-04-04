@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\InvoiceStatus;
 use App\Helpers\AddressHelper;
+use App\Helpers\ConfigHelper;
 use App\Http\Requests\InvoiceRequest;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
@@ -173,6 +174,8 @@ class InvoiceController extends Controller
     $gallery = $invoice->gallery;
     $gallery->formatted_address_two_line = AddressHelper::formatAddress($gallery->address, 2);
     $invoice->contact->formatted_address_two_line = AddressHelper::formatAddress($invoice->contact->address, 2);
+    $defaultFooter = ConfigHelper::getDefault('invoice_footer');
+    $businessInfo = ConfigHelper::getBusinessInfo();
 
     $pdf = pdf()
       ->view('Invoices/invoice', [
@@ -180,6 +183,7 @@ class InvoiceController extends Controller
         'gallery' => $gallery,
       ])
       ->headerView('Invoices/invoice-header', ['invoice' => $invoice, 'gallery' => $gallery, 'galleryLogo' => $galleryLogo])
+      ->footerView('Invoices/invoice-footer', ['gallery' => $gallery, 'defaultFooter' => $defaultFooter, 'businessInfo' => $businessInfo])
       ->margins(3.5, 0, 1, 0, 'in')
       ->format(Format::Letter)
       ->portrait();
