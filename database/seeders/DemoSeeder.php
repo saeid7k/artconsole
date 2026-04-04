@@ -2,11 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Enums\PaymentMethod;
 use App\Enums\ReportType;
 use App\Models\Artwork;
 use App\Models\Contact;
 use App\Models\Gallery;
 use App\Models\Invoice;
+use App\Models\Payment;
 use App\Models\Report;
 use App\Models\Tax;
 use App\Models\User;
@@ -298,6 +300,46 @@ class DemoSeeder extends Seeder
     $this->command->comment('Creating invoices...');
 
     Invoice::factory(10)->galleryId($this->firstGallery->id)->create();
+    $invoicesToBePaid = Invoice::where('id', '<=', 7)->get();
+    foreach ($invoicesToBePaid as $invoice) {
+      $numberOfPayments = $this->faker->numberBetween(1, 3);
+      $remainingAmount = $invoice->total;
+      $minPaymentAmount = max(100, $invoice->total * 0.1);
+      for ($i = 0; $i < $numberOfPayments; $i++) {
+        if ($remainingAmount <= 0) {
+          break;
+        }
+        if ($i === $numberOfPayments - 1 || $remainingAmount <= $minPaymentAmount) {
+          $paymentAmount = $remainingAmount;
+        } else {
+          $paymentAmount = $this->faker->randomFloat(1, $minPaymentAmount, $remainingAmount);
+        }
+
+        Payment::create([
+          'invoice_id' => $invoice->id,
+          'user_id' => 1,
+          'amount' => $paymentAmount,
+          'payment_date' => $invoice->date->addDays($i + 1),
+          'payment_method' => $this->faker->randomElement(PaymentMethod::cases())->value,
+          'reference' => $this->faker->bothify('??-#####-######-??'),
+          'notes' => $this->faker->sentence,
+        ]);
+        $remainingAmount -= $paymentAmount;
+      }
+    }
+    $invoicesToBePartiallyPaid = Invoice::whereId(8)->get();
+    foreach ($invoicesToBePartiallyPaid as $invoice) {
+      Payment::create([
+        'invoice_id' => $invoice->id,
+        'user_id' => 1,
+        'amount' => round($invoice->total * 0.5, -1),
+        'payment_date' => $invoice->date->addDays(1),
+        'payment_method' => $this->faker->randomElement(PaymentMethod::cases())->value,
+        'reference' => $this->faker->bothify('??-#####-######-??'),
+        'notes' => $this->faker->sentence,
+      ]);
+    }
+    Invoice::find(10)->update(['status' => 'sent']);
 
     $this->command->info('✅' . ' 10 invoices created for first gallery.');
   }
