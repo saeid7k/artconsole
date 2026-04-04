@@ -17,6 +17,7 @@ import ContactWidget from "../Contacts/ContactWidget";
 import FlexBox from "../Containers/FlexBox";
 import StyledCurrency from "../StyledCurrency";
 import InvoiceItemsTable from "./InvoiceItemsTable";
+import CONFIGS from "@/constants/configs.json";
 
 type Props = {
   show: boolean;
@@ -265,7 +266,7 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
             tax_rate: 0,
             tax_amount: 0,
             total: 0,
-            notes: null,
+            notes: gallery?.meta?.default_invoice_notes || CONFIGS.defaults.invoice_notes || null,
           }}
           onFinish={handleSubmit}
         >
