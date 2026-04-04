@@ -79,6 +79,9 @@ class Invoice extends Model
 
   public function getAmountDueAttribute(): float
   {
+    if ($this->status === 'paid') {
+      return 0;
+    }
     return $this->total - $this->amount_paid;
   }
 
