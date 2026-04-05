@@ -32,6 +32,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/{contact}', [App\Http\Controllers\ContactController::class, 'show'])->name('show');
     Route::post('/{contact}/delete', [App\Http\Controllers\ContactController::class, 'destroy'])->name('delete');
     Route::post('/{contact}/update-relationships', [App\Http\Controllers\ContactController::class, 'updateRelationships'])->name('update-relationships');
+    Route::get('/{contact}/invoices', [App\Http\Controllers\ContactController::class, 'getInvoices'])->name('invoices');
   });
 
 
