@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\DataHelper;
 use App\Http\Requests\ContactStoreUpdateRequest;
 use App\Models\Contact;
+use App\Models\Invoice;
 use App\Models\Media;
 use App\Rules\Phone;
 use Illuminate\Http\Request;
@@ -260,5 +261,18 @@ class ContactController extends Controller
       ->first();
 
     return Response()->json($contact);
+  }
+
+  public function getInvoices(Request $request, Contact $contact)
+  {
+    $this->authorize('view', $contact);
+    $this->authorize('viewAny', Invoice::class);
+
+    $invoices = $contact->invoices()
+      ->with('items', 'artworks')
+      ->orderBy('id', 'desc')
+      ->get();
+
+    return response()->json($invoices);
   }
 }
