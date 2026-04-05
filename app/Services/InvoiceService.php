@@ -33,14 +33,6 @@ class InvoiceService
     ) {
       $this->invoice->status = InvoiceStatus::Overdue->value;
     }
-
-    if (
-      $this->invoice->isDirty('status')
-      && InvoiceStatus::isSuccessful($this->invoice->status)
-    ) {
-      $this->markArtworksAsSold();
-    }
-    $this->invoice->saveQuietly();
   }
 
   public function markArtworksAsSold()
