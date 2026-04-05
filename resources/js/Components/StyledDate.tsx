@@ -11,7 +11,7 @@ type Props = {
 
 function StyledDate({ value, showIcon = true, showTime = true }: Props) {
   return (
-    <FlexBox>
+    <FlexBox className="whitespace-nowrap">
       {showIcon && <HugeiconsIcon icon={Calendar03Icon} size={20} className="text-muted" />}
       <div>{dayjsUserTz(value).format('MMM D ,YYYY')}</div>
       {showTime && <div className="text-muted">{dayjsUserTz(value).format('h:mm A')}</div>}
