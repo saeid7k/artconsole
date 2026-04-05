@@ -1,3 +1,4 @@
+import { ArtworkProps } from "./artwork";
 import { ContactProps } from "./contact";
 import { PaymentProps } from "./payment";
 
@@ -31,5 +32,6 @@ export interface InvoiceProps {
   // Relationships
   contact?: ContactProps | null;
   items?: any[];
+  artworks?: ArtworkProps[];
   payments?: PaymentProps[];
 }
