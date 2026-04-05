@@ -28,7 +28,9 @@ function Artworks() {
             <label
               htmlFor="auto-change-status-sold"
               className="text-body cursor-pointer"
-            >Automatically change artwork status to <strong>Sold</strong> when included in a <strong>paid invoice</strong></label>
+            >
+              Automatically change artwork status to <strong>Sold</strong> when added to an invoice
+            </label>
           </FlexBox>
         </Form.Item>
       </Form>

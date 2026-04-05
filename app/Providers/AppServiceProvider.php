@@ -7,6 +7,7 @@ use App\Models\Contact;
 use App\Models\Gallery;
 use App\Models\InviteLink;
 use App\Models\Invoice;
+use App\Models\InvoiceItem;
 use App\Models\Location;
 use App\Models\Media;
 use App\Models\Payment;
@@ -15,6 +16,7 @@ use App\Observers\ArtworkObserver;
 use App\Observers\ContactObserver;
 use App\Observers\GalleryObserver;
 use App\Observers\InviteLinkObserver;
+use App\Observers\InvoiceItemObserver;
 use App\Observers\InvoiceObserver;
 use App\Observers\LocationObserver;
 use App\Observers\MediaObserver;
@@ -48,8 +50,9 @@ class AppServiceProvider extends ServiceProvider
         Artwork::observe(ArtworkObserver::class);
         Location::observe(LocationObserver::class);
         Media::observe(MediaObserver::class);
-        Invoice::observe(InvoiceObserver::class);
         Contact::observe(ContactObserver::class);
+        Invoice::observe(InvoiceObserver::class);
+        InvoiceItem::observe(InvoiceItemObserver::class);
         Payment::observe(PaymentObserver::class);
 
         Pdf::default()
