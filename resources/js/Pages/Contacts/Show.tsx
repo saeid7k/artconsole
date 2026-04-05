@@ -17,6 +17,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { useRef, useState } from "react";
 import ContactFormDrawer from "./Partials/ContactFormDrawer";
+import ContactPurchases from "@/Components/Contacts/ContactPurchases";
 
 function Show({ contact }: { contact: ContactProps }) {
 
@@ -189,9 +190,9 @@ function Show({ contact }: { contact: ContactProps }) {
         <Card
           className="grow overflow-x-auto"
         >
-          <Tabs defaultActiveKey="logs">
-            <Tabs.TabPane tab="Purchase History" key="purchase-history">
-              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No purchase history found" />
+          <Tabs defaultActiveKey="purchases" >
+            <Tabs.TabPane tab="Purchase History" key="purchases">
+              <ContactPurchases contact={contact} />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Inventory" key="inventory">
               <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No inventory found" />
