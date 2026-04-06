@@ -6,6 +6,7 @@ import { useState } from "react"
 import FlexBox from "../Containers/FlexBox"
 import ReportPreviewDrawer from "./ReportPreviewDrawer"
 import { usePage } from "@inertiajs/react"
+import InfoPopover from "../InfoPopover"
 
 function ReportsTableActions({ report }: any) {
 
@@ -71,13 +72,11 @@ function ReportsTableActions({ report }: any) {
                   label: 'Regenerate Report',
                   onClick: () => regenerateMutation.mutate(),
                   extra: (<>
-                    {user.has_edit_access && (
-                      <Popover
-                        content="The report will be regenerated based on the latest artworks data."
-                        title="Regenerate Report"
-                        children={<HugeiconsIcon icon={InformationCircleIcon} size={16} />}
-                      />
-                    )}
+                    <InfoPopover
+                      title="Regenerate Report"
+                      content="The report will be regenerated based on the latest artworks data."
+                      condition={user.has_edit_access}
+                    />
                   </>),
                   disabled: !user.has_edit_access
                 },
