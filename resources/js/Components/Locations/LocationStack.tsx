@@ -18,6 +18,7 @@ import LoadingSpinner from "../LoadingSpinner";
 import MoveModal from "../MoveModal";
 import StyledDivider from "../StyledDivider";
 import { dayjsUserTz } from "@/utils/dateTimeHelper";
+import InfoPopover from "../InfoPopover";
 
 type Props = {
   location: LocationProps;
@@ -146,7 +147,7 @@ function LocationStack({
                           <HugeiconsIcon icon={ArrowRight04Icon} size={20} color={colors.gray[400]} />
                           <div className="col-span-5">{log.properties?.new_location}</div>
                         </div>
-                        <Popover
+                        <InfoPopover
                           placement="right"
                           content={
                             <>
@@ -164,9 +165,7 @@ function LocationStack({
                               />
                             </>
                           }
-                        >
-                          <HugeiconsIcon icon={InformationCircleIcon} size={16} color={colors.gray[400]} />
-                        </Popover>
+                        />
                       </FlexBox>
                     </Timeline.Item>
                   ))}
