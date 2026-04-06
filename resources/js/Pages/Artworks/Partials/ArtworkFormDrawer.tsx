@@ -546,7 +546,6 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                 className="sm:w-1/2"
               >
                 <Select
-                  defaultValue={ARTWORK_CATEGORIES[0].value}
                   options={ARTWORK_CATEGORIES}
                 />
               </Form.Item>
