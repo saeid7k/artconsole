@@ -7,6 +7,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import ArtworkSelector from "../Artworks/ArtworkSelector";
 import FlexBox from "../Containers/FlexBox";
+import InfoPopover from "../InfoPopover";
 import StyledDivider from "../StyledDivider";
 
 type Props = {
@@ -182,18 +183,24 @@ function CreateLabelsReportsDrawer({ show, onClose, preSelectedArtworkIds = [] }
               <div className="label">Include Data</div>
               <div className="ps-5 grid grid-cols-1 sm:grid-cols-3 gap-x-5">
                 {/* SKU */}
-                <Form.Item
-                  name="sku"
-                  valuePropName="checked"
-                  initialValue={true}
-                  className="mb-0"
-                >
-                  <Checkbox
-                    disabled={formWatch?.size === 'small'}
+                <FlexBox>
+                  <Form.Item
+                    name="sku"
+                    valuePropName="checked"
+                    initialValue={true}
+                    className="mb-0"
                   >
-                    SKU
-                  </Checkbox>
-                </Form.Item>
+                    <Checkbox
+                      disabled={formWatch?.size === 'small'}
+                    >
+                      SKU
+                    </Checkbox>
+                  </Form.Item>
+                  <InfoPopover
+                    content="The SKU is not available for small size labels."
+                    condition={formWatch?.size === 'small'}
+                  />
+                </FlexBox>
 
                 {/* Artist Name */}
                 <Form.Item
