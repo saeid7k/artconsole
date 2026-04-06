@@ -8,12 +8,12 @@ import FormattedDimensions from "@/Components/FormattedDimensions";
 import ImageGallery from "@/Components/ImageGallery";
 import LocationStack from "@/Components/Locations/LocationStack";
 import PageTitle from "@/Components/PageTitle";
+import StyledCurrency from "@/Components/StyledCurrency";
 import TextboxExpandable from "@/Components/TextboxExpandable";
 import { getArtworkCategoryLabel } from "@/constants/artworkCategories";
 import { ArtworkShowProvider } from "@/contexts/ArtworkShowContext";
 import AppLayout from "@/Layouts/AppLayout";
 import { ArtworkProps } from "@/types/artwork";
-import { formatCurrency } from "@/utils/formatHelper";
 import { BarCode02Icon, BrushIcon, Folder02Icon, GooglePhotosIcon, PackageDimensions01Icon, PaintBucketIcon, Stamp01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "@inertiajs/react";
@@ -21,7 +21,6 @@ import { Card, Divider } from "antd";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 import ArtworkToolbar from "./Partials/ArtworkToolbar";
-import StyledCurrency from "@/Components/StyledCurrency";
 
 function Show ({ artwork }: { artwork: ArtworkProps }) {
 
@@ -50,6 +49,7 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
         {/* Main Content */}
 
         <div className="flex flex-col lg:flex-row gap-3 w-full">
+
           {/* Gallery */}
 
           <Card
@@ -68,7 +68,7 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
           {/* Details */}
 
           <Card className="lg:w-1/2 grow sm:max-h-[580px] overflow-y-auto">
-            <FlexBox justifyContent="between" alignItems="start" >
+            <FlexBox justifyContent="between" alignItems="start" wrapping="wrap" >
               <ArtworkTitleStack
                 artwork={artwork}
                 linkedTitle={false}
