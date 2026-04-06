@@ -5,6 +5,7 @@ import ManageTagsModal from "@/Components/ManageTagsModal";
 import { ARTWORK_CATEGORIES, DEFAULT_ARTWORK_CATEGORY } from "@/constants/artworkCategories";
 import ARTWORK_EDITIONS from "@/constants/artworkEditions";
 import ARTWORK_STATUSES, { DEFAULT_ARTWORK_STATUS } from "@/constants/artworkStatuses";
+import CONFIGS from "@/constants/configs.json";
 import { CURRENCIES } from "@/constants/currencies";
 import { FORM_RULES } from "@/constants/formRules";
 import useLocations from "@/hooks/useLocations";
@@ -21,7 +22,6 @@ import dayjs from "dayjs";
 import { AnimatePresence, motion } from "framer-motion";
 import { serialize } from "object-to-formdata";
 import { useState } from "react";
-import CONFIGS from "@/constants/configs.json";
 
 type Props = {
   mode?: 'create' | 'update';
@@ -402,7 +402,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                   <InputNumber
                     min={0}
                     step={1}
-                    precision={0}
+                    precision={2}
                     className="w-full"
                     defaultValue={form.getFieldValue('price')}
                   />
@@ -821,7 +821,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                         <InputNumber
                           min={0}
                           step={1}
-                          precision={0}
+                          precision={2}
                           className="w-full"
                           defaultValue={form.getFieldValue('acquisition_price')}
                         />
