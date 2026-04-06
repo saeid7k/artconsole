@@ -27,9 +27,6 @@ function ChangePasswordModal({ open, setOpen, action = 'change' }: Props) {
           .catch((e) => {
             message.error(e.response?.data?.message || `Failed to ${action === 'change' ? 'change' : 'set'} password`)
           });
-      })
-      .catch((info) => {
-        console.log('Validate Failed:', info);
       });
   }
 
