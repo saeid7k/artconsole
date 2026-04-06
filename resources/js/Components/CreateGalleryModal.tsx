@@ -37,7 +37,6 @@ function CreateGalleryModal({ open, setOpen }: Props) {
   }
 
   const normFile = (e: any) => {
-    console.log('Upload event:', e);
     if (Array.isArray(e)) {
       return e;
     }
@@ -69,9 +68,6 @@ function CreateGalleryModal({ open, setOpen }: Props) {
         .finally(() => {
           setProcessing(false);
         })
-    })
-    .catch((info) => {
-      console.log('Validate Failed:', info);
     });
   }
 
