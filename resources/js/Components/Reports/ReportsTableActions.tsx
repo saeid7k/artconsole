@@ -1,12 +1,12 @@
 import useReport from "@/hooks/useReport"
-import { ArrowReloadHorizontalIcon, Delete02Icon, FileViewIcon, InformationCircleIcon, MoreHorizontalCircle01Icon, PdfIcon } from "@hugeicons/core-free-icons"
+import { ArrowReloadHorizontalIcon, Delete02Icon, FileViewIcon, MoreHorizontalCircle01Icon, PdfIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { Button, Dropdown, Menu, Popconfirm, Popover, Tooltip } from "antd"
+import { usePage } from "@inertiajs/react"
+import { Button, Dropdown, Menu, Popconfirm, Tooltip } from "antd"
 import { useState } from "react"
 import FlexBox from "../Containers/FlexBox"
-import ReportPreviewDrawer from "./ReportPreviewDrawer"
-import { usePage } from "@inertiajs/react"
 import InfoPopover from "../InfoPopover"
+import ReportPreviewDrawer from "./ReportPreviewDrawer"
 
 function ReportsTableActions({ report }: any) {
 
