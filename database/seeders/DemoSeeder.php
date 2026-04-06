@@ -321,7 +321,7 @@ class DemoSeeder extends Seeder
           'amount' => $paymentAmount,
           'payment_date' => $invoice->date->addDays($i + 1),
           'payment_method' => $this->faker->randomElement(PaymentMethod::cases())->value,
-          'reference' => $this->faker->bothify('??-#####-######-??'),
+          'reference' => strtoupper($this->faker->bothify('??-#####-######-??')),
           'notes' => $this->faker->sentence,
         ]);
         $remainingAmount -= $paymentAmount;
@@ -335,7 +335,7 @@ class DemoSeeder extends Seeder
         'amount' => round($invoice->total * 0.5, -1),
         'payment_date' => $invoice->date->addDays(1),
         'payment_method' => $this->faker->randomElement(PaymentMethod::cases())->value,
-        'reference' => $this->faker->bothify('??-#####-######-??'),
+        'reference' => strtoupper($this->faker->bothify('??-#####-######-??')),
         'notes' => $this->faker->sentence,
       ]);
     }
