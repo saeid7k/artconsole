@@ -1,23 +1,22 @@
+import CONFIGS from "@/constants/configs.json";
 import { useApp } from "@/contexts/AppContext";
 import useTaxes from "@/hooks/useTaxes";
 import { useWindow } from "@/hooks/useWindow";
 import ContactFormDrawer from "@/Pages/Contacts/Partials/ContactFormDrawer";
 import { PageProps } from "@/types";
 import { GalleryProps } from "@/types/gallery";
-import { InformationCircleIcon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
 import { useQuery } from "@tanstack/react-query";
-import { Button, Checkbox, DatePicker, Divider, Drawer, Form, Input, InputNumber, message, Popover, Segmented, Select, Space } from "antd";
+import { Button, Checkbox, DatePicker, Divider, Drawer, Form, Input, InputNumber, message, Segmented, Select, Space } from "antd";
 import axios from "axios";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import AnimatedContainer from "../AnimatedContainer";
 import ContactWidget from "../Contacts/ContactWidget";
 import FlexBox from "../Containers/FlexBox";
+import InfoPopover from "../InfoPopover";
 import StyledCurrency from "../StyledCurrency";
 import InvoiceItemsTable from "./InvoiceItemsTable";
-import CONFIGS from "@/constants/configs.json";
 
 type Props = {
   show: boolean;
@@ -504,12 +503,10 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
                       />
                     </Form.Item>
                   )}
-                  {taxesOptions.length === 0 && (
-                    <Popover
-                      content="No tax found. Please create a tax first in gallery settings."
-                      children={<HugeiconsIcon icon={InformationCircleIcon} size={16} />}
-                    />
-                  )}
+                  <InfoPopover
+                    content="No tax found. Please create a tax first in gallery settings."
+                    condition={taxesOptions.length === 0}
+                  />
                   <Form.Item
                     name="tax_rate"
                     label={null}
