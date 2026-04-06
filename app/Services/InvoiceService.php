@@ -33,6 +33,8 @@ class InvoiceService
     ) {
       $this->invoice->status = InvoiceStatus::Overdue->value;
     }
+
+    $this->invoice->saveQuietly();
   }
 
   public function markArtworksAsSold()
