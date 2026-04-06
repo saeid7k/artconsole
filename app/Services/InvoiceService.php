@@ -36,21 +36,4 @@ class InvoiceService
 
     $this->invoice->saveQuietly();
   }
-
-  public function markArtworksAsSold()
-  {
-    if ($this->invoice->gallery->getMeta('auto_change_status_sold')) {
-      $this->invoice->artworks()->update(['status' => 'sold']);
-
-      foreach ($this->invoice->artworks as $artwork) {
-        activity()->performedOn($artwork)
-          ->causedBy(auth()->user())
-          ->withProperties([
-            'invoice_id' => $this->invoice->id,
-            'invoice_number' => $this->invoice->number,
-          ])
-          ->log('marked sale invoice as paid');
-      }
-    }
-  }
 }
