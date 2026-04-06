@@ -2,23 +2,22 @@ import { useArtworkShow } from "@/contexts/ArtworkShowContext";
 import colors from "@/Themes/theme";
 import { ActivityLogProps } from "@/types/activityLog";
 import { LocationProps } from "@/types/location";
-import { ArrowDataTransferHorizontalIcon, ArrowRight04Icon, InformationCircleIcon, StoreLocation01Icon, TimeQuarterIcon } from "@hugeicons/core-free-icons";
+import { dayjsUserTz } from "@/utils/dateTimeHelper";
+import { ArrowDataTransferHorizontalIcon, ArrowRight04Icon, StoreLocation01Icon, TimeQuarterIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useQuery } from "@tanstack/react-query";
-import { Button, Empty, Popover, Tag, Timeline, Tooltip } from "antd";
+import { Button, Empty, Tag, Timeline, Tooltip } from "antd";
 import axios from "axios";
-import dayjs from "dayjs";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import DataRow from "../Containers/DataRow";
 import FlexBox from "../Containers/FlexBox";
 import CopyToClipboard from "../CopyToClipboard";
+import InfoPopover from "../InfoPopover";
 import LoadingSpinner from "../LoadingSpinner";
 import MoveModal from "../MoveModal";
 import StyledDivider from "../StyledDivider";
-import { dayjsUserTz } from "@/utils/dateTimeHelper";
-import InfoPopover from "../InfoPopover";
 
 type Props = {
   location: LocationProps;
