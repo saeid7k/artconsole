@@ -119,28 +119,28 @@ function LocationStack({
           >
             <StyledDivider variant="light" >Location History</StyledDivider>
             {logQuery.isSuccess && logQuery.data.length > 0 && (
-              <>
+              <div className="w-full overflow-x-auto">
                 <Timeline
                   mode="start"
                   titleSpan={6}
-                  className="w-[500px] pt-2 max-h-[400px] overflow-y-auto"
+                  className="min-w-[450px] pt-2 max-h-[400px] overflow-y-auto"
                 >
-                {createdLog.length > 0 && (
-                  createdLog.map((log: ActivityLogProps) => (
+                  {createdLog.length > 0 && (
+                    createdLog.map((log: ActivityLogProps) => (
+                      <Timeline.Item
+                        title={dayjsUserTz(log.created_at).format('MMM D, YYYY')}
+                        placement="start"
+                      >
+                        added to {log.properties.location}
+                      </Timeline.Item>
+                    ))
+                  )}
+                  {moveLogs.map((log: ActivityLogProps) => (
                     <Timeline.Item
                       title={dayjsUserTz(log.created_at).format('MMM D, YYYY')}
                       placement="start"
                     >
-                      added to {log.properties.location}
-                    </Timeline.Item>
-                  ))
-                )}
-                {moveLogs.map((log: ActivityLogProps) => (
-                    <Timeline.Item
-                      title={dayjsUserTz(log.created_at).format('MMM D, YYYY')}
-                      placement="start"
-                    >
-                      <FlexBox>
+                      <FlexBox className="w-full">
                         <div className="grid grid-cols-12 gap-1 grow">
                           <div className="col-span-5">{log.properties?.prev_location}</div>
                           <HugeiconsIcon icon={ArrowRight04Icon} size={20} color={colors.gray[400]} />
@@ -169,9 +169,9 @@ function LocationStack({
                         </Popover>
                       </FlexBox>
                     </Timeline.Item>
-                ))}
+                  ))}
                 </Timeline>
-              </>
+              </div>
             )}
             {logQuery.isFetching && <LoadingSpinner />}
             {logQuery.isSuccess && logQuery.data.length === 0 && (

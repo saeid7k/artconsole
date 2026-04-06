@@ -208,12 +208,13 @@ function LocationCard({ location }: { location: LocationProps }) {
             wrapping={false}
             align="start"
             showCopyToClipboard
+            rootClassName="min-h-[45px]"
           />
           <GoogleMap
             coordinates={location.address?.coordinates}
             height={250}
             hideIfNotFound
-            className="mt-1"
+            className="mt-2"
           />
           <Divider />
           <FlexBox gap={3} alignItems="end" >
