@@ -4,12 +4,17 @@ import { HugeiconsIcon } from "@hugeicons/react"
 import FlexBox from "./Containers/FlexBox"
 
 type Props = {
-  value: string;
+  value: string | null;
   showIcon?: boolean;
   showTime?: boolean;
 }
 
 function StyledDate({ value, showIcon = true, showTime = true }: Props) {
+
+  if (!value) {
+    return null
+  }
+
   return (
     <FlexBox className="whitespace-nowrap">
       {showIcon && <HugeiconsIcon icon={Calendar03Icon} size={20} className="text-muted" />}
