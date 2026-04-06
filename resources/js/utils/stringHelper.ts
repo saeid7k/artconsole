@@ -63,4 +63,9 @@ function stringifyObject(obj: Record<string, any> | null | undefined): string {
     .join(', ');
 }
 
-export { ucFirst, getInitials, keyToTitle, stringifyArray, stringifyObject };
+function isHtmlString(str: string): boolean {
+  const htmlPattern = /<\/?[a-z][\s\S]*>/i;
+  return htmlPattern.test(str);
+}
+
+export { ucFirst, getInitials, keyToTitle, stringifyArray, stringifyObject, isHtmlString };

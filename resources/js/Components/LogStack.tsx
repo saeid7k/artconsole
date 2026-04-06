@@ -1,18 +1,17 @@
 import colors from "@/Themes/theme";
 import { ActivityLogProps } from "@/types/activityLog";
+import { UsePageProps } from "@/types/usePage";
+import { dayjsUserTz } from "@/utils/dateTimeHelper";
 import { formatByKey } from "@/utils/formatHelper";
-import { getInitials, keyToTitle } from "@/utils/stringHelper";
+import { getInitials, isHtmlString, keyToTitle } from "@/utils/stringHelper";
 import { ArrowDown01Icon, ArrowRight04Icon, Time04Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { usePage } from "@inertiajs/react";
 import { Avatar, Button, Tooltip } from "antd";
-import dayjs from "dayjs";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import FlexBox from "./Containers/FlexBox";
-import { dayjsUserTz } from "@/utils/dateTimeHelper";
-import { usePage } from "@inertiajs/react";
-import { UsePageProps } from "@/types/usePage";
 
 function LogStack({ log }: { log: ActivityLogProps }) {
 
@@ -66,7 +65,12 @@ function LogStack({ log }: { log: ActivityLogProps }) {
             <div
               className="line-clamp-2 truncate whitespace-normal !max-w-[400px]"
             >
-              {formatByKey(key, value, galleryMeta)}
+
+              {isHtmlString(String(value)) ?
+                <div dangerouslySetInnerHTML={{ __html: String(value) }} />
+                :
+                formatByKey(key, value, galleryMeta)
+              }
             </div>
           </FlexBox>
         ))}
