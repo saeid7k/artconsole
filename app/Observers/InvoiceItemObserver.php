@@ -8,9 +8,14 @@ class InvoiceItemObserver
   {
     $artwork = $invoiceItem->artwork;
     if ($artwork && $invoiceItem->invoice->gallery->getMeta('auto_change_status_sold')) {
-      $artwork->update([
-        'status' => 'sold'
-      ]);
+
+      activity()->disableLogging();
+      $artwork->update(['status' => 'sold']);
+      activity()->enableLogging();
+
+      activity()
+        ->performedOn($artwork)
+        ->log('marked artwork as sold due to being added to an invoice');
     }
   }
 }
