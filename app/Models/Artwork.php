@@ -51,6 +51,7 @@ class Artwork extends Model implements HasMedia
   ];
 
   protected $casts = [
+    'price' => 'decimal:2',
     'edition' => 'object',
     'signed' => 'boolean',
     'subjects' => 'array',
