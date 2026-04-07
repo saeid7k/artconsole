@@ -5,6 +5,7 @@ import ArtworkDocuments from "./ArtworkDocuments";
 import ArtworkImages from "./ArtworkImages";
 import ArtworkImageUpload from "./ArtworkImageUpload";
 import ArtworkNotes from "./ArtworkNotes";
+import ArtworkFinancial from "./ArtworkFinancial";
 
 function ArtworkTabs({ artwork }: { artwork: ArtworkProps }) {
 
@@ -36,7 +37,7 @@ function ArtworkTabs({ artwork }: { artwork: ArtworkProps }) {
     {
       key: 'financial',
       label: 'Financial',
-      children: <Empty description="No financial data available." className="py-10" />,
+      children: <ArtworkFinancial artwork={artwork} />,
     },
     {
       key: 'history',

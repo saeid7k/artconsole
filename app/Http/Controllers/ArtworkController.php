@@ -97,7 +97,8 @@ class ArtworkController extends Controller
     $artwork->load([
       'location',
       'owner',
-      'notes.creator:id,firstname,lastname'
+      'notes.creator:id,firstname,lastname',
+      'lastInvoice.items',
     ]);
     $artwork->setRelation('images', $artwork->images);
 
