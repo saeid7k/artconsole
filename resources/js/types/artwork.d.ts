@@ -34,6 +34,8 @@ export interface ArtworkProps {
   owner_contact_id?: number | null;
   consignment_terms?: string | null;
   provenance?: string | null;
+  acquisition_date?: string | null;
+  acquisition_price?: number | null;
 
   details?: object | null;
   status: string;
@@ -59,4 +61,6 @@ export interface ArtworkProps {
   location: LocationProps;
   owner?: ContactProps | null;
   notes: Array<NoteProps>;
+  invoices?: Array<InvoiceProps>;
+  last_invoice?: InvoiceProps | null;
 }
