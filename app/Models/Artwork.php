@@ -15,6 +15,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use App\Models\Media;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 
 class Artwork extends Model implements HasMedia
@@ -225,6 +227,25 @@ class Artwork extends Model implements HasMedia
       ->where('model_type', Artwork::class)
       ->where('collection_name', 'artwork-images')
       ->where('custom_properties->is_main', true);
+  }
+
+  public function invoices(): HasManyThrough
+  {
+    return $this->hasManyThrough(
+      Invoice::class,
+      InvoiceItem::class,
+      'artwork_id',
+      'id',
+      'id',
+      'invoice_id'
+    );
+  }
+
+  public function lastInvoice(): HasOneThrough
+  {
+    return $this->hasOneThrough(Invoice::class, InvoiceItem::class, 'artwork_id', 'id', 'id', 'invoice_id')
+      ->where('invoices.status', '!=', 'void')
+      ->orderBy('invoices.id', 'desc');
   }
 
   // Methods
