@@ -1,17 +1,21 @@
 import { InvoiceProps } from "@/types/invoice";
-import FlexBox from "../Containers/FlexBox";
+import { InvoiceIcon, PanelLeftOpen } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { Button, Tooltip } from "antd";
 import { useState } from "react";
-import InvoicePreviewDrawer from "./InvoicePreviewDrawer";
-import { PanelLeftOpen } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
+import FlexBox from "../Containers/FlexBox";
 import NewTag from "../NewTag";
+import InvoicePreviewDrawer from "./InvoicePreviewDrawer";
 
 type Props = {
   invoice: InvoiceProps;
 };
 
 function InvoiceNumberStack({ invoice }: Props) {
+
+  if (!invoice) {
+    return null
+  }
 
   const [showInvoicePreviewDrawer, setShowInvoicePreviewDrawer] = useState(false)
   const [previewingInvoice, setPreviewingInvoice] = useState<InvoiceProps | null>(null)
@@ -30,7 +34,10 @@ function InvoiceNumberStack({ invoice }: Props) {
             icon={<HugeiconsIcon icon={PanelLeftOpen} size={20} className="text-muted opacity-0 group-hover:!opacity-100 transition" />}
             iconPlacement="end"
           >
-            <code>{invoice.invoice_number}</code>
+            <FlexBox>
+              <HugeiconsIcon icon={InvoiceIcon} size={20} className="text-muted" />
+              <code>{invoice.invoice_number}</code>
+            </FlexBox>
           </Button>
         </Tooltip>
         <NewTag dateRef={invoice.created_at} />
