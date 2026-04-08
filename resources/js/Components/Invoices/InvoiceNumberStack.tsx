@@ -9,9 +9,10 @@ import InvoicePreviewDrawer from "./InvoicePreviewDrawer";
 
 type Props = {
   invoice: InvoiceProps;
+  showNewTag?: boolean;
 };
 
-function InvoiceNumberStack({ invoice }: Props) {
+function InvoiceNumberStack({ invoice, showNewTag = true }: Props) {
 
   if (!invoice) {
     return null
@@ -40,7 +41,7 @@ function InvoiceNumberStack({ invoice }: Props) {
             </FlexBox>
           </Button>
         </Tooltip>
-        <NewTag dateRef={invoice.created_at} />
+        {showNewTag && <NewTag dateRef={invoice.created_at} />}
       </FlexBox>
 
       {/* Components */}
