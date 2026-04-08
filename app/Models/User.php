@@ -22,7 +22,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {
   /** @use HasFactory<\Database\Factories\UserFactory> */
 
-  use HasFactory, Notifiable, Metable, InteractsWithMedia, LogsActivity, Notifiable, SoftDeletes;
+  use HasFactory, Notifiable, Metable, InteractsWithMedia, LogsActivity, SoftDeletes;
   /**
    * The attributes that are mass assignable.
    *
