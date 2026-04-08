@@ -1,20 +1,24 @@
 import CONFIGS from "@/constants/configs.json";
 import { CURRENCIES } from "@/constants/currencies";
+import { useApp } from "@/contexts/AppContext";
 import useSaveChip from "@/hooks/useSaveChip";
 import { ArtworkProps } from "@/types/artwork";
 import { UsePageProps } from "@/types/usePage";
 import { router, usePage } from "@inertiajs/react";
 import { useQuery } from "@tanstack/react-query";
-import { DatePicker, Form, Input, InputNumber, Radio, Select, Space } from "antd";
+import { DatePicker, Form, Input, InputNumber, Radio, Segmented, Select, Space } from "antd";
 import { useForm } from "antd/es/form/Form";
 import axios from "axios";
 import dayjs from "dayjs";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
-import ContactWidget from "../Contacts/ContactWidget";
+import { use, useEffect, useRef, useState } from "react";
+import AnimatedContainer from "../../AnimatedContainer";
+import ContactWidget from "../../Contacts/ContactWidget";
+import FlexBox from "../../Containers/FlexBox";
 
 function ArtworkFinancialForm({ artwork }: { artwork: ArtworkProps }) {
 
+  const { currencySymbol } = useApp()
   const [form] = useForm();
   const watchForm = Form.useWatch([], form);
   const currency = usePage<UsePageProps>().props.current_gallery?.meta?.currency || CONFIGS.defaults.currency;
@@ -67,7 +71,7 @@ function ArtworkFinancialForm({ artwork }: { artwork: ArtworkProps }) {
       })
       .catch((err) => {
         setSavingStatus('failed');
-        router.reload({ only: ['artwork'] });
+        // router.reload({ only: ['artwork'] });
       });
   }
 
@@ -83,6 +87,10 @@ function ArtworkFinancialForm({ artwork }: { artwork: ArtworkProps }) {
   useEffect(() => {
     handleSave();
   }, [ownerSelected])
+
+  useEffect(() => {
+    form.setFieldsValue(artwork);
+  }, [artwork])
 
   return (
     <Form
@@ -106,6 +114,8 @@ function ArtworkFinancialForm({ artwork }: { artwork: ArtworkProps }) {
         />
       </Form.Item>
 
+      {/* Consigned Fields */}
+
       {ownerSelected && watchForm?.ownership === 'consigned' && (
         <ContactWidget
           contact={ownerSelected}
@@ -115,28 +125,53 @@ function ArtworkFinancialForm({ artwork }: { artwork: ArtworkProps }) {
         />
       )}
 
-      <AnimatePresence>
-        {!ownerSelected && watchForm?.ownership === 'consigned' && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
+      <AnimatedContainer condition={watchForm?.ownership === 'consigned'} speed="slow" >
+        {!ownerSelected && (
+          <Form.Item
+            label='Owner'
           >
-            <Form.Item
-              label='Owner'
-            >
-              <Select
-                options={contactsOptions}
-                maxCount={1}
-                placeholder="Select owner from contacts"
-                showSearch={{ optionFilterProp: ['label', 'value'] }}
-                onChange={(value: string) => changeOwner(value)}
-              />
-            </Form.Item>
-          </motion.div>
+            <Select
+              options={contactsOptions}
+              maxCount={1}
+              placeholder="Select owner from contacts"
+              showSearch={{ optionFilterProp: ['label', 'value'] }}
+              onChange={(value: string) => changeOwner(value)}
+            />
+          </Form.Item>
         )}
-      </AnimatePresence>
+
+        <div className="label">Gallery Commission</div>
+        <FlexBox className="w-full" >
+          <Form.Item
+            name='commission_mode'
+          >
+            <Segmented
+              options={[
+                { label: '%', value: 'percentage' },
+                { label: currencySymbol, value: 'fixed' },
+              ]}
+              value={form.getFieldValue('commission_mode')}
+              onChange={(value) => {
+                if (value === 'percentage' && Number(form.getFieldValue('commission_value')) > 100) {
+                  form.setFieldValue('commission_value', 0);
+                } else if (value === 'fixed' && Number(form.getFieldValue('commission_value')) > Number(form.getFieldValue('price'))) {
+                  form.setFieldValue('commission_value', form.getFieldValue('price'));
+                }
+              }}
+            />
+          </Form.Item>
+          <Form.Item
+            name='commission_value'
+            className="grow"
+          >
+            <InputNumber
+              className="w-full"
+              min={0}
+              max={watchForm?.commission_mode == 'percentage' ? 100 : form.getFieldValue('price')}
+            />
+          </Form.Item>
+        </FlexBox>
+      </AnimatedContainer>
       <Form.Item
         label=""
         name="owner_contact_id"
@@ -145,7 +180,8 @@ function ArtworkFinancialForm({ artwork }: { artwork: ArtworkProps }) {
         <Input />
       </Form.Item>
 
-      {/* Acquisition */}
+      {/* Owned Fields */}
+
       <AnimatePresence>
         {watchForm?.ownership === 'owned' && (
           <motion.div

@@ -1,11 +1,11 @@
 import { ArtworkProps } from "@/types/artwork";
-import { Empty, Tabs } from "antd";
+import { Tabs } from "antd";
 import ActivityLogs from "../ActivityLogs";
 import ArtworkDocuments from "./ArtworkDocuments";
 import ArtworkImages from "./ArtworkImages";
 import ArtworkImageUpload from "./ArtworkImageUpload";
 import ArtworkNotes from "./ArtworkNotes";
-import ArtworkFinancial from "./ArtworkFinancial";
+import ArtworkFinancial from "./Financial/Financial";
 
 function ArtworkTabs({ artwork }: { artwork: ArtworkProps }) {
 
