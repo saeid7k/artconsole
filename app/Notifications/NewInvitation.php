@@ -9,17 +9,15 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NewInvitation extends Notification
+class NewInvitation extends Notification implements ShouldQueue
 {
   use Queueable;
 
   /**
    * Create a new notification instance.
    */
-  public function __construct(
-    public InviteLink $inviteLink
-  ) {
-    //
+  public function __construct(public InviteLink $inviteLink)
+  {
   }
 
   /**
@@ -36,6 +34,14 @@ class NewInvitation extends Notification
     }
 
     return $channels;
+  }
+
+  public function viaConnections(): array
+  {
+    return [
+      'mail' => 'database',
+      'database' => 'sync',
+    ];
   }
 
   /**
