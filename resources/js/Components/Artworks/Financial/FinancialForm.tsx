@@ -11,7 +11,7 @@ import { useForm } from "antd/es/form/Form";
 import axios from "axios";
 import dayjs from "dayjs";
 import { AnimatePresence, motion } from "framer-motion";
-import { use, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AnimatedContainer from "../../AnimatedContainer";
 import ContactWidget from "../../Contacts/ContactWidget";
 import FlexBox from "../../Containers/FlexBox";
@@ -32,11 +32,13 @@ function ArtworkFinancialForm({ artwork }: { artwork: ArtworkProps }) {
   function clearOwner() {
     form.setFieldValue('owner_contact_id', null);
     setOwnerSelected(null);
+    handleSave();
   }
 
   function changeOwner(value: string | number) {
     form.setFieldValue('owner_contact_id', value);
     setOwnerSelected(prev => allContacts.find((contact: any) => contact.id === value) || prev);
+    handleSave();
   }
 
   const contactsQuery = useQuery({
@@ -83,10 +85,6 @@ function ArtworkFinancialForm({ artwork }: { artwork: ArtworkProps }) {
       handleSave();
     }, 1000);
   }
-
-  useEffect(() => {
-    handleSave();
-  }, [ownerSelected])
 
   useEffect(() => {
     form.setFieldsValue(artwork);
