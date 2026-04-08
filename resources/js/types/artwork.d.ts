@@ -31,11 +31,13 @@ export interface ArtworkProps {
   dimensions?: DimensionsProps | null;
 
   ownership?: string | null;
-  owner_contact_id?: number | null;
-  consignment_terms?: string | null;
-  provenance?: string | null;
   acquisition_date?: string | null;
   acquisition_price?: number | null;
+  owner_contact_id?: number | null;
+  commission_mode?: 'percentage' | 'fixed';
+  commission_value?: number | null;
+  consignment_terms?: string | null;
+  provenance?: string | null;
 
   details?: object | null;
   status: string;

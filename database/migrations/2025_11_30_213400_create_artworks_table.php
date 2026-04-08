@@ -19,13 +19,13 @@ return new class extends Migration
       $table->foreignId('gallery_id')->constrained()->cascadeOnDelete();
       $table->foreignId('location_id')->nullOnDelete();
       $table->foreignIdFor(Contact::class, 'artist_id')->nullable()->nullOnDelete();
-      $table->json('artist_data')->nullable(); // Store artist data when is not linked to a Contact
+      $table->json('artist_data')->nullable();
 
-      $table->string('sku', 100)->nullable(); // PNT-25-001
+      $table->string('sku', 100)->nullable();
       $table->string('title', 255);
-      $table->string('year', 100)->nullable(); // 2023, Circa 19th Century
+      $table->string('year', 100)->nullable();
       $table->decimal('price', 10, 2)->nullable();
-      $table->json('edition')->nullable(); // {type: [unique|limited|open], number: 1, size: 50}
+      $table->json('edition')->nullable();
       $table->boolean('signed')->default(false);
       $table->text('signature_note')->nullable();
       $table->text('description')->nullable();
@@ -36,14 +36,16 @@ return new class extends Migration
       $table->json('styles')->nullable();
       $table->json('dimensions')->nullable();
 
-      $table->string('ownership', 50)->nullable(); // owned | consigned
-      $table->foreignId('owner_contact_id')->nullable()->constrained('contacts')->nullOnDelete();
-      $table->text('consignment_terms')->nullable(); // Note about consignment agreement
-      $table->text('provenance')->nullable(); // Note about history of ownership
+      $table->string('ownership', 50)->nullable();
       $table->date('acquisition_date')->nullable();
       $table->decimal('acquisition_price', 10, 2)->nullable();
+      $table->foreignId('owner_contact_id')->nullable()->constrained('contacts')->nullOnDelete();
+      $table->string('commission_mode', 50)->default('percentage');
+      $table->decimal('commission_value', 10, 2)->default(0);
+      $table->text('consignment_terms')->nullable();
+      $table->text('provenance')->nullable();
 
-      $table->json('details')->nullable(); // Additional metadata
+      $table->json('details')->nullable();
       $table->string('status', 50)->default('available');
 
       $table->timestamps();
