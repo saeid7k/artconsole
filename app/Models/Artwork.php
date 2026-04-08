@@ -61,7 +61,7 @@ class Artwork extends Model implements HasMedia
     'styles' => 'array',
     'dimensions' => 'object',
     'details' => 'object',
-    'acquisition_date' => 'date',
+    'acquisition_date' => 'date:Y-m-d',
     'acquisition_price' => 'decimal:2',
   ];
 
