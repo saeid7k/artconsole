@@ -3,7 +3,8 @@
 @section('content')
 <div>
   <h3>Hello!</h3>
-  <p>You have been invited to join
+  <p>
+    You have been invited to join
     <strong>{{ $gallery->name }}</strong>
     on
     <a

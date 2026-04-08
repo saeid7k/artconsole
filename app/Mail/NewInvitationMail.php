@@ -21,8 +21,8 @@ class NewInvitationMail extends Mailable
   public InviteLink $inviteLink;
   public Gallery $gallery;
 
-  public function __construct(InviteLink $inviteLink
-  ) {
+  public function __construct(InviteLink $inviteLink)
+  {
     $this->inviteLink = $inviteLink;
     $this->gallery = $inviteLink->gallery;
   }
@@ -43,7 +43,7 @@ class NewInvitationMail extends Mailable
   public function content(): Content
   {
     return new Content(
-      view: 'mail.new-invitation',
+      view: 'email.new-invitation',
     );
   }
 
