@@ -533,6 +533,8 @@ class ArtworkController extends Controller
       'owner_contact_id' => ['nullable', 'integer', 'exists:contacts,id'],
       'acquisition_date' => ['nullable', 'date'],
       'acquisition_price' => ['nullable', 'numeric', 'decimal:0,2'],
+      'commission_mode' => ['sometimes', 'string', 'in:percentage,fixed'],
+      'commission_value' => ['sometimes', 'numeric', 'decimal:0,2'],
     ]);
 
     $artwork->update($validated);

@@ -29,25 +29,31 @@ class Artwork extends Model implements HasMedia
     'location_id',
     'artist_id',
     'artist_data',
+
     'sku',
     'title',
-    'year',
+    'year', // e.g. 2023 | Circa 19th Century
     'price',
-    'edition',
+    'edition', // e.g. {type: [unique|limited|open], number: 1, size: 50}
     'signed',
     'signature_note',
     'description',
+
     'category',
     'subjects',
     'mediums',
     'styles',
     'dimensions',
-    'ownership',
-    'owner_contact_id',
-    'consignment_terms',
-    'provenance',
+
+    'ownership', // owned | consigned
     'acquisition_date',
     'acquisition_price',
+    'owner_contact_id',
+    'commission_mode', // percentage | fixed
+    'commission_value',
+    'consignment_terms',
+    'provenance',
+
     'details',
     'status',
   ];
