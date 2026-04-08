@@ -68,6 +68,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/search', [App\Http\Controllers\ArtworkController::class, 'search'])->name('search');
     Route::post('/{artwork}/render-document', [App\Http\Controllers\ArtworkController::class, 'renderDocument'])->name('render-document');
     Route::get('/{artwork}/download-document', [App\Http\Controllers\ArtworkController::class, 'downloadDocument'])->name('download-document');
+    Route::post('/{artwork}/store-financial', [App\Http\Controllers\ArtworkController::class, 'storeFinancial'])->name('store-financial');
   });
 
   Route::prefix('members')->name('members.')->group(function () {
