@@ -1,3 +1,4 @@
+import AnimatedContainer from "@/Components/AnimatedContainer";
 import ContactWidget from "@/Components/Contacts/ContactWidget";
 import FlexBox from "@/Components/Containers/FlexBox";
 import HtmlEditor from "@/Components/HtmlEditor";
@@ -8,6 +9,7 @@ import ARTWORK_STATUSES, { DEFAULT_ARTWORK_STATUS } from "@/constants/artworkSta
 import CONFIGS from "@/constants/configs.json";
 import { CURRENCIES } from "@/constants/currencies";
 import { FORM_RULES } from "@/constants/formRules";
+import { useApp } from "@/contexts/AppContext";
 import useLocations from "@/hooks/useLocations";
 import { ArtworkProps } from "@/types/artwork";
 import { UsePageProps } from "@/types/usePage";
@@ -32,6 +34,7 @@ type Props = {
 
 function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: Props) {
 
+  const { currencySymbol } = useApp();
   const [form] = Form.useForm();
   const currency = usePage<UsePageProps>().props.current_gallery?.meta?.currency || CONFIGS.defaults.currency
 
@@ -774,29 +777,46 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                   unsetFunction={clearOwner}
                 />
               )}
-              <AnimatePresence>
-                {!ownerSelected && watchForm?.ownership === 'consigned' && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.3 }}
-                    className="lg:w-1/3"
+              <AnimatedContainer condition={watchForm?.ownership === 'consigned'} speed="slow" >
+                {!ownerSelected && (
+                  <Form.Item
+                    label='Owner'
                   >
-                    <Form.Item
-                      label='Owner'
-                    >
-                      <Select
-                        options={contactsOptions}
-                        maxCount={1}
-                        placeholder="Select owner from contacts"
-                        showSearch={{ optionFilterProp: ['label', 'value'] }}
-                        onChange={(value: string) => onChangeOwner(value)}
-                      />
-                    </Form.Item>
-                  </motion.div>
+                    <Select
+                      options={contactsOptions}
+                      maxCount={1}
+                      placeholder="Select owner from contacts"
+                      showSearch={{ optionFilterProp: ['label', 'value'] }}
+                      onChange={(value: string) => onChangeOwner(value)}
+                    />
+                  </Form.Item>
                 )}
-              </AnimatePresence>
+
+                <div className="label">Gallery Commission</div>
+                <FlexBox className="w-full" >
+                  <Form.Item
+                    name='commission_mode'
+                  >
+                    <Segmented
+                      options={[
+                        { label: '%', value: 'percentage' },
+                        { label: currencySymbol, value: 'fixed' },
+                      ]}
+                      value={form.getFieldValue('commission_mode')}
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    name='commission_value'
+                    className="grow"
+                  >
+                    <InputNumber
+                      className="w-full"
+                      min={0}
+                      max={watchForm?.commission_mode == 'percentage' ? 100 : undefined}
+                    />
+                  </Form.Item>
+                </FlexBox>
+              </AnimatedContainer>
               <Form.Item
                 label=""
                 name="owner_contact_id"
@@ -805,7 +825,8 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                 <Input />
               </Form.Item>
 
-              {/* Acquisition */}
+              {/* Owned Fields */}
+
               <AnimatePresence>
                 {watchForm?.ownership === 'owned' && (
                   <motion.div
