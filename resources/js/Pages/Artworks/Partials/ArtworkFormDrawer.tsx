@@ -21,7 +21,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { AnimatePresence, motion } from "framer-motion";
 import { serialize } from "object-to-formdata";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
   mode?: 'create' | 'update';
@@ -184,7 +184,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
   const [contactsOptions, setContactsOptions] = useState([]);
 
   function clearOwner() {
-    form.setFieldValue('owner_id', null);
+    form.setFieldValue('owner_contact_id', null);
     setOwnerSelected(null);
   }
 
@@ -192,6 +192,10 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
     form.setFieldValue('owner_contact_id', value);
     setOwnerSelected(prev => allContacts.find((contact: any) => contact.id === value) || prev);
   }
+
+  useEffect(() => {
+    setOwnerSelected(artwork?.owner);
+  }, [show])
 
   const contactsQuery = useQuery({
     queryKey: ['all-contacts-query'],
