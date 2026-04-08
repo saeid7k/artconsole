@@ -523,4 +523,22 @@ class ArtworkController extends Controller
 
     return response()->json($artworks);
   }
+
+  public function storeFinancial(Request $request, Artwork $artwork)
+  {
+    $this->authorize('update', $artwork);
+
+    $validated = $request->validate([
+      'ownership' => ['nullable', 'string', 'in:owned,consigned'],
+      'owner_contact_id' => ['nullable', 'integer', 'exists:contacts,id'],
+      'acquisition_date' => ['nullable', 'date'],
+      'acquisition_price' => ['nullable', 'numeric', 'decimal:0,2'],
+    ]);
+
+    $artwork->update($validated);
+
+    return response()->json([
+      'message' => 'Financial details updated successfully.',
+    ]);
+  }
 }
