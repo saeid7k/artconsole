@@ -21,7 +21,7 @@ class InvoiceController extends Controller
     $invoices = $gallery->invoices()
       ->with([
           'contact' => function ($query) {
-            $query->select('id', 'firstname', 'lastname');
+            $query->select('id', 'firstname', 'lastname', 'email');
           }
         ])
       ->when($request->search, function ($q) use ($request) {
@@ -168,5 +168,15 @@ class InvoiceController extends Controller
     $this->authorize('view', $invoice);
 
     return (new InvoiceExportService($invoice))->pdf();
+  }
+
+  public function previewEmail(Invoice $invoice)
+  {
+    $this->authorize('view', $invoice);
+
+    return view('email.invoice', [
+      'invoice' => $invoice->load('contact'),
+      'gallery' => $invoice->gallery,
+    ]);
   }
 }

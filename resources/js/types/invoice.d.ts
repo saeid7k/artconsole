@@ -1,5 +1,6 @@
 import { ArtworkProps } from "./artwork";
 import { ContactProps } from "./contact";
+import { GalleryProps } from "./gallery";
 import { PaymentProps } from "./payment";
 
 export interface InvoiceProps {
@@ -28,8 +29,10 @@ export interface InvoiceProps {
   invoice_number: string;
   amount_paid: number;
   amount_due: number;
+  email_subject: string;
 
   // Relationships
+  gallery?: GalleryProps;
   contact?: ContactProps | null;
   items?: any[];
   artworks?: ArtworkProps[];
