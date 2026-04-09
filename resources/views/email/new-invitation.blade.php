@@ -1,4 +1,4 @@
-@extends('mail.layouts.main')
+@extends('email.layouts.main')
 
 @section('content')
 <div>
@@ -11,7 +11,7 @@
       href="{{ config('app.url') }}"
       style="text-decoration: none;"
     >
-      <strong>{{ config('app.full_name') }}</strong>
+      <strong>{{ config('app.name') }}</strong>
     </a>
   </p>
 
