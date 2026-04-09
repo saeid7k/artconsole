@@ -1,5 +1,5 @@
 import { InvoiceProps } from "@/types/invoice";
-import { Delete02Icon, MoreHorizontalCircle01Icon, Payment01Icon, PdfIcon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
+import { Delete02Icon, MailSend01Icon, MoreHorizontalCircle01Icon, Payment01Icon, PdfIcon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
 import { useQuery } from "@tanstack/react-query";
@@ -7,6 +7,7 @@ import { Button, Dropdown, Menu, message, Tooltip } from "antd";
 import axios from "axios";
 import { useState } from "react";
 import FlexBox from "../Containers/FlexBox";
+import InvoiceEmailPreviewDrawer from "./InvoiceEmailPreviewDrawer";
 import InvoiceFormDrawer from "./InvoiceFormDrawer";
 import InvoicePaymentsDrawer from "./InvoicePaymentsDrawer";
 
@@ -16,6 +17,7 @@ function InvoicesActions({ invoice } : { invoice: InvoiceProps }) {
 
   const [showEditDrawer, setShowEditDrawer] = useState(false);
   const [showPaymentsDrawer, setShowPaymentsDrawer] = useState(false);
+  const [showEmailPreviewDrawer, setShowEmailPreviewDrawer] = useState(false);
 
   // Delete
 
@@ -73,6 +75,12 @@ function InvoicesActions({ invoice } : { invoice: InvoiceProps }) {
             <Menu
               items={[
                 {
+                  key: 'send-email',
+                  icon: <HugeiconsIcon icon={MailSend01Icon} size={16} />,
+                  label: 'Send as Email',
+                  onClick: () => setShowEmailPreviewDrawer(true),
+                },
+                {
                   key: 'delete',
                   icon: <HugeiconsIcon icon={Delete02Icon} size={16} />,
                   label: 'Delete Invoice',
@@ -103,6 +111,12 @@ function InvoicesActions({ invoice } : { invoice: InvoiceProps }) {
       <InvoicePaymentsDrawer
         show={showPaymentsDrawer}
         onClose={() => setShowPaymentsDrawer(false)}
+        invoice={invoice}
+      />
+
+      <InvoiceEmailPreviewDrawer
+        show={showEmailPreviewDrawer}
+        onClose={() => setShowEmailPreviewDrawer(false)}
         invoice={invoice}
       />
     </>
