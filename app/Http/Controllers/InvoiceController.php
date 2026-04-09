@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Enums\InvoiceStatus;
-use App\Helpers\AddressHelper;
-use App\Helpers\ConfigHelper;
 use App\Http\Requests\InvoiceRequest;
 use App\Models\Invoice;
+use App\Services\InvoiceExportService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Spatie\LaravelPdf\Enums\Format;
 
 use function Spatie\LaravelPdf\Support\pdf;
 
@@ -169,23 +167,6 @@ class InvoiceController extends Controller
   {
     $this->authorize('view', $invoice);
 
-    $invoice->load('items.artwork', 'contact');
-    $galleryLogo = $invoice->gallery->logo()->base64Content();
-    $gallery = $invoice->gallery;
-    $gallery->formatted_address_two_line = AddressHelper::formatAddress($gallery->address, 2);
-    $invoice->contact->formatted_address_two_line = AddressHelper::formatAddress($invoice->contact->address, 2);
-
-    $pdf = pdf()
-      ->view('Invoices/invoice', [
-        'invoice' => $invoice,
-        'gallery' => $gallery,
-      ])
-      ->headerView('Invoices/invoice-header', ['invoice' => $invoice, 'gallery' => $gallery, 'galleryLogo' => $galleryLogo])
-      ->footerView('Invoices/invoice-footer', ['gallery' => $gallery])
-      ->margins(3.5, 0, 1, 0, 'in')
-      ->format(Format::Letter)
-      ->portrait();
-
-    return $pdf;
+    return (new InvoiceExportService($invoice))->pdf();
   }
 }
