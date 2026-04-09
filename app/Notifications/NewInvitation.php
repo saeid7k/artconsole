@@ -5,11 +5,9 @@ namespace App\Notifications;
 use App\Mail\NewInvitationMail;
 use App\Models\InviteLink;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NewInvitation extends Notification implements ShouldQueue
+class NewInvitation extends Notification
 {
   use Queueable;
 
@@ -34,14 +32,6 @@ class NewInvitation extends Notification implements ShouldQueue
     }
 
     return $channels;
-  }
-
-  public function viaConnections(): array
-  {
-    return [
-      'mail' => 'database',
-      'database' => 'sync',
-    ];
   }
 
   /**
