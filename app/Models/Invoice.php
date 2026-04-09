@@ -9,10 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Invoice extends Model
 {
-  use HasFactory;
+  use HasFactory, SoftDeletes;
 
   protected $fillable = [
     'gallery_id',
@@ -52,12 +53,12 @@ class Invoice extends Model
   ];
 
   /*
-  |--------------------------------------------------------------------------
+  |=======================================================
   | Accessors & Mutators
-  |--------------------------------------------------------------------------
+  |=======================================================
   */
 
-  protected $appends = ['invoice_number', 'amount_paid', 'amount_due', 'due_remaining_days'];
+  protected $appends = ['invoice_number', 'amount_paid', 'amount_due', 'due_remaining_days', 'email_subject'];
 
   public function number() :Attribute
   {
@@ -97,10 +98,17 @@ class Invoice extends Model
     return $today->diffInDays($dueDate, false);
   }
 
+  public function emailSubject(): Attribute
+  {
+    return Attribute::make(
+      get: fn () => 'Invoice ' . $this->invoice_number . ' from ' . $this->gallery->name,
+    );
+  }
+
   /*
-  |--------------------------------------------------------------------------
-  | Relationships
-  |--------------------------------------------------------------------------
+  |=======================================================
+  | Relations
+  |=======================================================
   */
 
   public function gallery(): BelongsTo
