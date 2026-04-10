@@ -189,6 +189,8 @@ class InvoiceController extends Controller
     Mail::to($invoice->contact->email)
       ->send(new SendInvoiceMail($invoice));
 
+    $invoice->update(['status' => 'sent']);
+
     return response()->json([
       'message' => 'Invoice email sent successfully',
     ], 200);
