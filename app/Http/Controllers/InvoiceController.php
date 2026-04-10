@@ -182,9 +182,10 @@ class InvoiceController extends Controller
     ]);
   }
 
-  public function sendEmail(Invoice $invoice)
+  public function sendEmail(Request $request, Invoice $invoice)
   {
     $this->authorize('view', $invoice);
+    $user = $request->user();
 
     Mail::to($invoice->contact->email)
       ->send(new SendInvoiceMail($invoice));
@@ -192,6 +193,11 @@ class InvoiceController extends Controller
     if ($invoice->status == 'draft') {
       $invoice->update(['status' => 'sent']);
     }
+
+    activity()
+      ->performedOn($invoice->contact)
+      ->causedBy($user)
+      ->log('sent invoice email to contact');
 
     return response()->json([
       'message' => 'Invoice email sent successfully',
