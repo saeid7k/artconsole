@@ -1,5 +1,6 @@
 import { InvoiceProps } from "@/types/invoice";
 import { downloadFile } from "@/utils/downloadHelper";
+import { router } from "@inertiajs/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { message } from "antd";
 import axios from "axios";
@@ -86,6 +87,7 @@ function useInvoice({ invoice, triggerDownload, triggerPreviewEmail }: Props) {
     mutationFn: () => axios.post(route('invoices.send-email', invoice.id)),
     onSuccess: (response) => {
       message.success(response.data.message || 'Invoice email is being sent.');
+      router.reload();
     },
     onError: (err: any) => {
       message.error(err?.response?.data?.message || 'Failed to send invoice email');

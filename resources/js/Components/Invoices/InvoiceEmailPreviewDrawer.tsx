@@ -37,7 +37,7 @@ function InvoiceEmailPreviewDrawer({ show, onClose, invoice }: Props) {
         <Button
           type="primary"
           icon={<HugeiconsIcon icon={SentIcon} size={20} />}
-          onClick={() => sendEmail()}
+          onClick={() => { sendEmail(); onClose(); }}
           loading={sendEmailIsPending}
         >
           Send
