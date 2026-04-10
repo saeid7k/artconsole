@@ -15,7 +15,12 @@
       @if(View::hasSection('header'))
         @yield('header')
       @else
-        <h2>{{ $gallery->name }}</h2>
+        <img
+          src="{{ $gallery->logo_url }}"
+          alt="{{ $gallery->name }} Logo"
+          class="mx-auto"
+          style="max-height: 80px;"
+        >
       @endif
     </div>
 
