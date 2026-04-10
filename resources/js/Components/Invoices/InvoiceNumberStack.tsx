@@ -10,9 +10,10 @@ import InvoicePreviewDrawer from "./InvoicePreviewDrawer";
 type Props = {
   invoice: InvoiceProps;
   showNewTag?: boolean;
+  className?: string;
 };
 
-function InvoiceNumberStack({ invoice, showNewTag = true }: Props) {
+function InvoiceNumberStack({ invoice, showNewTag = true, className }: Props) {
 
   if (!invoice) {
     return null
@@ -23,7 +24,7 @@ function InvoiceNumberStack({ invoice, showNewTag = true }: Props) {
 
   return (
     <>
-      <FlexBox>
+      <FlexBox className={className}>
         <Tooltip title='Preview Invoice' mouseEnterDelay={1} >
           <Button
             type="text"
