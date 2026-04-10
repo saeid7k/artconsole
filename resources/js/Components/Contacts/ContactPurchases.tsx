@@ -52,7 +52,7 @@ function ContactPurchases({ contact }: Props) {
                 <div className="flex flex-col xl:flex-row gap-3 xl:items-center grow" >
                   <FlexBox direction="col" alignItems="start" gap={0} >
                     <div className="label !mb-0 ps-2">Invoice #</div>
-                    <InvoiceNumberStack invoice={invoice} />
+                    <InvoiceNumberStack invoice={invoice} showNewTag={false} />
                   </FlexBox>
                   <Divider vertical className="h-10 hidden xl:block" />
 
