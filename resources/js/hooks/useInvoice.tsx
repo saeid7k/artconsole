@@ -26,12 +26,22 @@ function useInvoice({ invoice, triggerDownload, triggerPreviewEmail }: Props) {
     enabled: false,
   });
 
-  function handleDownload() {
-    if (!pdfUrl) return;
+  async function handleDownload() {
+    if (!pdfUrl) {
+      const result = await downloadQuery.refetch();
+      const data = result.data;
+      if (data) {
+        downloadFile({
+          url: URL.createObjectURL(new Blob([data], { type: 'application/pdf' })),
+          fileName: `Invoice - ${invoice?.invoice_number}.pdf`
+        });
+      }
+      return;
+    }
     downloadFile({
       url: pdfUrl,
       fileName: `Invoice - ${invoice?.invoice_number}.pdf`
-    })
+    });
   }
 
   useEffect(() => {
