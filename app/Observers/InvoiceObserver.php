@@ -29,5 +29,11 @@ class InvoiceObserver
     if ($invoice->wasChanged('total') || $invoice->wasChanged('due_date')) {
       $invoiceService->autoUpdateStatus();
     }
+
+    activity()
+      ->performedOn($invoice->contact)
+      ->causedBy($invoice->creator)
+      ->withProperties(['invoice_id' => $invoice->id])
+      ->log('issued the sales invoice ' . $invoice->invoice_number);
   }
 }
