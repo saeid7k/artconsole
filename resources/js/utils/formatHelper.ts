@@ -11,6 +11,7 @@ function formatByKey(key: string, value: any, galleryMeta?: any): any {
       return formatPhoneNumber(value);
     case 'website':
     case 'url':
+    case 'email':
       return trimWebsite(value);
     case 'price':
     case 'cost':
