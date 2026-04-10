@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Enums\InvoiceStatus;
 use App\Http\Requests\InvoiceRequest;
+use App\Mail\SendInvoiceMail;
 use App\Models\Invoice;
 use App\Services\InvoiceExportService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 use function Spatie\LaravelPdf\Support\pdf;
@@ -178,5 +180,17 @@ class InvoiceController extends Controller
       'invoice' => $invoice->load('contact'),
       'gallery' => $invoice->gallery,
     ]);
+  }
+
+  public function sendEmail(Invoice $invoice)
+  {
+    $this->authorize('view', $invoice);
+
+    Mail::to($invoice->contact->email)
+      ->send(new SendInvoiceMail($invoice));
+
+    return response()->json([
+      'message' => 'Invoice email sent successfully',
+    ], 200);
   }
 }
