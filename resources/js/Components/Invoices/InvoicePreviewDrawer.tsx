@@ -1,11 +1,8 @@
+import useInvoice from "@/hooks/useInvoice";
 import { InvoiceProps } from "@/types/invoice";
-import { downloadFile } from "@/utils/downloadHelper";
 import { PdfIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { useQuery } from "@tanstack/react-query";
 import { Button, Divider, Drawer } from "antd";
-import axios from "axios";
-import { useState } from "react";
 import FlexBox from "../Containers/FlexBox";
 import LoadingSpinner from "../LoadingSpinner";
 
@@ -17,31 +14,10 @@ type Props = {
 
 function InvoicePreviewDrawer({ invoice, show, onClose }: Props) {
 
-  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
-
-  const renderQuery = useQuery({
-    queryKey: ['invoices', 'render', invoice?.id],
-    queryFn: () => axios.get(route('invoices.download', { invoice: invoice?.id }), { responseType: 'blob' })
-      .then(res => {
-        let url = URL.createObjectURL(new Blob([res.data], { type: 'application/pdf' }));
-        setPdfUrl(url);
-        return res.data;
-      }),
-    enabled: show && !!invoice,
+  const { pdfUrl, pdfIsLoading, handleDownload } = useInvoice({
+    invoice,
+    triggerDownload: show,
   });
-
-  function handleDownload() {
-    if (!pdfUrl) return;
-    downloadFile({
-      url: pdfUrl,
-      fileName: `Invoice - ${invoice?.invoice_number}.pdf`
-    })
-  }
-
-  function handleClose() {
-    setPdfUrl(null);
-    onClose();
-  }
 
   // Renders
 
@@ -70,13 +46,14 @@ function InvoicePreviewDrawer({ invoice, show, onClose }: Props) {
   return (
     <Drawer
       open={show}
-      onClose={handleClose}
+      onClose={onClose}
       title={renderTitle()}
       extra={renderToolbar()}
       resizable
       defaultSize={700}
+      destroyOnHidden
     >
-      {renderQuery.isFetching && (
+      {pdfIsLoading && (
         <LoadingSpinner size="large" className="py-20" />
       )}
       {(invoice && pdfUrl) && (

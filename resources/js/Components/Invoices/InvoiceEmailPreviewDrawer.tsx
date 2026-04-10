@@ -1,9 +1,9 @@
+import useInvoice from "@/hooks/useInvoice";
 import { InvoiceProps } from "@/types/invoice";
-import { SentIcon } from "@hugeicons/core-free-icons";
+import { DownloadIcon, LinkSquare02Icon, PdfIcon, SentIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { useQuery } from "@tanstack/react-query";
-import { Button, Card, Divider, Drawer, message } from "antd";
-import axios from "axios";
+import { Button, Card, Divider, Drawer, Tooltip } from "antd";
+import FlexBox from "../Containers/FlexBox";
 import LoadingSpinner from "../LoadingSpinner";
 
 type Props = {
@@ -14,15 +14,10 @@ type Props = {
 
 function InvoiceEmailPreviewDrawer({ show, onClose, invoice }: Props) {
 
-  const viewQuery = useQuery({
-    queryKey: ['invoice', invoice.id, 'email-preview'],
-    queryFn: () => axios.get(route('invoices.preview-email', invoice.id))
-      .then(res => res.data)
-      .catch(err => {
-        message.error(err?.response?.data?.message || 'Failed to load email preview');
-        return null;
-      }),
-    enabled: show
+  const { previewEmailIsLoading, previewEmailContent, handleDownload, pdfIsLoading, pdfUrl } = useInvoice({
+    invoice,
+    triggerPreviewEmail: show,
+    triggerDownload: show,
   });
 
   return (
@@ -40,11 +35,14 @@ function InvoiceEmailPreviewDrawer({ show, onClose, invoice }: Props) {
       }
       size={800}
     >
-      {viewQuery.isLoading && (
+      {previewEmailIsLoading && (
         <LoadingSpinner size="large" />
       )}
-      {viewQuery.data && (
+      {previewEmailContent && (
         <div className="flex flex-col gap-5">
+
+          {/* Header */}
+
           <Card size="small" >
             <div><span className="label me-3">To:</span>{invoice?.contact?.email}</div>
             <Divider size="small" />
@@ -52,7 +50,45 @@ function InvoiceEmailPreviewDrawer({ show, onClose, invoice }: Props) {
             <Divider size="small" />
             <div><span className="label me-3">Subject:</span><strong>{invoice?.email_subject}</strong></div>
           </Card>
-          <div dangerouslySetInnerHTML={{ __html: viewQuery.data }} />
+
+          {/* Email Body */}
+
+          <div dangerouslySetInnerHTML={{ __html: previewEmailContent }} />
+
+          {/* Attachments */}
+
+          <Card size="small" title="Attachments">
+            <div className="flex flex-col">
+              <div className="flex items-center justify-between gap-2">
+                <FlexBox>
+                  <HugeiconsIcon icon={PdfIcon} size={20} />
+                  <code className="text-body">{invoice?.pdf_file_name}</code>
+                </FlexBox>
+                <FlexBox>
+                  <Tooltip title="Open in new tab">
+                    <Button
+                      variant="text"
+                      color="blue"
+                      shape="circle"
+                      icon={<HugeiconsIcon icon={LinkSquare02Icon} size={20} />}
+                      onClick={() => pdfUrl ? window.open(pdfUrl, '_blank') : undefined}
+                      loading={pdfIsLoading}
+                    />
+                  </Tooltip>
+                  <Tooltip title="Download">
+                    <Button
+                      variant="text"
+                      color="purple"
+                      shape="circle"
+                      icon={<HugeiconsIcon icon={DownloadIcon} size={20} />}
+                      onClick={handleDownload}
+                      loading={pdfIsLoading}
+                    />
+                  </Tooltip>
+                </FlexBox>
+              </div>
+            </div>
+          </Card>
         </div>
       )}
     </Drawer>
