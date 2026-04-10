@@ -23,7 +23,7 @@ type Props = {
 
 function InvoiceTable({ invoices }: Props) {
 
-  const { breakpoint } = useWindow()
+  const { breakpoint, windowWidth } = useWindow()
 
   const [showInvoiceFormDrawer, setShowInvoiceFormDrawer] = useState(false)
   const [editingInvoice, setEditingInvoice] = useState<number | null>(null)
@@ -57,7 +57,7 @@ function InvoiceTable({ invoices }: Props) {
       sorter: true,
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
-      render: (text: string, record: any) => <InvoiceNumberStack invoice={record} />
+      render: (text: string, record: any) => <InvoiceNumberStack invoice={record} className="py-2" />
     },
     {
       title: 'Customer',
@@ -142,8 +142,10 @@ function InvoiceTable({ invoices }: Props) {
       <Table
         dataSource={invoices.data}
         columns={columns}
+        size="small"
         scroll={{
-          x: 'max-content'
+          x: 'max-content',
+          y: windowWidth < 640 ? '60vh' : '70vh'
         }}
         pagination={{
           current: invoices.current_page,
