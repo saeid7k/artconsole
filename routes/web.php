@@ -152,6 +152,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/{invoice}/render', [App\Http\Controllers\InvoiceController::class, 'render'])->name('render');
     Route::get('/{invoice}/download', [App\Http\Controllers\InvoiceController::class, 'download'])->name('download');
     Route::get('/{invoice}/preview-email', [App\Http\Controllers\InvoiceController::class, 'previewEmail'])->name('preview-email');
+    Route::post('/{invoice}/send-email', [App\Http\Controllers\InvoiceController::class, 'sendEmail'])->name('send-email');
   });
 
   Route::prefix('payments')->name('payments.')->group(function () {

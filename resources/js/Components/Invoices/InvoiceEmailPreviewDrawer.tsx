@@ -14,7 +14,15 @@ type Props = {
 
 function InvoiceEmailPreviewDrawer({ show, onClose, invoice }: Props) {
 
-  const { previewEmailIsLoading, previewEmailContent, handleDownload, pdfIsLoading, pdfUrl } = useInvoice({
+  const {
+    previewEmailIsLoading,
+    previewEmailContent,
+    handleDownload,
+    pdfIsLoading,
+    pdfUrl,
+    sendEmail,
+    sendEmailIsPending
+  } = useInvoice({
     invoice,
     triggerPreviewEmail: show,
     triggerDownload: show,
@@ -29,6 +37,8 @@ function InvoiceEmailPreviewDrawer({ show, onClose, invoice }: Props) {
         <Button
           type="primary"
           icon={<HugeiconsIcon icon={SentIcon} size={20} />}
+          onClick={() => sendEmail()}
+          loading={sendEmailIsPending}
         >
           Send
         </Button>

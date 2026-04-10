@@ -1,6 +1,6 @@
 import { InvoiceProps } from "@/types/invoice";
 import { downloadFile } from "@/utils/downloadHelper";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { message } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -72,12 +72,24 @@ function useInvoice({ invoice, triggerDownload, triggerPreviewEmail }: Props) {
     }
   }, [triggerPreviewEmail]);
 
+  const sendEmailMutation = useMutation({
+    mutationFn: () => axios.post(route('invoices.send-email', invoice.id)),
+    onSuccess: (response) => {
+      message.success(response.data.message || 'Invoice email is being sent.');
+    },
+    onError: (err: any) => {
+      message.error(err?.response?.data?.message || 'Failed to send invoice email');
+    }
+  });
+
   return {
     pdfUrl,
     pdfIsLoading: downloadQuery.isFetching,
     handleDownload,
     previewEmailIsLoading: previewEmailQuery.isFetching,
     previewEmailContent: previewEmailQuery.data,
+    sendEmail: sendEmailMutation.mutate,
+    sendEmailIsPending: sendEmailMutation.isPending,
   };
 }
 
