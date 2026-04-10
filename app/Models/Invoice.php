@@ -58,7 +58,7 @@ class Invoice extends Model
   |=======================================================
   */
 
-  protected $appends = ['invoice_number', 'amount_paid', 'amount_due', 'due_remaining_days', 'email_subject'];
+  protected $appends = ['invoice_number', 'amount_paid', 'amount_due', 'due_remaining_days', 'email_subject', 'pdf_file_name'];
 
   public function number() :Attribute
   {
@@ -102,6 +102,13 @@ class Invoice extends Model
   {
     return Attribute::make(
       get: fn () => 'Invoice ' . $this->invoice_number . ' from ' . $this->gallery->name,
+    );
+  }
+
+  public function pdfFileName(): Attribute
+  {
+    return Attribute::make(
+      get: fn () => 'Invoice - ' . $this->invoice_number . '.pdf',
     );
   }
 
