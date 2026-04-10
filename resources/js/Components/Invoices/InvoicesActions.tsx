@@ -1,5 +1,6 @@
+import useInvoice from "@/hooks/useInvoice";
 import { InvoiceProps } from "@/types/invoice";
-import { Delete02Icon, MailSend01Icon, MoreHorizontalCircle01Icon, Payment01Icon, PdfIcon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
+import { Delete02Icon, Download01Icon, MailSend01Icon, MoreHorizontalCircle01Icon, Payment01Icon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
 import { useQuery } from "@tanstack/react-query";
@@ -14,6 +15,7 @@ import InvoicePaymentsDrawer from "./InvoicePaymentsDrawer";
 function InvoicesActions({ invoice } : { invoice: InvoiceProps }) {
 
   const user = usePage().props.auth.user;
+  const { handleDownload } = useInvoice({ invoice });
 
   const [showEditDrawer, setShowEditDrawer] = useState(false);
   const [showPaymentsDrawer, setShowPaymentsDrawer] = useState(false);
@@ -60,13 +62,13 @@ function InvoicesActions({ invoice } : { invoice: InvoiceProps }) {
             onClick={() => setShowPaymentsDrawer(true)}
           />
         </Tooltip>
-        <Tooltip title="Download PDF" placement="topRight">
+        <Tooltip title="Send as Email" placement="topRight">
           <Button
             variant="text"
-            color='red'
+            color='purple'
             shape="circle"
-            icon={<HugeiconsIcon icon={PdfIcon} size={20} />}
-            // onClick={handleDownload}
+            icon={<HugeiconsIcon icon={MailSend01Icon} size={20} />}
+            onClick={() => setShowEmailPreviewDrawer(true)}
           />
         </Tooltip>
         <Dropdown
@@ -75,10 +77,10 @@ function InvoicesActions({ invoice } : { invoice: InvoiceProps }) {
             <Menu
               items={[
                 {
-                  key: 'send-email',
-                  icon: <HugeiconsIcon icon={MailSend01Icon} size={16} />,
-                  label: 'Send as Email',
-                  onClick: () => setShowEmailPreviewDrawer(true),
+                  key: 'download',
+                  icon: <HugeiconsIcon icon={Download01Icon} size={16} />,
+                  label: 'Download PDF',
+                  onClick: handleDownload
                 },
                 {
                   key: 'delete',
