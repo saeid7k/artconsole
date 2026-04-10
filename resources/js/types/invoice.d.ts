@@ -30,6 +30,7 @@ export interface InvoiceProps {
   amount_paid: number;
   amount_due: number;
   email_subject: string;
+  pdf_file_name: string;
 
   // Relationships
   gallery?: GalleryProps;
