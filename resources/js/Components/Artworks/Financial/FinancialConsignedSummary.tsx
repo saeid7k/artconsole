@@ -49,10 +49,7 @@ function FinancialConsignedSummary({ artwork }: { artwork: ArtworkProps }) {
           </td>
           <td className="min-w-[80px] text-right">
             {consignorShare !== null ? (
-              <FlexBox gap={1} justifyContent="end" >
-                <span>-</span>
-                <StyledCurrency value={consignorShare} />
-              </FlexBox>
+              <StyledCurrency value={consignorShare} />
             ) : (
               <span className="text-ghost">-</span>
             )}
