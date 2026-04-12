@@ -253,3 +253,25 @@ table .ant-image {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+.moving-bg {
+  background: linear-gradient(90deg, theme('colors.blue.100'), theme('colors.purple.200'));
+  background-size: 200% 200%;
+  animation: bg_moving 4s ease infinite;
+}
+.moving-bg:hover {
+  /* animation: none; */
+  background: theme('colors.purple.200') !important;
+}
+
+@keyframes bg_moving {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
