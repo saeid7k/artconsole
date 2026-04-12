@@ -32,7 +32,7 @@ function Sidebar() {
   ]
 
   const lowerItems = [
-    { key: 'premium', icon: <HugeiconsIcon icon={Rocket01Icon} />, label: 'Premium', route: 'premium' },
+    { key: 'upgrade', icon: <HugeiconsIcon icon={Rocket01Icon} className="animate-pulse" />, label: 'Upgrade', route: 'upgrade' },
   ]
 
   const logBackItem = { key: 'log-back', icon: <HugeiconsIcon icon={ArrowTurnBackwardIcon} />, label: 'Log Back', route: 'logout-as' }
@@ -126,13 +126,23 @@ function Sidebar() {
         <Menu
           mode="inline"
           inlineCollapsed={sidebarCollapsed}
-          items={lowerItems}
+          // items={lowerItems}
           className='!border-none'
           onClick={(e) => {
             handleMenuClick(e.key);
           }}
           selectedKeys={[activeKey()]}
-        />
+        >
+          <Menu.Item
+            key="upgrade"
+            title="Upgrade"
+            // style={{ marginBottom: '8px' }}
+            icon={<HugeiconsIcon icon={Rocket01Icon} />}
+            className="text-blue-600 rounded-lg moving-bg"
+          >
+            {!sidebarCollapsed && 'Upgrade'}
+          </Menu.Item>
+        </Menu>
       </div>
 
     </div>
