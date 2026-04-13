@@ -35,7 +35,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/{contact}/invoices', [App\Http\Controllers\ContactController::class, 'getInvoices'])->name('invoices');
   });
 
-
   Route::prefix('galleries')->name('galleries.')->group(function () {
     Route::post('/create', [App\Http\Controllers\GalleryController::class, 'create'])->name('create');
     Route::post('set-current', [App\Http\Controllers\GalleryController::class, 'setCurrentGallery'])->name('set-current');
@@ -158,6 +157,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::prefix('payments')->name('payments.')->group(function () {
     Route::post('/store', [App\Http\Controllers\PaymentController::class, 'store'])->name('store');
     Route::delete('/{payment}/delete', [App\Http\Controllers\PaymentController::class, 'destroy'])->name('destroy');
+  });
+
+  Route::prefix('subscription')->name('subscription.')->group(function () {
+    Route::get('/', [App\Http\Controllers\SubscriptionController::class, 'index'])->name('index');
+    Route::get('/products', [App\Http\Controllers\SubscriptionController::class, 'getProducts'])->name('products');
   });
 });
 
