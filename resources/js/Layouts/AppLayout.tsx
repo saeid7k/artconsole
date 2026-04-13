@@ -1,6 +1,7 @@
 import GallerySwitch from "@/Components/Galleries/GallerySwitch";
 import ServerFlashMessage from "@/Components/ServerFlashMessage";
 import Sidebar from "@/Components/Sidebar";
+import UpgradeModal from "@/Components/Subscription/UpgradeModal";
 import TopbarActions from "@/Components/TopbarActions";
 import AppProvider, { useApp } from "@/contexts/AppContext";
 import { useWindow } from "@/hooks/useWindow";
@@ -22,7 +23,7 @@ interface AppProps extends PropsWithChildren {
 
 function App ({ children }: AppProps) {
 
-  const { sidebarCollapsed, toggleSidebar, darkMode } = useApp()
+  const { sidebarCollapsed, toggleSidebar, darkMode, openUpgradeModal, setOpenUpgradeModal } = useApp()
   const { scrollY, windowWidth } = useWindow()
   const collapsedWidth = 50
   const expandedWidth = 200
@@ -146,6 +147,11 @@ function App ({ children }: AppProps) {
               <div className="text-center">...footer...</div>
             </Footer>
           </Layout>
+
+          <UpgradeModal
+            open={openUpgradeModal}
+            onClose={() => setOpenUpgradeModal(false)}
+          />
         </QueryClientProvider>
         <ServerFlashMessage />
       </ConfigProvider>
