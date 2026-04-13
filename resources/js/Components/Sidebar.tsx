@@ -1,7 +1,7 @@
 import { useApp } from "@/contexts/AppContext";
 import colors from "@/Themes/theme";
 import { AuthProps } from "@/types/auth";
-import { ArrowTurnBackwardIcon, ContactIcon, DashboardBrowsingIcon, File01Icon, Image02Icon, InvoiceIcon, PresentationLineChart01Icon, Rocket01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons";
+import { ArrowTurnBackwardIcon, ContactIcon, CrownIcon, DashboardBrowsingIcon, File01Icon, Image02Icon, InvoiceIcon, PresentationLineChart01Icon, Rocket01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
 import { Divider, Menu } from "antd";
@@ -11,7 +11,7 @@ function Sidebar() {
   const { url, props } = usePage()
   const auth = props.auth as AuthProps
   const user = auth.user
-  const { sidebarCollapsed, darkMode } = useApp()
+  const { sidebarCollapsed, darkMode, setOpenUpgradeModal } = useApp()
 
   const items = [
     { key: 'dashboard', icon: <HugeiconsIcon icon={DashboardBrowsingIcon} />, label: 'Dashboard', route: 'dashboard' },
@@ -32,7 +32,7 @@ function Sidebar() {
   ]
 
   const lowerItems = [
-    { key: 'upgrade', icon: <HugeiconsIcon icon={Rocket01Icon} className="animate-pulse" />, label: 'Upgrade', route: 'upgrade' },
+    { key: 'upgrade', icon: <HugeiconsIcon icon={Rocket01Icon} className="animate-pulse" />, label: 'Upgrade' },
   ]
 
   const logBackItem = { key: 'log-back', icon: <HugeiconsIcon icon={ArrowTurnBackwardIcon} />, label: 'Log Back', route: 'logout-as' }
@@ -135,16 +135,15 @@ function Sidebar() {
         >
           <Menu.Item
             key="upgrade"
-            title="Upgrade"
-            // style={{ marginBottom: '8px' }}
-            icon={<HugeiconsIcon icon={Rocket01Icon} />}
-            className="text-blue-600 rounded-lg moving-bg"
+            title={sidebarCollapsed && "Upgrade"}
+            icon={<HugeiconsIcon icon={CrownIcon} />}
+            className="text-blue-600 hover:text-purple-700 rounded-lg moving-bg"
+            onClick={() => setOpenUpgradeModal(true)}
           >
             {!sidebarCollapsed && 'Upgrade'}
           </Menu.Item>
         </Menu>
       </div>
-
     </div>
   );
 }

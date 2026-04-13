@@ -1,4 +1,3 @@
-import CONFIGS from '@/constants/configs.json';
 import { CURRENCIES } from '@/constants/currencies';
 import { UsePageProps } from '@/types/usePage';
 import { usePage } from '@inertiajs/react';
@@ -17,6 +16,8 @@ export type AppContextType = {
   fetchIntervalData: () => void;
   currency: string;
   currencySymbol: string;
+  openUpgradeModal: boolean;
+  setOpenUpgradeModal: Dispatch<SetStateAction<boolean>>;
 };
 
 const AppContext = createContext<AppContextType>({
@@ -29,6 +30,8 @@ const AppContext = createContext<AppContextType>({
   fetchIntervalData: () => {},
   currency: 'CAD',
   currencySymbol: '$',
+  openUpgradeModal: false,
+  setOpenUpgradeModal: () => {},
 });
 
 function AppProvider({ children }: PropsWithChildren) {
@@ -114,7 +117,7 @@ function AppProvider({ children }: PropsWithChildren) {
     }
     initialRender.current = false
     fetchIntervalData();
-    const interval = setInterval(fetchIntervalData, 20000);
+    const interval = setInterval(fetchIntervalData, 2000000);
     return () => clearInterval(interval);
   }, []);
 
@@ -123,6 +126,10 @@ function AppProvider({ children }: PropsWithChildren) {
   const gallery = usePage<UsePageProps>().props.current_gallery
   const currency = gallery?.currency
   const currencySymbol = CURRENCIES.find(c => c.code === currency)?.symbol || '$';
+
+  // Upgrade Modal
+
+  const [openUpgradeModal, setOpenUpgradeModal] = useState(false);
 
   return (
     <AppContext
@@ -135,7 +142,9 @@ function AppProvider({ children }: PropsWithChildren) {
         intervalData,
         fetchIntervalData,
         currency,
-        currencySymbol
+        currencySymbol,
+        openUpgradeModal,
+        setOpenUpgradeModal,
       }}>
       {children}
     </AppContext>
