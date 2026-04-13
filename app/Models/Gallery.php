@@ -8,6 +8,7 @@ use App\Helpers\FormatHelper;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Cashier\Billable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
@@ -16,7 +17,7 @@ use Zoha\Metable;
 
 class Gallery extends Model implements HasMedia
 {
-  use Metable, InteractsWithMedia, LogsActivity;
+  use Metable, InteractsWithMedia, LogsActivity, Billable;
 
   protected $fillable = [
     'name',
