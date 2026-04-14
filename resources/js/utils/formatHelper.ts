@@ -73,7 +73,7 @@ function formatCurrency(
   amount: number | string,
   currency: string | null = null,
   maximumFractionDigits: number = 2,
-  locale: string = 'en-CA',
+  locale: string = import.meta.env.VITE_APP_LOCALE.replace('_', '-') || 'en-US',
   useParensForNegatives: boolean = true
 ): string {
   if (amount === null || amount === undefined || amount === '') return '';
