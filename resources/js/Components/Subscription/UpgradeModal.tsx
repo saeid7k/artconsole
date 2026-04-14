@@ -1,7 +1,12 @@
 import { getCountryCodeByCurrency } from "@/constants/currencies";
+import PLANS from "@/constants/subscriptionPlans";
+import { useApp } from "@/contexts/AppContext";
+import colors from "@/Themes/theme";
 import { formatCurrency } from "@/utils/formatHelper";
+import { ExclamationMarkIcon, InformationCircleIcon, Tick02Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useQuery } from "@tanstack/react-query";
-import { Card, Divider, Modal, Segmented, Select } from "antd";
+import { Button, Card, Modal, Segmented, Select, Tag } from "antd";
 import axios from "axios";
 import { useState } from "react";
 import ReactCountryFlag from "react-country-flag";
@@ -14,8 +19,11 @@ type Props = {
 
 function UpgradeModal({ open, onClose }: Props) {
 
+  const { currency: defaultCurrency } = useApp();
   const [billingCycle, setBillingCycle] = useState<"month" | "year">("month");
-  const [currency, setCurrency] = useState<string>('cad');
+  const [currency, setCurrency] = useState<string>(defaultCurrency.toLowerCase());
+
+  // Queries
 
   const productsQuery = useQuery({
     queryKey: ["products"],
@@ -31,6 +39,8 @@ function UpgradeModal({ open, onClose }: Props) {
     value: key
   }));
 
+  // Renders
+
   const PricingCard = ({ title, price, children }: {
     title: string,
     price: number,
@@ -40,29 +50,40 @@ function UpgradeModal({ open, onClose }: Props) {
     return (
       <Card
         title={
-          <div>
-            <div className="text-lg">{title}</div>
-            <div className="text-4xl font-bold">
-              {formatCurrency(perMonthPrice/100, currency, 2, 'en-US')}
+          <div className="flex flex-col gap-2 items-start">
+            <Tag
+              variant="solid"
+              color={price == 0 ? "gray" : "blue"}
+              className="text-base"
+            >
+              {title}
+            </Tag>
+            <div className="flex items-end gap-1">
+              <div className="text-4xl font-bold">
+                {formatCurrency(perMonthPrice/100, currency, 2, 'en-US')}
+              </div>
+              {price > 0 && (
+                <div className="text-sm text-muted font-normal">/month /member</div>
+              )}
             </div>
-            {price > 0 && (
-              <div className="text-sm text-muted">
-                /month /member
+            {price > 0 && billingCycle === "year" && (
+              <div>
+                <div className="text-sm font-normal">Billed annually: {formatCurrency(price/100, currency, 2, 'en-US')}</div>
               </div>
             )}
           </div>
         }
         styles={{
           header: {
-            minHeight: "120px",
+            minHeight: "140px",
             alignItems: "start",
             justifyContent: "start",
-            paddingTop: "0.5rem",
-            paddingBottom: "0.5rem",
+            paddingTop: "1rem",
+            paddingBottom: "1rem",
           }
         }}
         style={{
-          minWidth: "250px",
+          minWidth: "280px",
         }}
       >
         {children}
@@ -76,12 +97,13 @@ function UpgradeModal({ open, onClose }: Props) {
       onCancel={onClose}
       width={1024}
       title="Select your plan"
+      footer={null}
     >
       {productsQuery.isLoading ? (
         <LoadingSpinner />
       ) : (
         <div
-          className="pt-5"
+          className="py-5"
         >
           <div className="flex gap-3">
             <Segmented
@@ -94,7 +116,7 @@ function UpgradeModal({ open, onClose }: Props) {
             />
             <Select
               options={currencyOptions}
-              defaultValue='usd'
+              defaultValue={defaultCurrency.toLowerCase()}
               labelRender={(props) => <ReactCountryFlag svg countryCode={getCountryCodeByCurrency(String(props.value)) || ''} />}
               popupMatchSelectWidth={false}
               onChange={(value) => setCurrency(value)}
@@ -105,16 +127,46 @@ function UpgradeModal({ open, onClose }: Props) {
               title="Free"
               price={0}
             >
+              <div className="flex flex-col gap-1">
+                {PLANS.find(plan => plan.title === "Free")?.features.map((feature: { title: string, icon: string }, index: number) => (
+                  <div className="flex items-center gap-1" key={index}>
+                    <HugeiconsIcon
+                      icon={feature.icon === "check" ? Tick02Icon : ExclamationMarkIcon}
+                      color={feature.icon === "check" ? colors.green[600] : colors.gray[600]}
+                      size={20}
+                    />
+                    <div className="text-sm">{feature.title}</div>
+                  </div>
+                ))}
+              </div>
             </PricingCard>
             {productsQuery.data?.map((product: any) => {
-              let price = product.prices.find((p: any) => p.interval === billingCycle).currency_options[currency].unit_amount;
+              let price = product.prices.find((p: any) => p.interval === billingCycle).currency_options[currency]?.unit_amount;
               return (
                 <PricingCard
                   key={product.id}
                   title={product.title}
                   price={price}
                 >
-                  {product.id}
+                  <div className="flex flex-col gap-1">
+                    {PLANS.find(plan => plan.title === product.title)?.features.map((feature: { title: string, icon: string }, index: number) => (
+                      <div className="flex items-center gap-1" key={index}>
+                        <HugeiconsIcon
+                          icon={feature.icon === "check" ? Tick02Icon : InformationCircleIcon}
+                          color={feature.icon === "check" ? colors.green[600] : colors.gray[600]}
+                          size={20}
+                        />
+                        <div className="text-sm">{feature.title}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <Button
+                    variant="solid"
+                    color="blue"
+                    className="mt-5 w-full"
+                  >
+                    Upgrade
+                  </Button>
                 </PricingCard>
               )
             })}
