@@ -433,10 +433,10 @@
     "@tanstack/react-virtual" "^3.13.9"
     use-sync-external-store "^1.5.0"
 
-"@hugeicons/core-free-icons@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@hugeicons/core-free-icons/-/core-free-icons-4.0.0.tgz#ff31fde8a3cb6dffc63b1f2bce855f91a139d2d6"
-  integrity sha512-bzfbKumv3ke3ajbe2MyXi9i0I/cdsZ6n/mO9EfIPNSL++pHLqs7nSGRIVUtjF4xrrEyVkfhxssv4Jek8DPA6gA==
+"@hugeicons/core-free-icons@^4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@hugeicons/core-free-icons/-/core-free-icons-4.1.1.tgz#26b02ecba1bf7ff04e63c7ee05220780132bbcab"
+  integrity sha512-teqIBvPHl90ygIwKyJwTxOH8aNp1X1PjDTcMvLkEwdPxPD+8mssrZ5kXKIAJJFYPsz69a8LYQY0UPid4PAdavg==
 
 "@hugeicons/react@^1.1.6":
   version "1.1.6"
