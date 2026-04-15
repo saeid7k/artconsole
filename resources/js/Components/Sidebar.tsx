@@ -1,7 +1,8 @@
 import { useApp } from "@/contexts/AppContext";
 import colors from "@/Themes/theme";
 import { AuthProps } from "@/types/auth";
-import { ArrowTurnBackwardIcon, ContactIcon, CrownIcon, DashboardBrowsingIcon, File01Icon, Image02Icon, InvoiceIcon, PresentationLineChart01Icon, Rocket01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons";
+import { GalleryProps } from "@/types/gallery";
+import { ArrowTurnBackwardIcon, ContactIcon, CreditCard, CrownIcon, DashboardBrowsingIcon, File01Icon, Image02Icon, InvoiceIcon, PresentationLineChart01Icon, Rocket01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
 import { Divider, Menu } from "antd";
@@ -11,6 +12,7 @@ function Sidebar() {
   const { url, props } = usePage()
   const auth = props.auth as AuthProps
   const user = auth.user
+  const gallery = props.current_gallery as GalleryProps
   const { sidebarCollapsed, darkMode, setOpenUpgradeModal } = useApp()
 
   const items = [
@@ -33,6 +35,7 @@ function Sidebar() {
 
   const lowerItems = [
     { key: 'upgrade', icon: <HugeiconsIcon icon={Rocket01Icon} className="animate-pulse" />, label: 'Upgrade' },
+    { key: 'subscription', icon: <HugeiconsIcon icon={CreditCard} />, label: 'Subscription', route: 'subscription.index' },
   ]
 
   const logBackItem = { key: 'log-back', icon: <HugeiconsIcon icon={ArrowTurnBackwardIcon} />, label: 'Log Back', route: 'logout-as' }
@@ -76,6 +79,9 @@ function Sidebar() {
       return item.route && url.includes(item?.route?.split('.')[0])
     })?.key || ''
   }
+
+  const showUpgrade = gallery?.pivot?.access == 'owner' && !gallery?.is_subscribed
+  const showSubscription = gallery?.pivot?.access == 'owner' && gallery?.is_subscribed
 
   return (
     <div
@@ -126,22 +132,42 @@ function Sidebar() {
         <Menu
           mode="inline"
           inlineCollapsed={sidebarCollapsed}
-          // items={lowerItems}
           className='!border-none'
           onClick={(e) => {
             handleMenuClick(e.key);
           }}
           selectedKeys={[activeKey()]}
         >
-          <Menu.Item
-            key="upgrade"
-            title={sidebarCollapsed && "Upgrade"}
-            icon={<HugeiconsIcon icon={CrownIcon} />}
-            className="text-blue-600 hover:text-purple-700 rounded-lg moving-bg"
-            onClick={() => setOpenUpgradeModal(true)}
-          >
-            {!sidebarCollapsed && 'Upgrade'}
-          </Menu.Item>
+          {auth?.is_logged_as && (
+            <Menu.Item
+              key="log-back"
+              title={sidebarCollapsed && "Log Back"}
+              icon={<HugeiconsIcon icon={ArrowTurnBackwardIcon} />}
+            >
+              {!sidebarCollapsed && 'Log Back'}
+            </Menu.Item>
+          )}
+
+          {showUpgrade && (
+            <Menu.Item
+              key="upgrade"
+              title={sidebarCollapsed && "Upgrade"}
+              icon={<HugeiconsIcon icon={CrownIcon} />}
+              className="text-blue-600 hover:text-purple-700 rounded-lg moving-bg"
+              onClick={() => setOpenUpgradeModal(true)}
+            >
+              {!sidebarCollapsed && 'Upgrade'}
+            </Menu.Item>
+          )}
+          {showSubscription && (
+            <Menu.Item
+              key="subscription"
+              title={sidebarCollapsed && "Subscription"}
+              icon={<HugeiconsIcon icon={CreditCard} />}
+            >
+              {!sidebarCollapsed && 'Subscription'}
+            </Menu.Item>
+          )}
         </Menu>
       </div>
     </div>
