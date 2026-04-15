@@ -6,8 +6,8 @@ import colors from "@/Themes/theme";
 import { formatCurrency } from "@/utils/formatHelper";
 import { CheckmarkCircle02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { useQuery } from "@tanstack/react-query";
-import { Button, Card, Modal, Segmented, Select, Tag } from "antd";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Button, Card, message, Modal, Segmented, Select, Tag } from "antd";
 import axios from "axios";
 import { useState } from "react";
 import ReactCountryFlag from "react-country-flag";
@@ -40,6 +40,19 @@ function UpgradeModal({ open, onClose }: Props) {
     </div>,
     value: key
   }));
+
+  const subscribeMutation = useMutation({
+    mutationKey: ["subscribe"],
+    mutationFn: (priceId) => axios.post(route('subscription.subscribe'), {
+      price_id: priceId
+    }),
+    onSuccess: (res) => {
+      window.location.href = res.data.checkout_url;
+    },
+    onError: (err: any) => {
+      message.error(err.response?.data?.message || 'An error occurred while creating the checkout session.');
+    }
+  });
 
   // Renders
 
@@ -144,6 +157,7 @@ function UpgradeModal({ open, onClose }: Props) {
             </PricingCard>
             {productsQuery.data?.map((product: any) => {
               let price = product.prices.find((p: any) => p.interval === billingCycle).currency_options[currency]?.unit_amount;
+              let priceId = product.prices.find((p: any) => p.interval === billingCycle).id;
               return (
                 <PricingCard
                   key={product.id}
@@ -167,6 +181,7 @@ function UpgradeModal({ open, onClose }: Props) {
                     variant="solid"
                     color="blue"
                     className="mt-5 w-full"
+                    onClick={() => subscribeMutation.mutate(priceId)}
                   >
                     Upgrade
                   </Button>

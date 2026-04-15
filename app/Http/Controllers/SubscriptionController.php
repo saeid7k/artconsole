@@ -43,4 +43,36 @@ class SubscriptionController extends Controller
 
     return response()->json(array_values($products));
   }
+
+  public function subscribe(Request $request)
+  {
+    $request->validate([
+      'price_id' => 'required|string',
+    ]);
+
+    $user = $request->user();
+    $gallery = $user->currentGallery();
+    $priceId = $request->input('price_id');
+
+    try {
+      $checkout = $gallery->newSubscription('default', $priceId)
+        ->quantity($gallery->members()->count())
+        ->checkout([
+          'success_url' => route('subscription.index', [
+            'checkout' => 'success',
+          ]),
+          'cancel_url' => route('subscription.index', [
+            'checkout' => 'canceled',
+          ]),
+        ]);
+    } catch (\Exception $e) {
+      return response()->json([
+        'message' => 'Failed to upgrade subscription plan: ' . $e->getMessage(),
+      ], 500);
+    }
+
+    return response()->json([
+      'checkout_url' => $checkout->url,
+    ]);
+  }
 }

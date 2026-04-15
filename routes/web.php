@@ -162,6 +162,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::prefix('subscription')->name('subscription.')->group(function () {
     Route::get('/', [App\Http\Controllers\SubscriptionController::class, 'index'])->name('index');
     Route::get('/products', [App\Http\Controllers\SubscriptionController::class, 'getProducts'])->name('products');
+    Route::post('/subscribe', [App\Http\Controllers\SubscriptionController::class, 'subscribe'])->name('subscribe');
   });
 });
 
