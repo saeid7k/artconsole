@@ -54,6 +54,9 @@ function UpgradeModal({ open, onClose }: Props) {
     }
   });
 
+  const proPriceId = productsQuery.data?.find((product: any) => product.title === "Pro")?.prices.find((p: any) => p.interval === billingCycle).id;
+  const proPriceAmount = productsQuery.data?.find((product: any) => product.title === "Pro")?.prices.find((p: any) => p.interval === billingCycle).currency_options[currency]?.unit_amount;
+
   // Renders
 
   const PricingCard = ({ title, price, children }: {
@@ -155,40 +158,34 @@ function UpgradeModal({ open, onClose }: Props) {
                 ))}
               </div>
             </PricingCard>
-            {productsQuery.data?.map((product: any) => {
-              let price = product.prices.find((p: any) => p.interval === billingCycle).currency_options[currency]?.unit_amount;
-              let priceId = product.prices.find((p: any) => p.interval === billingCycle).id;
-              return (
-                <PricingCard
-                  key={product.id}
-                  title={product.title}
-                  price={price}
-                >
-                  <div className="flex flex-col gap-2">
-                    {PLANS.find(plan => plan.title === product.title)?.features.map((feature: { title: string, color: string }, index: number) => (
-                      <div className="flex items-center gap-1" key={index}>
-                        <HugeiconsIcon
-                          icon={CheckmarkCircle02Icon}
-                          strokeWidth={2}
-                          color={feature.color === "green" ? colors.green[600] : colors.gray[500]}
-                          size={20}
-                        />
-                        <div className="text-sm">{feature.title}</div>
-                      </div>
-                    ))}
+
+            <PricingCard
+              title='Pro'
+              price={proPriceAmount}
+            >
+              <div className="flex flex-col gap-2">
+                {PLANS.find(plan => plan.title === 'Pro')?.features.map((feature: { title: string, color: string }, index: number) => (
+                  <div className="flex items-center gap-1" key={index}>
+                    <HugeiconsIcon
+                      icon={CheckmarkCircle02Icon}
+                      strokeWidth={2}
+                      color={feature.color === "green" ? colors.green[600] : colors.gray[500]}
+                      size={20}
+                    />
+                    <div className="text-sm">{feature.title}</div>
                   </div>
-                  <Button
-                    variant="solid"
-                    color="blue"
-                    className="mt-5 w-full"
-                    onClick={() => subscribeMutation.mutate(priceId)}
-                  >
-                    Upgrade
-                  </Button>
-                  <div className="text-muted text-center mt-1">14 days money back guarantee</div>
-                </PricingCard>
-              )
-            })}
+                ))}
+              </div>
+              <Button
+                variant="solid"
+                color="blue"
+                className="mt-5 w-full"
+                onClick={() => subscribeMutation.mutate(proPriceId)}
+              >
+                Upgrade
+              </Button>
+              <div className="text-muted text-center mt-1">14 days money back guarantee</div>
+            </PricingCard>
           </div>
         </div>
       )}
