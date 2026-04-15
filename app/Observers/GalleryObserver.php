@@ -36,7 +36,9 @@ class GalleryObserver
    */
   public function updated(Gallery $gallery): void
   {
-    //
+    if ($gallery->hasStripeId()) {
+        $gallery->syncStripeCustomerDetails();
+    }
   }
 
   public function saved(Gallery $gallery): void {
