@@ -21,10 +21,12 @@ use App\Observers\InvoiceObserver;
 use App\Observers\LocationObserver;
 use App\Observers\MediaObserver;
 use App\Observers\PaymentObserver;
+use App\Observers\SubscriptionObserver;
 use App\Observers\UserObserver;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Cashier\Cashier;
+use Laravel\Cashier\Subscription;
 use Spatie\Browsershot\Browsershot;
 use Spatie\LaravelPdf\Facades\Pdf;
 
@@ -55,6 +57,7 @@ class AppServiceProvider extends ServiceProvider
         Invoice::observe(InvoiceObserver::class);
         InvoiceItem::observe(InvoiceItemObserver::class);
         Payment::observe(PaymentObserver::class);
+        Subscription::observe(SubscriptionObserver::class);
 
         Pdf::default()
           ->withBrowsershot(function (Browsershot $browsershot) {
