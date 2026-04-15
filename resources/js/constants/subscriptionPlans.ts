@@ -4,21 +4,21 @@ const PLANS = [
     "name": "Free",
     "title": "Free",
     "features": [
-      {"title": "Single User", "icon": "check"},
-      {"title": "Unlimited Artworks", "icon": "check"},
-      {"title": "Unlimited Locations", "icon": "check"},
-      {"title": "ArtConsole Branding", "icon": "info"}
+      {"title": "Single User", "color": "gray"},
+      {"title": "Unlimited Artworks", "color": "green"},
+      {"title": "Unlimited Locations", "color": "green"},
+      {"title": "ArtConsole Branding", "color": "gray"}
     ]
   },
   {
     "name": "Professional",
     "title": "Pro",
     "features": [
-      {"title": "Unlimited Users", "icon": "check"},
-      {"title": "Unlimited Artworks", "icon": "check"},
-      {"title": "Unlimited Locations", "icon": "check"},
-      {"title": "Remove ArtConsole Branding", "icon": "check"},
-      {"title": "Priority Support", "icon": "check"}
+      {"title": "Unlimited Users", "color": "green"},
+      {"title": "Unlimited Artworks", "color": "green"},
+      {"title": "Unlimited Locations", "color": "green"},
+      {"title": "Remove ArtConsole Branding", "color": "green"},
+      {"title": "Priority Support", "color": "green"}
     ]
   }
 ]
