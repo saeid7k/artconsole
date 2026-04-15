@@ -226,6 +226,15 @@ class Gallery extends Model implements HasMedia
     ]);
   }
 
+  public function fillDefaultPaymentMethod(): void
+  {
+    $paymentMethod = $this->paymentMethods()->first();
+
+    if ($paymentMethod && !$this->hasDefaultPaymentMethod()) {
+      $this->updateDefaultPaymentMethod($paymentMethod->id);
+    }
+  }
+
   /*
   |=======================================================
   | Cashier Stripe Integration
