@@ -1,9 +1,10 @@
 import { getCountryCodeByCurrency } from "@/constants/currencies";
 import PLANS from "@/constants/subscriptionPlans";
 import { useApp } from "@/contexts/AppContext";
+import { useWindow } from "@/hooks/useWindow";
 import colors from "@/Themes/theme";
 import { formatCurrency } from "@/utils/formatHelper";
-import { ExclamationMarkIcon, InformationCircleIcon, Tick02Icon } from "@hugeicons/core-free-icons";
+import { CheckmarkCircle02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useQuery } from "@tanstack/react-query";
 import { Button, Card, Modal, Segmented, Select, Tag } from "antd";
@@ -20,6 +21,7 @@ type Props = {
 function UpgradeModal({ open, onClose }: Props) {
 
   const { currency: defaultCurrency } = useApp();
+  const { windowWidth } = useWindow();
   const [billingCycle, setBillingCycle] = useState<"month" | "year">("month");
   const [currency, setCurrency] = useState<string>(defaultCurrency.toLowerCase());
 
@@ -82,9 +84,7 @@ function UpgradeModal({ open, onClose }: Props) {
             paddingBottom: "1rem",
           }
         }}
-        style={{
-          minWidth: "280px",
-        }}
+        className="min-w-[280px] shadow hover:shadow-xl hover:scale-101 transition"
       >
         {children}
       </Card>
@@ -96,8 +96,9 @@ function UpgradeModal({ open, onClose }: Props) {
       open={open}
       onCancel={onClose}
       width={1024}
-      title="Select your plan"
+      title="Select Your Plan"
       footer={null}
+      centered={windowWidth < 1024}
     >
       {productsQuery.isLoading ? (
         <LoadingSpinner />
@@ -122,17 +123,18 @@ function UpgradeModal({ open, onClose }: Props) {
               onChange={(value) => setCurrency(value)}
             />
           </div>
-          <div className="flex justify-center flex-wrap gap-5 mt-5">
+          <div className="flex justify-center flex-wrap gap-10 mt-5">
             <PricingCard
               title="Free"
               price={0}
             >
-              <div className="flex flex-col gap-1">
-                {PLANS.find(plan => plan.title === "Free")?.features.map((feature: { title: string, icon: string }, index: number) => (
+              <div className="flex flex-col gap-2">
+                {PLANS.find(plan => plan.title === "Free")?.features.map((feature: { title: string, color: string }, index: number) => (
                   <div className="flex items-center gap-1" key={index}>
                     <HugeiconsIcon
-                      icon={feature.icon === "check" ? Tick02Icon : ExclamationMarkIcon}
-                      color={feature.icon === "check" ? colors.green[600] : colors.gray[600]}
+                      icon={CheckmarkCircle02Icon}
+                      strokeWidth={2}
+                      color={feature.color === "green" ? colors.green[600] : colors.gray[500]}
                       size={20}
                     />
                     <div className="text-sm">{feature.title}</div>
@@ -148,12 +150,13 @@ function UpgradeModal({ open, onClose }: Props) {
                   title={product.title}
                   price={price}
                 >
-                  <div className="flex flex-col gap-1">
-                    {PLANS.find(plan => plan.title === product.title)?.features.map((feature: { title: string, icon: string }, index: number) => (
+                  <div className="flex flex-col gap-2">
+                    {PLANS.find(plan => plan.title === product.title)?.features.map((feature: { title: string, color: string }, index: number) => (
                       <div className="flex items-center gap-1" key={index}>
                         <HugeiconsIcon
-                          icon={feature.icon === "check" ? Tick02Icon : InformationCircleIcon}
-                          color={feature.icon === "check" ? colors.green[600] : colors.gray[600]}
+                          icon={CheckmarkCircle02Icon}
+                          strokeWidth={2}
+                          color={feature.color === "green" ? colors.green[600] : colors.gray[500]}
                           size={20}
                         />
                         <div className="text-sm">{feature.title}</div>
@@ -167,6 +170,7 @@ function UpgradeModal({ open, onClose }: Props) {
                   >
                     Upgrade
                   </Button>
+                  <div className="text-muted text-center mt-1">14 days money back guarantee</div>
                 </PricingCard>
               )
             })}
