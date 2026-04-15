@@ -66,5 +66,6 @@ class AppServiceProvider extends ServiceProvider
           });
 
         Cashier::calculateTaxes();
+        Cashier::useCustomerModel(Gallery::class);
     }
 }
