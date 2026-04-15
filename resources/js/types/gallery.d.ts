@@ -30,4 +30,5 @@ export interface GalleryProps {
   meta?: { [key: string]: any };
   currency: string;
   invoice_prefix?: string | null;
+  is_subscribed?: boolean;
 }

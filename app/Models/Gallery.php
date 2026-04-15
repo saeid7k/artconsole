@@ -46,6 +46,7 @@ class Gallery extends Model implements HasMedia
     'logo_url',
     'formatted_address',
     'formatted_phone_number',
+    'is_subscribed',
     'members_count',
     'meta',
   ];
@@ -120,6 +121,11 @@ class Gallery extends Model implements HasMedia
   public function getFormattedPhoneNumberAttribute(): string
   {
     return FormatHelper::formatPhoneNumber($this->phone, $this->country_code);
+  }
+
+  public function getIsSubscribedAttribute(): bool
+  {
+    return $this->subscribed('default');
   }
 
   /*
