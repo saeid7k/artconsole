@@ -24,6 +24,7 @@ use App\Observers\PaymentObserver;
 use App\Observers\UserObserver;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Cashier\Cashier;
 use Spatie\Browsershot\Browsershot;
 use Spatie\LaravelPdf\Facades\Pdf;
 
@@ -63,5 +64,7 @@ class AppServiceProvider extends ServiceProvider
                  ->setNpmBinary('/usr/bin/npm');
             }
           });
+
+        Cashier::calculateTaxes();
     }
 }
