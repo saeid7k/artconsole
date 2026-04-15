@@ -226,7 +226,43 @@ class Gallery extends Model implements HasMedia
     ]);
   }
 
-  // Activity Log
+  /*
+  |=======================================================
+  | Cashier Stripe Integration
+  |=======================================================
+  */
+
+  public function stripeName(): string|null
+  {
+    return $this->name;
+  }
+
+  public function stripeEmail(): string|null
+  {
+    return $this->email;
+  }
+
+  public function stripeAddress(): array|null
+  {
+    if (!$this->address) {
+      return null;
+    }
+
+    return [
+      'line1' => AddressHelper::lineOne($this->address),
+      'line2' => null,
+      'city' => $this->address->city ?? null,
+      'state' => $this->address->province ?? null,
+      'postal_code' => $this->address->postal_code ?? null,
+      'country' => AddressHelper::countryToIso($this->address->country) ?? null,
+    ];
+  }
+
+  /*
+  |=======================================================
+  | Activity Log
+  |=======================================================
+  */
 
   public function getActivitylogOptions(): LogOptions
   {
