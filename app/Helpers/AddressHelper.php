@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -45,6 +47,22 @@ class AddressHelper
     return $formatted;
   }
 
+  public static function lineOne($address): string
+  {
+    if (!$address || empty((array) $address)) {
+      return '';
+    }
+
+    if (is_array($address)) {
+      $address = (object) $address;
+    }
+
+    $unit = property_exists($address, 'unit') ? $address->unit : null;
+    $street = property_exists($address, 'street') ? $address->street : null;
+
+    return $unit ? $street . ' - ' . $unit : $street;
+  }
+
   public static function formatPostalCode(string $postalCode): string
   {
     $postalCode = strtoupper(str_replace(' ', '', $postalCode));
@@ -85,5 +103,27 @@ class AddressHelper
     }
 
     return null;
+  }
+
+  public static function countryToIso(string $country): ?string
+  {
+    $countryMap = Cache::rememberForever('country_iso_map', function () {
+      $path = resource_path('js/constants/countries.json');
+
+      if (!File::exists($path)) {
+        return [];
+      }
+      $countries = collect(json_decode(File::get($path), true));
+
+      return $countries->pluck('iso', 'name')
+        ->mapWithKeys(function ($iso, $name) {
+          return [strtolower($name) => $iso];
+        })
+        ->toArray();
+    });
+
+    $normalizedInput = strtolower(trim($country));
+
+    return $countryMap[$normalizedInput] ?? null;
   }
 }
