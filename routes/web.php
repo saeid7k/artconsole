@@ -7,6 +7,7 @@ use App\Http\Controllers\GeocodeController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\Admin;
 use Illuminate\Support\Facades\Route;
+use Laravel\Cashier\Http\Controllers\WebhookController;
 
 Route::get('join/{token}', [App\Http\Controllers\InviteLinkController::class, 'joinByToken'])->name('join-by-token');
 
@@ -172,5 +173,8 @@ Route::middleware(['auth', Admin::class])->group(function () {
     Route::post('/{user}/delete', [UserController::class, 'destroy'])->name('delete');
   });
 });
+
+Route::post('/stripe/webhook', [WebhookController::class, 'handleWebhook'])
+  ->name('cashier.webhook');
 
 require __DIR__.'/auth.php';
