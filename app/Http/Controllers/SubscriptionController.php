@@ -75,4 +75,36 @@ class SubscriptionController extends Controller
       'checkout_url' => $checkout->url,
     ]);
   }
+
+  public function getSubscriptionData(Request $request)
+  {
+    $user = $request->user();
+    $gallery = $user->currentGallery();
+    $subscription = $gallery->subscription();
+
+    if (!$subscription) {
+      return response()->json(null);
+    }
+
+    $stripeSubscription = $subscription->asStripeSubscription();
+    $stripePrice = $stripeSubscription->items->data[0]->price;
+    $productId = $stripePrice->product;
+    $stripeProduct = $gallery->stripe()->products->retrieve($productId);
+
+    $plan = [
+      'id' => $stripePrice->id,
+      'name' => $stripeProduct->name,
+      'amount' => $stripePrice->unit_amount / 100,
+      'currency' => $stripePrice->currency,
+      'interval' => $stripePrice->recurring ? $stripePrice->recurring->interval : null,
+      'interval_count' => $stripePrice->recurring ? $stripePrice->recurring->interval_count : null,
+      'quantity' => $stripeSubscription->quantity,
+      'current_period_start' => $stripeSubscription->items->data[0]->current_period_start,
+      'current_period_end' => $stripeSubscription->items->data[0]->current_period_end,
+    ];
+
+    return response()->json([
+      'plan' => $plan,
+    ]);
+  }
 }
