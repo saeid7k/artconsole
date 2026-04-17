@@ -72,6 +72,7 @@ function trimWebsite(website: string): string {
 function formatCurrency(
   amount: number | string,
   currency: string | null = null,
+  minimumFractionDigits: number = 0,
   maximumFractionDigits: number = 2,
   locale: string = import.meta.env.VITE_APP_LOCALE.replace('_', '-') || 'en-US',
   useParensForNegatives: boolean = true
@@ -85,7 +86,7 @@ function formatCurrency(
   const formatter = new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: currency || CONFIGS.defaults.currency || 'CAD',
-    minimumFractionDigits: 0,
+    minimumFractionDigits: minimumFractionDigits,
     maximumFractionDigits: maximumFractionDigits,
   });
 
