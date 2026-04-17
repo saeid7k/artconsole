@@ -1,7 +1,7 @@
 import GallerySwitch from "@/Components/Galleries/GallerySwitch";
 import ServerFlashMessage from "@/Components/ServerFlashMessage";
 import Sidebar from "@/Components/Sidebar";
-import UpgradeModal from "@/Components/Subscription/UpgradeModal";
+import SelectPlanModal from "@/Components/Subscription/SelectPlanModal";
 import TopbarActions from "@/Components/TopbarActions";
 import AppProvider, { useApp } from "@/contexts/AppContext";
 import { useWindow } from "@/hooks/useWindow";
@@ -148,7 +148,7 @@ function App ({ children }: AppProps) {
             </Footer>
           </Layout>
 
-          <UpgradeModal
+          <SelectPlanModal
             open={openUpgradeModal}
             onClose={() => setOpenUpgradeModal(false)}
           />
