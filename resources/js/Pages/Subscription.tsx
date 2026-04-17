@@ -1,4 +1,5 @@
 import PageTitle from "@/Components/PageTitle";
+import StripeInvoice from "@/Components/Subscription/StripeInvoice";
 import YourPlanCard from "@/Components/Subscription/YourPlanCard";
 import { SubscriptionProvider } from "@/contexts/SubscriptionContext";
 import AppLayout from "@/Layouts/AppLayout";
@@ -39,10 +40,11 @@ function Subscription() {
     subscriptionDataQuery.refetch();
   }
 
+  const dataIsLoading = subscriptionDataQuery.isLoading;
   const plan = subscriptionDataQuery.data?.plan ?? null;
 
   return (
-    <SubscriptionProvider value={{ refetchData }} >
+    <SubscriptionProvider value={{ refetchData, dataIsLoading, plan }} >
       {contextHolder}
       <PageTitle
         title="Subscription"
@@ -53,29 +55,36 @@ function Subscription() {
             <YourPlanCard plan={plan} />
             <Card
               title="Upcoming Invoice"
-              size="small"
+              loading={dataIsLoading}
             >
-              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No upcoming invoices" />
+              {(!dataIsLoading && !subscriptionDataQuery.data?.upcomingInvoice) ?
+                (
+                  <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No upcoming invoice" />
+                )
+                :
+                (
+                  <StripeInvoice
+                    invoice={subscriptionDataQuery.data?.upcomingInvoice}
+                  />
+                )
+              }
             </Card>
           </div>
           <div className="grid grid-cols-1 gap-5">
             <Card
-              title="Billing Details"
-              size="small"
-            >
-              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No billing details on file" />
-            </Card>
-            <Card
               title="Payment Methods"
-              size="small"
             >
               <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No payment methods on file" />
+            </Card>
+            <Card
+              title="Billing Details"
+            >
+              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No billing details on file" />
             </Card>
           </div>
         </div>
         <Card
           title="Invoices History"
-          size="small"
         >
           <p>No invoices found.</p>
         </Card>

@@ -16,7 +16,7 @@ class SubscriptionController extends Controller
   {
     $stripePrices = Cashier::stripe()->prices->all([
       'active' => true,
-      'expand' => ['data.product','data.currency_options']
+      'expand' => ['data.product', 'data.currency_options']
     ]);
 
     $products = [];
@@ -156,9 +156,14 @@ class SubscriptionController extends Controller
       'auto_renew' => $subscription->active() && !$subscription->canceled(),
     ];
 
+    $upcomingInvoice = $gallery->upcomingInvoice()->toArray();
+    $stripeTaxId = $upcomingInvoice['total_taxes'][0]['tax_rate_details']['tax_rate'] ?? null;
+    $stripeTaxRate = $stripeTaxId ? $gallery->stripe()->taxRates->retrieve($stripeTaxId) : null;
+    $upcomingInvoice['tax_rate'] = $stripeTaxRate;
+
     return response()->json([
       'plan' => $plan,
-      'subscription' => $stripeSubscription,
+      'upcomingInvoice' => $upcomingInvoice,
     ]);
   }
 }
