@@ -14,22 +14,25 @@ import axios from "axios";
 import { useState } from "react";
 import ReactCountryFlag from "react-country-flag";
 import LoadingSpinner from "../LoadingSpinner";
+import useSubscriptionQueries from "@/hooks/useSubscriptionQueries";
 
 type Props = {
   open: boolean;
   onClose: () => void;
 }
 
-function UpgradeModal({ open, onClose }: Props) {
+function SelectPlanModal({ open, onClose }: Props) {
 
   const { currency: defaultCurrency } = useApp();
   const { props } = usePage<UsePageProps>();
   const gallery = props.current_gallery;
   const { windowWidth } = useWindow();
+  const { resumeSubscriptionMutation, cancelSubscriptionMutation } = useSubscriptionQueries();
+
   const [billingCycle, setBillingCycle] = useState<"month" | "year">("month");
   const [currency, setCurrency] = useState<string>(defaultCurrency.toLowerCase());
 
-  // Queries
+  // Fetching and Mutations
 
   const productsQuery = useQuery({
     queryKey: ["products"],
@@ -58,31 +61,16 @@ function UpgradeModal({ open, onClose }: Props) {
     }
   });
 
-  const cancelSubscriptionMutation = useMutation({
-    mutationKey: ["cancelSubscription"],
-    mutationFn: () => axios.post(route('subscription.cancel')),
-    onSuccess: () => {
-      message.success('Subscription cancelled successfully.');
-      router.reload();
-      onClose();
-    },
-    onError: (err: any) => {
-      message.error(err.response?.data?.message || 'An error occurred while cancelling the subscription.');
-    }
-  });
 
-  const resumeSubscriptionMutation = useMutation({
-    mutationKey: ["resumeSubscription"],
-    mutationFn: () => axios.post(route('subscription.resume')),
-    onSuccess: () => {
-      message.success('Subscription resumed successfully.');
-      router.reload();
-      onClose();
-    },
-    onError: (err: any) => {
-      message.error(err.response?.data?.message || 'An error occurred while resuming the subscription.');
-    }
-  });
+  function handleResumeSubscription() {
+    resumeSubscriptionMutation.mutate();
+    onClose();
+  }
+
+  function handleCancelSubscription() {
+    cancelSubscriptionMutation.mutate();
+    onClose();
+  }
 
   // Derived State
 
@@ -202,7 +190,7 @@ function UpgradeModal({ open, onClose }: Props) {
                       variant="solid"
                       color="default"
                       className="mt-5 w-full"
-                      onClick={() => cancelSubscriptionMutation.mutate()}
+                      onClick={handleCancelSubscription}
                       loading={cancelSubscriptionMutation.isPending}
                     >
                       Switch to Free
@@ -250,7 +238,7 @@ function UpgradeModal({ open, onClose }: Props) {
                       variant="solid"
                       color="blue"
                       className="mt-5 w-full"
-                      onClick={() => resumeSubscriptionMutation.mutate()}
+                      onClick={handleResumeSubscription}
                       loading={resumeSubscriptionMutation.isPending}
                     >
                       Resume this Plan
@@ -267,4 +255,4 @@ function UpgradeModal({ open, onClose }: Props) {
   )
 }
 
-export default UpgradeModal;
+export default SelectPlanModal;
