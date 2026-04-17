@@ -33,7 +33,7 @@ function StyledCurrency({
         greenOnPositive && isPositive ? "text-green-600 dark:text-green-500" : "",
       )}
     >
-      {formatCurrency(displayValue, currency || galleryCurrency, 2)}
+      {formatCurrency(displayValue, currency || galleryCurrency, 0, 2)}
     </span>
   );
 }
