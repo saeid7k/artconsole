@@ -1,5 +1,6 @@
 import PageTitle from "@/Components/PageTitle";
 import YourPlanCard from "@/Components/Subscription/YourPlanCard";
+import { SubscriptionProvider } from "@/contexts/SubscriptionContext";
 import AppLayout from "@/Layouts/AppLayout";
 import { getQueryParam } from "@/utils/urlHelper";
 import { useQuery } from "@tanstack/react-query";
@@ -34,10 +35,14 @@ function Subscription() {
     retry: false,
   });
 
+  function refetchData() {
+    subscriptionDataQuery.refetch();
+  }
+
   const plan = subscriptionDataQuery.data?.plan ?? null;
 
   return (
-    <div>
+    <SubscriptionProvider value={{ refetchData }} >
       {contextHolder}
       <PageTitle
         title="Subscription"
@@ -75,7 +80,7 @@ function Subscription() {
           <p>No invoices found.</p>
         </Card>
       </div>
-    </div>
+    </SubscriptionProvider>
   );
 }
 

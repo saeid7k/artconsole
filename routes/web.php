@@ -165,6 +165,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/products', [App\Http\Controllers\SubscriptionController::class, 'getProducts'])->name('products');
     Route::post('/subscribe', [App\Http\Controllers\SubscriptionController::class, 'subscribe'])->name('subscribe');
     Route::get('/data', [App\Http\Controllers\SubscriptionController::class, 'getSubscriptionData'])->name('data');
+    Route::post('/cancel', [App\Http\Controllers\SubscriptionController::class, 'cancelSubscription'])->name('cancel');
+    Route::post('/resume', [App\Http\Controllers\SubscriptionController::class, 'resumeSubscription'])->name('resume');
   });
 });
 

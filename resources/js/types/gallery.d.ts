@@ -32,4 +32,5 @@ export interface GalleryProps {
   currency: string;
   invoice_prefix?: string | null;
   is_subscribed?: boolean;
+  on_grace_period?: boolean;
 }

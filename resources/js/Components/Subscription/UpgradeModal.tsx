@@ -3,17 +3,17 @@ import PLANS from "@/constants/subscriptionPlans";
 import { useApp } from "@/contexts/AppContext";
 import { useWindow } from "@/hooks/useWindow";
 import colors from "@/Themes/theme";
+import { UsePageProps } from "@/types/usePage";
 import { formatCurrency } from "@/utils/formatHelper";
 import { CheckmarkCircle02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { router, usePage } from "@inertiajs/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Button, Card, message, Modal, Segmented, Select, Tag } from "antd";
 import axios from "axios";
 import { useState } from "react";
 import ReactCountryFlag from "react-country-flag";
 import LoadingSpinner from "../LoadingSpinner";
-import { usePage } from "@inertiajs/react";
-import { UsePageProps } from "@/types/usePage";
 
 type Props = {
   open: boolean;
@@ -24,6 +24,7 @@ function UpgradeModal({ open, onClose }: Props) {
 
   const { currency: defaultCurrency } = useApp();
   const { props } = usePage<UsePageProps>();
+  const gallery = props.current_gallery;
   const { windowWidth } = useWindow();
   const [billingCycle, setBillingCycle] = useState<"month" | "year">("month");
   const [currency, setCurrency] = useState<string>(defaultCurrency.toLowerCase());
@@ -57,12 +58,44 @@ function UpgradeModal({ open, onClose }: Props) {
     }
   });
 
+  const cancelSubscriptionMutation = useMutation({
+    mutationKey: ["cancelSubscription"],
+    mutationFn: () => axios.post(route('subscription.cancel')),
+    onSuccess: () => {
+      message.success('Subscription cancelled successfully.');
+      router.reload();
+      onClose();
+    },
+    onError: (err: any) => {
+      message.error(err.response?.data?.message || 'An error occurred while cancelling the subscription.');
+    }
+  });
+
+  const resumeSubscriptionMutation = useMutation({
+    mutationKey: ["resumeSubscription"],
+    mutationFn: () => axios.post(route('subscription.resume')),
+    onSuccess: () => {
+      message.success('Subscription resumed successfully.');
+      router.reload();
+      onClose();
+    },
+    onError: (err: any) => {
+      message.error(err.response?.data?.message || 'An error occurred while resuming the subscription.');
+    }
+  });
+
+  // Derived State
+
   const proProductId = productsQuery.data?.find((product: any) => product.title === "Pro")?.id;
   const proPriceId = productsQuery.data?.find((product: any) => product.title === "Pro")?.prices.find((p: any) => p.interval === billingCycle).id;
   const proPriceAmount = productsQuery.data?.find((product: any) => product.title === "Pro")?.prices.find((p: any) => p.interval === billingCycle).currency_options[currency]?.unit_amount;
 
-  const subscribedProductId = props.current_gallery?.subscriptions[0]?.items[0]?.stripe_product
+  const subscribedProductId = gallery?.subscriptions[0]?.items[0]?.stripe_product
   const isSubscribedToPro = subscribedProductId === proProductId;
+
+  const showFreeButton = isSubscribedToPro && !gallery?.on_grace_period;
+  const showUpgradeButton = !isSubscribedToPro && !gallery?.on_grace_period;
+  const showResumeButton = isSubscribedToPro && gallery?.on_grace_period;
 
   // Renders
 
@@ -163,13 +196,14 @@ function UpgradeModal({ open, onClose }: Props) {
                     <div className="text-sm">{feature.title}</div>
                   </div>
                 ))}
-                {isSubscribedToPro && (
+                {showFreeButton && (
                   <>
                     <Button
                       variant="solid"
                       color="default"
                       className="mt-5 w-full"
-                      // onClick={() => subscribeMutation.mutate(proPriceId)}
+                      onClick={() => cancelSubscriptionMutation.mutate()}
+                      loading={cancelSubscriptionMutation.isPending}
                     >
                       Switch to Free
                     </Button>
@@ -195,17 +229,34 @@ function UpgradeModal({ open, onClose }: Props) {
                   </div>
                 ))}
               </div>
-              {!isSubscribedToPro && (
+              {(showUpgradeButton || showResumeButton) && (
                 <>
-                  <Button
-                    variant="solid"
-                    color="blue"
-                    className="mt-5 w-full"
-                    onClick={() => subscribeMutation.mutate(proPriceId)}
-                  >
-                    Upgrade
-                  </Button>
-                  <div className="text-muted text-center mt-1">14 days money back guarantee</div>
+                  {showUpgradeButton && (
+                    <>
+                    <Button
+                      variant="solid"
+                      color="blue"
+                      className="mt-5 w-full"
+                      onClick={() => subscribeMutation.mutate(proPriceId)}
+                    >
+                      Upgrade
+                    </Button>
+                    <div className="text-muted text-center mt-1">14 days money back guarantee</div>
+                    </>
+                  )}
+                  {showResumeButton && (
+                    <>
+                    <Button
+                      variant="solid"
+                      color="blue"
+                      className="mt-5 w-full"
+                      onClick={() => resumeSubscriptionMutation.mutate()}
+                      loading={resumeSubscriptionMutation.isPending}
+                    >
+                      Resume this Plan
+                    </Button>
+                    </>
+                  )}
                 </>
               )}
             </PricingCard>
