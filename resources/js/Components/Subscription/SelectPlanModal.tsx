@@ -106,7 +106,7 @@ function SelectPlanModal({ open, onClose }: Props) {
             </Tag>
             <div className="flex items-end gap-1">
               <div className="text-4xl font-bold">
-                {formatCurrency(perMonthPrice/100, currency, 2, 'en-US')}
+                {formatCurrency(perMonthPrice/100, currency, 0, 2, 'en-US')}
               </div>
               {price > 0 && (
                 <div className="text-sm text-muted font-normal">/month /member</div>
@@ -114,7 +114,7 @@ function SelectPlanModal({ open, onClose }: Props) {
             </div>
             {price > 0 && billingCycle === "year" && (
               <div>
-                <div className="text-sm font-normal">Billed annually: {formatCurrency(price/100, currency, 2, 'en-US')}</div>
+                <div className="text-sm font-normal">Billed annually: {formatCurrency(price/100, currency, 0, 2, 'en-US')}</div>
               </div>
             )}
           </div>
