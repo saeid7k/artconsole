@@ -12,6 +12,8 @@ import axios from "axios";
 import { useState } from "react";
 import ReactCountryFlag from "react-country-flag";
 import LoadingSpinner from "../LoadingSpinner";
+import { usePage } from "@inertiajs/react";
+import { UsePageProps } from "@/types/usePage";
 
 type Props = {
   open: boolean;
@@ -21,6 +23,7 @@ type Props = {
 function UpgradeModal({ open, onClose }: Props) {
 
   const { currency: defaultCurrency } = useApp();
+  const { props } = usePage<UsePageProps>();
   const { windowWidth } = useWindow();
   const [billingCycle, setBillingCycle] = useState<"month" | "year">("month");
   const [currency, setCurrency] = useState<string>(defaultCurrency.toLowerCase());
@@ -54,8 +57,12 @@ function UpgradeModal({ open, onClose }: Props) {
     }
   });
 
+  const proProductId = productsQuery.data?.find((product: any) => product.title === "Pro")?.id;
   const proPriceId = productsQuery.data?.find((product: any) => product.title === "Pro")?.prices.find((p: any) => p.interval === billingCycle).id;
   const proPriceAmount = productsQuery.data?.find((product: any) => product.title === "Pro")?.prices.find((p: any) => p.interval === billingCycle).currency_options[currency]?.unit_amount;
+
+  const subscribedProductId = props.current_gallery?.subscriptions[0]?.items[0]?.stripe_product
+  const isSubscribedToPro = subscribedProductId === proProductId;
 
   // Renders
 
@@ -156,6 +163,18 @@ function UpgradeModal({ open, onClose }: Props) {
                     <div className="text-sm">{feature.title}</div>
                   </div>
                 ))}
+                {isSubscribedToPro && (
+                  <>
+                    <Button
+                      variant="solid"
+                      color="default"
+                      className="mt-5 w-full"
+                      // onClick={() => subscribeMutation.mutate(proPriceId)}
+                    >
+                      Switch to Free
+                    </Button>
+                  </>
+                )}
               </div>
             </PricingCard>
 
@@ -176,15 +195,19 @@ function UpgradeModal({ open, onClose }: Props) {
                   </div>
                 ))}
               </div>
-              <Button
-                variant="solid"
-                color="blue"
-                className="mt-5 w-full"
-                onClick={() => subscribeMutation.mutate(proPriceId)}
-              >
-                Upgrade
-              </Button>
-              <div className="text-muted text-center mt-1">14 days money back guarantee</div>
+              {!isSubscribedToPro && (
+                <>
+                  <Button
+                    variant="solid"
+                    color="blue"
+                    className="mt-5 w-full"
+                    onClick={() => subscribeMutation.mutate(proPriceId)}
+                  >
+                    Upgrade
+                  </Button>
+                  <div className="text-muted text-center mt-1">14 days money back guarantee</div>
+                </>
+              )}
             </PricingCard>
           </div>
         </div>

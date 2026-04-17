@@ -17,6 +17,7 @@ export interface GalleryProps {
     access: accessLevelsType
   };
   members: UserProps[];
+  subscriptions: any[];
 
   // Appends
   abilities?: {
