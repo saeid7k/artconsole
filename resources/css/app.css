@@ -111,6 +111,30 @@ table.all-border th, table.all-border td {
   border: 1px solid var(--border-light);
 }
 
+table.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+table.invoice-table th, table.invoice-table td {
+  padding: 0.25rem 0.5rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+table.invoice-table th {
+  background-color: var(--bg-light);
+}
+
+table.invoice-table tfoot td {
+  padding: 0.25rem 0.5rem;
+  border-bottom: none;
+}
+
+table.invoice-table th {
+  font-weight: 600;
+}
+
 input:focus {
   box-shadow: none;
 }
