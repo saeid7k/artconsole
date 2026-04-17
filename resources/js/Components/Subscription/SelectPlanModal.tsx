@@ -1,20 +1,20 @@
 import { getCountryCodeByCurrency } from "@/constants/currencies";
 import PLANS from "@/constants/subscriptionPlans";
 import { useApp } from "@/contexts/AppContext";
+import useSubscriptionQueries from "@/hooks/useSubscriptionQueries";
 import { useWindow } from "@/hooks/useWindow";
 import colors from "@/Themes/theme";
 import { UsePageProps } from "@/types/usePage";
 import { formatCurrency } from "@/utils/formatHelper";
 import { CheckmarkCircle02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { router, usePage } from "@inertiajs/react";
+import { usePage } from "@inertiajs/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Button, Card, message, Modal, Segmented, Select, Tag } from "antd";
 import axios from "axios";
 import { useState } from "react";
 import ReactCountryFlag from "react-country-flag";
 import LoadingSpinner from "../LoadingSpinner";
-import useSubscriptionQueries from "@/hooks/useSubscriptionQueries";
 
 type Props = {
   open: boolean;
@@ -40,14 +40,6 @@ function SelectPlanModal({ open, onClose }: Props) {
     enabled: open,
   });
 
-  const currencyOptions = Object.entries(productsQuery.data?.[0]?.prices?.[0]?.currency_options ?? {}).map(([key, value]) => ({
-    label: <div className="flex items-center gap-2">
-      <ReactCountryFlag svg key={key} countryCode={getCountryCodeByCurrency(key) || ''} />
-      <div>{key.toUpperCase()}</div>
-    </div>,
-    value: key
-  }));
-
   const subscribeMutation = useMutation({
     mutationKey: ["subscribe"],
     mutationFn: (priceId) => axios.post(route('subscription.subscribe'), {
@@ -61,7 +53,6 @@ function SelectPlanModal({ open, onClose }: Props) {
     }
   });
 
-
   function handleResumeSubscription() {
     resumeSubscriptionMutation.mutate();
     onClose();
@@ -74,9 +65,10 @@ function SelectPlanModal({ open, onClose }: Props) {
 
   // Derived State
 
-  const proProductId = productsQuery.data?.find((product: any) => product.title === "Pro")?.id;
-  const proPriceId = productsQuery.data?.find((product: any) => product.title === "Pro")?.prices.find((p: any) => p.interval === billingCycle).id;
-  const proPriceAmount = productsQuery.data?.find((product: any) => product.title === "Pro")?.prices.find((p: any) => p.interval === billingCycle).currency_options[currency]?.unit_amount;
+  const proProduct = productsQuery.data?.find((product: any) => product.title === "Pro");
+  const proProductId = proProduct?.id;
+  const proPriceId = proProduct?.prices.find((p: any) => p.interval === billingCycle).id;
+  const proPriceAmount = proProduct?.prices.find((p: any) => p.interval === billingCycle).currency_options[currency]?.unit_amount;
 
   const subscribedProductId = gallery?.subscriptions[0]?.items[0]?.stripe_product
   const isSubscribedToPro = subscribedProductId === proProductId;
@@ -84,6 +76,14 @@ function SelectPlanModal({ open, onClose }: Props) {
   const showFreeButton = isSubscribedToPro && !gallery?.on_grace_period;
   const showUpgradeButton = !isSubscribedToPro && !gallery?.on_grace_period;
   const showResumeButton = isSubscribedToPro && gallery?.on_grace_period;
+
+  const currencyOptions = Object.entries(proProduct?.prices?.[0]?.currency_options ?? {}).map(([key, value]) => ({
+    label: <div className="flex items-center gap-2">
+      <ReactCountryFlag svg key={key} countryCode={getCountryCodeByCurrency(key) || ''} />
+      <div>{key.toUpperCase()}</div>
+    </div>,
+    value: key
+  }));
 
   // Renders
 
