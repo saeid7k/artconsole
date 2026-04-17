@@ -1,13 +1,14 @@
 import { useApp } from "@/contexts/AppContext"
+import { useSubscription } from "@/contexts/SubscriptionContext"
 import { formatCurrency } from "@/utils/formatHelper"
 import { Calendar02Icon, UserGroupIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Alert, Button, Card, Progress } from "antd"
 import dayjs from "dayjs"
+import { useEffect } from "react"
+import BlockContainer from "../Containers/BlockContainer"
 import DataRow from "../Containers/DataRow"
 import SubscriptionStatusTag from "./SubscriptionStatusTag"
-import { useSubscription } from "@/contexts/SubscriptionContext"
-import { useEffect } from "react"
 
 type Props = {
   plan: any
@@ -44,7 +45,7 @@ function YourPlanCard({ plan }: Props) {
     >
       <div className="flex flex-col xl:flex-row gap-5 justify-between">
         <div className="flex flex-col gap-2">
-          <div className="border !border-dashed rounded p-2 w-max bg-light">
+          <BlockContainer >
             <div className="flex gap-3">
               <div className="font-semibold text-muted tracking-wide">{plan?.name}</div>
               <SubscriptionStatusTag status={plan?.status} variant="solid" />
@@ -53,7 +54,7 @@ function YourPlanCard({ plan }: Props) {
               <div className="text-xl">{formatCurrency(plan?.amount)}</div>
               <div className="text-sm text-muted">/{plan?.interval} /member</div>
             </div>
-          </div>
+          </BlockContainer>
           <DataRow
             icon={<HugeiconsIcon icon={UserGroupIcon} />}
             value={`${plan?.quantity} Members`}
