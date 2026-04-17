@@ -76,6 +76,56 @@ class SubscriptionController extends Controller
     ]);
   }
 
+  public function cancelSubscription(Request $request)
+  {
+    $user = $request->user();
+    $gallery = $user->currentGallery();
+    $subscription = $gallery->subscription();
+
+    if (!$subscription) {
+      return response()->json([
+        'message' => 'No active subscription found.',
+      ], 404);
+    }
+
+    try {
+      $subscription->cancel();
+    } catch (\Exception $e) {
+      return response()->json([
+        'message' => 'Failed to cancel subscription: ' . $e->getMessage(),
+      ], 500);
+    }
+
+    return response()->json([
+      'message' => 'Subscription canceled successfully.',
+    ]);
+  }
+
+  public function resumeSubscription(Request $request)
+  {
+    $user = $request->user();
+    $gallery = $user->currentGallery();
+    $subscription = $gallery->subscription();
+
+    if (!$subscription) {
+      return response()->json([
+        'message' => 'No active subscription found.',
+      ], 404);
+    }
+
+    try {
+      $subscription->resume();
+    } catch (\Exception $e) {
+      return response()->json([
+        'message' => 'Failed to resume subscription: ' . $e->getMessage(),
+      ], 500);
+    }
+
+    return response()->json([
+      'message' => 'Subscription resumed successfully.',
+    ]);
+  }
+
   public function getSubscriptionData(Request $request)
   {
     $user = $request->user();
@@ -101,10 +151,13 @@ class SubscriptionController extends Controller
       'quantity' => $stripeSubscription->quantity,
       'current_period_start' => $stripeSubscription->items->data[0]->current_period_start,
       'current_period_end' => $stripeSubscription->items->data[0]->current_period_end,
+      'status' => $stripeSubscription->status,
+      'cancel_at_period_end' => $stripeSubscription->cancel_at_period_end,
     ];
 
     return response()->json([
       'plan' => $plan,
+      'subscription' => $stripeSubscription,
     ]);
   }
 }

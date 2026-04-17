@@ -47,6 +47,8 @@ class Gallery extends Model implements HasMedia
     'formatted_address',
     'formatted_phone_number',
     'is_subscribed',
+    'subscribed_price_id',
+    'on_grace_period',
     'members_count',
     'meta',
   ];
@@ -126,6 +128,18 @@ class Gallery extends Model implements HasMedia
   public function getIsSubscribedAttribute(): bool
   {
     return $this->subscribed('default');
+  }
+
+  public function getSubscribedPriceIdAttribute(): ?string
+  {
+    $subscription = $this->subscription('default');
+    return $subscription ? $subscription->stripe_price : null;
+  }
+
+  public function getOnGracePeriodAttribute(): bool
+  {
+    $subscription = $this->subscription('default');
+    return $subscription ? $subscription->onGracePeriod() : false;
   }
 
   /*
