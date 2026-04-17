@@ -79,7 +79,7 @@
 :root[data-theme='dark'] {
   --color-base: theme('colors.black');
   --bg-light: theme('colors.slate.800');
-  --bg-gray: theme('colors.slate.700');
+  --bg-soft: theme('colors.slate.700');
   --border-light: theme('colors.neutral.700');
   --border-soft: theme('colors.neutral.600');
   --text-label: theme('colors.gray.400');
