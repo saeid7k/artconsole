@@ -1,4 +1,7 @@
 import ActivityLogs from "@/Components/ActivityLogs";
+import ContactPurchases from "@/Components/Contacts/ContactPurchases";
+import AddressDataBox from "@/Components/Containers/AddressDataBox";
+import CommunicationDataBox from "@/Components/Containers/CommunicationDataBox";
 import DataCol from "@/Components/Containers/DataCol";
 import DataRow from "@/Components/Containers/DataRow";
 import PageTitle from "@/Components/PageTitle";
@@ -9,7 +12,7 @@ import { ContactProps } from "@/types/contact";
 import { stringToColor } from "@/utils/colorHelper";
 import { formatPhoneNumber } from "@/utils/formatHelper";
 import { getInitials } from "@/utils/stringHelper";
-import { BirthdayCakeIcon, Briefcase01Icon, Call02Icon, City03Icon, EarthIcon, Edit03Icon, Location06Icon, Mail01Icon, MapingIcon, OfficeIcon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
+import { BirthdayCakeIcon, Briefcase01Icon, Call02Icon, Edit03Icon, Mail01Icon, OfficeIcon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link, router } from "@inertiajs/react";
 import { Avatar, Button, Card, Divider, Empty, message, Tabs, Tooltip } from "antd";
@@ -17,7 +20,6 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { useRef, useState } from "react";
 import ContactFormDrawer from "./Partials/ContactFormDrawer";
-import ContactPurchases from "@/Components/Contacts/ContactPurchases";
 
 function Show({ contact }: { contact: ContactProps }) {
 
@@ -113,41 +115,9 @@ function Show({ contact }: { contact: ContactProps }) {
               <RelationshipTags contact={contact} />
             </div>
           </div>
-          <DataCol title="Communication">
-            <DataRow
-              icon={<HugeiconsIcon icon={Call02Icon} size={18} />}
-              label="Phone:"
-              value={formatPhoneNumber(contact.phone)}
-            />
-            <DataRow
-              icon={<HugeiconsIcon icon={Mail01Icon} size={18} />}
-              label="Email:"
-              value={contact.email}
-            />
-          </DataCol>
+          <CommunicationDataBox phone={contact.phone} email={contact.email} />
           <Divider />
-          <DataCol title="Address">
-            <DataRow
-              icon={<HugeiconsIcon icon={Location06Icon} size={18} />}
-              label="Street Address:"
-              value={contact.address?.street}
-            />
-            <DataRow
-              icon={<HugeiconsIcon icon={City03Icon} size={18} />}
-              label="City:"
-              value={contact.address?.city}
-            />
-            <DataRow
-              icon={<HugeiconsIcon icon={MapingIcon} size={18} />}
-              label="Province:"
-              value={contact.address?.province}
-            />
-            <DataRow
-              icon={<HugeiconsIcon icon={EarthIcon} size={18} />}
-              label="Country:"
-              value={contact.address?.country}
-            />
-          </DataCol>
+          <AddressDataBox address={contact.address} />
           <Divider />
           <DataCol title="Business">
             <DataRow
