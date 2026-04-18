@@ -9,6 +9,7 @@ export interface GalleryProps {
   name: string;
   about?: string | null;
   address?: Address | null;
+  phone?: string | null;
   website?: string | null;
   email?: string | null;
 
