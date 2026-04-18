@@ -256,4 +256,13 @@ class SubscriptionController extends Controller
       'message' => 'Billing preference updated successfully.',
     ]);
   }
+
+  public function getInvoices(Request $request)
+  {
+    $user = $request->user();
+    $gallery = $user->currentGallery();
+    $invoices = $gallery->stripeInvoices();
+
+    return response()->json($invoices);
+  }
 }
