@@ -47,14 +47,14 @@ function PaymentMethods({ paymentMethods }: { paymentMethods: any[] }) {
   }
 
   return (
-    <div className="flex flex-col gap-5 overflow-x-auto pb-3">
+    <div className="flex flex-col gap-3 overflow-x-auto pb-3 lg:pb-0">
       {messageContextHolder}
       {paymentMethods.map((method) => (
         <div
           key={method.id}
           className="flex justify-between items-start gap-3 border p-2 rounded-lg group flex-wrap min-w-[300px]"
         >
-          <div className="flex items-center gap-5">
+          <div className="flex items-center flex-wrap gap-5">
             <img
               src={cardLogo[method.card.brand as keyof typeof cardLogo] || ''}
               alt={method.card.brand}
