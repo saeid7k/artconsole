@@ -1,3 +1,4 @@
+import { accessLevelsType } from "@/constants/accessLevels";
 import { Address } from "./commonObjects";
 
 export interface UserProps {
@@ -14,7 +15,11 @@ export interface UserProps {
   formatted_address?: string;
   full_name: string;
   photo?: string;
+
+  // Appends
   abilities: {
     [key: string]: boolean;
   };
+  access: accessLevelsType;
+  full_name: string;
 }
