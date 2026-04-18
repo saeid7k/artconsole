@@ -250,6 +250,8 @@ class SubscriptionController extends Controller
     $gallery = $user->currentGallery();
     $gallery->setMeta('billing_to', $request->input('billing_to'));
 
+    dispatch(fn() => $gallery->syncStripeCustomerDetails());
+
     return response()->json([
       'message' => 'Billing preference updated successfully.',
     ]);
