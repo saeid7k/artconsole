@@ -1,4 +1,5 @@
 import PageTitle from "@/Components/PageTitle";
+import BillingCard from "@/Components/Subscription/BillingCard";
 import PaymentMethods from "@/Components/Subscription/PaymentMethods";
 import StripeInvoice from "@/Components/Subscription/StripeInvoice";
 import YourPlanCard from "@/Components/Subscription/YourPlanCard";
@@ -12,7 +13,7 @@ import { Button, Card, Empty, message, Tooltip } from "antd";
 import axios from "axios";
 import { useEffect, useRef } from "react";
 
-function Subscription() {
+function Subscription({ billing_to }: { billing_to: string }) {
 
   const isInitialRender = useRef(true);
   const [messageApi, contextHolder] = message.useMessage();
@@ -94,7 +95,7 @@ function Subscription() {
             <Card
               title="Payment Methods"
               loading={dataIsLoading}
-              extra={[
+              extra={dataIsLoading ? null : [
                 <Tooltip title="Add Payment Method" >
                   <Button
                     type="text"
@@ -111,11 +112,7 @@ function Subscription() {
                 <PaymentMethods paymentMethods={subscriptionDataQuery.data?.paymentMethods ?? []} />
               )}
             </Card>
-            <Card
-              title="Billing Details"
-            >
-              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No billing details on file" />
-            </Card>
+            <BillingCard billing_to={billing_to} />
           </div>
         </div>
         <Card

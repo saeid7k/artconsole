@@ -7,9 +7,14 @@ use Laravel\Cashier\Cashier;
 
 class SubscriptionController extends Controller
 {
-  public function index()
+  public function index(Request $request)
   {
-    return inertia('Subscription');
+    $user = $request->user();
+    $gallery = $user->currentGallery();
+
+    return inertia('Subscription', [
+      'billing_to' => $gallery->getMeta('billing_to', 'gallery'),
+    ]);
   }
 
   public function getProducts()
@@ -165,7 +170,7 @@ class SubscriptionController extends Controller
       'plan' => $plan,
       'upcomingInvoice' => $upcomingInvoice,
       'paymentMethods' => $gallery->paymentMethods(),
-      'defaultPaymentMethod' => $gallery->defaultPaymentMethod(),
+      'defaultPaymentMethod' => $gallery->defaultPaymentMethod()
     ]);
   }
 
@@ -232,6 +237,21 @@ class SubscriptionController extends Controller
 
     return response()->json([
       'message' => 'Payment method deleted successfully.',
+    ]);
+  }
+
+  public function setBillingTo(Request $request)
+  {
+    $request->validate([
+      'billing_to' => 'required|in:gallery,owner',
+    ]);
+
+    $user = $request->user();
+    $gallery = $user->currentGallery();
+    $gallery->setMeta('billing_to', $request->input('billing_to'));
+
+    return response()->json([
+      'message' => 'Billing preference updated successfully.',
     ]);
   }
 }

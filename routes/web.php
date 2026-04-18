@@ -170,6 +170,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/payment-method-link', [App\Http\Controllers\SubscriptionController::class, 'getPaymentMethodLink'])->name('payment-method-link');
     Route::post('/default-payment-method', [App\Http\Controllers\SubscriptionController::class, 'setDefaultPaymentMethod'])->name('default-payment-method');
     Route::post('/delete-payment-method', [App\Http\Controllers\SubscriptionController::class, 'deletePaymentMethod'])->name('delete-payment-method');
+    Route::post('/set-billing-to', [App\Http\Controllers\SubscriptionController::class, 'setBillingTo'])->name('set-billing-to');
   });
 });
 
