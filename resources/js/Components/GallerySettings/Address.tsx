@@ -12,7 +12,7 @@ function Address() {
 
   // Constants
 
-  const { gallery, open } = useGallerySettings()
+  const { gallery, open, setOpen } = useGallerySettings()
   const isInitialAddressMount = useRef(true);
   const [form] = Form.useForm()
 
@@ -77,6 +77,7 @@ function Address() {
           .then((res) => {
             message.success(res.data.message || "Gallery address updated successfully")
             router.reload()
+            setOpen(false)
           })
           .catch((e) => {
             message.error(e.response?.data?.message || "Failed to update gallery address")
