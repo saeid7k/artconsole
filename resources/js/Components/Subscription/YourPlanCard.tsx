@@ -2,10 +2,10 @@ import { useApp } from "@/contexts/AppContext"
 import { useSubscription } from "@/contexts/SubscriptionContext"
 import useSubscriptionQueries from "@/hooks/useSubscriptionQueries"
 import { formatCurrency } from "@/utils/formatHelper"
-import { Calendar02Icon, CreditCardPosIcon, UserGroupIcon } from "@hugeicons/core-free-icons"
+import { Calendar02Icon, CardExchange01Icon, CreditCardPosIcon, UserGroupIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router } from "@inertiajs/react"
-import { Alert, Button, Card, Empty, Progress } from "antd"
+import { Alert, Button, Card, Empty, Progress, Tooltip } from "antd"
 import dayjs from "dayjs"
 import { useEffect } from "react"
 import BlockContainer from "../Containers/BlockContainer"
@@ -45,11 +45,14 @@ function YourPlanCard({ plan }: Props) {
     <Card
       title="Your Plan"
       extra={plan ? [
-        <Button
-          onClick={() => setOpenUpgradeModal(true)}
-        >
-          Change Plan
-        </Button>
+        <Tooltip title="Change Plan" >
+          <Button
+            type="text"
+            shape="circle"
+            onClick={() => setOpenUpgradeModal(true)}
+            icon={<HugeiconsIcon icon={CardExchange01Icon} />}
+          />
+        </Tooltip>
       ] : null}
       loading={dataIsLoading}
     >
