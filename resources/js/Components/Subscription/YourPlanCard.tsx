@@ -75,17 +75,17 @@ function YourPlanCard({ plan }: Props) {
               </div>
               <div className="flex flex-col gap-3 grow max-w-[400px]">
                 <DataRow
-                  icon={<HugeiconsIcon icon={UserGroupIcon} />}
+                  icon={<HugeiconsIcon icon={UserGroupIcon} size={20} />}
                   value={`${plan?.quantity} Members`}
                 />
                 <DataRow
-                  icon={<HugeiconsIcon icon={Calendar02Icon} />}
+                  icon={<HugeiconsIcon icon={Calendar02Icon} size={20} />}
                   label="Current Period:"
                   value={`${planStartDate} - ${planEndDate}`}
                 />
                 {plan?.auto_renew && (
                   <DataRow
-                    icon={<HugeiconsIcon icon={CreditCardPosIcon} />}
+                    icon={<HugeiconsIcon icon={CreditCardPosIcon} size={20} />}
                     label="Next Billing Time:"
                     value={planEndDateTime}
                   />
