@@ -1,4 +1,5 @@
 import PageTitle from "@/Components/PageTitle";
+import PaymentMethods from "@/Components/Subscription/PaymentMethods";
 import StripeInvoice from "@/Components/Subscription/StripeInvoice";
 import YourPlanCard from "@/Components/Subscription/YourPlanCard";
 import { SubscriptionProvider } from "@/contexts/SubscriptionContext";
@@ -73,8 +74,13 @@ function Subscription() {
           <div className="grid grid-cols-1 gap-5">
             <Card
               title="Payment Methods"
+              loading={dataIsLoading}
             >
-              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No payment methods on file" />
+              {!dataIsLoading && !subscriptionDataQuery.data?.paymentMethods ? (
+                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No payment methods found" />
+              ) : (
+                <PaymentMethods paymentMethods={subscriptionDataQuery.data?.paymentMethods ?? []} />
+              )}
             </Card>
             <Card
               title="Billing Details"

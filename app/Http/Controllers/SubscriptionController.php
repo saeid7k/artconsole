@@ -164,6 +164,7 @@ class SubscriptionController extends Controller
     return response()->json([
       'plan' => $plan,
       'upcomingInvoice' => $upcomingInvoice,
+      'paymentMethods' => $gallery->paymentMethods(),
     ]);
   }
 }
