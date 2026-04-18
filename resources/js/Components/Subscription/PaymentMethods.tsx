@@ -1,6 +1,6 @@
 import { useSubscription } from '@/contexts/SubscriptionContext'
 import { useMutation } from '@tanstack/react-query'
-import { Button, Tag } from 'antd'
+import { Button, Popconfirm, Tag } from 'antd'
 import useMessage from 'antd/es/message/useMessage'
 import axios from 'axios'
 import amexLogo from '~/resources/images/payment-methods/amex.svg'
@@ -76,24 +76,34 @@ function PaymentMethods({ paymentMethods }: { paymentMethods: any[] }) {
             <div className='flex gap-1'>
               <Button
                 size="small"
-                variant='filled'
-                color='default'
-                className='opacity-0 group-hover:opacity-100'
+                variant='outlined'
+                color='blue'
+                className='mouse:opacity-0 group-hover:opacity-100'
                 onClick={() => setDefaultPaymentMethodMutation.mutate(method.id)}
                 loading={setDefaultPaymentMethodMutation.isPending && setDefaultPaymentMethodMutation.variables === method.id}
               >
                 Set as Default
               </Button>
-              <Button
-                size="small"
-                variant='filled'
-                color='danger'
-                className='opacity-0 group-hover:opacity-100'
-                onClick={() => deletePaymentMethodMutation.mutate(method.id)}
-                loading={deletePaymentMethodMutation.isPending && deletePaymentMethodMutation.variables === method.id}
+              <Popconfirm
+                title="Delete payment method"
+                description='Are you sure you want to delete this payment method?'
+                onConfirm={() => deletePaymentMethodMutation.mutate(method.id)}
+                okText="Yes"
+                cancelText="No"
+                placement="left"
+                okType="danger"
+                arrow={false}
               >
-                Delete
-              </Button>
+                <Button
+                  size="small"
+                  variant='outlined'
+                  color='danger'
+                  className='mouse:opacity-0 group-hover:opacity-100'
+                  loading={deletePaymentMethodMutation.isPending && deletePaymentMethodMutation.variables === method.id}
+                >
+                  Delete
+                </Button>
+              </Popconfirm>
             </div>
           )}
         </div>
