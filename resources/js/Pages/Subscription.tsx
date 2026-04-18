@@ -5,8 +5,10 @@ import YourPlanCard from "@/Components/Subscription/YourPlanCard";
 import { SubscriptionProvider } from "@/contexts/SubscriptionContext";
 import AppLayout from "@/Layouts/AppLayout";
 import { getQueryParam } from "@/utils/urlHelper";
-import { useQuery } from "@tanstack/react-query";
-import { Card, Empty, message } from "antd";
+import { AddIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Button, Card, Empty, message, Tooltip } from "antd";
 import axios from "axios";
 import { useEffect, useRef } from "react";
 
@@ -23,6 +25,10 @@ function Subscription() {
         messageApi.success('Checkout successful!');
       } else if (getQueryParam('checkout') === 'canceled') {
         messageApi.error('Checkout canceled.');
+      } else if (getQueryParam('add_payment_method') === 'success') {
+        messageApi.success('Payment method added successfully!');
+      } else if (getQueryParam('add_payment_method') === 'canceled') {
+        messageApi.error('Adding payment method canceled.');
       }
       isInitialRender.current = false;
     }
@@ -42,10 +48,23 @@ function Subscription() {
   }
 
   const dataIsLoading = subscriptionDataQuery.isLoading;
+  const subscriptionData = subscriptionDataQuery.data;
   const plan = subscriptionDataQuery.data?.plan ?? null;
 
+  // Add Payment Method
+
+  const getPaymentMethodLinkMutation = useMutation({
+    mutationFn: () => axios.get(route('subscription.payment-method-link')).then(res => res.data),
+    onSuccess: (data) => {
+      window.location.href = data.url;
+    },
+    onError: (error: any) => {
+      message.error(error.response?.data?.message || 'Failed to get payment method link')
+    },
+  })
+
   return (
-    <SubscriptionProvider value={{ refetchData, dataIsLoading, plan }} >
+    <SubscriptionProvider value={{ refetchData, dataIsLoading, subscriptionData, plan }} >
       {contextHolder}
       <PageTitle
         title="Subscription"
@@ -75,6 +94,16 @@ function Subscription() {
             <Card
               title="Payment Methods"
               loading={dataIsLoading}
+              extra={[
+                <Tooltip title="Add Payment Method" mouseEnterDelay={0.5}>
+                  <Button
+                    type="text"
+                    shape="circle"
+                    icon={<HugeiconsIcon icon={AddIcon} />}
+                    onClick={() => getPaymentMethodLinkMutation.mutate()}
+                  />
+                </Tooltip>
+              ]}
             >
               {!dataIsLoading && !subscriptionDataQuery.data?.paymentMethods ? (
                 <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No payment methods found" />
