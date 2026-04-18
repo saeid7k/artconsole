@@ -83,5 +83,11 @@ export default {
     	}
     },
 
-    plugins: [forms, animate],
+    plugins: [
+      forms,
+      animate,
+      function ({ addVariant }) {
+        addVariant('mouse', '@media (pointer: fine)');
+      }
+    ],
 };
