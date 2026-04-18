@@ -1,5 +1,6 @@
 import PageTitle from "@/Components/PageTitle";
-import BillingCard from "@/Components/Subscription/BillingCard";
+import BillingDetails from "@/Components/Subscription/BillingDetails";
+import InvoicesCard from "@/Components/Subscription/InvoicesCard";
 import PaymentMethods from "@/Components/Subscription/PaymentMethods";
 import StripeInvoice from "@/Components/Subscription/StripeInvoice";
 import YourPlanCard from "@/Components/Subscription/YourPlanCard";
@@ -9,7 +10,7 @@ import { getQueryParam } from "@/utils/urlHelper";
 import { AddIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Button, Card, Empty, message, Tooltip } from "antd";
+import { Button, Card, Empty, message, Tabs, Tooltip } from "antd";
 import axios from "axios";
 import { useEffect, useRef } from "react";
 
@@ -40,7 +41,6 @@ function Subscription({ billing_to }: { billing_to: string }) {
   const subscriptionDataQuery = useQuery({
     queryKey: ['subscriptionData'],
     queryFn: () => axios.get(route('subscription.data')).then(res => res.data),
-    enabled: true,
     retry: false,
   });
 
@@ -70,56 +70,58 @@ function Subscription({ billing_to }: { billing_to: string }) {
       <PageTitle
         title="Subscription"
       />
-      <div className="grid grid-cols-1 gap-5">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          <div className="grid grid-cols-1 gap-5">
-            <YourPlanCard plan={plan} />
-            <Card
-              title="Upcoming Invoice"
-              loading={dataIsLoading}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
+        <div className="grid grid-cols-1 gap-5">
+          <YourPlanCard plan={plan} />
+          <Card
+            size="small"
+            loading={dataIsLoading}
+          >
+            <Tabs
+              size="small"
             >
-              {(!dataIsLoading && !subscriptionDataQuery.data?.upcomingInvoice) ?
-                (
-                  <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No upcoming invoice" />
-                )
-                :
-                (
-                  <StripeInvoice
-                    invoice={subscriptionDataQuery.data?.upcomingInvoice}
-                  />
-                )
-              }
-            </Card>
-          </div>
-          <div className="grid grid-cols-1 gap-5">
-            <Card
-              title="Payment Methods"
-              loading={dataIsLoading}
-              extra={dataIsLoading ? null : [
-                <Tooltip title="Add Payment Method" >
-                  <Button
-                    type="text"
-                    shape="circle"
-                    icon={<HugeiconsIcon icon={AddIcon} />}
-                    onClick={() => getPaymentMethodLinkMutation.mutate()}
-                  />
-                </Tooltip>
-              ]}
-            >
-              {!dataIsLoading && !subscriptionDataQuery.data?.paymentMethods ? (
-                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No payment methods found" />
-              ) : (
-                <PaymentMethods paymentMethods={subscriptionDataQuery.data?.paymentMethods ?? []} />
-              )}
-            </Card>
-            <BillingCard billing_to={billing_to} />
-          </div>
+              <Tabs.TabPane tab="Upcoming Invoice" key="upcoming-invoice">
+                {(!dataIsLoading && !subscriptionDataQuery.data?.upcomingInvoice) ?
+                  (
+                    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No upcoming invoice" />
+                  )
+                  :
+                  (
+                    <StripeInvoice
+                      invoice={subscriptionDataQuery.data?.upcomingInvoice}
+                    />
+                  )
+                }
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="Billing Details" key="billing-details">
+                <BillingDetails billing_to={billing_to} />
+              </Tabs.TabPane>
+            </Tabs>
+          </Card>
         </div>
-        <Card
-          title="Invoices History"
-        >
-          <p>No invoices found.</p>
-        </Card>
+        <div className="grid grid-cols-1 gap-5">
+          <Card
+            title="Payment Methods"
+            loading={dataIsLoading}
+            extra={dataIsLoading ? null : [
+              <Tooltip title="Add Payment Method" >
+                <Button
+                  type="text"
+                  shape="circle"
+                  icon={<HugeiconsIcon icon={AddIcon} />}
+                  onClick={() => getPaymentMethodLinkMutation.mutate()}
+                />
+              </Tooltip>
+            ]}
+          >
+            {!dataIsLoading && !subscriptionDataQuery.data?.paymentMethods ? (
+              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No payment methods found" />
+            ) : (
+              <PaymentMethods paymentMethods={subscriptionDataQuery.data?.paymentMethods ?? []} />
+            )}
+          </Card>
+          <InvoicesCard />
+        </div>
       </div>
     </SubscriptionProvider>
   );
