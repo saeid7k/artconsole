@@ -165,6 +165,73 @@ class SubscriptionController extends Controller
       'plan' => $plan,
       'upcomingInvoice' => $upcomingInvoice,
       'paymentMethods' => $gallery->paymentMethods(),
+      'defaultPaymentMethod' => $gallery->defaultPaymentMethod(),
+    ]);
+  }
+
+  public function getPaymentMethodLink(Request $request)
+  {
+    $user = $request->user();
+    $gallery = $user->currentGallery();
+    $checkout = $gallery->checkout([], [
+      'mode' => 'setup',
+      'currency' => $gallery->currency,
+      'automatic_tax' => ['enabled' => false],
+      'success_url' => route('subscription.index', [
+        'add_payment_method' => 'success',
+      ]),
+      'cancel_url' => route('subscription.index', [
+        'add_payment_method' => 'canceled',
+      ]),
+    ]);
+
+    return response()->json([
+      'url' => $checkout->url
+    ]);
+  }
+
+  public function setDefaultPaymentMethod(Request $request)
+  {
+    $request->validate([
+      'payment_method_id' => 'required|string',
+    ]);
+
+    $user = $request->user();
+    $gallery = $user->currentGallery();
+    $paymentMethodId = $request->input('payment_method_id');
+
+    try {
+      $gallery->updateDefaultPaymentMethod($paymentMethodId);
+    } catch (\Exception $e) {
+      return response()->json([
+        'message' => 'Failed to set default payment method: ' . $e->getMessage(),
+      ], 500);
+    }
+
+    return response()->json([
+      'message' => 'Default payment method updated successfully.',
+    ]);
+  }
+
+  public function deletePaymentMethod(Request $request)
+  {
+    $request->validate([
+      'payment_method_id' => 'required|string',
+    ]);
+    $paymentMethodId = $request->input('payment_method_id');
+    $user = $request->user();
+    $gallery = $user->currentGallery();
+
+    try {
+      $gallery->deletePaymentMethod($paymentMethodId);
+    } catch (\Exception $e) {
+      return response()->json([
+        'message' => 'Failed to delete payment method: ' . $e->getMessage(),
+      ], 500);
+    }
+
+    return response()->json([
+      'message' => 'Payment method deleted successfully.',
     ]);
   }
 }
