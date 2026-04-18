@@ -17,7 +17,10 @@ use Zoha\Metable;
 
 class Gallery extends Model implements HasMedia
 {
-  use Metable, InteractsWithMedia, LogsActivity, Billable;
+  use Metable, InteractsWithMedia, LogsActivity;
+  use Billable {
+    invoices as stripeInvoices;
+  }
 
   protected $fillable = [
     'name',

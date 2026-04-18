@@ -171,6 +171,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/default-payment-method', [App\Http\Controllers\SubscriptionController::class, 'setDefaultPaymentMethod'])->name('default-payment-method');
     Route::post('/delete-payment-method', [App\Http\Controllers\SubscriptionController::class, 'deletePaymentMethod'])->name('delete-payment-method');
     Route::post('/set-billing-to', [App\Http\Controllers\SubscriptionController::class, 'setBillingTo'])->name('set-billing-to');
+    Route::get('/invoices', [App\Http\Controllers\SubscriptionController::class, 'getInvoices'])->name('invoices');
   });
 });
 
