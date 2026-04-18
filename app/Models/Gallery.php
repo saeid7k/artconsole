@@ -263,27 +263,28 @@ class Gallery extends Model implements HasMedia
 
   public function stripeName(): string|null
   {
-    return $this->name;
+    return $this->getMeta('billing_to') == 'owner' ? $this->owner->full_name : $this->name;
   }
 
   public function stripeEmail(): string|null
   {
-    return $this->email;
+    return $this->getMeta('billing_to') == 'owner' ? $this->owner->email : $this->email;
   }
 
   public function stripeAddress(): array|null
   {
-    if (!$this->address) {
+    $targetAddress = $this->getMeta('billing_to') == 'owner' ? $this->owner->address : $this->address;
+    if (!$targetAddress) {
       return null;
     }
 
     return [
-      'line1' => AddressHelper::lineOne($this->address),
+      'line1' => AddressHelper::lineOne($targetAddress),
       'line2' => null,
-      'city' => $this->address->city ?? null,
-      'state' => $this->address->province ?? null,
-      'postal_code' => $this->address->postal_code ?? null,
-      'country' => AddressHelper::countryToIso($this->address->country) ?? null,
+      'city' => $targetAddress->city ?? null,
+      'state' => $targetAddress->province ?? null,
+      'postal_code' => $targetAddress->postal_code ?? null,
+      'country' => AddressHelper::countryToIso($targetAddress->country) ?? null,
     ];
   }
 
