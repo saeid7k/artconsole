@@ -95,7 +95,7 @@ function Subscription() {
               title="Payment Methods"
               loading={dataIsLoading}
               extra={[
-                <Tooltip title="Add Payment Method" mouseEnterDelay={0.5}>
+                <Tooltip title="Add Payment Method" >
                   <Button
                     type="text"
                     shape="circle"
