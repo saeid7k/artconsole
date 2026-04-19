@@ -70,7 +70,7 @@ function Subscription({ billing_to }: { billing_to: string }) {
       <PageTitle
         title="Subscription"
       />
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 items-start">
         <div className="grid grid-cols-1 gap-5">
           <YourPlanCard plan={plan} />
           <Card
