@@ -41,6 +41,7 @@ function Subscription({ billing_to }: { billing_to: string }) {
   const subscriptionDataQuery = useQuery({
     queryKey: ['subscriptionData'],
     queryFn: () => axios.get(route('subscription.data')).then(res => res.data),
+    enabled: false,
     retry: false,
   });
 
