@@ -59,6 +59,7 @@ function InvoicesCard() {
                     color="primary"
                     shape="circle"
                     icon={<HugeiconsIcon icon={DownloadIcon} size={20} />}
+                    onClick={() => window.open(invoice.invoice_pdf, '_self')}
                   />
                 </Tooltip>
               </div>
