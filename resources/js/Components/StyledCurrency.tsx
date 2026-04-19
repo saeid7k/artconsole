@@ -7,6 +7,8 @@ type Props = {
   value?: number | string | null;
   currency?: string;
   greenOnPositive?: boolean;
+  minimumFractionDigits?: number;
+  maximumFractionDigits?: number;
   className?: string;
   children?: number | string | null;
 }
@@ -15,6 +17,8 @@ function StyledCurrency({
   value = null,
   currency,
   greenOnPositive = false,
+  minimumFractionDigits = 0,
+  maximumFractionDigits = 2,
   className,
   children = null,
 }: Props) {
@@ -33,7 +37,7 @@ function StyledCurrency({
         greenOnPositive && isPositive ? "text-green-600 dark:text-green-500" : "",
       )}
     >
-      {formatCurrency(displayValue, currency || galleryCurrency, 0, 2)}
+      {formatCurrency(displayValue, currency || galleryCurrency, minimumFractionDigits, maximumFractionDigits)}
     </span>
   );
 }
