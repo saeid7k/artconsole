@@ -1,5 +1,5 @@
-import LogoBox from '@/Components/LogoBox';
 import ServerFlashMessage from '@/Components/ServerFlashMessage';
+import { APP } from '@/constants/appConstants';
 import colors from '@/Themes/theme';
 import { oklchToHex } from '@/utils/colorHelper';
 import { StyleProvider } from '@ant-design/cssinjs';
@@ -12,7 +12,7 @@ function Guest({ children }: PropsWithChildren) {
     <div className="flex min-h-screen flex-col gap-3 items-center bg-light pt-10">
       <div>
         <Link href="/">
-          <LogoBox />
+          <img src={APP.logo_sm} alt="Logo" className="w-15 h-15 p-1 mb-1" />
         </Link>
       </div>
       <Card
