@@ -8,6 +8,7 @@ import { AddIcon, AddMaleIcon, ArrowDown01Icon, Cancel01Icon, CheckmarkCircle01I
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
 import { Avatar, Badge, Button, Card, Divider, Dropdown, message, Tooltip } from "antd";
+import useMessage from "antd/es/message/useMessage";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import CreateGalleryModal from "../CreateGalleryModal";
@@ -18,10 +19,11 @@ import GalleryAvatar from "./GalleryAvatar";
 
 function GallerySwitch() {
 
-  // App Context
+  // Hooks
 
   const { intervalData } = useApp();
   const { current_gallery, galleries } = usePage<UsePageProps>().props;
+  const [messageApi, messageContextHolder] = useMessage();
 
   // States
 
@@ -45,11 +47,11 @@ function GallerySwitch() {
     }
     axios.post(route('galleries.set-current'), { gallery_id: galleryId })
       .then(() => {
-        message.success('Switched Gallery');
+        messageApi.success('Switched Gallery');
         router.reload()
       })
       .catch((error) => {
-        message.error(error.response?.data?.message || 'Failed to switch gallery');
+        messageApi.error(error.response?.data?.message || 'Failed to switch gallery');
       })
       .finally(() => {
         setOpen(false);
@@ -64,12 +66,12 @@ function GallerySwitch() {
   function acceptInvitation(inviteLinkId: number) {
     axios.post(route('invite-links.accept', { invite_link: inviteLinkId }))
       .then((response) => {
-        message.success(response.data.message || 'Joined gallery successfully');
+        messageApi.success(response.data.message || 'Joined gallery successfully');
         setInvitations((prev: InviteLinkProps[]) => prev.filter((invitation: InviteLinkProps) => invitation.id !== inviteLinkId));
         router.reload()
       })
       .catch((error) => {
-        message.error(error.response?.data?.message || 'Failed to join gallery');
+        messageApi.error(error.response?.data?.message || 'Failed to join gallery');
       });
   }
 
@@ -95,6 +97,7 @@ function GallerySwitch() {
 
   return (
     <>
+      {messageContextHolder}
       <Dropdown
         trigger={['click']}
         popupRender={
