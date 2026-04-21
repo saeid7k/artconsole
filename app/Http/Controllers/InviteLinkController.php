@@ -25,7 +25,7 @@ class InviteLinkController extends Controller
     $user = $request->user();
     $gallery = $inviteLink->gallery;
 
-    (new InviteLinkService())->join($gallery, $user, $inviteLink);
+    (new InviteLinkService($inviteLink))->join($user);
 
     return response([
       'message' => 'Joined gallery successfully.',
@@ -76,7 +76,7 @@ class InviteLinkController extends Controller
 
     if ($user && $user->email === $inviteLink->email) {
       $this->authorize('accept', $inviteLink);
-      (new InviteLinkService())->join($gallery, $user, $inviteLink);
+      (new InviteLinkService($inviteLink))->join($user);
       session(['flash' => [
         'type' => 'success',
         'message' => 'You have successfully joined the gallery "' . $gallery->name . '".'

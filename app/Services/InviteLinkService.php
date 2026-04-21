@@ -9,16 +9,23 @@ use Illuminate\Support\Facades\DB;
 
 class InviteLinkService
 {
-  public function join(Gallery $gallery, User $user, InviteLink $inviteLink): void
-  {
-    DB::transaction(function () use ($gallery, $user, $inviteLink) {
-      $gallery->addMember($user, $inviteLink->settings['access'] ?? 'viewer');
+  private Gallery $gallery;
 
-      $inviteLink->update([
+  public function __construct(private InviteLink $inviteLink)
+  {
+    $this->gallery = $inviteLink->gallery;
+  }
+
+  public function join(User $user): void
+  {
+    DB::transaction(function () use ($user) {
+      $this->gallery->addMember($user, $this->inviteLink->settings['access'] ?? 'viewer');
+
+      $this->inviteLink->update([
         'registered_at' => now(),
       ]);
 
-      $user->setCurrentGallery($gallery->id);
+      $user->setCurrentGallery($this->gallery->id);
     });
   }
 }

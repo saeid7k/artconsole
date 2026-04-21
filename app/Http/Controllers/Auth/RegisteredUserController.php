@@ -70,7 +70,7 @@ class RegisteredUserController extends Controller
 
       if ($inviteLink) {
         $gallery = $inviteLink->gallery;
-        (new InviteLinkService())->join($gallery, $user, $inviteLink);
+        (new InviteLinkService($inviteLink))->join($user);
 
         if (!$user->hasVerifiedEmail()) {
           $user->markEmailAsVerified();
