@@ -4,20 +4,30 @@ import GuestLayout from '@/Layouts/GuestLayout';
 import googleLogo from '@images/logo/google-logo.svg';
 import { Head, Link, router, useForm } from '@inertiajs/react';
 import { Button, Checkbox, Input } from 'antd';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useEffect } from 'react';
 
-export default function Login({
-  status,
-  canResetPassword,
-}: {
+type Props = {
   status?: string;
   canResetPassword: boolean;
-}) {
+  default_values?: {
+    email: string;
+    password: string;
+  };
+};
+
+export default function Login({ status, canResetPassword, default_values }: Props) {
+
   const { data, setData, post, processing, errors, reset } = useForm({
     email: '',
     password: '',
     remember: false as boolean,
   });
+
+  useEffect(() => {
+    if (default_values) {
+      setData(default_values);
+    }
+  }, []);
 
   const submit: FormEventHandler = (e) => {
     e.preventDefault();
@@ -47,6 +57,7 @@ export default function Login({
               placeholder='Email'
               autoComplete="email"
               onChange={(e) => setData('email', e.target.value)}
+              value={data.email}
               required
               size='large'
             />
@@ -57,6 +68,7 @@ export default function Login({
             <Input.Password
               placeholder='Password'
               onChange={(e) => setData('password', e.target.value)}
+              value={data.password}
               required
               size='large'
             />

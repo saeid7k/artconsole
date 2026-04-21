@@ -19,10 +19,19 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('Auth/Login', [
-            'canResetPassword' => Route::has('password.request'),
-            'status' => session('status'),
-        ]);
+      $payloads = [
+        'canResetPassword' => Route::has('password.request'),
+        'status' => session('status'),
+      ];
+
+      if (env('APP_ENV') === 'local') {
+        $payloads['default_values'] = [
+          'email' => env('ADMIN_EMAIL', ''),
+          'password' => '12345678'
+        ];
+      }
+
+      return Inertia::render('Auth/Login', $payloads);
     }
 
     /**
