@@ -11,8 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
-use function Spatie\LaravelPdf\Support\pdf;
-
 class InvoiceController extends Controller
 {
   public function index(Request $request)
