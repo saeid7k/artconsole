@@ -31,7 +31,7 @@ function ProBadge({ size = 'small', onClick }: Props) {
   return (
     <Button
       size={size}
-      variant="solid"
+      variant="outlined"
       color="purple"
       icon={<HugeiconsIcon icon={Rocket01Icon} size={16} />}
       onClick={handleClick}
