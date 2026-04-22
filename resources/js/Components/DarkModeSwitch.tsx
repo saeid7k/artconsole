@@ -24,6 +24,7 @@ function DarkModeSwitch() {
       defaultValue={localStorage.getItem('darkMode') || 'light'}
       // value={localStorage.getItem('darkMode')}
       onChange={(value) => handleDarkMode(value)}
+      className="w-max"
     />
   );
 }
