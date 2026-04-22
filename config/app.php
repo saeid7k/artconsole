@@ -15,6 +15,7 @@ return [
 
     'name' => env('APP_NAME', 'Application'),
     'full_name' => env('APP_FULLNAME', 'Application'),
+    'admin_email' => env('ADMIN_EMAIL', ''),
 
     /*
     |--------------------------------------------------------------------------
