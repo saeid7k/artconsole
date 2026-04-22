@@ -6,24 +6,27 @@ import { dayjsUserTz } from "@/utils/dateTimeHelper"
 import { ucFirst } from "@/utils/stringHelper"
 import { RemoveCircleIcon, SentIcon, UserMinus01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
+import { usePage } from "@inertiajs/react"
 import { Button, message, Popconfirm, Select, Table, TableProps, Tooltip } from "antd"
 import axios from "axios"
 import dayjs from "dayjs"
 import localizedFormat from 'dayjs/plugin/localizedFormat'
 import { JSX, useEffect, useState } from "react"
+import AnimatedContainer from "../AnimatedContainer"
+import ProBadge from "../Subscription/ProBadge"
 import UserStack from "../UserStack"
 import AddMemberModal from "./AddMemberModal"
-import { usePage } from "@inertiajs/react"
 dayjs.extend(localizedFormat);
 
 function Members() {
 
-  const { gallery, open } = useGallerySettings()
+  const { gallery, open, setOpen } = useGallerySettings()
   const user = usePage()?.props?.auth?.user
 
   const [members, setMembers] = useState<UserProps[]>([])
   const [invitations, setInvitations] = useState<InviteLinkProps[]>([])
   const [showAddMemberModal, setShowAddMemberModal] = useState(false)
+  const [showProBadge, setShowProBadge] = useState(false)
 
   function fetchMembers() {
     axios.get(route('members.all', { gallery: gallery.id }))
@@ -246,13 +249,22 @@ function Members() {
     <>
       <div className="flex flex-col gap-3">
         {gallery.abilities.manage_members && (
-          <div className="flex justify-end">
-            <Button
-              type="primary"
-              onClick={() => setShowAddMemberModal(true)}
-            >
-              Add Member
-            </Button>
+          <div
+            className="flex justify-end gap-1"
+            onMouseLeave={() => setShowProBadge(false)}
+          >
+            <AnimatedContainer condition={showProBadge} type="fadeLeft" speed="slow" >
+              <ProBadge size="medium" onClick={() => setOpen(false)} />
+            </AnimatedContainer>
+            <div onMouseEnter={() => setShowProBadge(true)} >
+              <Button
+                type="primary"
+                onClick={() => setShowAddMemberModal(true)}
+                disabled={!gallery.is_subscribed}
+              >
+                Add Member
+              </Button>
+            </div>
           </div>
         )}
         <div className="flex items-center gap-1 text-primary-700 dark:text-primary-300">
