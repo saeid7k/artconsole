@@ -11,9 +11,11 @@ import { Avatar, Badge, Button, Card, Divider, Dropdown, message, Tooltip } from
 import useMessage from "antd/es/message/useMessage";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import AnimatedContainer from "../AnimatedContainer";
 import CreateGalleryModal from "../CreateGalleryModal";
 import AddMemberModal from "../GallerySettings/AddMemberModal";
 import GallerySettingsModal from "../GallerySettings/GallerySettingsModal";
+import ProBadge from "../Subscription/ProBadge";
 import GalleryAccessTag from "./GalleryAccessTag";
 import GalleryAvatar from "./GalleryAvatar";
 
@@ -30,6 +32,7 @@ function GallerySwitch() {
   const [open, setOpen] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [showAddMemberModal, setShowAddMemberModal] = useState(false);
+  const [showProBadge, setShowProBadge] = useState(false);
 
   // First Time Clicked
 
@@ -137,18 +140,27 @@ function GallerySwitch() {
                     )
                   })}
                 </Avatar.Group>
-                <div className="flex">
-                  {current_gallery.abilities?.manage_members && (
-                    <Button
-                      size="small"
-                      icon={<HugeiconsIcon icon={AddMaleIcon} size={16} />}
-                      className="text-gray-500"
-                      onClick={() => {setShowAddMemberModal(true); setOpen(false);}}
-                    >
-                      invite members
-                    </Button>
-                  )}
-                </div>
+                {current_gallery.abilities?.manage_members && (
+                  <div
+                    className="flex gap-1"
+                    onMouseLeave={() => setShowProBadge(false)}
+                  >
+                    <div onMouseEnter={() => setShowProBadge(true)} >
+                      <Button
+                        size="small"
+                        icon={<HugeiconsIcon icon={AddMaleIcon} size={16} />}
+                        className="text-gray-500"
+                        onClick={() => {setShowAddMemberModal(true); setOpen(false);}}
+                        disabled={!current_gallery.is_subscribed}
+                      >
+                        invite members
+                      </Button>
+                    </div>
+                    <AnimatedContainer condition={showProBadge} type="fadeRight" speed="slow" >
+                      <ProBadge onClick={() => setOpen(false)} />
+                    </AnimatedContainer>
+                  </div>
+                )}
               </div>
 
               <Divider />
