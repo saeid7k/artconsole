@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Tag;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 
 class AppSeeder extends Seeder
 {
@@ -14,6 +15,10 @@ class AppSeeder extends Seeder
   public function run(): void
   {
     $this->createDefaultTags();
+
+    $this->command->comment('Creating admin user...');
+    Artisan::call('app:create-admin-user');
+    $this->command->info('✅ Admin user created.');
   }
 
   private function createDefaultTags()

@@ -4,28 +4,15 @@ namespace App\Console\Commands;
 
 use Database\Seeders\AppSeeder;
 use Database\Seeders\DemoSeeder;
+use Database\Seeders\FullFakeSeeder;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 
-class DemoSetup extends Command
+class LocalFreshSetup extends Command
 {
-  /**
-   * The name and signature of the console command.
-   *
-   * @var string
-   */
-  protected $signature = 'app:demo-setup';
+  protected $signature = 'app:local-fresh-setup';
+  protected $description = 'Perform a fresh setup of the application with demo data. This will reset the database, run all migrations, seed the database with demo data, and clear the storage folder.';
 
-  /**
-   * The console command description.
-   *
-   * @var string
-   */
-  protected $description = 'Set up the application with demo data for testing and development.';
-
-  /**
-   * Execute the console command.
-   */
   public function handle()
   {
     // exit if not in local environment
@@ -43,17 +30,17 @@ class DemoSetup extends Command
     // run all migrations
     $this->call('migrate');
 
-    // Clear Storage Folder
-    $this->comment('Clearing storage folder...');
-    $storagePath = public_path('drive');
-    if (File::exists($storagePath)) {
-      File::cleanDirectory($storagePath);
+    // Clear Drive Folder
+    $this->comment('Clearing drive folder...');
+    $drivePath = public_path('drive');
+    if (File::exists($drivePath)) {
+      File::cleanDirectory($drivePath);
     }
-    $this->info('✅ Storage folder cleared.');
+    $this->info('✅ Drive folder cleared.');
 
     // seed the database
     $this->call('db:seed', ['--class' => AppSeeder::class]);
-    $this->call('db:seed', ['--class' => DemoSeeder::class]);
+    $this->call('db:seed', ['--class' => FullFakeSeeder::class]);
 
     // Run queued jobs
     $this->comment('Processing queued jobs...');
