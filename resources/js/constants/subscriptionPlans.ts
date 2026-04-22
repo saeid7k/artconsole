@@ -1,3 +1,4 @@
+import CONFIGS from '@/constants/configs.json';
 
 const PLANS = [
   {
@@ -7,7 +8,7 @@ const PLANS = [
       {"title": "Single Member", "color": "gray"},
       {"title": "Unlimited Artworks", "color": "green"},
       {"title": "Unlimited Locations", "color": "green"},
-      {"title": "ArtConsole Branding", "color": "gray"}
+      {"title": `${CONFIGS.app.name} Branding`, "color": "gray"}
     ]
   },
   {
@@ -17,7 +18,7 @@ const PLANS = [
       {"title": "Unlimited Members", "color": "green"},
       {"title": "Unlimited Artworks", "color": "green"},
       {"title": "Unlimited Locations", "color": "green"},
-      {"title": "Remove ArtConsole Branding", "color": "green"},
+      {"title": `Remove ${CONFIGS.app.name} Branding`, "color": "green"},
       {"title": "Priority Support", "color": "green"}
     ]
   }
