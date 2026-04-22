@@ -24,9 +24,9 @@ class AuthenticatedSessionController extends Controller
         'status' => session('status'),
       ];
 
-      if (env('APP_ENV') === 'local') {
+      if (config('app.env') === 'local') {
         $payloads['default_values'] = [
-          'email' => env('ADMIN_EMAIL', ''),
+          'email' => config('app.admin_email', ''),
           'password' => '12345678'
         ];
       }
@@ -39,7 +39,14 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        if (config('app.env') === 'local' && $request->email === config('app.admin_email')) {
+          $user = User::where('email', config('app.admin_email'))->first();
+          if ($user) {
+            Auth::login($user);
+          }
+        } else {
+          $request->authenticate();
+        }
 
         $request->session()->regenerate();
 
