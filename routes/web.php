@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GeocodeController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\Admin;
+use App\Http\Middleware\Subscribed;
 use Illuminate\Support\Facades\Route;
 use Laravel\Cashier\Http\Controllers\WebhookController;
 
@@ -73,7 +74,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
   Route::prefix('members')->name('members.')->group(function () {
     Route::get('{gallery}', [App\Http\Controllers\MemberController::class, 'getMembers'])->name('all');
-    Route::post('{gallery}/add', [App\Http\Controllers\MemberController::class, 'addMember'])->name('add');
+    Route::post('{gallery}/add', [App\Http\Controllers\MemberController::class, 'addMember'])->name('add')->middleware(Subscribed::class);
     Route::post('{gallery}/change-access-level', [App\Http\Controllers\MemberController::class, 'changeAccessLevel'])->name('change-access-level');
     Route::post('{gallery}/remove/{member}', [App\Http\Controllers\MemberController::class, 'removeMember'])->name('remove');
   });
