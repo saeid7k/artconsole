@@ -2,7 +2,7 @@ import { useApp } from "@/contexts/AppContext";
 import colors from "@/Themes/theme";
 import { AuthProps } from "@/types/auth";
 import { GalleryProps } from "@/types/gallery";
-import { ArrowTurnBackwardIcon, ContactIcon, CreditCard, CrownIcon, DashboardBrowsingIcon, File01Icon, Image02Icon, InvoiceIcon, PresentationLineChart01Icon, Rocket01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons";
+import { ArrowTurnBackwardIcon, ContactIcon, CreditCard, CrownIcon, DashboardBrowsingIcon, File01Icon, Image02Icon, InvoiceIcon, LocationIcon, PresentationLineChart01Icon, Rocket01Icon, StoreLocation01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
 import { Divider, Menu } from "antd";
@@ -18,12 +18,8 @@ function Sidebar() {
   const items = [
     { key: 'dashboard', icon: <HugeiconsIcon icon={DashboardBrowsingIcon} />, label: 'Dashboard', route: 'dashboard' },
     { key: 'exhibitions', icon: <HugeiconsIcon icon={PresentationLineChart01Icon} />, label: 'Exhibitions', route: 'exhibitions.index' },
-    { key: 'inventory', icon: <HugeiconsIcon icon={Image02Icon} />, label: 'Inventory',
-      children: [
-        { key: 'artworks', label: 'Artworks', route: 'artworks.index' },
-        { key: 'locations', label: 'Locations', route: 'locations.index' },
-      ]
-    },
+    { key: 'artworks', label: 'Artworks Inventory', icon: <HugeiconsIcon icon={Image02Icon} />, route: 'artworks.index' },
+    { key: 'locations', label: 'Locations', icon: <HugeiconsIcon icon={StoreLocation01Icon} />, route: 'locations.index' },
     { key: 'invoices', icon: <HugeiconsIcon icon={InvoiceIcon} />, label: 'Sales & Invoices', route: 'invoices.index' },
     { key: 'contacts', icon: <HugeiconsIcon icon={ContactIcon} />, label: 'Contacts', route: 'contacts.index' },
     { key: 'reports', icon: <HugeiconsIcon icon={File01Icon} />, label: 'Reports', route: 'reports.index' },
