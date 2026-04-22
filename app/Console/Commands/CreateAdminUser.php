@@ -45,7 +45,7 @@ class CreateAdminUser extends Command
     // if ($avatarData) {
     //   $admin->addMediaFromString($avatarData)->usingFileName('user-' . $admin->id . '-photo.jpg')->toMediaCollection('profile-photo');
     // }
-    $avatarData = file_get_contents(resource_path('images/logo/artconsole-logo-sm.png'));
+    $avatarData = file_get_contents(resource_path('images/avatar/admin-avatar.png'));
     $admin->addMediaFromString($avatarData)->usingFileName('user-' . $admin->id . '-photo.png')->toMediaCollection('profile-photo');
 
     $gallery = Gallery::first();
