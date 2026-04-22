@@ -1,8 +1,9 @@
+import ProBadge from "@/Components/Subscription/ProBadge";
+import CONFIGS from "@/constants/configs.json";
 import { useGallerySettings } from "@/contexts/GallerySettingsContext";
 import useGalleryMeta from "@/hooks/useGalleryMeta";
-import { Form, Input } from "antd";
+import { Form, Input, Switch } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import CONFIGS from "@/constants/configs.json";
 
 function Invoicing() {
 
@@ -48,6 +49,23 @@ function Invoicing() {
             onChange={(e) => setMeta("invoice_footer", e.target.value)}
             maxLength={100}
           />
+        </Form.Item>
+        <Form.Item
+          label={
+            <div className="flex items-start gap-2">
+              <div>{CONFIGS.app.name} Branding</div>
+              <ProBadge />
+            </div>
+          }
+        >
+          <div className="flex gap-2">
+            <Switch
+              defaultChecked={gallery?.meta?.app_branding ?? true}
+              onChange={(checked) => setMeta("app_branding", checked)}
+              disabled={!gallery?.is_subscribed}
+            />
+            <div className="text-ghost">Show "Powered by {CONFIGS.app.name}" in invoices' footer</div>
+          </div>
         </Form.Item>
       </Form>
     </div>

@@ -1,7 +1,7 @@
 @php
   $fontSegoeUiBase64 = base64_encode(file_get_contents(Vite::asset('resources/fonts/SegoeUI.woff2')));
   $defaultFooter = \App\Helpers\ConfigHelper::getDefault('invoice_footer');
-  $businessInfo = \App\Helpers\ConfigHelper::getBusinessInfo();
+  $appData = \App\Helpers\ConfigHelper::getAppData();
 @endphp
 
 <!DOCTYPE html>
@@ -55,9 +55,11 @@
     <div>
       {{ $gallery->meta['invoice_footer'] ?? $defaultFooter ?? null }}
     </div>
-    <div>
-      Powered by <a id="app-name" href="{{ env('WEBSITE_URL') }}" target="_blank" rel="noopener">{{ $businessInfo['name'] }}</a> | {{ $businessInfo['description_short'] }}
-    </div>
+    @if ($gallery->meta['app_branding'] ?? true)
+      <div>
+        Powered by <a id="app-name" href="{{ env('WEBSITE_URL') }}" target="_blank" rel="noopener">{{ $appData['name'] }}</a> | {{ $appData['description_short'] }}
+      </div>
+    @endif
     <div class="page-number">
       Page @pageNumber of @totalPages
     </div>
