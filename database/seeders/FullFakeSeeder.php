@@ -16,12 +16,13 @@ use App\Services\ReportService;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 
-class DemoSeeder extends Seeder
+class FullFakeSeeder extends Seeder
 {
-  protected ?Gallery $firstGallery = null;
+  protected ?Gallery $adminGallery = null;
   protected ?Collection $allGalleries = null;
   protected ?Collection $allLocations = null;
   protected $faker;
@@ -29,7 +30,7 @@ class DemoSeeder extends Seeder
   public function run(): void
   {
     $this->faker = Factory::create('en_CA');
-    $this->createAdmin();
+
     $this->createFakeUsers();
     $this->addMembers();
     $this->createContacts();
@@ -37,52 +38,6 @@ class DemoSeeder extends Seeder
     $this->createReports();
     $this->createTaxes();
     $this->createInvoices();
-  }
-
-  private function createAdmin(): void
-  {
-    $this->command->comment('Creating admin user and the gallery...');
-
-    $admin = User::factory()->create([
-      'firstname' => 'Admin',
-      'lastname' => env('APP_NAME', 'App'),
-      'username' => 'admin',
-      'email' => env('ADMIN_EMAIL', 'admin@example.com'),
-      'phone' => '2345678901',
-      'website' => env('WEBSITE_URL', 'example.com'),
-      'address' => [
-        'unit' => 'Unit 1',
-        'street' => '123 Yonge St',
-        'city' => 'Toronto',
-        'province' => 'ON',
-        'postal_code' => 'A1A1A1',
-        'country' => 'Canada',
-      ],
-      'password' => Hash::make('12345678'),
-    ]);
-    $photoData = Http::get('https://i.pravatar.cc/500')->body() ?? null;
-    if ($photoData) {
-      $admin->addMediaFromString($photoData)->usingFileName('user-' . $admin->id . '-photo.jpg')->toMediaCollection('profile-photo');
-    }
-
-    $this->firstGallery = Gallery::first();
-    $this->firstGallery->update([
-      'address' => [
-        'unit' => $this->faker->secondaryAddress,
-        'street' => $this->faker->streetAddress,
-        'city' => 'Toronto',
-        'province' => 'ON',
-        'postal_code' => str_replace([' ', '-'], '', $this->faker->postcode),
-        'country' => 'Canada',
-      ],
-      'about' => $this->faker->paragraph,
-      'country_code' => '+1',
-      'phone' => $this->faker->numerify('437#######'),
-      'website' => $this->faker->domainName,
-      'email' => $this->faker->unique()->safeEmail,
-    ]);
-
-    $this->command->info('✅' . ' Admin user created: ' . env('ADMIN_EMAIL', 'admin@example.com') . ' / 12345678');
   }
 
   private function createFakeUsers(): void
@@ -126,17 +81,18 @@ class DemoSeeder extends Seeder
   {
     $this->command->comment('Adding members...');
     $users = User::all();
-    $this->firstGallery->addMember($users[1], 'editor');
-    $this->firstGallery->addMember($users[2], 'viewer');
-    $this->firstGallery->addMember($users[3], 'viewer');
-    $this->command->info('✅' . ' 3 members added to first gallery.');
+    $this->adminGallery = Gallery::where('user_id', 1)->first();
+    $this->adminGallery->addMember($users[1], 'editor');
+    $this->adminGallery->addMember($users[2], 'viewer');
+    $this->adminGallery->addMember($users[3], 'viewer');
+    $this->command->info('✅' . ' 3 members added to admin gallery.');
   }
 
   private function createContacts(): void
   {
     $this->command->comment('Creating contacts...');
     Contact::factory(50)->create([
-      'gallery_id' => $this->firstGallery->id,
+      'gallery_id' => $this->adminGallery->id,
     ]);
     $this->command->info('✅' . ' 50 contacts created for first gallery.');
 
@@ -203,12 +159,12 @@ class DemoSeeder extends Seeder
     $this->command->comment('Creating reports...');
 
     $sizes = ['small', 'medium', 'large'];
-    $artworkIds = Artwork::where('gallery_id', $this->firstGallery->id)->pluck('id')->toArray();
+    $artworkIds = Artwork::where('gallery_id', $this->adminGallery->id)->pluck('id')->toArray();
 
     for ($i = 0; $i < 5; $i++) {
       $selectedIds = $this->faker->randomElements($artworkIds, min($this->faker->numberBetween(3, 30), count($artworkIds)));
       $report = Report::create([
-        'gallery_id' => $this->firstGallery->id,
+        'gallery_id' => $this->adminGallery->id,
         'user_id' => 1,
         'type' => ReportType::ArtworksLabel->value,
         'name' => 'Artworks Label Report ' . ($i + 1),
@@ -232,7 +188,7 @@ class DemoSeeder extends Seeder
     // Inventory report 1: between label report 1 (subDays(5)) and label report 2 (subDays(4))
     $selectedIds = $this->faker->randomElements($artworkIds, min($this->faker->numberBetween(5, 30), count($artworkIds)));
     $report = Report::create([
-      'gallery_id' => $this->firstGallery->id,
+      'gallery_id' => $this->adminGallery->id,
       'user_id' => 1,
       'type' => ReportType::Inventory->value,
       'name' => 'Inventory Report 1',
@@ -248,7 +204,7 @@ class DemoSeeder extends Seeder
     // Inventory report 2: between label report 3 (subDays(3)) and label report 4 (subDays(2))
     $selectedIds = $this->faker->randomElements($artworkIds, min($this->faker->numberBetween(5, 30), count($artworkIds)));
     $report = Report::create([
-      'gallery_id' => $this->firstGallery->id,
+      'gallery_id' => $this->adminGallery->id,
       'user_id' => 1,
       'type' => ReportType::Inventory->value,
       'name' => 'Inventory Report 2',
@@ -269,7 +225,7 @@ class DemoSeeder extends Seeder
     $this->command->comment('Creating taxes...');
 
     Tax::create([
-      'gallery_id' => $this->firstGallery->id,
+      'gallery_id' => $this->adminGallery->id,
       'name' => 'GST',
       'rate' => 5.00,
       'description' => 'Goods and Services Tax.',
@@ -277,7 +233,7 @@ class DemoSeeder extends Seeder
     ]);
 
     Tax::create([
-      'gallery_id' => $this->firstGallery->id,
+      'gallery_id' => $this->adminGallery->id,
       'name' => 'PST',
       'rate' => 7.00,
       'description' => 'Provincial Sales Tax.',
@@ -285,7 +241,7 @@ class DemoSeeder extends Seeder
     ]);
 
     Tax::create([
-      'gallery_id' => $this->firstGallery->id,
+      'gallery_id' => $this->adminGallery->id,
       'name' => 'HST',
       'rate' => 13.00,
       'description' => 'Harmonized Sales Tax.',
@@ -299,7 +255,7 @@ class DemoSeeder extends Seeder
   {
     $this->command->comment('Creating invoices...');
 
-    Invoice::factory(10)->galleryId($this->firstGallery->id)->create();
+    Invoice::factory(10)->galleryId($this->adminGallery->id)->create();
     $invoicesToBePaid = Invoice::where('id', '<=', 7)->get();
     foreach ($invoicesToBePaid as $invoice) {
       $numberOfPayments = $this->faker->numberBetween(1, 3);
