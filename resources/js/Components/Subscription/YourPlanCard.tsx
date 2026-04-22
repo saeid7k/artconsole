@@ -5,7 +5,7 @@ import { formatCurrency } from "@/utils/formatHelper"
 import { Calendar02Icon, CardExchange01Icon, CreditCardPosIcon, UserGroupIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router } from "@inertiajs/react"
-import { Alert, Button, Card, Empty, Progress, Tooltip } from "antd"
+import { Alert, Button, Card, Progress, Tooltip } from "antd"
 import dayjs from "dayjs"
 import { useEffect } from "react"
 import BlockContainer from "../Containers/BlockContainer"
@@ -58,7 +58,15 @@ function YourPlanCard({ plan }: Props) {
     >
       {(!dataIsLoading && !plan) ?
         (
-          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No Data" />
+          <div className="flex flex-col items-center gap-1 py-10">
+            <div className="text-muted">You are not subscribed.</div>
+            <Button
+              type="primary"
+              onClick={() => setOpenUpgradeModal(true)}
+            >
+              Select a Plan
+            </Button>
+          </div>
         )
         :
         (
