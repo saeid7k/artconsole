@@ -1,4 +1,10 @@
 {
+  "app": {
+    "name": "ArtConsole",
+    "full_name": "ArtConsole Gallery Management",
+    "description": "ArtConsole is an AI-Powered gallery management platform designed to streamline your entire workflow, from smart inventory tracking and seamless sales and invoicing, to intuitive exhibition planning.",
+    "description_short": "AI-Powered gallery management software"
+  },
   "defaults": {
     "country": "Canada",
     "timezone": "America/Toronto",
