@@ -47,10 +47,7 @@ class FullFakeSeeder extends Seeder
     $user = User::all();
     foreach ($user as $u) {
       if (!$u->is_admin()) {
-        $photoData = Http::get('https://i.pravatar.cc/500')->body() ?? null;
-        if ($photoData) {
-          $u->addMediaFromString($photoData)->usingFileName('user-' . $u->id . '-photo.jpg')->toMediaCollection('profile-photo');
-        }
+        $u->setRandomAvatar();
       }
     }
     $this->command->info('✅' . ' 10 fake users created.');

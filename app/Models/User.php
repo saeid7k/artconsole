@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Http;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
@@ -259,6 +260,14 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
             return $event;
         }
       });
+  }
+
+  public function setRandomAvatar(int $size = 500)
+  {
+    $photoData = Http::get("https://i.pravatar.cc/{$size}")->body() ?? null;
+    if ($photoData) {
+      $this->addMediaFromString($photoData)->usingFileName('user-' . $this->id . '-photo.jpg')->toMediaCollection('profile-photo');
+    }
   }
 
   /*
