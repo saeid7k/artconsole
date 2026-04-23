@@ -270,6 +270,17 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     }
   }
 
+  public function setTimezoneFromAddress(): void
+  {
+    $formattedAddress = $this->formatted_address;
+    if ($formattedAddress) {
+      $geocode = AddressHelper::addressToGeocode($formattedAddress);
+      if ($geocode && isset($geocode['timezone'])) {
+        $this->setMeta('timezone', $geocode['timezone']);
+      }
+    }
+  }
+
   /*
   |=======================================================
   | Scopes
