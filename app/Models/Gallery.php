@@ -8,6 +8,7 @@ use App\Helpers\FormatHelper;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Http;
 use Laravel\Cashier\Billable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -255,6 +256,14 @@ class Gallery extends Model implements HasMedia
 
     if ($paymentMethod && !$this->hasDefaultPaymentMethod()) {
       $this->updateDefaultPaymentMethod($paymentMethod->id);
+    }
+  }
+
+  public function setRandomLogo(): void
+  {
+    $logoData = Http::get("https://api.dicebear.com/9.x/shapes/svg?seed={$this->id}")->body() ?? null;
+    if ($logoData) {
+      $this->addMediaFromString($logoData)->usingFileName('gallery-' . $this->id . '-logo.svg')->toMediaCollection('gallery-logo');
     }
   }
 
