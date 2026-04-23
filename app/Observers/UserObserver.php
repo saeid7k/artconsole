@@ -21,7 +21,9 @@ class UserObserver
     $gallery->setRandomLogo();
 
     // Set User Settings
-    $user->setMeta('timezone', ConfigHelper::getDefault('timezone', config('app.timezone')));
+    if ($user->address) {
+      $user->setTimezoneFromAddress();
+    }
   }
 
   /**
@@ -30,15 +32,8 @@ class UserObserver
   public function updated(User $user): void
   {
     // update timezone if not set yet
-
     if ($user->wasChanged('address') && !$user->getMeta('timezone')) {
-      $formattedAddress = $user->formatted_address;
-      if ($formattedAddress) {
-        $geocode = AddressHelper::addressToGeocode($formattedAddress);
-        if ($geocode && isset($geocode['timezone'])) {
-          $user->setMeta('timezone', $geocode['timezone']);
-        }
-      }
+      $user->setTimezoneFromAddress();
     }
   }
 
