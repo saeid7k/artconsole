@@ -18,10 +18,7 @@ class UserObserver
     $gallery = $user->galleriesOwned()->create([
       'name' =>  $user->firstname . "'s Gallery",
     ]);
-    $sampleLogo = Http::get("https://api.dicebear.com/9.x/shapes/svg?seed={$gallery->id}")->body() ?? null;
-    if ($sampleLogo) {
-      $gallery->addMediaFromString($sampleLogo)->usingFileName('gallery-' . $gallery->id . '-logo.svg')->toMediaCollection('gallery-logo');
-    }
+    $gallery->setRandomLogo();
 
     // Set User Settings
     $user->setMeta('timezone', ConfigHelper::getDefault('timezone', config('app.timezone')));
