@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Contact;
 use App\Models\User;
 use Faker\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -37,5 +38,48 @@ class UserService
     ]);
 
     $user->setRandomAvatar();
+
+    // update gallery
+    $gallery = $user->galleriesOwned()->first();
+    $gallery->update([
+      'about' => 'Welcome to my art gallery! I am passionate about collecting and showcasing unique artworks from emerging and established artists. This is a demo gallery created to explore the features of ArtConsole.',
+      'address' => [
+        'unit' => null,
+        'street' => '1 Adelaide St W',
+        'city' => 'Toronto',
+        'province' => 'ON',
+        'postal_code' => 'M5H1L6',
+        'country' => 'Canada',
+      ],
+      'country_code' => '+1',
+      'phone' => $faker->numerify(mt_rand(2, 9) . str_repeat('#', 9)),
+      'website' => str_replace('www.', '', parse_url($faker->url, PHP_URL_HOST)),
+      'email' => 'gallery@example.com',
+    ]);
+
+    // create second location
+    $gallery->locations()->create([
+      'type' => 'external',
+      'name' => 'Queen St Store',
+      'phone' => $faker->numerify(mt_rand(2, 9) . str_repeat('#', 9)),
+      'email' => 'store@example.com',
+      'address' => [
+        'unit' => null,
+        'street' => '1 Queen St W',
+        'city' => 'Toronto',
+        'province' => 'ON',
+        'postal_code' => 'M5H3W4',
+        'country' => 'Canada',
+      ],
+      'address_same_as_gallery' => false,
+      'is_primary' => false,
+      'is_active' => true,
+    ]);
+
+    // create contacts
+    Contact::factory(50)->create([
+      'user_id' => $user->id,
+      'gallery_id' => $gallery->id,
+    ]);
   }
 }
