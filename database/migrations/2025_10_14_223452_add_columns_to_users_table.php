@@ -17,6 +17,8 @@ return new class extends Migration
       $table->string('website')->nullable()->after('phone');
       $table->json('address')->nullable()->after('website');
       $table->text('bio')->nullable()->after('address');
+      $table->boolean('is_demo')->default(false)->after('bio');
+      $table->timestamp('demo_claimed_at')->nullable()->after('is_demo');
     });
   }
 
@@ -26,7 +28,7 @@ return new class extends Migration
   public function down(): void
   {
     Schema::table('users', function (Blueprint $table) {
-      $table->dropColumn(['country_code', 'phone', 'website', 'address', 'bio']);
+      $table->dropColumn(['country_code', 'phone', 'website', 'address', 'bio', 'is_demo', 'demo_claimed_at']);
     });
   }
 };
