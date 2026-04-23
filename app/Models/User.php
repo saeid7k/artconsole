@@ -39,6 +39,8 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     'website',
     'address',
     'bio',
+    'is_demo',
+    'demo_claimed_at',
     'social_auth_id',
     'email_verified_at',
     'password',
@@ -63,6 +65,8 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
   protected function casts(): array
   {
     return [
+      'is_demo' => 'boolean',
+      'demo_claimed_at' => 'datetime',
       'email_verified_at' => 'datetime',
       'password' => 'hashed',
       'address' => 'object',
@@ -70,7 +74,11 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     ];
   }
 
-  // Appends
+  /*
+  |=======================================================
+  | Accessors & Mutators
+  |=======================================================
+  */
 
   protected $appends = ['abilities', 'full_name', 'is_admin', 'formatted_address', 'photo', 'has_password', 'timezone', 'access', 'has_edit_access'];
 
