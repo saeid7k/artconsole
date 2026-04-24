@@ -299,7 +299,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                 </Form.Item>
               </div>
 
-              {/* Artist Data */}
+              {/* Artist Hidden Fields */}
 
               <Form.Item
                 label="Artist ID"
@@ -307,6 +307,20 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                 hidden
               >
                 <Input type="number" />
+              </Form.Item>
+              <Form.Item
+                label="Artist Firstname"
+                name={["artist_data", "firstname"]}
+                hidden
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                label="Artist Lastname"
+                name={["artist_data", "lastname"]}
+                hidden
+              >
+                <Input />
               </Form.Item>
 
               {/* Artist Stack */}
@@ -363,10 +377,20 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                     )}
                     {defaultArtistMode === 'add' && (
                       <Form.Item
-                        name={["artist_data", "firstname"]}
+                        name={["artist_data", "full_name"]}
                         className="w-full sm:w-1/2"
                       >
-                        <Input placeholder="Type" />
+                        <Input
+                          placeholder="Type"
+                          defaultValue={form.getFieldValue(['artist_data', 'firstname']) + ' ' + form.getFieldValue(['artist_data', 'lastname'])}
+                          onChange={(e) => {
+                            const fullName = e.target.value;
+                            const [firstname, ...lastnameParts] = fullName.split(' ');
+                            const lastname = lastnameParts.join(' ');
+                            form.setFieldValue(['artist_data', 'firstname'], firstname);
+                            form.setFieldValue(['artist_data', 'lastname'], lastname);
+                          }}
+                        />
                       </Form.Item>
                     )}
                     {watchForm?.artist_data?.firstname?.length > 0 && (
