@@ -50,8 +50,7 @@ function useFilesUpload({ url, reloadOnSuccess = true }: Props) {
     fileInputRef.current?.click();
   }
 
-  const FilesInput = () => {
-    return (
+  const FilesInput = (
       <input
         type="file"
         multiple
@@ -60,8 +59,7 @@ function useFilesUpload({ url, reloadOnSuccess = true }: Props) {
         style={{ display: 'none' }}
         accept="image/*"
       />
-    );
-  };
+    )
 
   return { triggerFilesSelect, FilesInput, filesUploadMutation };
 }
