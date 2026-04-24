@@ -2,13 +2,15 @@
 
 namespace App\Services;
 
+use App\Enums\ArtworkStatus;
 use App\Models\Contact;
+use App\Models\Gallery;
 use App\Models\User;
 use Faker\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-class UserService
+class DemoUserService
 {
   public function __construct(protected ?User $user = null) {}
 
@@ -81,5 +83,23 @@ class UserService
       'user_id' => $user->id,
       'gallery_id' => $gallery->id,
     ]);
+  }
+
+  public function addArtworks(Gallery $gallery): void
+  {
+    $data = json_decode(file_get_contents(resource_path('demo/demo_artworks.json')), true);
+    $locationIds = $gallery->locations()->pluck('id')->toArray();
+    $statuses = array_diff(ArtworkStatus::values(), ['sold']);
+
+    foreach ($data as $artworkData) {
+      $gallery->artworks()->create($artworkData + [
+        'creator_id' => $gallery->owner->id,
+        'location_id' => $locationIds[array_rand($locationIds)],
+        'ownership' => 'owned',
+        'acquisition_date' => now()->subDays(rand(365, 3650)),
+        'acquisition_price' => round($artworkData['price'] * rand(50, 90) / 100),
+        'status' => $statuses[array_rand($statuses)]
+      ]);
+    }
   }
 }
