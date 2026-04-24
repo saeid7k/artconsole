@@ -12,7 +12,7 @@ import { ContactProps } from "@/types/contact";
 import { stringToColor } from "@/utils/colorHelper";
 import { formatPhoneNumber } from "@/utils/formatHelper";
 import { getInitials } from "@/utils/stringHelper";
-import { BirthdayCakeIcon, Briefcase01Icon, Call02Icon, Edit03Icon, Mail01Icon, OfficeIcon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
+import { BirthdayCakeIcon, Briefcase01Icon, Call02Icon, Edit03Icon, InternetIcon, Mail01Icon, OfficeIcon, PencilEdit02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link, router } from "@inertiajs/react";
 import { Avatar, Button, Card, Divider, Empty, message, Tabs, Tooltip } from "antd";
@@ -115,7 +115,7 @@ function Show({ contact }: { contact: ContactProps }) {
               <RelationshipTags contact={contact} />
             </div>
           </div>
-          <CommunicationDataBox phone={contact.phone} email={contact.email} />
+          <CommunicationDataBox phone={contact.phone} email={contact.email} website={contact.website} />
           <Divider />
           <AddressDataBox address={contact.address} />
           <Divider />
@@ -145,13 +145,19 @@ function Show({ contact }: { contact: ContactProps }) {
               label="Email:"
               value={contact.business?.email}
             />
+            <DataRow
+              icon={<HugeiconsIcon icon={InternetIcon} size={18} />}
+              label="Website:"
+              value={contact.business?.website}
+              hideIfNoValue
+            />
           </DataCol>
           <Divider />
           <DataCol title="Personal">
             <DataRow
               icon={<HugeiconsIcon icon={BirthdayCakeIcon} size={18} />}
               label="Birthday:"
-              value={dayjs(contact.birthday).format("MMMM D, YYYY")}
+              value={dayjs(contact.birthday).isValid() ? dayjs(contact.birthday).format("MMMM D, YYYY") : ''}
             />
           </DataCol>
         </Card>
