@@ -9,6 +9,7 @@ type Props = {
   wrapping?: boolean
   align?: 'center' | 'start' | 'end'
   showCopyToClipboard?: boolean
+  hideIfNoValue?: boolean
   labelClassName?: string
   rootClassName?: string
 }
@@ -20,11 +21,19 @@ function DataRow({
   wrapping = true,
   align = 'center',
   showCopyToClipboard = false,
+  hideIfNoValue = false,
   labelClassName = '',
   rootClassName = ''
 }: Props) {
 
   const isCopyToClipboardAvailable = showCopyToClipboard && typeof value === 'string' && value.length > 0
+
+  if (hideIfNoValue && (
+    !value
+    || (typeof value === 'string' && value.trim().length === 0)
+  )) {
+    return null
+  }
 
   return (
     <div className={twMerge(
