@@ -30,7 +30,7 @@ function TextboxExpandable({ content, lines = 1, className }: Props) {
     )}>
       <div
         className={twMerge("w-full",
-          isExpanded ? '' : `line-clamp-${lines} max-w-[400px]`
+          isExpanded ? '' : `line-clamp-${lines} sm:max-w-[80%]`
         )}
       >
         <HtmlRenderer htmlContent={content} />
