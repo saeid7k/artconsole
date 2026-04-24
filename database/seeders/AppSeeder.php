@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Tag;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Services\DemoUserService;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
 
@@ -19,6 +19,12 @@ class AppSeeder extends Seeder
     $this->command->comment('Creating admin user...');
     Artisan::call('app:create-admin-user');
     $this->command->info('✅ Admin user created.');
+
+    $this->command->comment('Creating demo users...');
+    for ($i = 1; $i <= 3; $i++) {
+      (new DemoUserService())->createDemoUser($i);
+    }
+    $this->command->info('✅ Demo users created.');
   }
 
   private function createDefaultTags()
