@@ -25,7 +25,7 @@ class DemoUserService
       'email' => 'demo_' . $order . '@artconsole.ai',
       'country_code' => '+1',
       'phone' => $faker->numerify(mt_rand(2, 9) . str_repeat('#', 9)),
-      'website' => str_replace('www.', '', parse_url($faker->url, PHP_URL_HOST)),
+      'website' => 'example.com',
       'address' => [
         'unit' => null,
         'street' => '1 King St W',
@@ -54,8 +54,8 @@ class DemoUserService
         'country' => 'Canada',
       ],
       'country_code' => '+1',
-      'phone' => $faker->numerify(mt_rand(2, 9) . str_repeat('#', 9)),
-      'website' => str_replace('www.', '', parse_url($faker->url, PHP_URL_HOST)),
+      'phone' => '2222222222',
+      'website' => 'example.com',
       'email' => 'gallery@example.com',
     ]);
 
@@ -83,16 +83,40 @@ class DemoUserService
       'user_id' => $user->id,
       'gallery_id' => $gallery->id,
     ]);
+    $mahshidContact = $gallery->contacts()->create([
+      'firstname' => 'Mahshid',
+      'lastname' => 'K.V.',
+      'country_code' => '+1',
+      'email' => 'mahshid.khajehvand@gmail.com',
+      'relationship' => ['artist'],
+      'business' => [
+        'name' => 'MoonArt Gallery',
+        'title' => 'Art Director',
+        'email' => 'info@moonart.ca',
+        'website' => 'moonart.ca',
+      ]
+    ]);
+
+    // add artworks
+    $this->addArtworks($gallery);
+
+    // assign Mahshid's artworks to her contact
+    $gallery->artworks()
+      ->where('artist_data->firstname', 'Mahshid')
+      ->where('artist_data->lastname', 'K.V.')
+      ->update(['artist_id' => $mahshidContact->id]);
   }
 
-  public function addArtworks(Gallery $gallery): void
+  private function addArtworks(Gallery $gallery): void
   {
     $data = json_decode(file_get_contents(resource_path('demo/demo_artworks.json')), true);
+    shuffle($data);
+
     $locationIds = $gallery->locations()->pluck('id')->toArray();
     $statuses = array_diff(ArtworkStatus::values(), ['sold']);
 
     foreach ($data as $artworkData) {
-      $gallery->artworks()->create($artworkData + [
+      $artwork = $gallery->artworks()->create($artworkData + [
         'creator_id' => $gallery->owner->id,
         'location_id' => $locationIds[array_rand($locationIds)],
         'ownership' => 'owned',
@@ -100,6 +124,19 @@ class DemoUserService
         'acquisition_price' => round($artworkData['price'] * rand(50, 90) / 100),
         'status' => $statuses[array_rand($statuses)]
       ]);
+      $imagesDirectory = resource_path('demo/demo-artworks-images/' . str_replace([','], '', $artworkData['title']));
+      if (is_dir($imagesDirectory)) {
+        $imagePaths = glob($imagesDirectory . '/*.{jpg,jpeg,png,webp,avif}', GLOB_BRACE);
+        $imagePaths = array_values(array_filter($imagePaths, 'is_file'));
+        foreach ($imagePaths as $i => $imagePath) {
+          $extension = pathinfo($imagePath, PATHINFO_EXTENSION);
+          $artwork->addMedia($imagePath)
+            ->preservingOriginal()
+            ->usingFileName(Str::slug($artwork->title) . '-' . ($i + 1) . '.' . $extension)
+            ->withCustomProperties(['is_main' => $i === 0])
+            ->toMediaCollection('artwork-images');
+        }
+      }
     }
   }
 }

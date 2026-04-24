@@ -99,6 +99,7 @@ class AppSeeder extends Seeder
     'Street Art',
     'Photorealism',
     'Neo-Expressionism',
+    'Figurative',
   ];
 
   private const SUBJECTS = [
@@ -113,5 +114,8 @@ class AppSeeder extends Seeder
     'Religious',
     'Mythological',
     'Fantasy',
+    'Cityscapes',
+    'Cities',
+    'Performing Arts',
   ];
 }

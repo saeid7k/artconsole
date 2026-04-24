@@ -162,5 +162,70 @@
       "width": 92.1,
       "height": 73.7
     }
+  },
+  {
+    "artist_data": {
+      "firstname": "Mahshid",
+      "lastname": "K.V."
+    },
+    "title": "The Spirit Of Toronto",
+    "year": "2025",
+    "price": "1820",
+    "edition": {
+      "size": 1,
+      "type": "unique",
+      "number": 1
+    },
+    "signed": false,
+    "description": "A conceptual portrait blending realism with symbolic collage, The Spirit of Toronto reflects the emotional journey of migration and identity in a modern, multicultural city. The woman’s calm gaze is contrasted by a visual explosion of Toronto landmarks, autumn maple leaves, and bold typography — all emerging from within her mind like lived memories. Her traditional robe and composed expression suggest both pride and longing, while the surrounding icons speak to adaptation and self-definition in a new land.\nThe red mark across her cheek, while intended as a graphic element of strength and voice, also evokes a resemblance to Indigenous visual symbolism — particularly the red hand or red stripe used to honor Missing and Murdered Indigenous Women and Girls (MMIWG). While not directly referencing this cause, the artwork respectfully acknowledges that all stories of belonging in Canada unfold on land rich with Indigenous history, struggle, and strength.",
+    "category": "painting",
+    "subjects": [
+      "Cities",
+      "Women"
+    ],
+    "mediums": [
+      "Pastel on Paper"
+    ],
+    "styles": [
+      "Conceptual"
+    ],
+    "dimensions": {
+      "unit": "inches",
+      "depth": 0,
+      "width": 19,
+      "height": 25
+    }
+  },
+  {
+    "artist_data": {
+      "firstname": "Mahshid",
+      "lastname": "K.V."
+    },
+    "title": "Ballet of the Palette",
+    "year": "2025",
+    "price": "450",
+    "edition": {
+      "size": 1,
+      "type": "unique",
+      "number": 1
+    },
+    "signed": false,
+    "description": "A dynamic Conceptual Fine Art piece that merges the grace of dance with the raw energy of artistic creation. Ballet of the Palette visualizes the “flow state” of the creative process. The composition features a central female figure in a flowing gown, reaching upward with a oversized paintbrush that acts as a conduit for a vibrant, swirling vortex of color, enveloping the subject in a world of her own making.\nThe subject’s expression of serene focus is rendered with the artist’s signature classical realism, contrasting sharply with the expressive, abstract strokes of the surrounding atmosphere. Vibrant hues of azure, burning orange, and white dance across the dark background, capturing a sense of movement and illumination. This piece explores themes of inspiration, the power of imagination, and the seamless boundary between the artist and their art.",
+    "category": "painting",
+    "subjects": [
+      "Performing Arts"
+    ],
+    "mediums": [
+      "Pastel on Paper"
+    ],
+    "styles": [
+      "Figurative"
+    ],
+    "dimensions": {
+      "unit": "inches",
+      "depth": 0,
+      "width": 12,
+      "height": 16
+    }
   }
 ]
