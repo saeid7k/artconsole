@@ -1,0 +1,166 @@
+[
+  {
+    "artist_data": {
+      "firstname": "Leonardo",
+      "lastname": "da Vinci"
+    },
+    "title": "Mona Lisa",
+    "year": "1503",
+    "price": "4250",
+    "edition": {
+      "size": 1,
+      "type": "unique",
+      "number": 1
+    },
+    "signed": false,
+    "description": "A half-length portrait painting by Italian artist Leonardo da Vinci. It depicts Lisa Gherardini and is universally recognized for her enigmatic smile and the masterful use of the sfumato technique.",
+    "category": "painting",
+    "subjects": [
+      "Portrait"
+    ],
+    "mediums": [
+      "Oil on Poplar Panel"
+    ],
+    "styles": [
+      "High Renaissance"
+    ],
+    "dimensions": {
+      "unit": "cm",
+      "depth": 1.3,
+      "width": 53,
+      "height": 77
+    }
+  },
+  {
+    "artist_data": {
+      "firstname": "Sandro",
+      "lastname": "Botticelli"
+    },
+    "title": "The Birth of Venus",
+    "year": "1485",
+    "price": "3100",
+    "edition": {
+      "size": 1,
+      "type": "unique",
+      "number": 1
+    },
+    "signed": false,
+    "description": "An iconic painting depicting the goddess Venus arriving at the shore after her birth, emerging from the sea fully-grown and standing on a giant scallop shell.",
+    "category": "painting",
+    "subjects": [
+      "Mythological",
+      "Allegorical"
+    ],
+    "mediums": [
+      "Tempera on Canvas"
+    ],
+    "styles": [
+      "Early Renaissance"
+    ],
+    "dimensions": {
+      "unit": "cm",
+      "depth": 2.5,
+      "width": 278.5,
+      "height": 172.5
+    }
+  },
+  {
+    "artist_data": {
+      "firstname": "Michelangelo",
+      "lastname": "Buonarroti"
+    },
+    "title": "The Creation of Adam",
+    "year": "1512",
+    "price": "9600",
+    "edition": {
+      "size": 1,
+      "type": "unique",
+      "number": 1
+    },
+    "signed": false,
+    "description": "A fresco painting forming part of the Sistine Chapel's ceiling, illustrating the Biblical creation narrative from the Book of Genesis in which God gives life to Adam, the first man.",
+    "category": "painting",
+    "subjects": [
+      "Religious",
+      "Biblical"
+    ],
+    "mediums": [
+      "Fresco"
+    ],
+    "styles": [
+      "High Renaissance"
+    ],
+    "dimensions": {
+      "unit": "cm",
+      "depth": 0,
+      "width": 570,
+      "height": 280
+    }
+  },
+  {
+    "artist_data": {
+      "firstname": "Claude",
+      "lastname": "Monet"
+    },
+    "title": "Impression, Sunrise",
+    "year": "1872",
+    "price": "5300",
+    "edition": {
+      "size": 1,
+      "type": "unique",
+      "number": 1
+    },
+    "signed": true,
+    "description": "The painting that gave its name to the Impressionist movement. It depicts the port of Le Havre, the artist's hometown, illuminated by a striking orange sun rising through a hazy, atmospheric dawn.",
+    "category": "painting",
+    "subjects": [
+      "Landscape",
+      "Seascape"
+    ],
+    "mediums": [
+      "Oil on Canvas"
+    ],
+    "styles": [
+      "Impressionism"
+    ],
+    "dimensions": {
+      "unit": "cm",
+      "depth": 2,
+      "width": 63,
+      "height": 48
+    }
+  },
+  {
+    "artist_data": {
+      "firstname": "Vincent",
+      "lastname": "van Gogh"
+    },
+    "title": "The Starry Night",
+    "year": "1889",
+    "price": "7650",
+    "edition": {
+      "size": 1,
+      "type": "unique",
+      "number": 1
+    },
+    "signed": false,
+    "description": "A masterpiece of Post-Impressionism depicting the swirling night sky and the view from the east-facing window of the artist's asylum room at Saint-Rémy-de-Provence, just before sunrise, with the addition of an idealized village.",
+    "category": "painting",
+    "subjects": [
+      "Landscape",
+      "Nightscape"
+    ],
+    "mediums": [
+      "Oil on Canvas"
+    ],
+    "styles": [
+      "Post-Impressionism"
+    ],
+    "dimensions": {
+      "unit": "cm",
+      "depth": 2.5,
+      "width": 92.1,
+      "height": 73.7
+    }
+  }
+]
