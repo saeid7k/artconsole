@@ -15,7 +15,7 @@ return new class extends Migration
       $table->id();
       $table->foreignId('gallery_id')->constrained()->onDelete('cascade');
       $table->string('name', 255);
-      $table->decimal('rate', 5, 2);
+      $table->decimal('rate', 6, 3);
       $table->text('description')->nullable();
       $table->boolean('default')->default(false);
       $table->timestamps();
