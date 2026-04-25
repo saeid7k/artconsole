@@ -6,6 +6,7 @@ use App\Enums\ArtworkStatus;
 use App\Enums\ReportType;
 use App\Models\Contact;
 use App\Models\Gallery;
+use App\Models\Invoice;
 use App\Models\Report;
 use App\Models\User;
 use Faker\Factory;
@@ -287,7 +288,8 @@ class DemoUserService
 
     for ($i = 1; $i <= 5; $i++) {
       $date = now()->subDays(30 - $i * 5);
-      $gallery->invoices()->create([
+      Invoice::create([
+        'gallery_id' => $gallery->id,
         'user_id' => $gallery->owner->id,
         'contact_id' => $collectorsIds[array_rand($collectorsIds)],
         'date' => $date,

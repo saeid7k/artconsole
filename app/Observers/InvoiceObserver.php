@@ -17,7 +17,7 @@ class InvoiceObserver
     if (!$invoice->user_id) {
       $invoice->user_id = auth()->id();
     }
-    if (!$invoice->number) {
+    if (!($invoice->getAttributes()['number'] ?? null)) {
       $invoice->number = Invoice::nextInvoiceNumber($invoice->gallery);
     }
   }
