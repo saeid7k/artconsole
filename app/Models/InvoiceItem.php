@@ -9,7 +9,7 @@ class InvoiceItem extends Model
 {
   protected $fillable = [
     'invoice_id',
-    'type',
+    'type',// ['artwork', 'custom']
     'artwork_id',
     'name',
     'description',
