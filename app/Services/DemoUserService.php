@@ -3,10 +3,12 @@
 namespace App\Services;
 
 use App\Enums\ArtworkStatus;
+use App\Enums\PaymentMethod;
 use App\Enums\ReportType;
 use App\Models\Contact;
 use App\Models\Gallery;
 use App\Models\Invoice;
+use App\Models\Payment;
 use App\Models\Report;
 use App\Models\User;
 use Faker\Factory;
@@ -280,7 +282,7 @@ class DemoUserService
     ]);
   }
 
-  public function createInvoices(Gallery $gallery): void
+  private function createInvoices(Gallery $gallery): void
   {
     $collectorsIds = $gallery->contacts()->whereJsonContains('relationship', 'collector')->pluck('id')->toArray();
     $taxId = $gallery->taxes()->first()->id;
@@ -296,7 +298,93 @@ class DemoUserService
         'due_date' => $date->copy()->addDays(30),
         'tax_id' => $taxId,
         'tax_rate' => $taxRate,
+        'status' => $i == 5 ? 'draft' : 'sent',
       ]);
     }
+
+    foreach ($gallery->invoices as $invoice) {
+      $artworks = $gallery->artworks()
+        ->where('status', '!=', ArtworkStatus::Sold->value)
+        ->get();
+      $itemsData = [];
+      $numberOfArtworks = [1, 1, 2][rand(0, 2)];
+
+      for ($j = 0; $j < $numberOfArtworks; $j++) {
+        $artwork = $artworks->random();
+        if (!$artwork) {
+          continue;
+        }
+        $itemsData[] = [
+          'type' => 'artwork',
+          'artwork_id' => $artwork->id,
+          'name' => 'Original Artwork',
+          'description' => $artwork->invoice_description,
+          'quantity' => 1,
+          'price' => $artwork->price,
+          'taxable' => true,
+        ];
+      }
+
+      $itemsData[] = [
+        'type' => 'custom',
+        'name' => 'Framing',
+        'description' => 'Custom framing for the artwork',
+        'quantity' => $numberOfArtworks,
+        'price' => 80.00,
+        'taxable' => true,
+      ];
+
+      $invoice->items()->createMany($itemsData);
+      $invoice->calculateTotals();
+      $invoice->save();
+
+      if ($invoice->date->isBefore(now()->subDays(16))) {
+        $this->payInvoiceInFull($invoice);
+      } elseif ($invoice->date->isBefore(now()->subDays(11))) {
+        $this->payInvoicePartially($invoice);
+      }
+    }
+  }
+
+  private function payInvoiceInFull(Invoice $invoice): void
+  {
+    $numberOfPayments = $this->faker->numberBetween(1, 3);
+    $remainingAmount = $invoice->total;
+    $minPaymentAmount = max(100, $invoice->total * 0.1);
+    for ($i = 0; $i < $numberOfPayments; $i++) {
+      if ($remainingAmount <= 0) {
+        break;
+      }
+      if ($i === $numberOfPayments - 1 || $remainingAmount <= $minPaymentAmount) {
+        $paymentAmount = $remainingAmount;
+      } else {
+        $paymentAmount = $this->faker->randomFloat(1, $minPaymentAmount, $remainingAmount);
+      }
+
+      Payment::create([
+        'invoice_id' => $invoice->id,
+        'user_id' => $invoice->user_id,
+        'amount' => $paymentAmount,
+        'payment_date' => $invoice->date->addDays($i + 1),
+        'payment_method' => $this->faker->randomElement(PaymentMethod::cases())->value,
+        'reference' => strtoupper($this->faker->bothify('??-#####-######-??')),
+        'notes' => 'Payment ' . ($i + 1) . ' of ' . $numberOfPayments . ' for invoice #' . $invoice->invoice_number,
+      ]);
+      $remainingAmount -= $paymentAmount;
+    }
+  }
+
+  private function payInvoicePartially(Invoice $invoice): void
+  {
+    $paymentAmount = round($invoice->total * 0.5, -1);
+    Payment::create([
+      'invoice_id' => $invoice->id,
+      'user_id' => $invoice->user_id,
+      'amount' => $paymentAmount,
+      'payment_date' => $invoice->date->addDays(1),
+      'payment_method' => $this->faker->randomElement(PaymentMethod::cases())->value,
+      'reference' => strtoupper($this->faker->bothify('??-#####-######-??')),
+      'notes' => 'Partial payment for invoice #' . $invoice->invoice_number,
+    ]);
   }
 }
