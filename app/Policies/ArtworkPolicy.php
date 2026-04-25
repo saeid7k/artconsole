@@ -5,9 +5,11 @@ namespace App\Policies;
 use App\Models\Artwork;
 use App\Models\Contact;
 use App\Models\User;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ArtworkPolicy
 {
+  use HandlesAuthorization;
   /**
    * Create a new policy instance.
    */
@@ -15,7 +17,8 @@ class ArtworkPolicy
 
   public function create(User $user): bool
   {
-    return $this->isEditorOrOwner($user);
+    $gallery = $user->currentGallery();
+    return $gallery ? $gallery->hasEditAccess($user) : false;
   }
 
   public function viewAny(User $user): bool
@@ -24,26 +27,36 @@ class ArtworkPolicy
     return $gallery ? $gallery->isMember($user) : false;
   }
 
-  public function view(User $user, Artwork $artwork): bool
+  public function view(User $user, Artwork $artwork)
   {
     $gallery = $user->currentGallery();
-    return $gallery ? $gallery->isMember($user) : false;
+
+    if (!$gallery || $artwork->gallery_id !== $gallery?->id) {
+      return $this->denyWithStatus(403, 'This artwork does not belong to your gallery.');
+    }
+
+    return $gallery->isMember($user);
   }
 
-  public function delete(User $user, Artwork $artwork): bool
-  {
-    return $this->isEditorOrOwner($user);
-  }
-
-  public function update(User $user, Artwork $artwork): bool
-  {
-    return $this->isEditorOrOwner($user);
-  }
-
-  protected function isEditorOrOwner(User $user): bool
+  public function delete(User $user, Artwork $artwork)
   {
     $gallery = $user->currentGallery();
-    $accessLevel = $gallery ? $gallery->accessLevel($user) : null;
-    return in_array($accessLevel, ['owner', 'editor']);
+
+    if (!$gallery || $artwork->gallery_id !== $gallery?->id) {
+      return $this->denyWithStatus(403, 'This artwork does not belong to your gallery.');
+    }
+
+    return $gallery->hasEditAccess($user);
+  }
+
+  public function update(User $user, Artwork $artwork)
+  {
+    $gallery = $user->currentGallery();
+
+    if (!$gallery || $artwork->gallery_id !== $gallery?->id) {
+      return $this->denyWithStatus(403, 'This artwork does not belong to your gallery.');
+    }
+
+    return $gallery->hasEditAccess($user);
   }
 }
