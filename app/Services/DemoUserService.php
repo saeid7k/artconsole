@@ -114,6 +114,12 @@ class DemoUserService
 
     // create reports
     $this->createReports($gallery);
+
+    // create taxes
+    $this->createTaxes($gallery);
+
+    // create invoices
+    $this->createInvoices($gallery);
   }
 
   private function addArtworks(Gallery $gallery): void
@@ -224,6 +230,71 @@ class DemoUserService
         'created_at' => now()->subDays(20 - $i * 5),
       ]);
       (new ReportService($report))->generatePdf();
+    }
+  }
+
+
+  private function createTaxes(Gallery $gallery): void
+  {
+    $gallery->taxes()->create([
+      'name' => 'HST',
+      'rate' => 13.00,
+      'description' => 'Harmonized Sales Tax.',
+      'default' => true,
+    ]);
+
+    $gallery->taxes()->create([
+      'name' => 'GST + PST',
+      'rate' => 12.00,
+      'description' => 'Goods and Services Tax + Provincial Sales Tax.',
+      'default' => false,
+    ]);
+
+    $gallery->taxes()->create([
+      'name' => 'UK VAT',
+      'rate' => 20.00,
+      'description' => 'UK Value Added Tax.',
+      'default' => false,
+    ]);
+
+    $gallery->taxes()->create([
+      'name' => 'CA Sales Tax',
+      'rate' => 9.50,
+      'description' => 'California Sales Tax.',
+      'default' => false,
+    ]);
+
+    $gallery->taxes()->create([
+      'name' => 'AU GST',
+      'rate' => 10.00,
+      'description' => 'Australian Goods and Services Tax.',
+      'default' => false,
+    ]);
+
+    $gallery->taxes()->create([
+      'name' => 'Tax-Exempt',
+      'rate' => 0.00,
+      'description' => 'Tax-Exempt.',
+      'default' => false,
+    ]);
+  }
+
+  public function createInvoices(Gallery $gallery): void
+  {
+    $collectorsIds = $gallery->contacts()->whereJsonContains('relationship', 'collector')->pluck('id')->toArray();
+    $taxId = $gallery->taxes()->first()->id;
+    $taxRate = $gallery->taxes()->first()->rate;
+
+    for ($i = 1; $i <= 5; $i++) {
+      $date = now()->subDays(30 - $i * 5);
+      $gallery->invoices()->create([
+        'user_id' => $gallery->owner->id,
+        'contact_id' => $collectorsIds[array_rand($collectorsIds)],
+        'date' => $date,
+        'due_date' => $date->copy()->addDays(30),
+        'tax_id' => $taxId,
+        'tax_rate' => $taxRate,
+      ]);
     }
   }
 }
