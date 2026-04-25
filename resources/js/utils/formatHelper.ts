@@ -69,6 +69,26 @@ function trimWebsite(website: string): string {
   return website.replace(/^(https?:\/\/)?(www\.)?/, '');
 }
 
+function formatNumber(
+  value: number | string,
+  locale: string = import.meta.env.VITE_APP_LOCALE.replace('_', '-') || 'en-US',
+  removeTrailingZeros: boolean = true,
+): string {
+  if (value === null || value === undefined || value === '') return '';
+
+  const num = typeof value === 'string' ? parseFloat(value) : value;
+
+  if (isNaN(num)) return '';
+
+  let formatted = new Intl.NumberFormat(locale).format(num);
+
+  if (removeTrailingZeros) {
+    formatted = formatted.replace(/(\.\d*?[1-9])0+$/g, '$1').replace(/\.0+$/, '');
+  }
+
+  return formatted;
+}
+
 function formatCurrency(
   amount: number | string,
   currency: string | null = null,
@@ -117,4 +137,4 @@ function ucWords(str: string | null | undefined): string {
   return str.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
 }
 
-export { formatByKey, formatCurrency, formatDimensions, formatPhoneNumber, trimWebsite, ucWords };
+export { formatByKey, formatNumber, formatCurrency, formatDimensions, formatPhoneNumber, trimWebsite, ucWords };
