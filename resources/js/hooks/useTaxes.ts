@@ -1,4 +1,5 @@
 import { TaxProps } from "@/types/tax";
+import { formatNumber } from "@/utils/formatHelper";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -13,7 +14,7 @@ function useTaxes({ enableQuery = true }) {
   });
 
   const taxesOptions = (taxesQuery.data)?.map((tax) => ({
-    label: tax.name + ` (${tax.rate}%)`,
+    label: tax.name + ` (${formatNumber(tax.rate)}%)`,
     value: tax.id,
   })) || [];
 
