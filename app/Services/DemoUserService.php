@@ -16,7 +16,8 @@ class DemoUserService
 {
   protected $faker;
 
-  public function __construct(protected ?User $user = null) {
+  public function __construct(protected ?User $user = null)
+  {
     $this->faker = Factory::create(config('app.locale'));
   }
 
@@ -154,10 +155,12 @@ class DemoUserService
 
     $inventoryReportsData = [
       1 => [
+        'name' => 'Full Inventory Report',
         'artworks' => $artworkIds,
         'description' => 'Inventory report of all gallery artworks.',
       ],
       2 => [
+        'name' => 'Primary Location Inventory Report',
         'artworks' => $gallery->locations()->first()->artworks()->pluck('id')->toArray(),
         'description' => 'Inventory report of artworks in the primary location.',
       ],
@@ -168,7 +171,7 @@ class DemoUserService
         'gallery_id' => $gallery->id,
         'user_id' => $gallery->owner->id,
         'type' => ReportType::Inventory->value,
-        'name' => 'Inventory Report ' . ($i),
+        'name' => $reportData['name'],
         'description' => $reportData['description'],
         'options' => [
           'header' => true,
