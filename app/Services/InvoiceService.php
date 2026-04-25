@@ -21,8 +21,6 @@ class InvoiceService
       $this->invoice->status = InvoiceStatus::Paid->value;
     } elseif ($amountPaid > 0) {
       $this->invoice->status = InvoiceStatus::PartiallyPaid->value;
-    } else {
-      $this->invoice->status = InvoiceStatus::Draft->value;
     }
 
     // set to overdue if past due date and not fully paid
