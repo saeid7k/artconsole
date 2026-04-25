@@ -3,8 +3,10 @@
 namespace App\Services;
 
 use App\Enums\ArtworkStatus;
+use App\Enums\ReportType;
 use App\Models\Contact;
 use App\Models\Gallery;
+use App\Models\Report;
 use App\Models\User;
 use Faker\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -12,11 +14,14 @@ use Illuminate\Support\Str;
 
 class DemoUserService
 {
-  public function __construct(protected ?User $user = null) {}
+  protected $faker;
+
+  public function __construct(protected ?User $user = null) {
+    $this->faker = Factory::create(config('app.locale'));
+  }
 
   public function createDemoUser(int $order = 1): void
   {
-    $faker = Factory::create(config('app.locale'));
 
     $user = User::create([
       'firstname' => 'John',
@@ -24,7 +29,7 @@ class DemoUserService
       'username' => 'demo_' . $order,
       'email' => 'demo_' . $order . '@artconsole.ai',
       'country_code' => '+1',
-      'phone' => $faker->numerify(mt_rand(2, 9) . str_repeat('#', 9)),
+      'phone' => $this->faker->numerify(mt_rand(2, 9) . str_repeat('#', 9)),
       'website' => 'example.com',
       'address' => [
         'unit' => null,
@@ -63,7 +68,7 @@ class DemoUserService
     $gallery->locations()->create([
       'type' => 'external',
       'name' => 'Queen St Store',
-      'phone' => $faker->numerify(mt_rand(2, 9) . str_repeat('#', 9)),
+      'phone' => $this->faker->numerify(mt_rand(2, 9) . str_repeat('#', 9)),
       'email' => 'store@example.com',
       'address' => [
         'unit' => null,
@@ -105,6 +110,9 @@ class DemoUserService
       ->where('artist_data->firstname', 'Mahshid')
       ->where('artist_data->lastname', 'K.V.')
       ->update(['artist_id' => $mahshidContact->id]);
+
+    // create reports
+    $this->createReports($gallery);
   }
 
   private function addArtworks(Gallery $gallery): void
@@ -137,6 +145,82 @@ class DemoUserService
             ->toMediaCollection('artwork-images');
         }
       }
+    }
+  }
+
+  private function createReports(Gallery $gallery): void
+  {
+    $artworkIds = $gallery->artworks()->pluck('id')->toArray();
+
+    $inventoryReportsData = [
+      1 => [
+        'artworks' => $artworkIds,
+        'description' => 'Inventory report of all gallery artworks.',
+      ],
+      2 => [
+        'artworks' => $gallery->locations()->first()->artworks()->pluck('id')->toArray(),
+        'description' => 'Inventory report of artworks in the primary location.',
+      ],
+    ];
+
+    foreach ($inventoryReportsData as $i => $reportData) {
+      $report = Report::create([
+        'gallery_id' => $gallery->id,
+        'user_id' => $gallery->owner->id,
+        'type' => ReportType::Inventory->value,
+        'name' => 'Inventory Report ' . ($i),
+        'description' => $reportData['description'],
+        'options' => [
+          'header' => true,
+        ],
+        'artworks' => $reportData['artworks'],
+        'created_at' => now()->subDays(30 - $i * 3),
+      ]);
+      (new ReportService($report))->generatePdf();
+    }
+
+    $labelReportsData = [
+      1 => [
+        'description' => 'Medium label report of all artworks with all options enabled',
+        'options' => [
+          'size' => 'medium',
+          'sku' => true,
+          'artist_name' => true,
+          'artwork_title' => true,
+          'mediums' => true,
+          'dimensions' => true,
+          'price' => true,
+          'border' => true,
+        ],
+      ],
+      2 => [
+        'description' => 'Small label report of all artworks with all options enabled',
+        'options' => [
+          'size' => 'small',
+          'sku' => true,
+          'artist_name' => true,
+          'artwork_title' => true,
+          'mediums' => true,
+          'dimensions' => true,
+          'price' => true,
+          'border' => true,
+        ],
+      ]
+    ];
+
+    foreach ($labelReportsData as $i => $reportData) {
+      $selectedIds = $artworkIds;
+      $report = Report::create([
+        'gallery_id' => $gallery->id,
+        'user_id' => $gallery->owner->id,
+        'type' => ReportType::ArtworksLabel->value,
+        'name' => 'Label Report ' . ($i),
+        'description' => $reportData['description'],
+        'options' => $reportData['options'],
+        'artworks' => $selectedIds,
+        'created_at' => now()->subDays(20 - $i * 5),
+      ]);
+      (new ReportService($report))->generatePdf();
     }
   }
 }
