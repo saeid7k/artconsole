@@ -25,8 +25,8 @@ class ReportService
   public function generatePdf()
   {
     switch ($this->report->type) {
-      case 'artworks_label':
-        $viewPath = 'reports.artworks-label';
+      case 'wall_label':
+        $viewPath = 'reports.wall-label';
         break;
       case 'inventory':
         $viewPath = 'reports.inventory';
@@ -34,7 +34,7 @@ class ReportService
     }
     $margins = [0.5, 0.1875, 0.5, 0.1875];
 
-    if ($this->report->type === 'artworks_label') {
+    if ($this->report->type === 'wall_label') {
       switch ($this->report->options->size ?? null) {
         case 'small':
           $viewPath = $viewPath . '-small';

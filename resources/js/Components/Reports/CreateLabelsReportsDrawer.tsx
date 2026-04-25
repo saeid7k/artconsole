@@ -1,4 +1,4 @@
-import { DEFAULT_SIZE, SIZE_OPTIONS } from "@/constants/artworksLabelReport";
+import { DEFAULT_SIZE, SIZE_OPTIONS } from "@/constants/wallLabelReport";
 import { useWindow } from "@/hooks/useWindow";
 import { dayjsUserTz } from "@/utils/dateTimeHelper";
 import { router } from "@inertiajs/react";
@@ -32,7 +32,7 @@ function CreateLabelsReportsDrawer({ show, onClose, preSelectedArtworkIds = [] }
     form.validateFields().then(values => {
       setSaving(true);
       axios.post(route('reports.store'), {
-        type: 'artworks_label',
+        type: 'wall_label',
         name: values.name,
         description: values.description,
         options: {
@@ -81,7 +81,7 @@ function CreateLabelsReportsDrawer({ show, onClose, preSelectedArtworkIds = [] }
     <FlexBox>
       <span>Create New Report</span>
       <Divider orientation="vertical" />
-      <span className="text-primary-700 dark:text-primary-300">Artworks Label</span>
+      <span className="text-primary-700 dark:text-primary-300">Wall Label</span>
       <Divider orientation="vertical" />
       <div className="text-ghost">{selectedArtworkIds.length} selected</div>
     </FlexBox>
@@ -116,7 +116,7 @@ function CreateLabelsReportsDrawer({ show, onClose, preSelectedArtworkIds = [] }
         form={form}
         layout="vertical"
         initialValues={{
-          'name': `Artworks Label - ${dayjsUserTz().format('LL')}`,
+          'name': `Wall Label - ${dayjsUserTz().format('LL')}`,
           'size': DEFAULT_SIZE.value,
           'sku': false,
           'artist_name': true,

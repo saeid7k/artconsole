@@ -213,7 +213,7 @@ class DemoUserService
       $report = Report::create([
         'gallery_id' => $gallery->id,
         'user_id' => $gallery->owner->id,
-        'type' => ReportType::ArtworksLabel->value,
+        'type' => ReportType::WallLabel->value,
         'name' => 'Label Report ' . ($i),
         'description' => $reportData['description'],
         'options' => $reportData['options'],
