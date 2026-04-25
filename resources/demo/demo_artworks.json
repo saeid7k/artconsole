@@ -165,6 +165,175 @@
   },
   {
     "artist_data": {
+      "firstname": "Johannes",
+      "lastname": "Vermeer"
+    },
+    "title": "Girl with a Pearl Earring",
+    "year": "1665",
+    "price": "6200",
+    "edition": {
+      "size": 1,
+      "type": "unique",
+      "number": 1
+    },
+    "signed": true,
+    "description": "An enigmatic portrait of a young girl wearing an exotic dress, an oriental turban, and a large pearl earring. The painting is renowned for its captivating use of light and the mysterious expression of the subject, often referred to as the 'Mona Lisa of the North.'",
+    "category": "painting",
+    "subjects": [
+      "Portrait"
+    ],
+    "mediums": [
+      "Oil on Canvas"
+    ],
+    "styles": [
+      "Realism",
+      "Northern Renaissance"
+    ],
+    "dimensions": {
+      "unit": "cm",
+      "depth": 2,
+      "width": 39,
+      "height": 44.5
+    }
+  },
+  {
+    "artist_data": {
+      "firstname": "Salvador",
+      "lastname": "Dali"
+    },
+    "title": "The Persistence of Memory",
+    "year": "1931",
+    "price": "5500",
+    "edition": {
+      "size": 1,
+      "type": "unique",
+      "number": 1
+    },
+    "signed": true,
+    "description": "An iconic Surrealist painting featuring melting pocket watches draped across a barren, dreamlike landscape, symbolizing the relativity of space and time and exploring the depths of the unconscious mind.",
+    "category": "painting",
+    "subjects": [
+      "Landscape",
+      "Time",
+      "Dreams"
+    ],
+    "mediums": [
+      "Oil on Canvas"
+    ],
+    "styles": [
+      "Surrealism"
+    ],
+    "dimensions": {
+      "unit": "cm",
+      "depth": 1.5,
+      "width": 33,
+      "height": 24
+    }
+  },
+  {
+    "artist_data": {
+      "firstname": "Gustav",
+      "lastname": "Klimt"
+    },
+    "title": "The Kiss",
+    "year": "1908",
+    "price": "3900",
+    "edition": {
+      "size": 1,
+      "type": "unique",
+      "number": 1
+    },
+    "signed": true,
+    "description": "An iconic Symbolist painting depicting a couple embracing in a field of flowers, enveloped in elaborate robes decorated with intricate geometric patterns and shimmering gold leaf.",
+    "category": "painting",
+    "subjects": [
+      "Romance",
+      "Couple"
+    ],
+    "mediums": [
+      "Oil and Gold Leaf on Canvas"
+    ],
+    "styles": [
+      "Symbolism",
+      "Art Nouveau",
+      "Figurative"
+    ],
+    "dimensions": {
+      "unit": "cm",
+      "depth": 3,
+      "width": 180,
+      "height": 180
+    }
+  },
+  {
+    "artist_data": {
+      "firstname": "Pablo",
+      "lastname": "Picasso"
+    },
+    "title": "Souvenir from Havre",
+    "year": "1912",
+    "price": "8600",
+    "edition": {
+      "size": 1,
+      "type": "unique",
+      "number": 1
+    },
+    "signed": false,
+    "description": "A pioneering Cubist still life painting, also known as 'Violon, verres, pipe et ancre', which deconstructs objects into geometric fragments and angular planes, exploring the depths of memory and artistic innovation.",
+    "category": "painting",
+    "subjects": [
+      "Still Life",
+      "Cityscape"
+    ],
+    "mediums": [
+      "Oil on Canvas"
+    ],
+    "styles": [
+      "Cubism"
+    ],
+    "dimensions": {
+      "unit": "cm",
+      "depth": 2,
+      "width": 54,
+      "height": 81
+    }
+  },
+  {
+    "artist_data": {
+      "firstname": "Edvard",
+      "lastname": "Munch"
+    },
+    "title": "The Scream",
+    "year": "1893",
+    "price": "9500",
+    "edition": {
+      "size": 1,
+      "type": "unique",
+      "number": 1
+    },
+    "signed": true,
+    "description": "An iconic Expressionist masterpiece depicting an agonized figure holding its face in despair against a turbulent, blood-red skyline, widely interpreted as representing the universal anxiety of modern humanity.",
+    "category": "painting",
+    "subjects": [
+      "Figure",
+      "Psychological"
+    ],
+    "mediums": [
+      "Oil, Tempera, and Pastel on Cardboard"
+    ],
+    "styles": [
+      "Expressionism",
+      "Symbolism"
+    ],
+    "dimensions": {
+      "unit": "cm",
+      "depth": 1,
+      "width": 73.5,
+      "height": 91
+    }
+  },
+  {
+    "artist_data": {
       "firstname": "Mahshid",
       "lastname": "K.V."
     },
@@ -226,6 +395,109 @@
       "depth": 0,
       "width": 12,
       "height": 16
+    }
+  },
+  {
+    "artist_data": {
+      "firstname": "Mahshid",
+      "lastname": "K.V."
+    },
+    "title": "The Rainy Arrival",
+    "year": "2026",
+    "price": "200",
+    "edition": {
+      "size": 1,
+      "type": "unique",
+      "number": 1
+    },
+    "signed": false,
+    "description": "This piece marks the beginning of “The Artist’s Journey” collection, capturing the poignant moment of arrival in a new land. Set against the atmospheric backdrop of a misty Toronto day, the painting serves as a visual threshold between a past left behind and a future yet to be realized.\nThe composition centers on two figures sheltered beneath a vibrant crimson umbrella—a “portable sanctuary” that stands in warm contrast to the cool, rhythmic rain of Ontario. In the distance, the iconic silhouette of the CN Tower emerges through the fog, acting as a silent beacon of ambition and a landmark of a new beginning. Rather than a storm, the rain here symbolizes a “washing away of the old,” making room for the fresh perspectives and stories to come.\nMedium & Style Executed in Oil on Canvas, this work showcases Mahshid’s transition into oil painting while maintaining her signature Conceptual Realist style—blending meticulous detail with an evocative, atmospheric narrative.",
+    "category": "painting",
+    "subjects": [
+      "Love",
+      "Human Connection"
+    ],
+    "mediums": [
+      "Pastel on Paper"
+    ],
+    "styles": [
+      "Contemporary Impressionism",
+      "Symbolism"
+    ],
+    "dimensions": {
+      "unit": "inches",
+      "depth": 0,
+      "width": 12,
+      "height": 16
+    }
+  },
+  {
+    "artist_data": {
+      "firstname": "Mahshid",
+      "lastname": "K.V."
+    },
+    "title": "Timeless Notes",
+    "year": "2026",
+    "price": "1500",
+    "edition": {
+      "size": 1,
+      "type": "unique",
+      "number": 1
+    },
+    "signed": false,
+    "description": "“Timeless Notes” celebrates the power of women to anchor even the grandest public spaces through the resonance of their artistry. Set against the backdrop of Toronto‘s Union Station, this piece asserts that a woman’s focused voice is powerful enough to carve out a moment of stillness in a chaotic world.\nRendered in oil on canvas, this work utilizes the medium’s rich texture and layering capabilities to capture the interplay of light and motion. The composition balances classical realism with atmospheric depth, using soft edges and motion blur in the background figures to emphasize the transient nature of the crowd. In contrast, the cellist is painted with sharp, deliberate brushstrokes, grounding her presence amidst the golden, luminous architecture of the Great Hall. This technique visually translates the auditory experience of the performance, creating a permanent sanctuary of sound within the bustling urban landscape.",
+    "category": "painting",
+    "subjects": [
+      "Music",
+      "Women",
+      "Architecture"
+    ],
+    "mediums": [
+      "Oil on Canvas"
+    ],
+    "styles": [
+      "Contemporary Impressionism",
+      "Symbolism"
+    ],
+    "dimensions": {
+      "unit": "inches",
+      "depth": 0,
+      "width": 24,
+      "height": 30
+    }
+  },
+  {
+    "artist_data": {
+      "firstname": "Mahshid",
+      "lastname": "K.V."
+    },
+    "title": "Fluid Realities",
+    "year": "2026",
+    "price": "1500",
+    "edition": {
+      "size": 1,
+      "type": "unique",
+      "number": 1
+    },
+    "signed": false,
+    "description": "“Fluid Realities” invites the viewer into a space where the boundaries of perception gracefully dissolve. True to Mahshid’s signature approach of merging realism, surrealism, and impressionism, this piece captures a transient state of being a visual representation of how our lived experiences and inner worlds constantly shift and flow into one another.\nCrafted with meticulous attention to detail from the first sketch to the final touch, the artwork relies on dynamic movement and an evocative color palette to build an underlying sense of story. It is not merely an observation of form, but an exploration of the subjective mind. Designed to feel both timeless and deeply personal, “Fluid Realities” challenges the observer to find their own reflection within its evolving composition.\nAs a captivating focal point, this original piece is perfectly suited for contemporary collectors who value art that reveals new depths and narratives over time.",
+    "category": "painting",
+    "subjects": [
+      "Urban",
+      "Women"
+    ],
+    "mediums": [
+      "Oil on Canvas"
+    ],
+    "styles": [
+      "Surrealism",
+      "Contemporary Impressionism"
+    ],
+    "dimensions": {
+      "unit": "inches",
+      "depth": 0,
+      "width": 24,
+      "height": 36
     }
   }
 ]
