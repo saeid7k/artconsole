@@ -20,7 +20,7 @@ function Index({ reports }: any) {
   // New Report
 
   const handleNewReportClick = (type: any) => {
-    if (type === 'artworks_label') {
+    if (type === 'wall_label') {
       setShowCreateLabelsReportsDrawer(true)
     } else if (type === 'inventory') {
       setShowCreateInventoryReportDrawer(true)
@@ -34,7 +34,7 @@ function Index({ reports }: any) {
         popupRender={() =>
           <Menu
             items={[
-              { key: 'artworks_label', label: 'Artworks Label', onClick: () => handleNewReportClick('artworks_label') },
+              { key: 'wall_label', label: 'Wall Label', onClick: () => handleNewReportClick('wall_label') },
               { key: 'inventory', label: 'Inventory Report', onClick: () => handleNewReportClick('inventory') },
             ]}
           />

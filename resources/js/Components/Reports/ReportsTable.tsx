@@ -15,7 +15,7 @@ function ReportsTable({ reports }: any) {
   const { breakpoint } = useWindow()
 
   const reportTypeIcon: { [key: string]: React.ReactNode } = {
-    'artworks_label': <HugeiconsIcon icon={NoteIcon} size={20} />,
+    'wall_label': <HugeiconsIcon icon={NoteIcon} size={20} />,
     'inventory': <HugeiconsIcon icon={LayoutTable02Icon} size={20} />,
   }
 

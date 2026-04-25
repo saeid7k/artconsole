@@ -163,8 +163,8 @@ class FullFakeSeeder extends Seeder
       $report = Report::create([
         'gallery_id' => $this->adminGallery->id,
         'user_id' => 1,
-        'type' => ReportType::ArtworksLabel->value,
-        'name' => 'Artworks Label Report ' . ($i + 1),
+        'type' => ReportType::WallLabel->value,
+        'name' => 'Wall Label Report ' . ($i + 1),
         'description' => $this->faker->paragraph,
         'options' => [
           'size' => $this->faker->randomElement($sizes),
@@ -214,7 +214,7 @@ class FullFakeSeeder extends Seeder
     ]);
     (new ReportService($report))->generatePdf();
 
-    $this->command->info('✅' . ' 5 artworks label reports and 2 inventory reports created for first gallery.');
+    $this->command->info('✅' . ' 5 wall label reports and 2 inventory reports created for first gallery.');
   }
 
   private function createTaxes(): void

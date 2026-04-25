@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 
 enum ReportType: string
 {
-  case ArtworksLabel = 'artworks_label';
+  case WallLabel = 'wall_label';
   case Inventory = 'inventory';
 
   public function label(): string
@@ -16,7 +16,7 @@ enum ReportType: string
 
   public static function default(): self
   {
-    return self::ArtworksLabel;
+    return self::WallLabel;
   }
 
   public static function stringifyAll(): string
