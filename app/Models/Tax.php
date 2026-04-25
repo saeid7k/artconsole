@@ -16,7 +16,7 @@ class Tax extends Model
   ];
 
   protected $casts = [
-    'rate' => 'decimal:2',
+    'rate' => 'decimal:3',
     'default' => 'boolean',
   ];
 
