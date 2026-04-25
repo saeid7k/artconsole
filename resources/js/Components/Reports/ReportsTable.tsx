@@ -1,7 +1,7 @@
 import { useWindow } from "@/hooks/useWindow";
 import { paginate } from "@/utils/paginationHelper";
 import { keyToTitle } from "@/utils/stringHelper";
-import { LayoutTable02Icon, NoteIcon } from "@hugeicons/core-free-icons";
+import { LabelIcon, LayoutTable02Icon, NoteIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Table, TableProps, Tag } from "antd";
 import FlexBox from "../Containers/FlexBox";
@@ -9,24 +9,25 @@ import NewTag from "../NewTag";
 import StyledDate from "../StyledDate";
 import TextboxExpandable from "../TextboxExpandable";
 import ReportsTableActions from "./ReportsTableActions";
+import colors from "@/Themes/theme";
 
 function ReportsTable({ reports }: any) {
 
   const { breakpoint } = useWindow()
 
   const reportTypeIcon: { [key: string]: React.ReactNode } = {
-    'wall_label': <HugeiconsIcon icon={NoteIcon} size={20} />,
-    'inventory': <HugeiconsIcon icon={LayoutTable02Icon} size={20} />,
+    'wall_label': <HugeiconsIcon icon={LabelIcon} size={20} color={colors.blue[600]} />,
+    'inventory': <HugeiconsIcon icon={LayoutTable02Icon} size={20} color={colors.purple[600]} />,
   }
 
   // Table columns
 
   const columns: TableProps['columns'] = [
     {
-      title: 'Type',
       key: 'type',
+      title: 'Type',
       render: (record: any) => (
-        <FlexBox>
+        <FlexBox >
           {reportTypeIcon[record.type]}
           {keyToTitle(record.type)}
         </FlexBox>
@@ -58,8 +59,8 @@ function ReportsTable({ reports }: any) {
       render: (text: string) => <StyledDate value={text} />
     },
     {
-      title: 'Info',
-      key: 'info',
+      title: 'Options',
+      key: 'options',
       render: (record: any) => (
         <FlexBox direction="col" alignItems="start" gap={1} justifyContent="between" className="max-w-[150px]" >
           <FlexBox justifyContent="between">
