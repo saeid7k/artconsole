@@ -184,6 +184,7 @@ class DemoUserService
         'description' => $reportData['description'],
         'options' => [
           'header' => true,
+          'checkbox' => true,
         ],
         'artworks' => $reportData['artworks'],
         'created_at' => now()->subDays(30 - $i * 3),
