@@ -166,7 +166,7 @@ function Sidebar() {
           )}
         </Menu>
 
-        {user?.is_demo && (
+        {user?.is_demo && !sidebarCollapsed && (
           <div className="px-2">
             <div
               className="flex flex-col gap-1 w-full p-2"
