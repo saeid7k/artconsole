@@ -1,11 +1,11 @@
 <?php
 
 use App\Http\Controllers\AppLayoutController;
-use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GeocodeController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\Admin;
+use App\Http\Middleware\DemoForbidden;
 use App\Http\Middleware\Subscribed;
 use Illuminate\Support\Facades\Route;
 use Laravel\Cashier\Http\Controllers\WebhookController;
@@ -89,7 +89,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/model-activities', [App\Http\Controllers\ActivityLogController::class, 'modelActivities'])->name('model-activities');
   });
 
-  Route::prefix('invite-links')->name('invite-links.')->group(function () {
+  Route::prefix('invite-links')->name('invite-links.')->middleware(DemoForbidden::class)->group(function () {
     Route::post('{invite_link}/delete', [App\Http\Controllers\InviteLinkController::class, 'delete'])->name('delete');
     Route::post('{invite_link}/accept', [App\Http\Controllers\InviteLinkController::class, 'accept'])->name('accept');
     Route::post('{invite_link}/decline', [App\Http\Controllers\InviteLinkController::class, 'decline'])->name('decline');
@@ -161,7 +161,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/{payment}/delete', [App\Http\Controllers\PaymentController::class, 'destroy'])->name('destroy');
   });
 
-  Route::prefix('subscription')->name('subscription.')->group(function () {
+  Route::prefix('subscription')->name('subscription.')->middleware(DemoForbidden::class)->group(function () {
     Route::get('/', [App\Http\Controllers\SubscriptionController::class, 'index'])->name('index');
     Route::get('/products', [App\Http\Controllers\SubscriptionController::class, 'getProducts'])->name('products');
     Route::post('/subscribe', [App\Http\Controllers\SubscriptionController::class, 'subscribe'])->name('subscribe');
