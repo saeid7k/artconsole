@@ -74,9 +74,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
   Route::prefix('members')->name('members.')->group(function () {
     Route::get('{gallery}', [App\Http\Controllers\MemberController::class, 'getMembers'])->name('all');
-    Route::post('{gallery}/add', [App\Http\Controllers\MemberController::class, 'addMember'])->name('add')->middleware(Subscribed::class);
-    Route::post('{gallery}/change-access-level', [App\Http\Controllers\MemberController::class, 'changeAccessLevel'])->name('change-access-level');
-    Route::post('{gallery}/remove/{member}', [App\Http\Controllers\MemberController::class, 'removeMember'])->name('remove');
+    Route::post('{gallery}/add', [App\Http\Controllers\MemberController::class, 'addMember'])->name('add')->middleware([Subscribed::class, DemoForbidden::class]);
+    Route::post('{gallery}/change-access-level', [App\Http\Controllers\MemberController::class, 'changeAccessLevel'])->name('change-access-level')->middleware(DemoForbidden::class);
+    Route::post('{gallery}/remove/{member}', [App\Http\Controllers\MemberController::class, 'removeMember'])->name('remove')->middleware(DemoForbidden::class);
   });
 
   Route::prefix('profile')->name('profile.')->group(function () {

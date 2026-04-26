@@ -18,7 +18,10 @@ class Subscribed
     $user = $request->user();
     $gallery = $user?->currentGallery();
 
-    if (!$gallery->subscribed()) {
+    if (!$gallery->subscribed() && !$user->is_demo) {
+      if ($request->wantsJson() || $request->ajax()) {
+          abort(402, 'You need to subscribe to access this feature.');
+        }
       return redirect()->route('subscription.index');
     }
 
