@@ -131,7 +131,7 @@ class Gallery extends Model implements HasMedia
 
   public function getIsSubscribedAttribute(): bool
   {
-    return $this->subscribed('default');
+    return $this->subscribed('default') || User::find($this->user_id)?->is_demo;
   }
 
   public function getSubscribedPriceIdAttribute(): ?string
