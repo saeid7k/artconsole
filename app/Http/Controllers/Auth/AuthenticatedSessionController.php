@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\DemoUserLoggedIn;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
@@ -107,7 +108,10 @@ class AuthenticatedSessionController extends Controller
       }
 
       auth()->login($user);
+
       $user->updateQuietly(['demo_claimed_at' => now()]);
+
+      DemoUserLoggedIn::dispatch($user);
 
       return redirect()->route('dashboard')->with('flash', [
         'type' => 'success',
