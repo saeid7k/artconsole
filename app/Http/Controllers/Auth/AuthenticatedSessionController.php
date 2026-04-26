@@ -75,6 +75,7 @@ class AuthenticatedSessionController extends Controller
       }
 
       auth()->login($user);
+      session()->regenerate();
 
       return redirect()->route('dashboard')->with('flash', [
         'type' => 'success',
@@ -108,6 +109,7 @@ class AuthenticatedSessionController extends Controller
       }
 
       auth()->login($user);
+      session()->regenerate();
 
       $user->updateQuietly(['demo_claimed_at' => now()]);
 
