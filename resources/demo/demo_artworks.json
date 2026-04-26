@@ -267,39 +267,6 @@
   },
   {
     "artist_data": {
-      "firstname": "Pablo",
-      "lastname": "Picasso"
-    },
-    "title": "Souvenir from Havre",
-    "year": "1912",
-    "price": "8600",
-    "edition": {
-      "size": 1,
-      "type": "unique",
-      "number": 1
-    },
-    "signed": false,
-    "description": "A pioneering Cubist still life painting, also known as 'Violon, verres, pipe et ancre', which deconstructs objects into geometric fragments and angular planes, exploring the depths of memory and artistic innovation.",
-    "category": "painting",
-    "subjects": [
-      "Still Life",
-      "Cityscape"
-    ],
-    "mediums": [
-      "Oil on Canvas"
-    ],
-    "styles": [
-      "Cubism"
-    ],
-    "dimensions": {
-      "unit": "cm",
-      "depth": 2,
-      "width": 54,
-      "height": 81
-    }
-  },
-  {
-    "artist_data": {
       "firstname": "Edvard",
       "lastname": "Munch"
     },
