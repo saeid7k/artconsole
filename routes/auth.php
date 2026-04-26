@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\GoogleAuthController;
+use App\Http\Middleware\Admin;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -35,9 +36,9 @@ Route::middleware('auth')->group(function () {
   Route::put('password', [PasswordController::class, 'update'])->name('password.update');
   Route::put('set-password', [PasswordController::class, 'set'])->name('password.set');
   Route::any('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+  Route::get('/logout-as', [AuthenticatedSessionController::class, 'logoutAs'])->name('logout-as');
 });
 
-Route::middleware(['auth', 'admin'])->group(function () {
+Route::middleware(['auth', Admin::class])->group(function () {
   Route::get('/{user}/login-as', [AuthenticatedSessionController::class, 'loginAs'])->name('login-as');
-  Route::get('/logout-as', [AuthenticatedSessionController::class, 'logoutAs'])->name('logout-as');
 });
