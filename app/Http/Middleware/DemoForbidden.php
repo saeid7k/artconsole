@@ -17,10 +17,7 @@ class DemoForbidden
   {
     $user = $request->user();
     if ($user && $user->is_demo) {
-      return redirect()->route('dashboard')->with('flash', [
-        'type' => 'error',
-        'error' => 'This action is not allowed in demo mode.'
-      ]);
+      abort(403, 'This action is not allowed for demo accounts.');
     }
 
     return $next($request);
