@@ -1,14 +1,14 @@
 import ACCESS_LEVELS from "@/constants/accessLevels";
+import CONFIGS from "@/constants/configs.json";
 import { GalleryProps } from "@/types/gallery";
 import { ucFirst } from "@/utils/stringHelper";
 import { AddMaleIcon, Cancel01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { router } from "@inertiajs/react";
-import { Form, Input, message, Modal, Select } from "antd";
+import { router, usePage } from "@inertiajs/react";
+import { Alert, Form, Input, message, Modal, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
 import axios from "axios";
 import { useState } from "react";
-import CONFIGS from "@/constants/configs.json";
 import GalleryAvatar from "../Galleries/GalleryAvatar";
 
 type Props = {
@@ -19,6 +19,7 @@ type Props = {
 
 function AddMemberModal({ open = false, setOpen, gallery }: Props) {
 
+  const user = usePage()?.props?.auth?.user;
   const [form] = useForm()
 
   function handleClose() {
@@ -55,7 +56,8 @@ function AddMemberModal({ open = false, setOpen, gallery }: Props) {
       style={{ top: 100 }}
       okText="Send Invitation"
       afterClose={handleClose}
-      onOk={handleSubmit}
+      onOk={user?.is_demo ? undefined : handleSubmit}
+      okButtonProps={{ className: user?.is_demo ? 'cursor-not-allowed' : '' }}
     >
       <div className="flex flex-col items-center">
         <div className="flex">
@@ -111,6 +113,13 @@ function AddMemberModal({ open = false, setOpen, gallery }: Props) {
           />
         </Form.Item>
       </Form>
+      {user?.is_demo && (
+        <Alert
+          type="warning"
+          showIcon
+          description="Adding members is not available for demo accounts."
+        />
+      )}
     </Modal>
   )
 }
