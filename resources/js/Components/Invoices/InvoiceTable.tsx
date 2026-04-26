@@ -142,7 +142,6 @@ function InvoiceTable({ invoices }: Props) {
       <Table
         dataSource={invoices.data}
         columns={columns}
-        size="small"
         scroll={{
           x: 'max-content',
           y: windowWidth < 640 ? '60vh' : '70vh'
