@@ -66,7 +66,7 @@
             <div style="text-align: right; font-size: 10pt;" >{{ $artwork->sku }}</div>
           @endif
           @if ($options?->artist_name ?? false)
-            <div>{{ $artwork->artist?->full_name }}</div>
+            <div>{{ $artwork->artist?->full_name ?? $artwork->artist_data?->full_name }}</div>
           @endif
           @if ($options?->artwork_title ?? false)
             <div style="font-weight: bold; font-style: italic;">{{ $artwork->title }}</div>
