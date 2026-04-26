@@ -57,7 +57,7 @@
           'label-border' => $report->options->border ?? false,
         ])>
           @if ($report->options?->artist_name ?? false)
-            <div>{{ $artwork->artist?->full_name }}</div>
+            <div>{{ $artwork->artist?->full_name ?? $artwork->artist_data?->full_name }}</div>
           @endif
           @if ($report->options?->artwork_title ?? false)
             <div style="font-weight: bold; font-style: italic;">{{ $artwork->title }}</div>

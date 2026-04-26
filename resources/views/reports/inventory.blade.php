@@ -79,7 +79,7 @@
           </td>
           <td>
             <div>
-              <div style="margin-bottom: 0.5em;">{{ $artwork->artist?->full_name }}</div>
+              <div style="margin-bottom: 0.5em;">{{ $artwork->artist?->full_name ?? $artwork->artist_data?->full_name }}</div>
               <div class="text-light">{{ $artwork->year }}</div>
             </div>
           </td>
