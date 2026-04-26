@@ -26,6 +26,11 @@ function ChangePasswordModal({ open, setOpen, action = 'change' }: Props) {
           })
           .catch((e) => {
             message.error(e.response?.data?.message || `Failed to ${action === 'change' ? 'change' : 'set'} password`)
+            form.setFields([
+              { name: 'current_password', errors: e.response?.data?.errors?.current_password || [] },
+              { name: 'password', errors: e.response?.data?.errors?.password || [] },
+              { name: 'password_confirmation', errors: e.response?.data?.errors?.password_confirmation || [] },
+            ])
           });
       });
   }
