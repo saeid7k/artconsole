@@ -3,11 +3,10 @@ import colors from "@/Themes/theme";
 import { GalleryProps } from "@/types/gallery";
 import { InviteLinkProps } from "@/types/inviteLink";
 import { UsePageProps } from "@/types/usePage";
-import { getInitials } from "@/utils/stringHelper";
 import { AddIcon, AddMaleIcon, ArrowDown01Icon, Cancel01Icon, CheckmarkCircle01Icon, CircleIcon, SettingsFreeIcons, Tick02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
-import { Avatar, Badge, Button, Card, Divider, Dropdown, message, Tooltip } from "antd";
+import { Badge, Button, Card, Divider, Dropdown, message, Tooltip } from "antd";
 import useMessage from "antd/es/message/useMessage";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -15,6 +14,7 @@ import AnimatedContainer from "../AnimatedContainer";
 import CreateGalleryModal from "../CreateGalleryModal";
 import AddMemberModal from "../GallerySettings/AddMemberModal";
 import GallerySettingsModal from "../GallerySettings/GallerySettingsModal";
+import MembersAvatar from "../MembersAvatar";
 import ProBadge from "../Subscription/ProBadge";
 import GalleryAccessTag from "./GalleryAccessTag";
 import GalleryAvatar from "./GalleryAvatar";
@@ -129,17 +129,7 @@ function GallerySwitch() {
                     </Tooltip>
                   )}
                 </div>
-                <Avatar.Group max={{ count: 5 }} size="default">
-                  {current_gallery?.members?.length > 1 && current_gallery?.members?.map((member) => {
-                    return (
-                      <Avatar
-                        src={member?.photo}
-                      >
-                        {getInitials(member?.full_name)}
-                      </Avatar>
-                    )
-                  })}
-                </Avatar.Group>
+                <MembersAvatar gallery={current_gallery} />
                 {current_gallery.abilities?.manage_members && (
                   <div
                     className="flex gap-1"

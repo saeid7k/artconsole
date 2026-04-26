@@ -10,6 +10,7 @@ export interface UserProps {
   website?: string;
   address?: Address;
   bio?: string;
+  is_demo?: boolean;
   email_verified_at?: string;
   is_admin: boolean;
   formatted_address?: string;
