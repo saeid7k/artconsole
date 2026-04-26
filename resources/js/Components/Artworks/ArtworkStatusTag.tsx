@@ -1,5 +1,6 @@
 import ARTWORK_STATUSES from "@/constants/artworkStatuses";
 import { Tag } from "antd";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   status: string;
@@ -16,7 +17,11 @@ function ArtworkStatusTag({ status, variant = "filled", fontSize = "sm", classNa
     <Tag
       color={selectedStatus?.color || 'default'}
       variant={variant}
-      className={`text-${fontSize} font-semibold ${className || ''}`}
+      className={twMerge(
+        'font-semibold',
+        `text-${fontSize}`,
+        className
+      )}
     >
       {selectedStatus?.label || status}
     </Tag>
