@@ -1,9 +1,10 @@
 import { usePage } from "@inertiajs/react";
-import { message } from "antd";
+import useMessage from "antd/es/message/useMessage";
 import { useEffect } from "react";
 
 function ServerFlashMessage() {
   const flash: any = usePage().props.flash;
+  const [messageApi, messageContextHolder] = useMessage();
 
   useEffect(() => {
     if (
@@ -14,15 +15,15 @@ function ServerFlashMessage() {
     }
 
     if (flash?.type == 'success' && flash?.message) {
-      message.success(flash.message, 3);
+      messageApi.success(flash.message, 3);
     }
     if (flash?.type == 'error' && flash?.error) {
-      message.error(flash.error, 5);
+      messageApi.error(flash.error, 5);
     }
     localStorage.setItem('flash', JSON.stringify(flash));
   }, [flash]);
 
-  return null;
+  return messageContextHolder;
 }
 
 export default ServerFlashMessage;
