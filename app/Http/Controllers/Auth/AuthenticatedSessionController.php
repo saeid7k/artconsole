@@ -94,4 +94,24 @@ class AuthenticatedSessionController extends Controller
         'message' => 'Logged back in as ' . auth()->user()->full_name
       ]);
     }
+
+    public function demoLogin()
+    {
+      $user = User::where('is_demo', true)->where('demo_claimed_at', null)->first();
+
+      if (!$user) {
+        return redirect()->route('register')->with('flash', [
+          'type' => 'error',
+          'message' => 'Demo user is not available. Please register for a new account.'
+        ]);
+      }
+
+      auth()->login($user);
+      $user->updateQuietly(['demo_claimed_at' => now()]);
+
+      return redirect()->route('dashboard')->with('flash', [
+        'type' => 'success',
+        'message' => 'Logged in as demo user'
+      ]);
+    }
 }
