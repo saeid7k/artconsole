@@ -2,10 +2,10 @@ import { useApp } from "@/contexts/AppContext";
 import colors from "@/Themes/theme";
 import { AuthProps } from "@/types/auth";
 import { GalleryProps } from "@/types/gallery";
-import { ArrowTurnBackwardIcon, ContactIcon, CreditCard, CrownIcon, DashboardBrowsingIcon, File01Icon, Image02Icon, InvoiceIcon, LocationIcon, PresentationLineChart01Icon, Rocket01Icon, StoreLocation01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons";
+import { ArrowTurnBackwardIcon, ContactIcon, CreditCard, CrownIcon, DashboardBrowsingIcon, File01Icon, Image02Icon, InvoiceIcon, PresentationLineChart01Icon, Rocket01Icon, StoreLocation01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
-import { Divider, Menu } from "antd";
+import { Button, Divider, Menu } from "antd";
 
 function Sidebar() {
 
@@ -77,7 +77,7 @@ function Sidebar() {
   }
 
   const showUpgrade = gallery?.pivot?.access == 'owner' && !gallery?.is_subscribed
-  const showSubscription = gallery?.pivot?.access == 'owner' && gallery?.is_subscribed
+  const showSubscription = gallery?.pivot?.access == 'owner' && gallery?.is_subscribed && !user?.is_demo
 
   return (
     <div
@@ -165,6 +165,22 @@ function Sidebar() {
             </Menu.Item>
           )}
         </Menu>
+
+        {user?.is_demo && (
+          <div className="px-2">
+            <div
+              className="flex flex-col gap-1 w-full p-2"
+            >
+              <div className="text-ghost">You are in demo mode</div>
+              <Button
+                type="default"
+                onClick={() => router.get(route('register'))}
+              >
+                Register Now
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
