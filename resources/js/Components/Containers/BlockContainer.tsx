@@ -4,17 +4,19 @@ type Props = {
   borderStyle?: 'dashed' | 'solid' | 'dotted';
   rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full';
   background?: 'light' | 'soft' | 'none';
+  className?: string;
   children: React.ReactNode;
 }
 
-function BlockContainer({ background = 'light', borderStyle = 'dashed', rounded = 'md', children }: Props) {
+function BlockContainer({ background = 'light', borderStyle = 'dashed', rounded = 'md', className, children }: Props) {
   return (
     <div
       className={twMerge(
         'border rounded p-2 w-max',
         `bg-${background}`,
         `rounded-${rounded}`,
-        `!border-${borderStyle}`
+        `!border-${borderStyle}`,
+        className
       )}
     >
       {children}
