@@ -1,3 +1,4 @@
+import AiDrawer from "@/Components/AI/AiDrawer";
 import GallerySwitch from "@/Components/Galleries/GallerySwitch";
 import ServerFlashMessage from "@/Components/ServerFlashMessage";
 import Sidebar from "@/Components/Sidebar";
@@ -152,6 +153,8 @@ function App ({ children }: AppProps) {
             open={openUpgradeModal}
             onClose={() => setOpenUpgradeModal(false)}
           />
+
+          <AiDrawer />
         </QueryClientProvider>
         <ServerFlashMessage />
       </ConfigProvider>

@@ -18,6 +18,8 @@ export type AppContextType = {
   currencySymbol: string;
   openUpgradeModal: boolean;
   setOpenUpgradeModal: Dispatch<SetStateAction<boolean>>;
+  aiDrawerOpen: boolean;
+  setAiDrawerOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 const AppContext = createContext<AppContextType>({
@@ -32,6 +34,8 @@ const AppContext = createContext<AppContextType>({
   currencySymbol: '$',
   openUpgradeModal: false,
   setOpenUpgradeModal: () => {},
+  aiDrawerOpen: false,
+  setAiDrawerOpen: () => {},
 });
 
 function AppProvider({ children }: PropsWithChildren) {
@@ -131,6 +135,10 @@ function AppProvider({ children }: PropsWithChildren) {
 
   const [openUpgradeModal, setOpenUpgradeModal] = useState(false);
 
+  // AI Assistant
+
+  const [aiDrawerOpen, setAiDrawerOpen] = useState(false);
+
   return (
     <AppContext
       value={{
@@ -145,6 +153,8 @@ function AppProvider({ children }: PropsWithChildren) {
         currencySymbol,
         openUpgradeModal,
         setOpenUpgradeModal,
+        aiDrawerOpen,
+        setAiDrawerOpen,
       }}>
       {children}
     </AppContext>
