@@ -10,7 +10,7 @@ function AiAssistantButton() {
   return (
     <Button
       variant="outlined"
-      icon={<HugeiconsIcon icon={AiMagicIcon} size={24}  className="text-primary-600 dark:text-primary-400" />}
+      icon={<HugeiconsIcon icon={AiMagicIcon} size={24}  className="text-primary-600 dark:text-primary-400 animate-pulse" />}
       onClick={() => setAiDrawerOpen(true)}
     >
       AI Assistant
