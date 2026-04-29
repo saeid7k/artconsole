@@ -81,6 +81,7 @@ function InvoiceFormDrawer({ show, onClose, invoiceId = null, selectedArtworksId
   const contactsQuery = useQuery({
     queryKey: ['contacts'],
     queryFn: () => axios.get(route('contacts.all')).then(res => res.data),
+    enabled: show,
   });
 
   // Get next invoice number
