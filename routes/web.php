@@ -174,6 +174,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/set-billing-to', [App\Http\Controllers\SubscriptionController::class, 'setBillingTo'])->name('set-billing-to');
     Route::get('/invoices', [App\Http\Controllers\SubscriptionController::class, 'getInvoices'])->name('invoices');
   });
+
+  Route::prefix('ai')->name('ai.')->group(function () {
+    Route::post('/get-resource', [App\Http\Controllers\AiController::class, 'getResource'])->name('get-resource');
+  });
 });
 
 Route::middleware(['auth', Admin::class])->group(function () {
