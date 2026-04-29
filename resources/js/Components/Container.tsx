@@ -2,12 +2,14 @@ import { PropsWithChildren } from "react";
 
 type Props = PropsWithChildren<{
   label?: string
+  className?: string
+  children: React.ReactNode
 }>
 
-function Container({ label, children }: Props) {
+function Container({ label, className, children }: Props) {
   return (
     <div
-      className="mt-3 flex flex-col bg-white border border-dashed border-purple-300 rounded-lg p-2"
+      className={`mt-3 flex flex-col bg-white border border-dashed border-purple-300 rounded-lg p-2 ${className}`}
     >
       <small className="text-primary -translate-y-1">{label}</small>
       <div>
