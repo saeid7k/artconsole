@@ -49,8 +49,8 @@ function AiDrawer() {
             <AnimatedContainer
               condition={!!widgetEnabled}
               type="slideLeft"
-              className=""
             >
+              {/* Breadcrumb */}
               <Breadcrumb
                 items={[
                   { title: <a><HugeiconsIcon icon={RoboticIcon} size={20} /></a>, onClick: () => setWidgetEnabled(null) },
@@ -58,9 +58,13 @@ function AiDrawer() {
                 ]}
                 className="sticky top-0 bg-base"
               />
-              {widgetEnabled === 'mockup' && (
-                <Mockup />
-              )}
+
+              {/* Widget Content */}
+              <div className="pt-2">
+                {widgetEnabled === 'mockup' && (
+                  <Mockup />
+                )}
+              </div>
             </AnimatedContainer>
           </div>
 
