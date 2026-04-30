@@ -57,6 +57,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/generate-sku', [App\Http\Controllers\ArtworkController::class, 'generateSku'])->name('generate-sku');
     Route::post('/{artwork}/move', [App\Http\Controllers\ArtworkController::class, 'moveLocation'])->name('move');
     Route::get('/{artwork}/images', [App\Http\Controllers\ArtworkController::class, 'images'])->name('images');
+    Route::post('/get-images-by-ids', [App\Http\Controllers\ArtworkController::class, 'getImagesByIds'])->name('get-images-by-ids');
     Route::post('/{artwork}/upload-images', [App\Http\Controllers\ArtworkController::class, 'uploadImages'])->name('upload-images');
     Route::post('/{artwork}/rename-image', [App\Http\Controllers\ArtworkController::class, 'renameImage'])->name('rename-image');
     Route::post('/{artwork}/set-main-image', [App\Http\Controllers\ArtworkController::class, 'setAsMainImage'])->name('set-main-image');

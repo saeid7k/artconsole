@@ -215,6 +215,33 @@ class ArtworkController extends Controller
     ]);
   }
 
+  public function getImagesByIds(Request $request)
+  {
+    $this->authorize('viewAny', Artwork::class);
+
+    $user = auth()->user();
+    $gallery = $user->currentGallery();
+
+    $request->validate([
+      'artwork_ids' => ['nullable', 'array'],
+      'artwork_ids.*' => ['integer', 'exists:artworks,id'],
+    ]);
+
+    if (!$request->artwork_ids || count($request->artwork_ids) === 0) {
+      return response()->json([]);
+    }
+
+    $artworks = $gallery->artworks()->whereIn('id', $request->artwork_ids)->get();
+    $images = [];
+    foreach ($artworks as $artwork) {
+      foreach ($artwork->images as $image) {
+        $images[] = $image;
+      }
+    }
+
+    return response()->json($images);
+  }
+
   public function uploadImages(Request $request, Artwork $artwork)
   {
     $this->authorize('update', $artwork);
