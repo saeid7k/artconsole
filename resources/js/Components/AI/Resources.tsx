@@ -1,4 +1,5 @@
 import { useAiAssistant } from "@/contexts/AiAssistantContext";
+import { AiResource } from "@/types/aiResource";
 import { AddIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Button, Dropdown, Menu } from "antd";
@@ -11,9 +12,7 @@ import ResourceChips from "../ResourceChips";
 
 function Resources() {
 
-  const { aiDrawerOpen } = useAiAssistant()
-
-  const [resources, setResources] = useState<{type: string, id: number, image: string, name: string }[]>([])
+  const { aiDrawerOpen, resources, setResources } = useAiAssistant()
   const [showArtworkFinder, setShowArtworkFinder] = useState(false)
 
   const url = new URL(window.location.href)
@@ -32,10 +31,10 @@ function Resources() {
   }
 
   function addResource(type: string, id: number, image: string, name: string) {
-    if (resources.some(resource => resource.type === type && resource.id === id)) {
+    if (resources.some((resource: AiResource) => resource.type === type && resource.id === id)) {
       return;
     }
-    setResources(prev => [
+    setResources((prev: AiResource[]) => [
       ...prev,
       {
         type: type,
@@ -48,7 +47,7 @@ function Resources() {
 
   useEffect(() => {
     if (aiDrawerOpen && currentModelType && currentModelId) {
-      if (!resources.some(resource => resource.type === currentModelType && resource.id === currentModelId)) {
+      if (!resources.some((resource: AiResource) => resource.type === currentModelType && resource.id === currentModelId)) {
         getResource(currentModelType, currentModelId)
       }
     }
@@ -66,11 +65,12 @@ function Resources() {
         label="Resources"
       >
         <FlexBox wrapping="wrap" >
-          {resources.map((resource, index) => (
+          {resources.map((resource: AiResource, index: number) => (
             <ResourceChips
               key={index}
               image={resource.image}
               name={resource.name}
+              onClose={() => setResources((prev: AiResource[]) => prev.filter((_, i) => i !== index))}
             />
           ))}
           <Dropdown
