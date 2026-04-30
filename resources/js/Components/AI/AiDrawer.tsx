@@ -7,12 +7,15 @@ import { Breadcrumb, Drawer } from "antd";
 import { useState } from "react";
 import AnimatedContainer from "../AnimatedContainer";
 import MainMenu from "./MainMenu";
+import Mockup from "./Mockup/Mockup";
 import Resources from "./Resources";
 
 function AiDrawer() {
 
   const { aiDrawerOpen, setAiDrawerOpen } = useApp()
+
   const [widgetEnabled, setWidgetEnabled] = useState<string | null>(null)
+  const [resources, setResources] = useState<{type: string, id: number, image: string, name: string }[]>([])
 
   function handleClose() {
     setAiDrawerOpen(false)
@@ -25,45 +28,48 @@ function AiDrawer() {
     <Drawer
       open={aiDrawerOpen}
       onClose={handleClose}
-      size={500}
+      defaultSize={500}
       resizable
       title='AI Assistant'
     >
-      <AiAssistantProvider value={{ aiDrawerOpen, widgetEnabled, setWidgetEnabled }}>
-        <div className="relative overflow-x-hidden h-full">
+      <AiAssistantProvider value={{ aiDrawerOpen, widgetEnabled, setWidgetEnabled, resources, setResources }}>
+        <div className="relative overflow-x-hidden h-full flex flex-col gap-4 justify-between">
 
           {/* Main Menu */}
-          <AnimatedContainer condition={!widgetEnabled} type="slideLeft" >
-            <div className="absolute top-0 w-full">
-              <MainMenu />
-            </div>
-          </AnimatedContainer>
-
-          {/* Breadcrumb */}
-          <AnimatedContainer condition={!!widgetEnabled} type="slideLeft" >
-            <Breadcrumb
-              items={[
-                { title: <a><HugeiconsIcon icon={RoboticIcon} size={20} /></a>, onClick: () => setWidgetEnabled(null) },
-                { title: widgetEnabled ? ucFirst(widgetEnabled.replaceAll('_', ' ')) : undefined }
-              ]}
-              className="absolute top-0"
-            />
-          </AnimatedContainer>
-
-          {/* Widget Body */}
-          <AnimatedContainer condition={!!widgetEnabled} type="slideLeft"
-            className="absolute top-10"
+          <AnimatedContainer
+            condition={!widgetEnabled}
+            type="slideLeft"
+            className="absolute top-0 w-full"
           >
-            body
+            <MainMenu />
           </AnimatedContainer>
+
+          {/* Body */}
+          <div>
+            <AnimatedContainer
+              condition={!!widgetEnabled}
+              type="slideLeft"
+              className=""
+            >
+              <Breadcrumb
+                items={[
+                  { title: <a><HugeiconsIcon icon={RoboticIcon} size={20} /></a>, onClick: () => setWidgetEnabled(null) },
+                  { title: widgetEnabled ? ucFirst(widgetEnabled.replaceAll('_', ' ')) : undefined }
+                ]}
+                className="sticky top-0 bg-base"
+              />
+              {widgetEnabled === 'mockup' && (
+                <Mockup />
+              )}
+            </AnimatedContainer>
+          </div>
 
           {/* Resources */}
           <div
-            className="absolute bottom-0 w-full"
+            className="w-full sticky bottom-0"
           >
             <Resources />
           </div>
-
         </div>
       </AiAssistantProvider>
     </Drawer>
