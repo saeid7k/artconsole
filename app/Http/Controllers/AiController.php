@@ -49,4 +49,12 @@ class AiController extends Controller
       'image' => $image,
     ]);
   }
+
+  public function generateMockup(Request $request)
+  {
+    $validated = $request->validate([
+      'media_id' => 'required|integer',
+      'environment' => 'required|string',
+    ]);
+  }
 }
