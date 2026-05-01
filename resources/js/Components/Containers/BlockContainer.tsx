@@ -12,7 +12,7 @@ function BlockContainer({ background = 'light', borderStyle = 'dashed', rounded 
   return (
     <div
       className={twMerge(
-        'border rounded p-2 w-max',
+        'border rounded p-2 w-max max-w-full',
         `bg-${background}`,
         `rounded-${rounded}`,
         `!border-${borderStyle}`,
