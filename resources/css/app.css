@@ -139,7 +139,8 @@ input:focus {
   box-shadow: none;
 }
 
-label, .label {
+label:not(.ant-radio-button-wrapper),
+.label {
   color: var(--text-label)
 }
 
