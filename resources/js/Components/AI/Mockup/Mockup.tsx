@@ -2,6 +2,7 @@ import AnimatedContainer from "@/Components/AnimatedContainer"
 import FlexBox from "@/Components/Containers/FlexBox"
 import NumberedSection from "@/Components/Containers/NumberedSection"
 import ImageGroupFlex from "@/Components/ImageGroupFlex"
+import LoadingAi from "@/Components/Loaders/LoadingAi"
 import LoadingSpinner from "@/Components/LoadingSpinner"
 import { MOCKUP_ENVIRONMENTS } from "@/constants/Ai/mockupEnvironments"
 import { useAiAssistant } from "@/contexts/AiAssistantContext"
@@ -80,96 +81,107 @@ function Mockup() {
 
   return (
     <div className="flex flex-col gap-20">
+      {!conversationId && (
+        <>
+          {/* No resources selected */}
+          {resources.length === 0 && (
+            <FlexBox direction="col" >
+              <Empty
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                description="No resources selected"
+              />
+              <HugeiconsIcon icon={HandPointingDown01Icon} strokeWidth={1} size={64} className="animate-bounce text-muted" />
+            </FlexBox>
+          )}
 
-      {/* No resources selected */}
-      {resources.length === 0 && (
-        <FlexBox direction="col" >
-          <Empty
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description="No resources selected"
-          />
-          <HugeiconsIcon icon={HandPointingDown01Icon} size={64} className="animate-bounce text-muted" />
-        </FlexBox>
+          {/* Selection Flow */}
+          <div className="flex flex-col gap-10" >
+
+            {/* Select an image */}
+
+            <AnimatedContainer
+              condition={artworkIds.length > 0}
+              className="flex flex-col gap-3"
+            >
+              <NumberedSection
+                number={1}
+                title="Select an image"
+                description="Choose a well-cropped, main image to use as the reference base for generating the room mockup."
+              />
+              <div
+                className="mt-3"
+              >
+                {imagesLoading ?
+                  <LoadingSpinner />
+                  :
+                  <>
+                    {medias.length === 0 && (
+                      <Empty
+                        image={Empty.PRESENTED_IMAGE_SIMPLE}
+                        description="No images found in resources"
+                      />
+                    )}
+                    {medias.length > 0 && (
+                      <ImageGroupFlex
+                        images={medias.map((media: any) => media.urls.thumb)}
+                        size="sm"
+                        className="rounded-lg"
+                        onClick={handleImageClick}
+                        selectedIndex={selectedImageIndex ?? undefined}
+                        setSelectedIndex={setSelectedImageIndex}
+                      />
+                    )}
+                  </>
+                }
+              </div>
+            </AnimatedContainer>
+
+            {/* Select environment */}
+
+            <AnimatedContainer
+              condition={selectedImageIndex !== null && !imagesLoading}
+              type="fadeUp"
+              className="flex flex-col gap-3"
+            >
+              <NumberedSection
+                number={2}
+                title="Select environment"
+              />
+              <Radio.Group
+                optionType="button"
+                buttonStyle="solid"
+                options={Object.entries(MOCKUP_ENVIRONMENTS).map(([value, label]) => ({ value, label }))}
+                value={selectedEnvironment ?? undefined}
+                onChange={(e) => setSelectedEnvironment(e.target.value)}
+              />
+            </AnimatedContainer>
+          </div>
+
+          {/* Generate Button */}
+          <AnimatedContainer
+            condition={showButton}
+            type="fadeUp"
+            className="flex justify-end"
+          >
+            <Button
+              type="primary"
+              icon={<HugeiconsIcon icon={AiMagicIcon} />}
+              onClick={() => generateMutation.mutate()}
+              loading={generateMutation.isPending}
+            >
+              Generate Mockup
+            </Button>
+          </AnimatedContainer>
+        </>
       )}
 
-      {/* Selection Flow */}
-      <div className="flex flex-col gap-10" >
-
-        {/* Select an image */}
-
-        <AnimatedContainer
-          condition={artworkIds.length > 0}
-          className="flex flex-col gap-3"
-        >
-          <NumberedSection
-            number={1}
-            title="Select an image"
-            description="Choose a well-cropped, main image to use as the reference base for generating the room mockup."
+      {conversationId && (
+        <div className="py-5">
+          <LoadingAi
+            message="Generating Mockup..."
           />
-          <div
-            className="mt-3"
-          >
-            {imagesLoading ?
-              <LoadingSpinner />
-              :
-              <>
-                {medias.length === 0 && (
-                  <Empty
-                    image={Empty.PRESENTED_IMAGE_SIMPLE}
-                    description="No images found in resources"
-                  />
-                )}
-                {medias.length > 0 && (
-                  <ImageGroupFlex
-                    images={medias.map((media: any) => media.urls.thumb)}
-                    size="sm"
-                    className="rounded-lg"
-                    onClick={handleImageClick}
-                    selectedIndex={selectedImageIndex ?? undefined}
-                    setSelectedIndex={setSelectedImageIndex}
-                  />
-                )}
-              </>
-            }
-          </div>
-        </AnimatedContainer>
-
-        {/* Select environment */}
-
-        <AnimatedContainer
-          condition={selectedImageIndex !== null && !imagesLoading}
-          type="fadeUp"
-          className="flex flex-col gap-3"
-        >
-          <NumberedSection
-            number={2}
-            title="Select environment"
-          />
-          <Radio.Group
-            optionType="button"
-            buttonStyle="solid"
-            options={Object.entries(MOCKUP_ENVIRONMENTS).map(([value, label]) => ({ value, label }))}
-            value={selectedEnvironment ?? undefined}
-            onChange={(e) => setSelectedEnvironment(e.target.value)}
-          />
-        </AnimatedContainer>
-      </div>
-
-      {/* Generate Button */}
-      <AnimatedContainer
-        condition={showButton}
-        type="fadeUp"
-        className="flex justify-end"
-      >
-        <Button
-          type="primary"
-          icon={<HugeiconsIcon icon={AiMagicIcon} />}
-          onClick={() => generateMutation.mutate()}
-          loading={generateMutation.isPending}
-        >
-          Generate Mockup
-        </Button>
-      </AnimatedContainer>
+        </div>
+      )}
     </div>
   )
 }
