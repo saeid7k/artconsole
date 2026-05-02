@@ -63,6 +63,7 @@ function Resources() {
     <>
       <Container
         label="Resources"
+        className={resources.length === 0 ? '!border-primary-500 border-2' : ''}
       >
         <FlexBox wrapping="wrap" >
           {resources.map((resource: AiResource, index: number) => (
