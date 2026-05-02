@@ -13,6 +13,9 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
+  assetsInclude: [
+    '**/*.lottie'
+  ],
   server: {
     watch: {
       ignored: ['**/*.php'],
@@ -24,6 +27,7 @@ export default defineConfig({
       '~': path.resolve(__dirname),
       '@css': path.resolve(__dirname, 'resources/css'),
       '@images': path.resolve(__dirname, 'resources/images'),
+      '@animations': path.resolve(__dirname, 'resources/animations'),
     }
   }
 });
