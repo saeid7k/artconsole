@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\MockupEnvironment;
+use App\Jobs\GenerateMockup;
 use App\Models\Artwork;
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class AiController extends Controller
 {
@@ -53,8 +57,26 @@ class AiController extends Controller
   public function generateMockup(Request $request)
   {
     $validated = $request->validate([
-      'media_id' => 'required|integer',
-      'environment' => 'required|string',
+      'media_id' => ['required', 'integer', Rule::exists('media', 'id')],
+      'environment' => ['required', Rule::enum(MockupEnvironment::class)],
     ]);
+
+    $user = $request->user();
+    $gallery = $user->currentGallery();
+    $media = $gallery->media()->find($validated['media_id']);
+
+    $conversationId = Str::uuid()->toString();
+
+    // GenerateMockup::dispatch(
+    //   conversationId: $conversationId,
+    //   userId: $user->id,
+    //   mediaId: $media->id,
+    //   environment: MockupEnvironment::from($request->input('environment'))->label()
+    // );
+
+    return response()->json([
+      'message' => 'Mockup generation started',
+      'conversation_id' => $conversationId,
+    ], 202);
   }
 }

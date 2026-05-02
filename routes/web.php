@@ -178,7 +178,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
   Route::prefix('ai')->name('ai.')->group(function () {
     Route::post('/get-resource', [App\Http\Controllers\AiController::class, 'getResource'])->name('get-resource');
-    Route::post('/mockup', [App\Http\Controllers\AiController::class, 'generateMockup'])->name('mockup');
+    Route::prefix('mockup')->name('mockup.')->group(function () {
+      Route::post('/generate', [App\Http\Controllers\AiController::class, 'generateMockup'])->name('generate');
+    });
   });
 });
 
