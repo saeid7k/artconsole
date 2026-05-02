@@ -1,26 +1,35 @@
 import AnimatedContainer from "@/Components/AnimatedContainer"
+import FlexBox from "@/Components/Containers/FlexBox"
 import NumberedSection from "@/Components/Containers/NumberedSection"
 import ImageGroupFlex from "@/Components/ImageGroupFlex"
 import LoadingSpinner from "@/Components/LoadingSpinner"
+import { MOCKUP_ENVIRONMENTS } from "@/constants/Ai/mockupEnvironments"
 import { useAiAssistant } from "@/contexts/AiAssistantContext"
 import { AiResource } from "@/types/aiResource"
-import { AiMagicIcon } from "@hugeicons/core-free-icons"
+import { AiMagicIcon, HandPointingDown01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { useQuery } from "@tanstack/react-query"
-import { Button, Empty, Radio } from "antd"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import { Button, Empty, message, Radio } from "antd"
 import axios from "axios"
 import { useEffect, useRef, useState } from "react"
 
 function Mockup() {
 
+  // Context and hooks
+
   const { resources } = useAiAssistant()
+
+  // State
 
   const isInitialRender = useRef(true)
   const [medias, setMedias] = useState<any[]>([])
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null)
   const [selectedEnvironment, setSelectedEnvironment] = useState<string | null>(null)
+  const [conversationId, setConversationId] = useState<string | null>(null)
 
   const artworkIds = resources.filter((resource: AiResource) => resource.type === 'artworks').map((resource: AiResource) => resource.id)
+
+  // Fetch media
 
   const mediaQuery = useQuery({
     queryKey: ['mockupMedias', artworkIds],
@@ -30,6 +39,22 @@ function Mockup() {
     }),
     enabled: artworkIds.length > 0,
   })
+
+  const generateMutation = useMutation({
+    mutationKey: ['generateMockup', selectedImageIndex, selectedEnvironment],
+    mutationFn: () => axios.post(route('ai.mockup.generate'), {
+      media_id: medias[selectedImageIndex!].id,
+      environment: selectedEnvironment,
+    }),
+    onSuccess: (res: any) => {
+      setConversationId(res.data.conversation_id)
+    },
+    onError: (err: any) => {
+      message.error(err?.response?.data?.message || 'Failed to generate mockup')
+    }
+  })
+
+  // Handlers
 
   function handleImageClick(index: number) {
     setSelectedImageIndex(index === selectedImageIndex ? null : index)
@@ -48,12 +73,34 @@ function Mockup() {
     mediaQuery.refetch()
   }, [resources])
 
+  // Derived state
+
   const imagesLoading = artworkIds.length > 0 && (mediaQuery.isLoading || mediaQuery.isFetching || mediaQuery.isPending)
+  const showButton = selectedImageIndex !== null && selectedEnvironment !== null && !conversationId
 
   return (
     <div className="flex flex-col gap-20">
+
+      {/* No resources selected */}
+      {resources.length === 0 && (
+        <FlexBox direction="col" >
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description="No resources selected"
+          />
+          <HugeiconsIcon icon={HandPointingDown01Icon} size={64} className="animate-bounce text-muted" />
+        </FlexBox>
+      )}
+
+      {/* Selection Flow */}
       <div className="flex flex-col gap-10" >
-        <div className="flex flex-col gap-3">
+
+        {/* Select an image */}
+
+        <AnimatedContainer
+          condition={artworkIds.length > 0}
+          className="flex flex-col gap-3"
+        >
           <NumberedSection
             number={1}
             title="Select an image"
@@ -85,7 +132,9 @@ function Mockup() {
               </>
             }
           </div>
-        </div>
+        </AnimatedContainer>
+
+        {/* Select environment */}
 
         <AnimatedContainer
           condition={selectedImageIndex !== null && !imagesLoading}
@@ -99,27 +148,24 @@ function Mockup() {
           <Radio.Group
             optionType="button"
             buttonStyle="solid"
-            options={[
-              { label: 'Art Gallery', value: 'art_gallery' },
-              { label: 'Living Room', value: 'living_room' },
-              { label: 'Bedroom', value: 'bedroom' },
-              { label: 'Office', value: 'office' },
-            ]}
+            options={Object.entries(MOCKUP_ENVIRONMENTS).map(([value, label]) => ({ value, label }))}
             value={selectedEnvironment ?? undefined}
             onChange={(e) => setSelectedEnvironment(e.target.value)}
           />
         </AnimatedContainer>
       </div>
 
+      {/* Generate Button */}
       <AnimatedContainer
-        condition={selectedImageIndex !== null && selectedEnvironment !== null}
+        condition={showButton}
         type="fadeUp"
         className="flex justify-end"
       >
         <Button
           type="primary"
-          size="large"
           icon={<HugeiconsIcon icon={AiMagicIcon} />}
+          onClick={() => generateMutation.mutate()}
+          loading={generateMutation.isPending}
         >
           Generate Mockup
         </Button>
