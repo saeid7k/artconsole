@@ -4,13 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class AgentConversationMessage extends Model
+class AgentConversationMessage extends Model implements HasMedia
 {
+  use InteractsWithMedia;
+
   protected $keyType = 'string';
   public $incrementing = false;
 
   protected $fillable = [
+    'id',
     'conversation_id',
     'user_id',
     'agent',
