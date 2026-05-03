@@ -12,10 +12,12 @@ class MockupAgent implements Agent, Conversational
 {
   use Promptable, RemembersConversations;
 
+  public string $provider;
   public string $model;
 
   public function __construct()
   {
+    $this->provider = config('ai.default_for_images');
     $this->model = config('ai.models.mockup');
   }
 
