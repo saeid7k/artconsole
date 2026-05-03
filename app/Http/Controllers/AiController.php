@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Enums\MockupEnvironment;
 use App\Jobs\GenerateMockup;
+use App\Models\AgentConversation;
 use App\Models\Artwork;
 use App\Models\Contact;
+use App\Models\Media;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
@@ -62,17 +64,21 @@ class AiController extends Controller
     ]);
 
     $user = $request->user();
-    $gallery = $user->currentGallery();
-    $media = $gallery->media()->find($validated['media_id']);
+    $media = Media::where('id', $validated['media_id'])
+      ->firstOrFail();
 
     $conversationId = Str::uuid()->toString();
+    AgentConversation::create([
+        'id' => $conversationId,
+        'user_id' => $user->id,
+        'title' => 'Mockup Generation',
+    ]);
 
-    // GenerateMockup::dispatch(
-    //   conversationId: $conversationId,
-    //   userId: $user->id,
-    //   mediaId: $media->id,
-    //   environment: MockupEnvironment::from($request->input('environment'))->label()
-    // );
+    GenerateMockup::dispatch(
+      conversationId: $conversationId,
+      mediaId: $media->id,
+      environment: MockupEnvironment::from($request->input('environment'))->label(),
+    );
 
     return response()->json([
       'message' => 'Mockup generation started',
