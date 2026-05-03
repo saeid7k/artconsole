@@ -180,6 +180,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/get-resource', [App\Http\Controllers\AiController::class, 'getResource'])->name('get-resource');
     Route::prefix('mockup')->name('mockup.')->group(function () {
       Route::post('/generate', [App\Http\Controllers\AiController::class, 'generateMockup'])->name('generate');
+      Route::get('/{conversationId}/result', [App\Http\Controllers\AiController::class, 'getMockupResult'])->name('result');
     });
   });
 });
