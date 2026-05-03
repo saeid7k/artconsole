@@ -86,4 +86,35 @@ class AiController extends Controller
       'conversation_id' => $conversationId,
     ], 202);
   }
+
+  public function getMockupResult(Request $request, string $conversationId)
+  {
+    $statuses = ['pending', 'pending', 'pending', 'pending', 'success'];
+    $res = $statuses[array_rand($statuses)];
+    if ($res == 'pending') {
+      return response()->json(['message' => 'Mockup not ready yet'], 202);
+    }
+
+    $conversation = AgentConversation::where('id', $conversationId)
+      ->firstOrFail();
+
+    $assistantMessage = $conversation->messages()
+      ->where('role', 'assistant')
+      ->first();
+
+    if (!$assistantMessage) {
+      return response()->json(['message' => 'Mockup not ready yet'], 202);
+    }
+
+    $mediaId = $assistantMessage->attachments[0]['media_id'] ?? null;
+    $media = Media::find($mediaId);
+
+    if (!$media) {
+      return response()->json(['message' => 'Mockup generation failed'], 500);
+    }
+
+    return response()->json([
+      'url' => $media->getUrl(),
+    ], 200);
+  }
 }

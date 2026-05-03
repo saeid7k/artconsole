@@ -10,7 +10,7 @@ import { AiResource } from "@/types/aiResource"
 import { AiMagicIcon, HandPointingDown01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { Button, Empty, message, Radio } from "antd"
+import { Button, Empty, Image, message, Radio } from "antd"
 import axios from "axios"
 import { useEffect, useRef, useState } from "react"
 
@@ -27,10 +27,12 @@ function Mockup() {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null)
   const [selectedEnvironment, setSelectedEnvironment] = useState<string | null>(null)
   const [conversationId, setConversationId] = useState<string | null>(null)
+  const [resultStatus, setResultStatus] = useState<'pending' | 'success' | 'error' | null>(null)
+  const [resultUrl, setResultUrl] = useState<string | null>(null)
 
   const artworkIds = resources.filter((resource: AiResource) => resource.type === 'artworks').map((resource: AiResource) => resource.id)
 
-  // Fetch media
+  // Resource Management
 
   const mediaQuery = useQuery({
     queryKey: ['mockupMedias', artworkIds],
@@ -40,22 +42,6 @@ function Mockup() {
     }),
     enabled: artworkIds.length > 0,
   })
-
-  const generateMutation = useMutation({
-    mutationKey: ['generateMockup', selectedImageIndex, selectedEnvironment],
-    mutationFn: () => axios.post(route('ai.mockup.generate'), {
-      media_id: medias[selectedImageIndex!].id,
-      environment: selectedEnvironment,
-    }),
-    onSuccess: (res: any) => {
-      setConversationId(res.data.conversation_id)
-    },
-    onError: (err: any) => {
-      message.error(err?.response?.data?.message || 'Failed to generate mockup')
-    }
-  })
-
-  // Handlers
 
   function handleImageClick(index: number) {
     setSelectedImageIndex(index === selectedImageIndex ? null : index)
@@ -73,6 +59,51 @@ function Mockup() {
     }
     mediaQuery.refetch()
   }, [resources])
+
+  // Mockup Generation
+
+  const generateMutation = useMutation({
+    mutationKey: ['generateMockup', selectedImageIndex, selectedEnvironment],
+    mutationFn: () => axios.post(route('ai.mockup.generate'), {
+      media_id: medias[selectedImageIndex!].id,
+      environment: selectedEnvironment,
+    }),
+    onSuccess: (res: any) => {
+      setConversationId(res.data.conversation_id)
+    },
+    onError: (err: any) => {
+      message.error(err?.response?.data?.message || 'Failed to generate mockup')
+    }
+  })
+
+  function pollForResult() {
+    if (!conversationId) return;
+
+    setResultStatus('pending')
+    const interval = setInterval(() => {
+      axios.get(route('ai.mockup.result', { conversationId }))
+        .then(res => {
+          if (res.status === 200) {
+            message.success('Mockup generated successfully!')
+            setResultStatus('success')
+            setResultUrl(res.data.url)
+            clearInterval(interval)
+          }
+        })
+        .catch(err => {
+          if (err.response?.status === 202) {
+          } else {
+            message.error(err?.response?.data?.message || 'Failed to get mockup result')
+            setResultStatus('error')
+            clearInterval(interval)
+          }
+        })
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }
+
+  useEffect(pollForResult, [conversationId])
 
   // Derived state
 
@@ -175,11 +206,26 @@ function Mockup() {
         </>
       )}
 
-      {conversationId && (
+      {resultStatus === 'pending' && (
         <div className="py-5">
           <LoadingAi
             message="Generating Mockup..."
           />
+        </div>
+      )}
+
+      {resultStatus === 'success' && resultUrl && (
+        <div className="flex flex-col gap-3">
+          <div className="text-lg font-semibold">Here is your generated mockup:</div>
+          <div
+            className="max-h-[400px] w-auto max-w-100"
+          >
+            <Image
+              src={resultUrl}
+              alt="Generated Mockup"
+              className="max-h-100 aspect-auto rounded-lg shadow"
+            />
+          </div>
         </div>
       )}
     </div>
