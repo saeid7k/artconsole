@@ -12,6 +12,7 @@ class AgentConversation extends Model
   public $incrementing = false;
 
   protected $fillable = [
+    'id',
     'user_id',
     'title',
   ];
