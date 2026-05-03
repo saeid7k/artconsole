@@ -69,12 +69,13 @@ class AiController extends Controller
 
     $conversationId = Str::uuid()->toString();
     AgentConversation::create([
-        'id' => $conversationId,
-        'user_id' => $user->id,
-        'title' => 'Mockup Generation',
+      'id' => $conversationId,
+      'user_id' => $user->id,
+      'title' => 'Mockup Generation',
     ]);
 
     GenerateMockup::dispatch(
+      userId: $user->id,
       conversationId: $conversationId,
       mediaId: $media->id,
       environment: MockupEnvironment::from($request->input('environment'))->label(),

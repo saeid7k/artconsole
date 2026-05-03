@@ -7,6 +7,7 @@ use App\Models\AgentConversationMessage;
 use App\Models\Media;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Ai\Files\Image as AiImage;
 use Laravel\Ai\Image;
@@ -18,6 +19,7 @@ class GenerateMockup implements ShouldQueue
   public $timeout = 120;
 
   public function __construct(
+    public string $userId,
     public string $conversationId,
     public int $mediaId,
     public string $environment
@@ -35,18 +37,11 @@ class GenerateMockup implements ShouldQueue
       $userPrompt .= "\nDimensions: {$artwork->formatted_dimensions}";
     }
     $fullPrompt = (string) $agent->instructions() . "\n\n" . $userPrompt;
-    $base64Image = $media->base64Content();
-    [, $imageData] = explode(',', $base64Image, 2);
-    $options = $agent->options();
-
-    $response = Image::of($fullPrompt)
-      ->attachments([AiImage::fromBase64($imageData, $media->mime_type)])
-      ->quality($options['quality'] ?? 'low')
-      ->generate($agent->provider, $agent->model);
 
     AgentConversationMessage::create([
       'id' => Str::uuid()->toString(),
       'conversation_id' => $this->conversationId,
+      'user_id' => $this->userId,
       'agent' => MockupAgent::class,
       'role' => 'user',
       'content' => $userPrompt,
@@ -57,40 +52,58 @@ class GenerateMockup implements ShouldQueue
       'meta' => [],
     ]);
 
-    $generatedImage = $response->firstImage();
-    $imageContent = $generatedImage->content();
-    $mimeType = $generatedImage->mime ?? 'image/png';
-    $extension = match ($mimeType) {
-      'image/jpeg', 'image/jpg' => 'jpg',
-      'image/webp' => 'webp',
-      default => 'png',
-    };
+    $base64Image = $media->base64Content();
+    [, $imageData] = explode(',', $base64Image, 2);
+    $options = $agent->options();
 
-    $generatedMedia = $artwork->addMediaFromString($imageContent)
-      ->usingFileName("Mockup-{$this->environment}.{$extension}")
-      ->withProperties(['mime_type' => $mimeType])
-      ->withCustomProperties([
-          'ai_generated' => true,
-          'conversation_id' => $this->conversationId,
-        ])
-      ->toMediaCollection('mockups');
+    $response = null;
+    try {
+      $response = Image::of($fullPrompt)
+        ->attachments([AiImage::fromBase64($imageData, $media->mime_type)])
+        ->quality($options['quality'] ?? 'low')
+        ->generate($agent->provider, $agent->model);
+
+      $generatedImage = $response->firstImage();
+      $imageContent = $generatedImage->content();
+      $mimeType = $generatedImage->mime ?? 'image/png';
+      $extension = match ($mimeType) {
+        'image/jpeg', 'image/jpg' => 'jpg',
+        'image/webp' => 'webp',
+        default => 'png',
+      };
+
+      $generatedMedia = $artwork->addMediaFromString($imageContent)
+        ->usingFileName("Mockup-{$this->environment}.{$extension}")
+        ->withProperties(['mime_type' => $mimeType])
+        ->withCustomProperties([
+            'ai_generated' => true,
+            'conversation_id' => $this->conversationId,
+          ])
+        ->toMediaCollection('mockups');
+    } catch (\Throwable $th) {
+      Log::error('Mockup generation failed', [
+        'conversation_id' => $this->conversationId,
+        'error' => $th->getMessage(),
+      ]);
+    }
 
     $responseMessage = AgentConversationMessage::create([
       'id' => Str::uuid()->toString(),
       'conversation_id' => $this->conversationId,
+      'user_id' => $this->userId,
       'agent' => MockupAgent::class,
       'role' => 'assistant',
-      'content' => '',
+      'content' => $generatedMedia ? 'Mockup generated successfully.' : 'Failed to generate mockup.',
       'attachments' => [
         [
           'type' => 'image',
-          'media_id' => $generatedMedia->id,
+          'media_id' => $generatedMedia?->id ?? null,
         ],
       ],
       'tool_calls' => [],
       'tool_results' => [],
-      'usage' => $response->usage->toArray(),
-      'meta' => $response->meta->toArray(),
+      'usage' => $response ? $response?->usage?->toArray() ?? [] : [],
+      'meta' => $response ? $response?->meta?->toArray() ?? [] : [],
     ]);
   }
 }
