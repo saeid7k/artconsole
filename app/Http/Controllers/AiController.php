@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\MockupEnvironment;
 use App\Jobs\GenerateMockup;
 use App\Models\AgentConversation;
+use App\Models\AgentConversationMessage;
 use App\Models\Artwork;
 use App\Models\Contact;
 use App\Models\Media;
@@ -117,5 +118,17 @@ class AiController extends Controller
       'url' => $media->getUrl(),
       'file_name' => $media->file_name,
     ], 200);
+  }
+
+  public function recentSessions(Request $request)
+  {
+    $user = $request->user();
+
+    $recentSessions = AgentConversationMessage::where('user_id', $user->id)
+      ->where('role', 'assistant')
+      ->latest()
+      ->paginate(5);
+
+    return response()->json($recentSessions);
   }
 }
