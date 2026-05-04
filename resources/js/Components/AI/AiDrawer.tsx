@@ -3,11 +3,12 @@ import { useApp } from "@/contexts/AppContext";
 import { ucFirst } from "@/utils/stringHelper";
 import { RoboticIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Breadcrumb, Drawer } from "antd";
+import { Breadcrumb, Button, Drawer } from "antd";
 import { useState } from "react";
 import AnimatedContainer from "../AnimatedContainer";
 import MainMenu from "./MainMenu";
 import Mockup from "./Mockup/Mockup";
+import RecentSessions from "./RecentSessions";
 import Resources from "./Resources";
 
 function AiDrawer() {
@@ -42,6 +43,16 @@ function AiDrawer() {
             className="absolute top-0 w-full"
           >
             <MainMenu />
+            <div className="flex justify-center mt-3">
+              <Button
+                type="text"
+                size="small"
+                className="text-muted font-light"
+                onClick={() => setWidgetEnabled('recent_sessions')}
+              >
+                Recent Sessions
+              </Button>
+            </div>
           </AnimatedContainer>
 
           {/* Body */}
@@ -56,7 +67,7 @@ function AiDrawer() {
                   { title: <a><HugeiconsIcon icon={RoboticIcon} size={20} /></a>, onClick: () => setWidgetEnabled(null) },
                   { title: widgetEnabled ? ucFirst(widgetEnabled.replaceAll('_', ' ')) : undefined }
                 ]}
-                className="sticky top-0"
+                className="sticky top-0 bg-base dark:!bg-slate-900"
               />
 
               {/* Widget Content */}
@@ -64,16 +75,21 @@ function AiDrawer() {
                 {widgetEnabled === 'mockup' && (
                   <Mockup />
                 )}
+                {widgetEnabled === 'recent_sessions' && (
+                  <RecentSessions />
+                )}
               </div>
             </AnimatedContainer>
           </div>
 
           {/* Resources */}
-          <div
-            className="w-full sticky bottom-0"
-          >
-            <Resources />
-          </div>
+          <AnimatedContainer condition={widgetEnabled !== 'recent_sessions'} type="fadeUp" speed="slow" >
+            <div
+              className="w-full sticky bottom-0 z-100"
+            >
+              <Resources />
+            </div>
+          </AnimatedContainer>
         </div>
       </AiAssistantProvider>
     </Drawer>
