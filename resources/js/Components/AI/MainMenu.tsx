@@ -1,6 +1,7 @@
+import AI_MENU_ITEMS from "@/constants/Ai/aiMenuItems"
 import { useAiAssistant } from "@/contexts/AiAssistantContext"
 import colors from "@/Themes/theme"
-import { AiContentGenerator01Icon, AiSearch02Icon, RoboticIcon, Sofa01Icon } from "@hugeicons/core-free-icons"
+import { RoboticIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import FlexBox from "../Containers/FlexBox"
 import ItemRow from "../Containers/ItemRow"
@@ -8,12 +9,6 @@ import ItemRow from "../Containers/ItemRow"
 function MainMenu() {
 
   const { setWidgetEnabled } = useAiAssistant()
-
-  const AiMenuItems = [
-    {id: 'mockup', icon: <HugeiconsIcon icon={Sofa01Icon} />, label: 'Create room mockup image'},
-    {id: 'artwork_description' , icon: <HugeiconsIcon icon={AiContentGenerator01Icon} />, label: 'Generate artwork description'},
-    {id: 'financial_analysis', icon: <HugeiconsIcon icon={AiSearch02Icon} />, label: 'Financial analysis'},
-  ]
 
   return (
     <div>
@@ -24,7 +19,7 @@ function MainMenu() {
         </div>
       </FlexBox>
       <div className="flex flex-col gap-2">
-        {AiMenuItems.map(item => (
+        {AI_MENU_ITEMS.map(item => (
           <ItemRow
             key={item.id}
             icon={item.icon}
