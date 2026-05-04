@@ -233,7 +233,7 @@ function Mockup() {
               className="max-h-100 aspect-auto rounded-lg shadow"
             />
           </div>
-          <FlexBox direction="col" alignItems="start" >
+          <FlexBox direction="col" alignItems="start" gap={2} >
             <Button
               type="default"
               icon={<HugeiconsIcon icon={DashboardSquareAddIcon} size={20} />}
