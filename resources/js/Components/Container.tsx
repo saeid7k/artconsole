@@ -9,7 +9,7 @@ type Props = PropsWithChildren<{
 function Container({ label, className, children }: Props) {
   return (
     <div
-      className={`mt-3 flex flex-col bg-white border border-dashed border-purple-300 rounded-lg p-2 ${className}`}
+      className={`mt-3 flex flex-col bg-base border border-dashed border-purple-300 rounded-lg p-2 ${className}`}
     >
       <small className="text-primary -translate-y-1">{label}</small>
       <div>
