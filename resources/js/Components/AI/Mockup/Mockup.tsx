@@ -7,7 +7,8 @@ import LoadingSpinner from "@/Components/LoadingSpinner"
 import { MOCKUP_ENVIRONMENTS } from "@/constants/Ai/mockupEnvironments"
 import { useAiAssistant } from "@/contexts/AiAssistantContext"
 import { AiResource } from "@/types/aiResource"
-import { AiMagicIcon, HandPointingDown01Icon } from "@hugeicons/core-free-icons"
+import { downloadFile } from "@/utils/downloadHelper"
+import { AiMagicIcon, DashboardSquareAddIcon, Download01Icon, HandPointingDown01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { Button, Empty, Image, message, Radio } from "antd"
@@ -27,15 +28,18 @@ function Mockup() {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null)
   const [selectedEnvironment, setSelectedEnvironment] = useState<string | null>(null)
   const [conversationId, setConversationId] = useState<string | null>(null)
-  const [resultStatus, setResultStatus] = useState<'pending' | 'success' | 'error' | null>(null)
-  const [resultUrl, setResultUrl] = useState<string | null>(null)
+  const [result, setResult] = useState<{ status: 'pending' | 'success' | 'error' | null, url: string | null, fileName: string | null }>({
+    status: null,
+    url: null,
+    fileName: null,
+  })
 
   const artworkIds = resources.filter((resource: AiResource) => resource.type === 'artworks').map((resource: AiResource) => resource.id)
 
   // Resource Management
 
   const mediaQuery = useQuery({
-    queryKey: ['mockupMedias', artworkIds],
+    queryKey: ['artworksImages', artworkIds],
     queryFn: () => axios.post(route('artworks.get-images-by-ids'), { artwork_ids: artworkIds }).then(res => {
       setMedias(res.data)
       return res.data
@@ -79,14 +83,17 @@ function Mockup() {
   function pollForResult() {
     if (!conversationId) return;
 
-    setResultStatus('pending')
+    setResult(prev => ({ ...prev, status: 'pending' }))
     const interval = setInterval(() => {
       axios.get(route('ai.mockup.result', { conversationId }))
         .then(res => {
           if (res.status === 200) {
             message.success('Mockup generated successfully!')
-            setResultStatus('success')
-            setResultUrl(res.data.url)
+            setResult({
+              status: 'success',
+              url: res.data.url,
+              fileName: res.data.file_name || 'mockup.png'
+            })
             clearInterval(interval)
           }
         })
@@ -94,7 +101,7 @@ function Mockup() {
           if (err.response?.status === 202) {
           } else {
             message.error(err?.response?.data?.message || 'Failed to get mockup result')
-            setResultStatus('error')
+            setResult(prev => ({ ...prev, status: 'error' }))
             clearInterval(interval)
           }
         })
@@ -206,7 +213,7 @@ function Mockup() {
         </>
       )}
 
-      {resultStatus === 'pending' && (
+      {result.status === 'pending' && (
         <div className="py-5">
           <LoadingAi
             message="Generating Mockup..."
@@ -214,18 +221,33 @@ function Mockup() {
         </div>
       )}
 
-      {resultStatus === 'success' && resultUrl && (
+      {result.status === 'success' && result.url && (
         <div className="flex flex-col gap-3">
-          <div className="text-lg font-semibold">Here is your generated mockup:</div>
+          <div className="text-lg font-semibold">Here is your generated mockup</div>
           <div
             className="max-h-[400px] w-auto max-w-100"
           >
             <Image
-              src={resultUrl}
+              src={result.url}
               alt="Generated Mockup"
               className="max-h-100 aspect-auto rounded-lg shadow"
             />
           </div>
+          <FlexBox direction="col" alignItems="start" >
+            <Button
+              type="default"
+              icon={<HugeiconsIcon icon={DashboardSquareAddIcon} size={20} />}
+            >
+              Add to Artwork Images
+            </Button>
+            <Button
+              type="default"
+              icon={<HugeiconsIcon icon={Download01Icon} size={20} />}
+              onClick={() => downloadFile({ url: result.url ?? '', fileName: result.fileName }) }
+            >
+              Download
+            </Button>
+          </FlexBox>
         </div>
       )}
     </div>

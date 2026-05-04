@@ -115,6 +115,7 @@ class AiController extends Controller
 
     return response()->json([
       'url' => $media->getUrl(),
+      'file_name' => $media->file_name,
     ], 200);
   }
 }
