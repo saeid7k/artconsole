@@ -56,7 +56,7 @@ function AiDrawer() {
                   { title: <a><HugeiconsIcon icon={RoboticIcon} size={20} /></a>, onClick: () => setWidgetEnabled(null) },
                   { title: widgetEnabled ? ucFirst(widgetEnabled.replaceAll('_', ' ')) : undefined }
                 ]}
-                className="sticky top-0 bg-base"
+                className="sticky top-0"
               />
 
               {/* Widget Content */}
