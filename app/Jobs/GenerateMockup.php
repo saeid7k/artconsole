@@ -34,7 +34,7 @@ class GenerateMockup implements ShouldQueue
     $agent = new MockupAgent();
     $userPrompt = "Environment: {$this->environment}";
     if ($artwork->dimensions) {
-      $userPrompt .= "\nDimensions: {$artwork->formatted_dimensions}";
+      $userPrompt .= "\nDimensions of Artwork: {$artwork->formatted_dimensions}";
     }
     $fullPrompt = (string) $agent->instructions() . "\n\n" . $userPrompt;
 
@@ -45,11 +45,18 @@ class GenerateMockup implements ShouldQueue
       'agent' => MockupAgent::class,
       'role' => 'user',
       'content' => $userPrompt,
-      'attachments' => [['type' => 'image', 'media_id' => $this->mediaId]],
+      'attachments' => [
+          [
+            'type' => 'image',
+            'media_id' => $this->mediaId,
+          ]
+        ],
       'tool_calls' => [],
       'tool_results' => [],
       'usage' => [],
-      'meta' => [],
+      'meta' => [
+        'artwork_id' => $artwork->id,
+      ],
     ]);
 
     $base64Image = $media->base64Content();
@@ -73,7 +80,7 @@ class GenerateMockup implements ShouldQueue
       };
 
       $generatedMedia = $artwork->addMediaFromString($imageContent)
-        ->usingFileName("Mockup-{$this->environment}.{$extension}")
+        ->usingFileName("Mockup-" . Str::slug($artwork->title) . ".{$extension}")
         ->withProperties(['mime_type' => $mimeType])
         ->withCustomProperties([
             'ai_generated' => true,
@@ -87,6 +94,11 @@ class GenerateMockup implements ShouldQueue
       ]);
     }
 
+    $responseMeta = [
+      'artwork_id' => $artwork->id,
+      ...($response ? $response->meta?->toArray() ?? [] : []),
+    ];
+
     $responseMessage = AgentConversationMessage::create([
       'id' => Str::uuid()->toString(),
       'conversation_id' => $this->conversationId,
@@ -98,12 +110,13 @@ class GenerateMockup implements ShouldQueue
         [
           'type' => 'image',
           'media_id' => $generatedMedia?->id ?? null,
+          'artwork_id' => $artwork->id,
         ],
       ],
       'tool_calls' => [],
       'tool_results' => [],
       'usage' => $response ? $response?->usage?->toArray() ?? [] : [],
-      'meta' => $response ? $response?->meta?->toArray() ?? [] : [],
+      'meta' => $responseMeta,
     ]);
   }
 }

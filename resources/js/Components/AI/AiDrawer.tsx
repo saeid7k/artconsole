@@ -7,7 +7,7 @@ import { Breadcrumb, Button, Drawer } from "antd";
 import { useState } from "react";
 import AnimatedContainer from "../AnimatedContainer";
 import MainMenu from "./MainMenu";
-import Mockup from "./Mockup/Mockup";
+import MockupGeneration from "./Mockup/MockupGeneration";
 import RecentSessions from "./RecentSessions";
 import Resources from "./Resources";
 
@@ -73,7 +73,7 @@ function AiDrawer() {
               {/* Widget Content */}
               <div className="pt-2">
                 {widgetEnabled === 'mockup' && (
-                  <Mockup />
+                  <MockupGeneration />
                 )}
                 {widgetEnabled === 'recent_sessions' && (
                   <RecentSessions />
@@ -83,7 +83,7 @@ function AiDrawer() {
           </div>
 
           {/* Resources */}
-          <AnimatedContainer condition={widgetEnabled !== 'recent_sessions'} type="fadeUp" speed="slow" >
+          <AnimatedContainer condition={widgetEnabled !== 'recent_sessions'} type="fade" speed="slow" >
             <div
               className="w-full sticky bottom-0 z-100"
             >

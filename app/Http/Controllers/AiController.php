@@ -90,12 +90,6 @@ class AiController extends Controller
 
   public function getMockupResult(Request $request, string $conversationId)
   {
-    $statuses = ['pending', 'pending', 'pending', 'pending', 'success'];
-    $res = $statuses[array_rand($statuses)];
-    if ($res == 'pending') {
-      return response()->json(['message' => 'Mockup not ready yet'], 202);
-    }
-
     $conversation = AgentConversation::where('id', $conversationId)
       ->firstOrFail();
 
@@ -107,24 +101,15 @@ class AiController extends Controller
       return response()->json(['message' => 'Mockup not ready yet'], 202);
     }
 
-    $mediaId = $assistantMessage->attachments[0]['media_id'] ?? null;
-    $media = Media::find($mediaId);
-
-    if (!$media) {
-      return response()->json(['message' => 'Mockup generation failed'], 500);
-    }
-
-    return response()->json([
-      'url' => $media->getUrl(),
-      'file_name' => $media->file_name,
-    ], 200);
+    return response()->json($assistantMessage, 200);
   }
 
   public function recentSessions(Request $request)
   {
     $user = $request->user();
 
-    $recentSessions = AgentConversationMessage::where('user_id', $user->id)
+    $recentSessions = AgentConversationMessage::with(['artwork' => fn($q) => $q->select('id', 'title')])
+      ->where('user_id', $user->id)
       ->where('role', 'assistant')
       ->latest()
       ->paginate(5);

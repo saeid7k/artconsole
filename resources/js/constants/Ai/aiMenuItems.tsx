@@ -1,6 +1,5 @@
-import { ucFirst } from "@/utils/stringHelper";
-import { AiContentGenerator01Icon, AiSearch02Icon, Sofa01Icon } from "@hugeicons/core-free-icons"
-import { HugeiconsIcon } from "@hugeicons/react"
+import { AiContentGenerator01Icon, AiSearch02Icon, Sofa01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 
 const AI_MENU_ITEMS = [
   {
@@ -23,9 +22,10 @@ const AI_MENU_ITEMS = [
   },
 ]
 
-function getAgentTitleByClass(agentClass: string) {
+function getAgentIdByClass(agentClass: string) {
   const item = AI_MENU_ITEMS.find(item => item.agent === agentClass);
-  return item ? ucFirst(item.id.replaceAll('_', ' ')) : 'AI Assistant';
+  return item ? item.id : 'assistant';
 }
 
-export {AI_MENU_ITEMS as default, getAgentTitleByClass}
+export { AI_MENU_ITEMS as default, getAgentIdByClass };
+

@@ -183,6 +183,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
       Route::post('/generate', [App\Http\Controllers\AiController::class, 'generateMockup'])->name('generate');
       Route::get('/{conversationId}/result', [App\Http\Controllers\AiController::class, 'getMockupResult'])->name('result');
     });
+    Route::prefix('message')->name('message.')->group(function () {
+      Route::get('/{messageId}/media', [App\Http\Controllers\AgentMessageController::class, 'getMedia'])->name('media');
+    });
   });
 });
 

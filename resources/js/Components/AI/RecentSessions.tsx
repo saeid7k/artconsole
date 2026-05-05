@@ -1,15 +1,21 @@
+import { getAgentIdByClass } from "@/constants/Ai/aiMenuItems"
+import { AiMessage } from "@/types/aiMessage"
+import { ucFirst } from "@/utils/stringHelper"
 import { useQuery } from "@tanstack/react-query"
+import { Button, Divider } from "antd"
 import axios from "axios"
-import StyledDate from "../StyledDate"
-import { getAgentTitleByClass } from "@/constants/Ai/aiMenuItems"
-import { Button } from "antd"
 import { useState } from "react"
+import AnimatedContainer from "../AnimatedContainer"
+import FlexBox from "../Containers/FlexBox"
 import LoadingSpinner from "../LoadingSpinner"
+import StyledDate from "../StyledDate"
+import MockupResponse from "./Mockup/MockupResponse"
 
 function RecentSessions() {
 
-  const [items, setItems] = useState<any[]>([])
+  const [items, setItems] = useState<AiMessage[]>([])
   const [nextPageUrl, setNextPageUrl] = useState<string | null>(null)
+  const [selectedSession, setSelectedSession] = useState<AiMessage | null>(null)
 
   const sessionsQuery = useQuery({
     queryKey: ['recentSessions'],
@@ -35,23 +41,39 @@ function RecentSessions() {
   }
 
   return (
-    <div className="flex flex-col gap-2 max-h-[60vh] overflow-y-auto">
-      {items.map((session: any) => (
-        <div
-          key={session.id}
-          className="flex justify-between items-center border px-2 py-1 rounded-lg hover:bg-gray-500/5 hover:cursor-pointer transition"
-        >
-          <div>{ getAgentTitleByClass(session.agent) }</div>
-          <div><StyledDate value={session.created_at} showIcon={false} /></div>
+    <div
+      className="mt-3"
+    >
+      {!selectedSession && (
+        <div className="flex flex-col gap-2 max-h-[60vh] overflow-y-auto">
+          {items.map((session: AiMessage) => (
+            <div
+              key={session.id}
+              className="flex justify-between items-center gap-3 border px-2 py-1 rounded-lg hover:bg-gray-500/5 hover:cursor-pointer transition"
+              onClick={() => setSelectedSession(session)}
+            >
+              <FlexBox>
+                <div>{ ucFirst(getAgentIdByClass(session.agent).replaceAll('_', ' ')) }</div>
+                <div><Divider orientation="vertical" /></div>
+                {session.artwork && <div className="text-muted line-clamp-1">{session.artwork.title}</div>}
+              </FlexBox>
+              <div><StyledDate value={session.created_at} showIcon={false} /></div>
+            </div>
+          ))}
+          <Button
+            onClick={() => loadMoreQuery.refetch()}
+            loading={loadMoreQuery.isFetching}
+            disabled={!nextPageUrl}
+          >
+            Load More
+          </Button>
         </div>
-      ))}
-      <Button
-        onClick={() => loadMoreQuery.refetch()}
-        loading={loadMoreQuery.isFetching}
-        disabled={!nextPageUrl}
-      >
-        Load More
-      </Button>
+      )}
+      <AnimatedContainer condition={!!selectedSession} type="slideLeft" >
+        {getAgentIdByClass(selectedSession?.agent ?? '') === 'mockup' && (
+          <MockupResponse message={selectedSession!} />
+        )}
+      </AnimatedContainer>
     </div>
   )
 }
