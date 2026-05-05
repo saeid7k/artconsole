@@ -6,16 +6,17 @@ import LoadingAi from "@/Components/Loaders/LoadingAi"
 import LoadingSpinner from "@/Components/LoadingSpinner"
 import { MOCKUP_ENVIRONMENTS } from "@/constants/Ai/mockupEnvironments"
 import { useAiAssistant } from "@/contexts/AiAssistantContext"
+import { AiMessage } from "@/types/aiMessage"
 import { AiResource } from "@/types/aiResource"
-import { downloadFile } from "@/utils/downloadHelper"
-import { AiMagicIcon, DashboardSquareAddIcon, Download01Icon, HandPointingDown01Icon } from "@hugeicons/core-free-icons"
+import { AiMagicIcon, HandPointingDown01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { Button, Empty, Image, message, Radio } from "antd"
+import { Button, Empty, message, Radio } from "antd"
 import axios from "axios"
 import { useEffect, useRef, useState } from "react"
+import MockupResponse from "./MockupResponse"
 
-function Mockup() {
+function MockupGeneration() {
 
   // Context and hooks
 
@@ -28,10 +29,9 @@ function Mockup() {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null)
   const [selectedEnvironment, setSelectedEnvironment] = useState<string | null>(null)
   const [conversationId, setConversationId] = useState<string | null>(null)
-  const [result, setResult] = useState<{ status: 'pending' | 'success' | 'error' | null, url: string | null, fileName: string | null }>({
+  const [result, setResult] = useState<{ status: 'pending' | 'success' | 'error' | null, agentMessage?: AiMessage }>({
     status: null,
-    url: null,
-    fileName: null,
+    agentMessage: undefined,
   })
 
   const artworkIds = resources.filter((resource: AiResource) => resource.type === 'artworks').map((resource: AiResource) => resource.id)
@@ -91,8 +91,7 @@ function Mockup() {
             message.success('Mockup generated successfully!')
             setResult({
               status: 'success',
-              url: res.data.url,
-              fileName: res.data.file_name || 'mockup.png'
+              agentMessage: res.data,
             })
             clearInterval(interval)
           }
@@ -221,37 +220,14 @@ function Mockup() {
         </div>
       )}
 
-      {result.status === 'success' && result.url && (
+      {result.status === 'success' && result.agentMessage && (
         <div className="flex flex-col gap-3">
           <div className="text-lg font-semibold">Here is your generated mockup</div>
-          <div
-            className="max-h-[400px] w-auto max-w-100"
-          >
-            <Image
-              src={result.url}
-              alt="Generated Mockup"
-              className="max-h-100 aspect-auto rounded-lg shadow"
-            />
-          </div>
-          <FlexBox direction="col" alignItems="start" gap={2} >
-            <Button
-              type="default"
-              icon={<HugeiconsIcon icon={DashboardSquareAddIcon} size={20} />}
-            >
-              Add to Artwork Images
-            </Button>
-            <Button
-              type="default"
-              icon={<HugeiconsIcon icon={Download01Icon} size={20} />}
-              onClick={() => downloadFile({ url: result.url ?? '', fileName: result.fileName }) }
-            >
-              Download
-            </Button>
-          </FlexBox>
+          <MockupResponse message={result.agentMessage} />
         </div>
       )}
     </div>
   )
 }
 
-export default Mockup
+export default MockupGeneration

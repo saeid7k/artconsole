@@ -40,4 +40,14 @@ class AgentConversationMessage extends Model implements HasMedia
   {
     return $this->belongsTo(AgentConversation::class, 'conversation_id');
   }
+
+  public function getArtworkIdAttribute(): ?int
+  {
+    return $this->meta['artwork_id'] ?? null;
+  }
+
+  public function artwork(): BelongsTo
+  {
+    return $this->belongsTo(Artwork::class, 'artwork_id');
+  }
 }
