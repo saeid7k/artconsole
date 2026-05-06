@@ -88,7 +88,38 @@ class AiController extends Controller
     ], 202);
   }
 
-  public function getMockupResult(Request $request, string $conversationId)
+  public function generateDescription(Request $request)
+  {
+    $validated = $request->validate([
+      'artwork_id' => ['required', 'integer', Rule::exists('artworks', 'id')],
+      'length' => ['required', Rule::in(['short', 'medium', 'long'])],
+    ]);
+
+    $user = $request->user();
+    $artwork = Artwork::where('id', $validated['artwork_id'])
+      ->firstOrFail();
+
+    $conversationId = Str::uuid()->toString();
+    AgentConversation::create([
+      'id' => $conversationId,
+      'user_id' => $user->id,
+      'title' => 'Description Generation',
+    ]);
+
+    // GenerateDescription::dispatch(
+    //   userId: $user->id,
+    //   conversationId: $conversationId,
+    //   artworkId: $artwork->id,
+    //   length: $validated['length'],
+    // );
+
+    return response()->json([
+      'message' => 'Mockup generation started',
+      'conversation_id' => $conversationId,
+    ], 202);
+  }
+
+  public function getAssistantMessage(Request $request, string $conversationId)
   {
     $conversation = AgentConversation::where('id', $conversationId)
       ->firstOrFail();
@@ -98,7 +129,7 @@ class AiController extends Controller
       ->first();
 
     if (!$assistantMessage) {
-      return response()->json(['message' => 'Mockup not ready yet'], 202);
+      return response()->json(['message' => 'Assistant message not ready yet'], 202);
     }
 
     return response()->json($assistantMessage, 200);
