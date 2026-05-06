@@ -159,6 +159,11 @@ blockquote {
   color: var(--text-soft);
 }
 
+.description {
+  color: var(--text-muted);
+  font-weight: 300;
+}
+
 .text-ghost {
   color: var(--text-muted);
   font-weight: 300;

@@ -10,6 +10,7 @@ import MainMenu from "./MainMenu";
 import MockupGeneration from "./Mockup/MockupGeneration";
 import RecentSessions from "./RecentSessions";
 import Resources from "./Resources";
+import DescriptionGeneration from "./Description/DescriptionGeneration";
 
 function AiDrawer() {
 
@@ -74,6 +75,9 @@ function AiDrawer() {
               <div className="pt-2">
                 {widgetEnabled === 'mockup' && (
                   <MockupGeneration />
+                )}
+                {widgetEnabled === 'artwork_description' && (
+                  <DescriptionGeneration />
                 )}
                 {widgetEnabled === 'recent_sessions' && (
                   <RecentSessions />
