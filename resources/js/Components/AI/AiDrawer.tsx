@@ -33,7 +33,7 @@ function AiDrawer() {
       resizable
       title='AI Assistant'
     >
-      <AiAssistantProvider value={{ aiDrawerOpen, widgetEnabled, setWidgetEnabled, resources, setResources }}>
+      <AiAssistantProvider value={{ aiDrawerOpen, setAiDrawerOpen, widgetEnabled, setWidgetEnabled, resources, setResources }}>
         <div className="relative overflow-x-hidden h-full flex flex-col gap-4 justify-between">
 
           {/* Main Menu */}
