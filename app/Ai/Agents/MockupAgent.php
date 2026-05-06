@@ -5,10 +5,12 @@ namespace App\Ai\Agents;
 use Laravel\Ai\Concerns\RemembersConversations;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\Conversational;
+use Laravel\Ai\Contracts\HasProviderOptions;
+use Laravel\Ai\Enums\Lab;
 use Laravel\Ai\Promptable;
 use Stringable;
 
-class MockupAgent implements Agent, Conversational
+class MockupAgent implements Agent, Conversational, HasProviderOptions
 {
   use Promptable, RemembersConversations;
 
@@ -21,17 +23,15 @@ class MockupAgent implements Agent, Conversational
     $this->model = config('ai.models.mockup');
   }
 
-  public function options(): array
+  public function providerOptions(Lab|string $provider): array
   {
-    if (str_contains($this->model, 'gemini')) {
+    if ($provider === 'gemini') {
       return [
-        'quality' => 'medium',
-        'generationConfig' => [
-          'responseMimeType' => 'image/png',
-          'imageConfig' => [
-            'aspectRatio' => '16:9',
-            'imageSize' => '2K',
-          ],
+        'responseMimeType' => 'image/png',
+        'responseModalities' => ['IMAGE', 'TEXT'],
+        'imageConfig' => [
+          'aspectRatio' => '4:3',
+          'imageSize' => '2K',
         ],
       ];
     }

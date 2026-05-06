@@ -61,16 +61,16 @@ class GenerateMockup implements ShouldQueue
 
     $base64Image = $media->base64Content();
     [, $imageData] = explode(',', $base64Image, 2);
-    $options = $agent->options();
 
     $response = null;
     try {
       $response = Image::of($fullPrompt)
         ->attachments([AiImage::fromBase64($imageData, $media->mime_type)])
-        ->quality($options['quality'] ?? 'low')
+        ->size('4:3')
+        ->quality('medium')
         ->generate($agent->provider, $agent->model);
 
-      $generatedImage = $response->firstImage();
+      $generatedImage = $response->images->first();
       $imageContent = $generatedImage->content();
       $mimeType = $generatedImage->mime ?? 'image/png';
       $extension = match ($mimeType) {
