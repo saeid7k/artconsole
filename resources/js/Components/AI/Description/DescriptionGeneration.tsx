@@ -2,30 +2,54 @@ import AnimatedContainer from "@/Components/AnimatedContainer";
 import BlockContainer from "@/Components/Containers/BlockContainer";
 import FlexBox from "@/Components/Containers/FlexBox";
 import NumberedSection from "@/Components/Containers/NumberedSection";
+import LoadingAi from "@/Components/Loaders/LoadingAi";
 import ResourceChips from "@/Components/ResourceChips";
 import { DESCRIPTION_LENGTHS } from "@/constants/Ai/descriptionLengths";
 import { useAiAssistant } from "@/contexts/AiAssistantContext";
+import usePollAssistantMessage from "@/hooks/usePollAssistantMessage";
 import { AiResource } from "@/types/aiResource";
 import { AiMagicIcon, HandPointingDown01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Button, Empty } from "antd";
+import { useMutation } from "@tanstack/react-query";
+import { Button, Empty, message } from "antd";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
 function DescriptionGeneration() {
 
-  // Context and hooks
+  // Context
 
   const { resources } = useAiAssistant()
+
+  // State and Hooks
 
   const [selectedResource, setSelectedResource] = useState<AiResource | null>(null)
   const [conversationId, setConversationId] = useState<string | null>(null)
   const [selectedLength, setSelectedLength] = useState<string | null>(null)
+  const { status, agentMessage } = usePollAssistantMessage(conversationId)
 
   // Derived state
 
   const artworkResources = resources.filter((resource: AiResource) => resource.type === 'artworks')
   const artworkIds = artworkResources.map((resource: AiResource) => resource.id)
+
+
+  // Queries and Mutations
+
+  const generateMutation = useMutation({
+    mutationKey: ['generateDescription', selectedResource?.id, selectedLength],
+    mutationFn: () => axios.post(route('ai.description.generate'), {
+      artwork_id: selectedResource?.id,
+      length: selectedLength,
+    }),
+    onSuccess: (res: any) => {
+      setConversationId(res.data.conversation_id)
+    },
+    onError: (err: any) => {
+      message.error(err?.response?.data?.message || 'Failed to generate description')
+    }
+  })
 
   // Effects
 
@@ -125,8 +149,8 @@ function DescriptionGeneration() {
             <Button
               type="primary"
               icon={<HugeiconsIcon icon={AiMagicIcon} />}
-              // onClick={() => generateMutation.mutate()}
-              // loading={generateMutation.isPending}
+              onClick={() => generateMutation.mutate()}
+              loading={generateMutation.isPending}
             >
               Generate Description
             </Button>
@@ -134,20 +158,20 @@ function DescriptionGeneration() {
         </>
       )}
 
-      {/* {result.status === 'pending' && (
+      {status === 'pending' && (
         <div className="py-5">
           <LoadingAi
-            message="Generating Mockup..."
+            message="Generating Description..."
           />
         </div>
       )}
 
-      {result.status === 'success' && result.agentMessage && (
+      {status === 'success' && agentMessage && (
         <div className="flex flex-col gap-3">
-          <div className="text-lg font-semibold">Here is your generated mockup</div>
-          <MockupResponse message={result.agentMessage} />
+          <div className="text-lg font-semibold">Here is your generated description</div>
+          {/* <MockupResponse message={agentMessage} /> */}
         </div>
-      )} */}
+      )}
     </div>
   )
 }
