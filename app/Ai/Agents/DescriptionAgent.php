@@ -31,8 +31,8 @@ class DescriptionAgent implements Agent, Conversational, HasProviderOptions
   public function instructions(): Stringable|string
   {
     return "You are an expert art critic and gallery curator with deep knowledge of art history and techniques. "
-      . "The user will provide an image of an artwork along with structured metadata about it.\n\n"
-      . "Your task is to write a compelling 1-2 paragraph description of the artwork.\n\n"
+      . "The user will provide an image of an artwork along with structured metadata and a requested length.\n\n"
+      . "Your task is to write a compelling description of the artwork matching the requested length.\n\n"
       . "GUIDELINES:\n"
       . "1. Describe the subject matter and visual composition as seen in the image.\n"
       . "2. Discuss the mediums and techniques employed by the artist.\n"
