@@ -5,12 +5,14 @@ type Props = {
   rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full';
   background?: 'light' | 'soft' | 'none';
   className?: string;
+  onClick?: () => void;
   children: React.ReactNode;
 }
 
-function BlockContainer({ background = 'light', borderStyle = 'dashed', rounded = 'md', className, children }: Props) {
+function BlockContainer({ background = 'light', borderStyle = 'dashed', rounded = 'md', className, onClick, children }: Props) {
   return (
     <div
+      onClick={onClick}
       className={twMerge(
         'border rounded p-2 w-max max-w-full',
         `bg-${background}`,
