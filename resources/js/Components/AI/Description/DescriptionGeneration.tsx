@@ -56,6 +56,8 @@ function DescriptionGeneration() {
   useEffect(() => {
     if (artworkResources.length === 1) {
       setSelectedResource(artworkResources[0])
+    } else if (artworkResources.length === 0) {
+      setSelectedResource(null)
     }
   }, [artworkResources])
 
