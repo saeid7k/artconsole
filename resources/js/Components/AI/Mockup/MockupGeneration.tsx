@@ -85,7 +85,7 @@ function MockupGeneration() {
 
     setResult(prev => ({ ...prev, status: 'pending' }))
     const interval = setInterval(() => {
-      axios.get(route('ai.mockup.result', { conversationId }))
+      axios.get(route('ai.assistant-message', { conversationId }))
         .then(res => {
           if (res.status === 200) {
             message.success('Mockup generated successfully!')
