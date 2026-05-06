@@ -177,14 +177,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
   });
 
   Route::prefix('ai')->name('ai.')->group(function () {
-    Route::post('/get-resource', [App\Http\Controllers\AiController::class, 'getResource'])->name('get-resource');
+    Route::post('get-resource', [App\Http\Controllers\AiController::class, 'getResource'])->name('get-resource');
     Route::post('recent-sessions', [App\Http\Controllers\AiController::class, 'recentSessions'])->name('recent-sessions');
+
     Route::prefix('mockup')->name('mockup.')->group(function () {
-      Route::post('/generate', [App\Http\Controllers\AiController::class, 'generateMockup'])->name('generate');
-      Route::get('/{conversationId}/result', [App\Http\Controllers\AiController::class, 'getMockupResult'])->name('result');
+      Route::post('generate', [App\Http\Controllers\AiController::class, 'generateMockup'])->name('generate');
+      Route::get('{conversationId}/result', [App\Http\Controllers\AiController::class, 'getMockupResult'])->name('result');
     });
     Route::prefix('message')->name('message.')->group(function () {
-      Route::get('/{messageId}/media', [App\Http\Controllers\AgentMessageController::class, 'getMedia'])->name('media');
+      Route::get('{messageId}/media', [App\Http\Controllers\AgentMessageController::class, 'getMedia'])->name('media');
+      Route::post('add-to-artwork', [App\Http\Controllers\AgentMessageController::class, 'addToArtwork'])->name('add-to-artwork');
     });
   });
 });
