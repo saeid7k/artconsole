@@ -114,7 +114,7 @@ class AiController extends Controller
     // );
 
     return response()->json([
-      'message' => 'Mockup generation started',
+      'message' => 'Description generation started',
       'conversation_id' => $conversationId,
     ], 202);
   }
