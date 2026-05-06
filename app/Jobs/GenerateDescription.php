@@ -90,7 +90,7 @@ class GenerateDescription implements ShouldQueue
       'user_id' => $this->userId,
       'agent' => DescriptionAgent::class,
       'role' => 'assistant',
-      'content' => $response ? $response->text : 'Failed to generate description.',
+      'content' => $response ? $response->text : null,
       'attachments' => [],
       'tool_calls' => [],
       'tool_results' => [],
