@@ -112,7 +112,7 @@ class AiController extends Controller
       ->where('user_id', $user->id)
       ->where('role', 'assistant')
       ->latest()
-      ->paginate(5);
+      ->paginate(10);
 
     return response()->json($recentSessions);
   }
