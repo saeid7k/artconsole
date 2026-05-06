@@ -200,6 +200,26 @@ class Artwork extends Model implements HasMedia
     );
   }
 
+  public function brief(): Attribute
+  {
+    return new Attribute(
+      get: function () {
+        $brief = [
+          'Title' => $this->title,
+          'Artist' => $this->artist_data->full_name ?? null,
+          'Year' => $this->year,
+          'Medium' => $this->formatted_medium,
+          'Style' => FormatHelper::stringifyArray($this->styles),
+          'Dimensions' => $this->formatted_dimensions,
+          'Edition' => $this->formatted_edition,
+          'category' => $this->category,
+          'subjects' => FormatHelper::stringifyArray($this->subjects),
+        ];
+        return $brief;
+      },
+    );
+  }
+
   // Relationships
 
   public function gallery()
