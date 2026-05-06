@@ -15,24 +15,23 @@ import { Button, Empty, message, Radio } from "antd"
 import axios from "axios"
 import { useEffect, useRef, useState } from "react"
 import MockupResponse from "./MockupResponse"
+import usePollAssistantMessage from "@/hooks/usePollAssistantMessage"
 
 function MockupGeneration() {
 
-  // Context and hooks
+  // Context
 
   const { resources } = useAiAssistant()
 
-  // State
+  // State and Hooks
 
   const isInitialRender = useRef(true)
   const [medias, setMedias] = useState<any[]>([])
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null)
   const [selectedEnvironment, setSelectedEnvironment] = useState<string | null>(null)
   const [conversationId, setConversationId] = useState<string | null>(null)
-  const [result, setResult] = useState<{ status: 'pending' | 'success' | 'error' | null, agentMessage?: AiMessage }>({
-    status: null,
-    agentMessage: undefined,
-  })
+
+  const { status, agentMessage } = usePollAssistantMessage(conversationId)
 
   const artworkIds = resources.filter((resource: AiResource) => resource.type === 'artworks').map((resource: AiResource) => resource.id)
 
@@ -79,37 +78,6 @@ function MockupGeneration() {
       message.error(err?.response?.data?.message || 'Failed to generate mockup')
     }
   })
-
-  function pollForResult() {
-    if (!conversationId) return;
-
-    setResult(prev => ({ ...prev, status: 'pending' }))
-    const interval = setInterval(() => {
-      axios.get(route('ai.mockup.result', { conversationId }))
-        .then(res => {
-          if (res.status === 200) {
-            message.success('Mockup generated successfully!')
-            setResult({
-              status: 'success',
-              agentMessage: res.data,
-            })
-            clearInterval(interval)
-          }
-        })
-        .catch(err => {
-          if (err.response?.status === 202) {
-          } else {
-            message.error(err?.response?.data?.message || 'Failed to get mockup result')
-            setResult(prev => ({ ...prev, status: 'error' }))
-            clearInterval(interval)
-          }
-        })
-    }, 5000)
-
-    return () => clearInterval(interval)
-  }
-
-  useEffect(pollForResult, [conversationId])
 
   // Derived state
 
@@ -212,7 +180,7 @@ function MockupGeneration() {
         </>
       )}
 
-      {result.status === 'pending' && (
+      {status === 'pending' && (
         <div className="py-5">
           <LoadingAi
             message="Generating Mockup..."
@@ -220,10 +188,10 @@ function MockupGeneration() {
         </div>
       )}
 
-      {result.status === 'success' && result.agentMessage && (
+      {status === 'success' && agentMessage && (
         <div className="flex flex-col gap-3">
           <div className="text-lg font-semibold">Here is your generated mockup</div>
-          <MockupResponse message={result.agentMessage} />
+          <MockupResponse message={agentMessage} />
         </div>
       )}
     </div>

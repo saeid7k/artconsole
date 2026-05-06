@@ -69,8 +69,7 @@ function Resources() {
           {resources.map((resource: AiResource, index: number) => (
             <ResourceChips
               key={index}
-              image={resource.image}
-              name={resource.name}
+              resource={resource}
               onClose={() => setResources((prev: AiResource[]) => prev.filter((_, i) => i !== index))}
             />
           ))}
