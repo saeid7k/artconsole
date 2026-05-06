@@ -1,18 +1,24 @@
+import colors from "@/Themes/theme"
+import { AiResource } from "@/types/aiResource"
 import { getInitials } from "@/utils/stringHelper"
 import { Avatar, Tag } from "antd"
+import { twMerge } from "tailwind-merge"
 
 type Props = {
-  image: string
-  name: string
+  resource: AiResource
+  closable?: boolean
   onClose?: () => void
+  selected?: boolean
 }
 
-function ResourceChips({ image, name, onClose }: Props) {
+function ResourceChips({ resource, closable = true, onClose, selected = false }: Props) {
 
   return (
     <Tag
+      variant={selected ? 'solid' : 'filled'}
+      color={selected ? colors.primary[500] : 'default'}
       className="p-1"
-      closable
+      closable={closable}
       onClose={(e) => {
         if (onClose) {
           e.preventDefault();
@@ -21,13 +27,16 @@ function ResourceChips({ image, name, onClose }: Props) {
       }}
     >
       <Avatar
-        src={image}
+        src={resource.image}
         size="small"
-        className="me-1"
+        className={twMerge(
+          "me-1",
+          selected ? "ring-1" : ""
+        )}
       >
-        {getInitials(name)}
+        {getInitials(resource.name)}
       </Avatar>
-      {name}
+      {resource.name}
     </Tag>
   )
 }
