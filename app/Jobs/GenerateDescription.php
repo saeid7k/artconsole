@@ -20,7 +20,8 @@ class GenerateDescription implements ShouldQueue
   public function __construct(
     public string $userId,
     public string $conversationId,
-    public int $mediaId
+    public int $mediaId,
+    public string $length = 'medium'
   ) {
   }
 
@@ -30,7 +31,13 @@ class GenerateDescription implements ShouldQueue
     $artwork = $media->model;
 
     $agent = new DescriptionAgent();
-    $userPrompt = "Artwork Metadata:\n" . json_encode($artwork->brief, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    $lengthInstruction = match ($this->length) {
+      'short' => '1 paragraph',
+      'long'  => '4-6 paragraphs',
+      default => '2-3 paragraphs',
+    };
+    $userPrompt = "Length: {$lengthInstruction}\n"
+      . "Artwork Metadata:\n" . json_encode($artwork->brief, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
     AgentConversationMessage::create([
       'id' => Str::uuid()->toString(),
@@ -50,6 +57,7 @@ class GenerateDescription implements ShouldQueue
       'usage' => [],
       'meta' => [
         'artwork_id' => $artwork->id,
+        'length' => $this->length,
       ],
     ]);
 
