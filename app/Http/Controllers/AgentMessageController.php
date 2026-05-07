@@ -30,7 +30,7 @@ class AgentMessageController extends Controller
     return response()->json($media);
   }
 
-  public function addToArtwork(Request $request)
+  public function addMediaToArtwork(Request $request)
   {
     $messageId = $request->input('message_id');
     $message = AgentConversationMessage::find($messageId);
@@ -61,5 +61,24 @@ class AgentMessageController extends Controller
       ->toMediaCollection('artwork-images');
 
     return response()->json(['success' => 'Media added to artwork']);
+  }
+
+  function addDescriptionToArtwork(Request $request)
+  {
+    $messageId = $request->input('message_id');
+    $message = AgentConversationMessage::find($messageId);
+    if (!$message) {
+      return response()->json(['error' => 'Message not found'], 404);
+    }
+
+    $artwork = Artwork::find($message->artwork_id);
+    if (!$artwork) {
+      return response()->json(['error' => 'Artwork not found'], 404);
+    }
+
+    $artwork->description = $message->content;
+    $artwork->save();
+
+    return response()->json(['success' => 'Description added to artwork']);
   }
 }

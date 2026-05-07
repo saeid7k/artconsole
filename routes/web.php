@@ -188,7 +188,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
     Route::prefix('message')->name('message.')->group(function () {
       Route::get('{messageId}/media', [App\Http\Controllers\AgentMessageController::class, 'getMedia'])->name('media');
-      Route::post('add-to-artwork', [App\Http\Controllers\AgentMessageController::class, 'addToArtwork'])->name('add-to-artwork');
+      Route::post('add-media-to-artwork', [App\Http\Controllers\AgentMessageController::class, 'addMediaToArtwork'])->name('add-media-to-artwork');
+      Route::post('add-description-to-artwork', [App\Http\Controllers\AgentMessageController::class, 'addDescriptionToArtwork'])->name('add-description-to-artwork');
     });
   });
 });
