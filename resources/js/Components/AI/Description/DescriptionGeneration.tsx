@@ -1,5 +1,5 @@
 import AnimatedContainer from "@/Components/AnimatedContainer";
-import BlockContainer from "@/Components/Containers/BlockContainer";
+import Container from "@/Components/Containers/Container";
 import FlexBox from "@/Components/Containers/FlexBox";
 import NumberedSection from "@/Components/Containers/NumberedSection";
 import LoadingAi from "@/Components/Loaders/LoadingAi";
@@ -127,8 +127,8 @@ function DescriptionGeneration() {
               />
               <FlexBox wrapping="wrap" className="w-full max-w-[600px]">
                 {DESCRIPTION_LENGTHS.map((length) => (
-                  <BlockContainer
-                    className={twMerge(
+                  <Container
+                    rootClassName={twMerge(
                       "grow border-2 cursor-pointer select-none",
                       selectedLength === length.value ? 'border-primary-500' : 'border-gray-500/20 hover:border-gray-500/50'
                     )}
@@ -137,7 +137,7 @@ function DescriptionGeneration() {
                   >
                     <div>{length.label}</div>
                     <div className="description">{length.description}</div>
-                  </BlockContainer>
+                  </Container>
                 ))}
               </FlexBox>
             </AnimatedContainer>

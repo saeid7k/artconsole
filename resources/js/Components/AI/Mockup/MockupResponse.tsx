@@ -1,4 +1,4 @@
-import Container from "@/Components/Container";
+import Container from "@/Components/Containers/Container";
 import LoadingSpinner from "@/Components/LoadingSpinner";
 import ResourceChips from "@/Components/ResourceChips";
 import { useAiAssistant } from "@/contexts/AiAssistantContext";
@@ -50,7 +50,7 @@ function MockupResponse({ message }: { message: AiMessage }) {
 
   return (
     <div className="flex flex-col gap-3">
-      <Container label="Resource" labelClassName="text-muted" >
+      <Container label="Resource" labelClassName="text-muted" rounded="lg" >
           <ResourceChips
             resource={{
               "type": "artworks",

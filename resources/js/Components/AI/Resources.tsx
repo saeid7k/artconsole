@@ -6,7 +6,7 @@ import { Button, Dropdown, Menu } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ArtworkFinderModal from "../Artworks/ArtworkFinderModal";
-import Container from "../Container";
+import Container from "../Containers/Container";
 import FlexBox from "../Containers/FlexBox";
 import ResourceChips from "../ResourceChips";
 
@@ -63,7 +63,7 @@ function Resources() {
     <>
       <Container
         label="Resources"
-        className={resources.length === 0 ? '!border-primary-500 border-2' : ''}
+        rootClassName={resources.length === 0 ? '!border-primary-500 border-2' : ''}
       >
         <FlexBox wrapping="wrap" >
           {resources.map((resource: AiResource, index: number) => (

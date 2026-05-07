@@ -8,7 +8,7 @@ import { router } from "@inertiajs/react"
 import { Alert, Button, Card, Progress, Tooltip } from "antd"
 import dayjs from "dayjs"
 import { useEffect } from "react"
-import BlockContainer from "../Containers/BlockContainer"
+import Container from "../Containers/Container"
 import DataRow from "../Containers/DataRow"
 import SubscriptionStatusTag from "./SubscriptionStatusTag"
 
@@ -72,18 +72,16 @@ function YourPlanCard({ plan }: Props) {
         (
           <>
             <div className="flex flex-col xl:flex-row gap-5 justify-between">
-              <div className="flex flex-col gap-2">
-                <BlockContainer >
-                  <div className="flex gap-3">
-                    <div className="font-semibold text-muted tracking-wide">{plan?.name}</div>
-                    <SubscriptionStatusTag status={plan?.status} variant="solid" />
-                  </div>
-                  <div className="flex items-end gap-1">
-                    <div className="text-xl">{formatCurrency(plan?.amount)}</div>
-                    <div className="text-sm text-muted">/{plan?.interval} /member</div>
-                  </div>
-                </BlockContainer>
-              </div>
+              <Container>
+                <div className="flex gap-3">
+                  <div className="font-semibold text-muted tracking-wide">{plan?.name}</div>
+                  <SubscriptionStatusTag status={plan?.status} variant="solid" />
+                </div>
+                <div className="flex items-end gap-1">
+                  <div className="text-xl">{formatCurrency(plan?.amount)}</div>
+                  <div className="text-sm text-muted">/{plan?.interval} /member</div>
+                </div>
+              </Container>
               <div className="flex flex-col gap-3 grow max-w-[400px]">
                 <DataRow
                   icon={<HugeiconsIcon icon={UserGroupIcon} size={20} />}
