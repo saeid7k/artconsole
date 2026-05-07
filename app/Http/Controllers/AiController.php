@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\MockupEnvironment;
+use App\Jobs\GenerateDescription;
 use App\Jobs\GenerateMockup;
 use App\Models\AgentConversation;
 use App\Models\AgentConversationMessage;
@@ -98,6 +99,11 @@ class AiController extends Controller
     $user = $request->user();
     $artwork = Artwork::where('id', $validated['artwork_id'])
       ->firstOrFail();
+    $media = $artwork->mainImage;
+
+    if (!$media) {
+      return response()->json(['error' => 'No image found for the artwork'], 400);
+    }
 
     $conversationId = Str::uuid()->toString();
     AgentConversation::create([
@@ -106,12 +112,12 @@ class AiController extends Controller
       'title' => 'Description Generation',
     ]);
 
-    // GenerateDescription::dispatch(
-    //   userId: $user->id,
-    //   conversationId: $conversationId,
-    //   artworkId: $artwork->id,
-    //   length: $validated['length'],
-    // );
+    GenerateDescription::dispatch(
+      userId: $user->id,
+      conversationId: $conversationId,
+      mediaId: $media->id,
+      length: $validated['length'],
+    );
 
     return response()->json([
       'message' => 'Description generation started',
