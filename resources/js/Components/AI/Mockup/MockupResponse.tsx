@@ -21,7 +21,7 @@ function MockupResponse({ message }: { message: AiMessage }) {
   })
 
   const addToArtworkMutation = useMutation({
-    mutationFn: () => axios.post(route('ai.message.add-to-artwork'), {
+    mutationFn: () => axios.post(route('ai.message.add-media-to-artwork'), {
       message_id: message.id
     }),
     onSuccess: () => {
