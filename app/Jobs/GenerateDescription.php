@@ -18,7 +18,7 @@ class GenerateDescription implements ShouldQueue
   public $timeout = 120;
 
   public function __construct(
-    public string $userId,
+    public int $userId,
     public string $conversationId,
     public int $mediaId,
     public string $length = 'medium'
@@ -29,7 +29,6 @@ class GenerateDescription implements ShouldQueue
   {
     $media = Media::findOrFail($this->mediaId);
     $artwork = $media->model;
-
     $agent = new DescriptionAgent();
     $lengthInstruction = match ($this->length) {
       'short' => '1 paragraph',
