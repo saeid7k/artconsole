@@ -8,21 +8,30 @@ type Props = {
   resource: AiResource
   closable?: boolean
   onClose?: () => void
+  onClick?: () => void
   selected?: boolean
 }
 
-function ResourceChips({ resource, closable = true, onClose, selected = false }: Props) {
+function ResourceChips({ resource, closable = true, onClose, onClick, selected = false }: Props) {
 
   return (
     <Tag
       variant={selected ? 'solid' : 'filled'}
       color={selected ? colors.primary[500] : 'default'}
-      className="p-1"
+      className={twMerge(
+        "p-1",
+        onClick ? 'cursor-pointer' : '',
+      )}
       closable={closable}
       onClose={(e) => {
         if (onClose) {
           e.preventDefault();
           onClose()
+        }
+      }}
+      onClick={() => {
+        if (onClick) {
+          onClick()
         }
       }}
     >
