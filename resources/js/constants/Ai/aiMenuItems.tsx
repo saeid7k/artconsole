@@ -12,7 +12,7 @@ const AI_MENU_ITEMS = [
     id: 'artwork_description' ,
     icon: <HugeiconsIcon icon={AiContentGenerator01Icon} />,
     label: 'Generate artwork description',
-    agent: 'App\\Ai\\Agents\\ArtworkDescriptionAgent'
+    agent: 'App\\Ai\\Agents\\DescriptionAgent'
   },
   {
     id: 'financial_analysis',

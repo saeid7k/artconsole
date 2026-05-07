@@ -15,6 +15,7 @@ import { Button, Empty, message } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
+import DescriptionResponse from "./DescriptionResponse";
 
 function DescriptionGeneration() {
 
@@ -171,7 +172,7 @@ function DescriptionGeneration() {
       {status === 'success' && agentMessage && (
         <div className="flex flex-col gap-3">
           <div className="text-lg font-semibold">Here is your generated description</div>
-          {/* <MockupResponse message={agentMessage} /> */}
+          <DescriptionResponse message={agentMessage} />
         </div>
       )}
     </div>

@@ -10,6 +10,7 @@ import FlexBox from "../Containers/FlexBox"
 import LoadingSpinner from "../LoadingSpinner"
 import StyledDate from "../StyledDate"
 import MockupResponse from "./Mockup/MockupResponse"
+import DescriptionResponse from "./Description/DescriptionResponse"
 
 function RecentSessions() {
 
@@ -53,7 +54,7 @@ function RecentSessions() {
               onClick={() => setSelectedSession(session)}
             >
               <FlexBox>
-                <div>{ ucFirst(getAgentIdByClass(session.agent).replaceAll('_', ' ')) }</div>
+                <div className="whitespace-nowrap">{ ucFirst(getAgentIdByClass(session.agent).replaceAll('_', ' ')) }</div>
                 <div><Divider orientation="vertical" /></div>
                 {session.artwork && <div className="text-muted line-clamp-1">{session.artwork.title}</div>}
               </FlexBox>
@@ -72,6 +73,9 @@ function RecentSessions() {
       <AnimatedContainer condition={!!selectedSession} type="slideLeft" >
         {getAgentIdByClass(selectedSession?.agent ?? '') === 'mockup' && (
           <MockupResponse message={selectedSession!} />
+        )}
+        {getAgentIdByClass(selectedSession?.agent ?? '') === 'artwork_description' && (
+          <DescriptionResponse message={selectedSession!} />
         )}
       </AnimatedContainer>
     </div>
