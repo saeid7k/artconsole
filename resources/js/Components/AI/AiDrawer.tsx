@@ -44,15 +44,14 @@ function AiDrawer() {
             className="absolute top-0 w-full"
           >
             <MainMenu />
+            <Button
+              type="dashed"
+              className="mt-5 w-full font-light"
+              onClick={() => setWidgetEnabled('recent_sessions')}
+            >
+              Recent Sessions
+            </Button>
             <div className="flex justify-center mt-3">
-              <Button
-                type="text"
-                size="small"
-                className="text-muted font-light"
-                onClick={() => setWidgetEnabled('recent_sessions')}
-              >
-                Recent Sessions
-              </Button>
             </div>
           </AnimatedContainer>
 
