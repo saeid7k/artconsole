@@ -1,3 +1,4 @@
+import Container from "@/Components/Container";
 import ResourceChips from "@/Components/ResourceChips";
 import { useAiAssistant } from "@/contexts/AiAssistantContext";
 import { AiMessage } from "@/types/aiMessage";
@@ -25,58 +26,58 @@ function DescriptionResponse({ message }: { message: AiMessage }) {
   })
 
   return (
-    <Card
-      title="Generated Description"
-      actions={[
-        <Button
-          type="text"
-          onClick={
-            () => navigator.clipboard.writeText(message?.content || '')
-              .then(() => {messageToast.success('Description copied to clipboard')})
-              .catch(() => {messageToast.error('Failed to copy description')})
-          }
-          disabled={!message?.content}
-        >
-          Copy to Clipboard
-        </Button>,
-        <Button
-          type="text"
-          onClick={() => addToArtworkMutation.mutate()}
-          disabled={!message?.content}
-          loading={addToArtworkMutation.isPending}
-        >
-          Add to Artwork
-        </Button>
-      ]}
-    >
-      <div>
-        <div>Resource</div>
-        <ResourceChips
-          resource={{
-            "type": "artworks",
-            "id": message?.artwork?.id || 0,
-            "name": message?.artwork?.title || 'Unknown Artwork',
-            "image": message?.artwork?.main_image_thumb_url || '',
-          }}
-          closable={false}
-          onClick={() => {
-            router.get(route('artworks.show', message?.artwork?.id))
-            setAiDrawerOpen(false)
-          }}
-        />
-      </div>
-      <Divider />
-      <div
-        className="flex max-h-[400px] overflow-y-auto w-full max-w-full"
+    <div className="flex flex-col gap-3">
+      <Container label="Resource" labelClassName="text-muted" >
+          <ResourceChips
+            resource={{
+              "type": "artworks",
+              "id": message?.artwork?.id || 0,
+              "name": message?.artwork?.title || 'Unknown Artwork',
+              "image": message?.artwork?.main_image_thumb_url || '',
+            }}
+            closable={false}
+            onClick={() => {
+              router.get(route('artworks.show', message?.artwork?.id))
+              setAiDrawerOpen(false)
+            }}
+          />
+      </Container>
+      <Card
+        title="Generated Description"
+        actions={[
+          <Button
+            type="text"
+            onClick={
+              () => navigator.clipboard.writeText(message?.content || '')
+                .then(() => {messageToast.success('Description copied to clipboard')})
+                .catch(() => {messageToast.error('Failed to copy description')})
+            }
+            disabled={!message?.content}
+          >
+            Copy to Clipboard
+          </Button>,
+          <Button
+            type="text"
+            onClick={() => addToArtworkMutation.mutate()}
+            disabled={!message?.content}
+            loading={addToArtworkMutation.isPending}
+          >
+            Add to Artwork
+          </Button>
+        ]}
       >
-        {message?.content && (
-          <div className="whitespace-pre-wrap">{message.content}</div>
-        )}
-        {!message?.content && (
-          <Empty description="No description available" />
-        )}
-      </div>
-    </Card>
+        <div
+          className="flex max-h-[400px] overflow-y-auto w-full max-w-full"
+        >
+          {message?.content && (
+            <div className="whitespace-pre-wrap">{message.content}</div>
+          )}
+          {!message?.content && (
+            <Empty description="No description available" />
+          )}
+        </div>
+      </Card>
+    </div>
   )
 }
 

@@ -1,4 +1,6 @@
+import Container from "@/Components/Container";
 import LoadingSpinner from "@/Components/LoadingSpinner";
+import ResourceChips from "@/Components/ResourceChips";
 import { useAiAssistant } from "@/contexts/AiAssistantContext";
 import { AiMessage } from "@/types/aiMessage";
 import { downloadFile } from "@/utils/downloadHelper";
@@ -47,40 +49,58 @@ function MockupResponse({ message }: { message: AiMessage }) {
   }
 
   return (
-    <Card
-      actions={[
-        <Button
-          type="text"
-          onClick={() => downloadFile({ url: mediaUrl, fileName: mediaQuery.data.file_name })}
-          disabled={!mediaUrl}
-        >
-          Download
-        </Button>,
-        <Button
-          type="text"
-          onClick={() => addToArtworkMutation.mutate()}
-          disabled={!mediaUrl}
-          loading={addToArtworkMutation.isPending}
-        >
-          Add to Artwork
-        </Button>
-      ]}
-    >
-      <div
-        className="flex justify-center items-center max-h-[400px] w-auto max-w-100"
-      >
-        {mediaUrl && (
-          <Image
-            src={mediaQuery.data?.urls?.original || ''}
-            alt="Generated Mockup"
-            className="max-h-100 aspect-auto rounded-lg shadow"
+    <div className="flex flex-col gap-3">
+      <Container label="Resource" labelClassName="text-muted" >
+          <ResourceChips
+            resource={{
+              "type": "artworks",
+              "id": message?.artwork?.id || 0,
+              "name": message?.artwork?.title || 'Unknown Artwork',
+              "image": message?.artwork?.main_image_thumb_url || '',
+            }}
+            closable={false}
+            onClick={() => {
+              router.get(route('artworks.show', message?.artwork?.id))
+              setAiDrawerOpen(false)
+            }}
           />
-        )}
-        {mediaQuery.isError && (
-          <Empty description="Failed to load mockup image" />
-        )}
-      </div>
-    </Card>
+      </Container>
+      <Card
+        title="Generated Mockup"
+        actions={[
+          <Button
+            type="text"
+            onClick={() => downloadFile({ url: mediaUrl, fileName: mediaQuery.data.file_name })}
+            disabled={!mediaUrl}
+          >
+            Download
+          </Button>,
+          <Button
+            type="text"
+            onClick={() => addToArtworkMutation.mutate()}
+            disabled={!mediaUrl}
+            loading={addToArtworkMutation.isPending}
+          >
+            Add to Artwork
+          </Button>
+        ]}
+      >
+        <div
+          className="flex justify-center items-center max-h-[400px] w-auto max-w-100"
+        >
+          {mediaUrl && (
+            <Image
+              src={mediaQuery.data?.urls?.original || ''}
+              alt="Generated Mockup"
+              className="max-h-100 aspect-auto rounded-lg shadow"
+            />
+          )}
+          {mediaQuery.isError && (
+            <Empty description="Failed to load mockup image" />
+          )}
+        </div>
+      </Card>
+    </div>
   )
 }
 
