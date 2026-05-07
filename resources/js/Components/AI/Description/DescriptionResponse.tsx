@@ -1,10 +1,10 @@
-import Container from "@/Components/Container";
+import Container from "@/Components/Containers/Container";
 import ResourceChips from "@/Components/ResourceChips";
 import { useAiAssistant } from "@/contexts/AiAssistantContext";
 import { AiMessage } from "@/types/aiMessage";
 import { router } from "@inertiajs/react";
 import { useMutation } from "@tanstack/react-query";
-import { Button, Card, Divider, Empty, message as messageToast } from "antd";
+import { Button, Card, Empty, message as messageToast } from "antd";
 import axios from "axios";
 
 function DescriptionResponse({ message }: { message: AiMessage }) {
@@ -27,7 +27,7 @@ function DescriptionResponse({ message }: { message: AiMessage }) {
 
   return (
     <div className="flex flex-col gap-3">
-      <Container label="Resource" labelClassName="text-muted" >
+      <Container label="Resource" labelClassName="text-muted" rounded="lg"  >
           <ResourceChips
             resource={{
               "type": "artworks",
