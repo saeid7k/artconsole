@@ -87,7 +87,10 @@ function Show ({ artwork }: { artwork: ArtworkProps }) {
                 <ArtworkStatusTag status={artwork.status} />
               </div>
             </FlexBox>
-            <TextboxExpandable content={artwork.description || 'No description.'} />
+            <TextboxExpandable
+              lines={2}
+              content={artwork.description || 'No description.'}
+            />
             <Divider />
             <div className="flex flex-col 2xl:flex-row gap-2">
               <DataCol className="2xl:w-1/2">
