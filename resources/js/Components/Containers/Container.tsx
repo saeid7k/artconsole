@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 
 type Props = PropsWithChildren<{
   label?: string
+  bordered?: boolean
   borderStyle?: 'dashed' | 'solid' | 'dotted';
   rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full';
   background?: 'light' | 'soft' | 'none';
@@ -12,12 +13,12 @@ type Props = PropsWithChildren<{
   children: React.ReactNode
 }>
 
-function Container({ label, borderStyle = 'solid', rounded = 'md', background = 'none', rootClassName, labelClassName, onClick, children }: Props) {
+function Container({ label, bordered = true, borderStyle = 'solid', rounded = 'md', background = 'none', rootClassName, labelClassName, onClick, children }: Props) {
   return (
     <div
       className={twMerge(
-        'flex flex-col bg-base border rounded-lg p-2',
-        `!border-${borderStyle}`,
+        'flex flex-col bg-base rounded-lg p-2',
+        bordered ? `border !border-${borderStyle}` : '',
         `rounded-${rounded}`,
         `bg-${background}`,
         rootClassName

@@ -72,7 +72,7 @@ function YourPlanCard({ plan }: Props) {
         (
           <>
             <div className="flex flex-col xl:flex-row gap-5 justify-between">
-              <Container>
+              <Container bordered={false} >
                 <div className="flex gap-3">
                   <div className="font-semibold text-muted tracking-wide">{plan?.name}</div>
                   <SubscriptionStatusTag status={plan?.status} variant="solid" />
