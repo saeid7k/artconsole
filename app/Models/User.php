@@ -40,6 +40,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     'website',
     'address',
     'bio',
+    'token_balance',
     'is_demo',
     'demo_claimed_at',
     'social_auth_id',
