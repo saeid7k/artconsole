@@ -73,29 +73,12 @@ function Resources() {
               onClose={() => setResources((prev: AiResource[]) => prev.filter((_, i) => i !== index))}
             />
           ))}
-          <Dropdown
-            popupRender={() => (
-              <Menu
-                items={[
-                  {
-                    key: 'artwork',
-                    label: 'Artwork',
-                    onClick: () => setShowArtworkFinder(true)
-                  },
-                  {
-                    key: 'contact',
-                    label: 'Contact'
-                  },
-                ]}
-              />
-            )}
-          >
-            <Button
-              variant="filled"
-              color="default"
-              icon={<HugeiconsIcon icon={AddIcon} />}
-            />
-          </Dropdown>
+          <Button
+            variant="filled"
+            color="default"
+            icon={<HugeiconsIcon icon={AddIcon} />}
+            onClick={() => setShowArtworkFinder(true)}
+          />
         </FlexBox>
       </Container>
       <ArtworkFinderModal
