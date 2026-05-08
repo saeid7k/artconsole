@@ -14,11 +14,8 @@ class SetMediaInfo implements ShouldQueue
 {
   use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-  public $media;
-
-  public function __construct(Media $media)
+  public function __construct(public Media $media)
   {
-    $this->media = $media;
   }
 
   public function handle(): void
@@ -36,7 +33,7 @@ class SetMediaInfo implements ShouldQueue
     }
   }
 
-  protected function getImagePath($media)
+  protected function getImagePath(Media $media)
   {
     if ($media->disk === 's3') {
       return Storage::disk('s3')->temporaryUrl(
