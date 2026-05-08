@@ -1,19 +1,20 @@
+import CONFIGS from '@/constants/configs.json';
 import { getCountryCodeByCurrency } from "@/constants/currencies";
-import PLANS from "@/constants/subscriptionPlans";
 import { useApp } from "@/contexts/AppContext";
 import useSubscriptionQueries from "@/hooks/useSubscriptionQueries";
 import { useWindow } from "@/hooks/useWindow";
 import colors from "@/Themes/theme";
 import { UsePageProps } from "@/types/usePage";
 import { formatCurrency } from "@/utils/formatHelper";
-import { CheckmarkCircle02Icon } from "@hugeicons/core-free-icons";
+import { AiMagicIcon, CheckmarkCircle02Icon, MinusSignCircleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { usePage } from "@inertiajs/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Button, Card, message, Modal, Segmented, Select, Tag } from "antd";
+import { Button, Card, Divider, message, Modal, Segmented, Select, Tag } from "antd";
 import axios from "axios";
 import { useState } from "react";
 import ReactCountryFlag from "react-country-flag";
+import { twMerge } from 'tailwind-merge';
 import LoadingSpinner from "../LoadingSpinner";
 
 type Props = {
@@ -135,6 +136,36 @@ function SelectPlanModal({ open, onClose }: Props) {
     )
   }
 
+  const featureRow = ({ title, type = "check", color = "green", description = null }: {
+    title: string,
+    type?: "check" | "disabled" | "ai",
+    color?: "green" | "gray" | "purple" | "gold",
+    description?: string | null
+  }) => {
+    let colorVar = {
+      "green": colors.green[600],
+      "gray": colors.gray[500],
+      "purple": colors.purple[600],
+      "gold": colors.yellow[600]
+    }
+    let icon = {
+      "check": CheckmarkCircle02Icon,
+      "disabled": MinusSignCircleIcon,
+      "ai": AiMagicIcon
+    }
+    return (
+    <div className="flex items-center gap-1">
+      <HugeiconsIcon
+        icon={icon[type]}
+        strokeWidth={1}
+        color={ colorVar[color]}
+        size={20}
+      />
+      <div className={twMerge("text-sm", type === "disabled" && "text-muted")}>{title}</div>
+      {description && <div className="text-ghost">{description}</div>}
+    </div>
+  )}
+
   return (
     <Modal
       open={open}
@@ -158,6 +189,7 @@ function SelectPlanModal({ open, onClose }: Props) {
               ]}
               value={billingCycle}
               onChange={setBillingCycle}
+              className='select-none'
             />
             <Select
               options={currencyOptions}
@@ -173,31 +205,26 @@ function SelectPlanModal({ open, onClose }: Props) {
               price={0}
             >
               <div className="flex flex-col gap-2">
-                {PLANS.find(plan => plan.title === "Free")?.features.map((feature: { title: string, color: string }, index: number) => (
-                  <div className="flex items-center gap-1" key={index}>
-                    <HugeiconsIcon
-                      icon={CheckmarkCircle02Icon}
-                      strokeWidth={2}
-                      color={feature.color === "green" ? colors.green[600] : colors.gray[500]}
-                      size={20}
-                    />
-                    <div className="text-sm">{feature.title}</div>
-                  </div>
-                ))}
-                {showFreeButton && (
-                  <>
-                    <Button
-                      variant="solid"
-                      color="default"
-                      className="mt-5 w-full"
-                      onClick={handleCancelSubscription}
-                      loading={cancelSubscriptionMutation.isPending}
-                    >
-                      Switch to Free
-                    </Button>
-                  </>
-                )}
+                {featureRow({ title: "Single Member", color: "gray" })}
+                {featureRow({ title: "Unlimited Members" })}
+                {featureRow({ title: "Unlimited Artworks" })}
+                {featureRow({ title: "AI Assistant", type: "ai", description: '(no free tokens)' })}
+                <Divider size='small' />
+                {featureRow({ title: `${CONFIGS.app.name} Branding`, color: "gray" })}
               </div>
+              {showFreeButton && (
+                <>
+                  <Button
+                    variant="solid"
+                    color="default"
+                    className="mt-5 w-full"
+                    onClick={handleCancelSubscription}
+                    loading={cancelSubscriptionMutation.isPending}
+                  >
+                    Switch to Free
+                  </Button>
+                </>
+              )}
             </PricingCard>
 
             <PricingCard
@@ -205,17 +232,18 @@ function SelectPlanModal({ open, onClose }: Props) {
               price={proPriceAmount}
             >
               <div className="flex flex-col gap-2">
-                {PLANS.find(plan => plan.title === 'Pro')?.features.map((feature: { title: string, color: string }, index: number) => (
-                  <div className="flex items-center gap-1" key={index}>
-                    <HugeiconsIcon
-                      icon={CheckmarkCircle02Icon}
-                      strokeWidth={2}
-                      color={feature.color === "green" ? colors.green[600] : colors.gray[500]}
-                      size={20}
-                    />
-                    <div className="text-sm">{feature.title}</div>
-                  </div>
-                ))}
+                {featureRow({ title: "Unlimited Members" })}
+                {featureRow({ title: "Unlimited Artworks" })}
+                {featureRow({ title: "Unlimited Locations" })}
+                {featureRow({
+                  title: "AI Assistant",
+                  type: "ai",
+                  color: "purple",
+                  description: '+ 100 free tokens/month'
+                })}
+                <Divider size='small' />
+                {featureRow({ title: `Remove ${CONFIGS.app.name} Branding` })}
+                {featureRow({ title: "Priority Support" })}
               </div>
               {(showUpgradeButton || showResumeButton) && (
                 <>
