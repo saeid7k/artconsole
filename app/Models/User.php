@@ -220,6 +220,11 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     return $this->hasMany(Payment::class);
   }
 
+  public function tokenTransactions(): HasMany
+  {
+    return $this->hasMany(TokenTransaction::class);
+  }
+
   /*
   |=======================================================
   | Methods
@@ -279,6 +284,18 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         $this->setMeta('timezone', $geocode['timezone']);
       }
     }
+  }
+
+  public function increaseTokens(int $amount): void
+  {
+    $this->token_balance += $amount;
+    $this->save();
+  }
+
+  public function decreaseTokens(int $amount): void
+  {
+    $this->token_balance -= $amount;
+    $this->save();
   }
 
   /*

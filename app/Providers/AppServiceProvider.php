@@ -11,6 +11,7 @@ use App\Models\InvoiceItem;
 use App\Models\Location;
 use App\Models\Media;
 use App\Models\Payment;
+use App\Models\TokenTransaction;
 use App\Models\User;
 use App\Observers\ArtworkObserver;
 use App\Observers\ContactObserver;
@@ -22,6 +23,7 @@ use App\Observers\LocationObserver;
 use App\Observers\MediaObserver;
 use App\Observers\PaymentObserver;
 use App\Observers\SubscriptionObserver;
+use App\Observers\TokenTransactionObserver;
 use App\Observers\UserObserver;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -58,6 +60,7 @@ class AppServiceProvider extends ServiceProvider
         InvoiceItem::observe(InvoiceItemObserver::class);
         Payment::observe(PaymentObserver::class);
         Subscription::observe(SubscriptionObserver::class);
+        TokenTransaction::observe(TokenTransactionObserver::class);
 
         Pdf::default()
           ->withBrowsershot(function (Browsershot $browsershot) {
