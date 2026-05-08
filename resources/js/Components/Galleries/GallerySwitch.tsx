@@ -24,7 +24,8 @@ function GallerySwitch() {
   // Hooks
 
   const { intervalData } = useApp();
-  const { current_gallery, galleries } = usePage<UsePageProps>().props;
+  const { auth, current_gallery, galleries } = usePage<UsePageProps>().props;
+  const user = auth.user
   const [messageApi, messageContextHolder] = useMessage();
 
   // States
@@ -98,6 +99,10 @@ function GallerySwitch() {
 
   const [showCreateGalleryModal, setShowCreateGalleryModal] = useState(false)
 
+  // Derived States
+
+  const inviteForbidden = !current_gallery.is_subscribed && !user?.is_demo && !user?.is_admin
+
   return (
     <>
       {messageContextHolder}
@@ -141,12 +146,12 @@ function GallerySwitch() {
                         icon={<HugeiconsIcon icon={AddMaleIcon} size={16} />}
                         className="text-gray-500"
                         onClick={() => {setShowAddMemberModal(true); setOpen(false);}}
-                        disabled={!current_gallery.is_subscribed}
+                        disabled={inviteForbidden}
                       >
                         invite members
                       </Button>
                     </div>
-                    <AnimatedContainer condition={showProBadge} type="fadeRight" speed="slow" >
+                    <AnimatedContainer condition={showProBadge && inviteForbidden} type="fadeRight" speed="slow" >
                       <ProBadge onClick={() => setOpen(false)} />
                     </AnimatedContainer>
                   </div>

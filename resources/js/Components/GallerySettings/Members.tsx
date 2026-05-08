@@ -245,6 +245,10 @@ function Members() {
     }
   ]
 
+  // Derived States
+
+  const inviteForbidden = !gallery.is_subscribed && !user?.is_demo && !user?.is_admin
+
   return (
     <>
       <div className="flex flex-col gap-3">
@@ -253,14 +257,14 @@ function Members() {
             className="flex justify-end gap-1"
             onMouseLeave={() => setShowProBadge(false)}
           >
-            <AnimatedContainer condition={showProBadge} type="fadeLeft" speed="slow" >
+            <AnimatedContainer condition={showProBadge && inviteForbidden} type="fadeLeft" speed="slow" >
               <ProBadge size="medium" onClick={() => setOpen(false)} />
             </AnimatedContainer>
             <div onMouseEnter={() => setShowProBadge(true)} >
               <Button
                 type="primary"
                 onClick={() => setShowAddMemberModal(true)}
-                disabled={!gallery.is_subscribed}
+                disabled={inviteForbidden}
               >
                 Add Member
               </Button>
