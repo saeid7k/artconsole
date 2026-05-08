@@ -69,6 +69,10 @@ class SubscriptionController extends Controller
           'cancel_url' => route('subscription.index', [
             'checkout' => 'canceled',
           ]),
+          'customer_update' => [
+            'name' => 'auto',
+            'address' => 'auto',
+          ],
         ]);
     } catch (\Exception $e) {
       return response()->json([
