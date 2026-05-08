@@ -76,8 +76,8 @@ function Sidebar() {
     })?.key || ''
   }
 
-  const showUpgrade = gallery?.pivot?.access == 'owner' && !gallery?.is_subscribed
-  const showSubscription = gallery?.pivot?.access == 'owner' && gallery?.is_subscribed && !user?.is_demo
+  const showUpgrade = gallery?.pivot?.access == 'owner' && !gallery?.is_subscribed && !user?.is_demo && !user?.is_admin
+  const showSubscription = gallery?.pivot?.access == 'owner' && gallery?.is_subscribed && !user?.is_admin
 
   return (
     <div

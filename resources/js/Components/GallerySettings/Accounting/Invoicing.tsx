@@ -2,11 +2,13 @@ import ProBadge from "@/Components/Subscription/ProBadge";
 import CONFIGS from "@/constants/configs.json";
 import { useGallerySettings } from "@/contexts/GallerySettingsContext";
 import useGalleryMeta from "@/hooks/useGalleryMeta";
+import { usePage } from "@inertiajs/react";
 import { Form, Input, Switch } from "antd";
 import TextArea from "antd/es/input/TextArea";
 
 function Invoicing() {
 
+  const user = usePage()?.props?.auth?.user
   const { gallery } = useGallerySettings()
   const { saveChipNode, setMeta } = useGalleryMeta(gallery)
 
@@ -62,7 +64,7 @@ function Invoicing() {
             <Switch
               defaultChecked={gallery?.meta?.app_branding ?? true}
               onChange={(checked) => setMeta("app_branding", checked)}
-              disabled={!gallery?.is_subscribed}
+              disabled={!gallery?.is_subscribed || !user?.is_demo}
             />
             <div className="text-ghost">Show "Powered by {CONFIGS.app.name}" in invoices' footer</div>
           </div>
