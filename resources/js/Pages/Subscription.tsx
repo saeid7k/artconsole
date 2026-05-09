@@ -80,24 +80,23 @@ function Subscription({ billing_to }: { billing_to: string }) {
           >
             <Tabs
               size="small"
-            >
-              <Tabs.TabPane tab="Upcoming Invoice" key="upcoming-invoice">
-                {(!dataIsLoading && !subscriptionDataQuery.data?.upcomingInvoice) ?
-                  (
+              items={[
+                {
+                  key: "upcoming-invoice",
+                  label: "Upcoming Invoice",
+                  children: (!dataIsLoading && !subscriptionDataQuery.data?.upcomingInvoice) ? (
                     <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No upcoming invoice" />
-                  )
-                  :
-                  (
-                    <StripeInvoice
-                      invoice={subscriptionDataQuery.data?.upcomingInvoice}
-                    />
-                  )
-                }
-              </Tabs.TabPane>
-              <Tabs.TabPane tab="Billing Details" key="billing-details">
-                <BillingDetails billing_to={billing_to} />
-              </Tabs.TabPane>
-            </Tabs>
+                  ) : (
+                    <StripeInvoice invoice={subscriptionDataQuery.data?.upcomingInvoice} />
+                  ),
+                },
+                {
+                  key: "billing-details",
+                  label: "Billing Details",
+                  children: <BillingDetails billing_to={billing_to} />,
+                },
+              ]}
+            />
           </Card>
         </div>
         <div className="grid grid-cols-1 gap-5">
