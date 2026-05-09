@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\MockupEnvironment;
+use App\Helpers\ConfigHelper;
 use App\Jobs\GenerateDescription;
 use App\Jobs\GenerateMockup;
 use App\Models\AgentConversation;
@@ -76,6 +77,12 @@ class AiController extends Controller
       'title' => 'Mockup Generation',
     ]);
 
+    $user->tokenTransactions()->create([
+      'type' => 'usage',
+      'amount' => ConfigHelper::tokenUsage('mockup'),
+      'description' => 'Token usage for mockup generation',
+    ]);
+
     GenerateMockup::dispatch(
       userId: $user->id,
       conversationId: $conversationId,
@@ -110,6 +117,12 @@ class AiController extends Controller
       'id' => $conversationId,
       'user_id' => $user->id,
       'title' => 'Description Generation',
+    ]);
+
+    $user->tokenTransactions()->create([
+      'type' => 'usage',
+      'amount' => ConfigHelper::tokenUsage('description'),
+      'description' => 'Token usage for description generation',
     ]);
 
     GenerateDescription::dispatch(
