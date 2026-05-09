@@ -13,30 +13,50 @@ function UserMenu() {
   const [openAccountModal, setOpenAccountModal] = useState(false)
 
   function Popup() {
-    return (
-      <Menu>
-        <div className="flex gap-2 p-2">
-          <Avatar size="large" src={user.photo ? user.photo : undefined}>
-            {getInitials(user.full_name)}
-          </Avatar>
-          <div>
-            <div className="font-semibold">{user.full_name}</div>
-            <div className="text-sm text-slate-500">{user.email}</div>
+    const menuItems = [
+      {
+        key: 'user-info',
+        label: (
+          <div className="flex gap-2 cursor-default">
+            <Avatar size="large" src={user.photo ? user.photo : undefined}>
+              {getInitials(user.full_name)}
+            </Avatar>
+            <div>
+              <div className="font-semibold text-body">{user.full_name}</div>
+              <div className="text-sm text-slate-500">{user.email}</div>
+            </div>
           </div>
-        </div>
-        <Menu.Item key="account" onClick={() => setOpenAccountModal(true)}>
+        ),
+        disabled: true,
+      },
+      {
+        key: 'account',
+        label: (
           <div className="flex items-center gap-1"><HugeiconsIcon icon={UserAccountIcon} size={24} />Account</div>
-        </Menu.Item>
-        <div className="flex flex-col my-2 px-3">
-          <label>Theme</label>
-          <DarkModeSwitch />
-        </div>
-        <Menu.Divider />
-        <Menu.Item key="logout" onClick={() => { router.get(route('logout')) }}>
+        ),
+        onClick: () => setOpenAccountModal(true),
+      },
+      {
+        key: 'theme',
+        label: (
+          <div className="flex flex-col cursor-default">
+            <label>Theme</label>
+            <DarkModeSwitch />
+          </div>
+        ),
+        disabled: true,
+      },
+      { type: 'divider' as const },
+      {
+        key: 'logout',
+        label: (
           <div className="flex items-center gap-1"><HugeiconsIcon icon={Logout03Icon} size={24} />Logout</div>
-        </Menu.Item>
-      </Menu>
-    )
+        ),
+        onClick: () => router.get(route('logout')),
+      },
+    ]
+
+    return <Menu items={menuItems} />
   }
 
   return (
