@@ -192,6 +192,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
       Route::post('add-description-to-artwork', [App\Http\Controllers\AgentMessageController::class, 'addDescriptionToArtwork'])->name('add-description-to-artwork');
     });
   });
+
+  Route::prefix('tokens')->name('tokens.')->group(function () {
+    Route::get('/transactions', [App\Http\Controllers\TokenTransactionController::class, 'index'])->name('transactions');
+  });
 });
 
 Route::middleware(['auth', Admin::class])->group(function () {
