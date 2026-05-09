@@ -23,6 +23,7 @@ function MainMenu() {
           <ItemRow
             key={item.id}
             icon={item.icon}
+            gradientBackground
             onClick={() => setWidgetEnabled(item.id)}
           >
             <FlexBox justifyContent="between">
