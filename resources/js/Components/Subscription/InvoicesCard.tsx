@@ -44,7 +44,7 @@ function InvoicesCard() {
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No invoices found" />
         )}
         {invoices?.map((invoice: any) => (
-          <div className="flex justify-between items-center gap-3 border rounded-lg px-3 py-1">
+          <div key={invoice.id} className="flex justify-between items-center gap-3 border rounded-lg px-3 py-1">
             <div className="flex items-center gap-3">
               <code>{invoice.number}</code>
               <StyledDate value={invoice.created} showTime={false} />
