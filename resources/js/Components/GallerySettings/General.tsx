@@ -3,7 +3,7 @@ import { trimWebsite } from "@/utils/formatHelper"
 import { Add01Icon, Delete02Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router } from "@inertiajs/react"
-import { Button, Form, GetProp, Input, message, Tooltip, Upload, UploadProps } from "antd"
+import { Button, Form, GetProp, Input, message, Space, Tooltip, Upload, UploadProps } from "antd"
 import { useWatch } from "antd/es/form/Form"
 import TextArea from "antd/es/input/TextArea"
 import axios from "axios"
@@ -29,7 +29,10 @@ function General() {
       .validateFields()
       .then((values) => {
         setProcessing(true);
-        axios.post(route('galleries.update', { gallery: gallery.id }), values)
+        axios.post(route('galleries.update', { gallery: gallery.id }), {
+          ...values,
+          website: trimWebsite(values.website),
+        })
           .then((res) => {
             message.success(res.data.message || "Gallery updated successfully")
             router.reload()
@@ -199,13 +202,14 @@ function General() {
           label="Website"
           name="website"
         >
-          <Input
-            placeholder="Enter gallery website"
-            addonBefore="https://"
-            onChange={(e) => {form.setFieldsValue({ website: trimWebsite(e.target.value) })}}
-          />
+          <Space.Compact style={{ width: '100%' }}>
+            <Space.Addon>https://</Space.Addon>
+            <Input
+              defaultValue={gallery?.website}
+              placeholder="Enter gallery website"
+            />
+          </Space.Compact>
         </Form.Item>
-
         <Form.Item
           label="Email"
           name="email"
