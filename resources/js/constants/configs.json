@@ -16,8 +16,8 @@
   },
   "ai": {
     "token_usage": {
-      "mockup": 10,
-      "description": 1
+      "mockup": 20,
+      "description": 2
     },
     "token_price": {
       "100_tokens": 1,
