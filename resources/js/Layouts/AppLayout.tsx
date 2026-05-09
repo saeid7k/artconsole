@@ -3,6 +3,7 @@ import GallerySwitch from "@/Components/Galleries/GallerySwitch";
 import ServerFlashMessage from "@/Components/ServerFlashMessage";
 import Sidebar from "@/Components/Sidebar";
 import SelectPlanModal from "@/Components/Subscription/SelectPlanModal";
+import TokensDrawer from "@/Components/Tokens/TokensDrawer";
 import TopbarActions from "@/Components/TopbarActions";
 import AppProvider, { useApp } from "@/contexts/AppContext";
 import { useWindow } from "@/hooks/useWindow";
@@ -24,7 +25,7 @@ interface AppProps extends PropsWithChildren {
 
 function App ({ children }: AppProps) {
 
-  const { sidebarCollapsed, toggleSidebar, darkMode, openUpgradeModal, setOpenUpgradeModal } = useApp()
+  const { sidebarCollapsed, toggleSidebar, darkMode, openUpgradeModal, setOpenUpgradeModal, tokensDrawerOpen, setTokensDrawerOpen } = useApp()
   const { scrollY, windowWidth } = useWindow()
   const collapsedWidth = 50
   const expandedWidth = 200
@@ -150,6 +151,11 @@ function App ({ children }: AppProps) {
           <SelectPlanModal
             open={openUpgradeModal}
             onClose={() => setOpenUpgradeModal(false)}
+          />
+
+          <TokensDrawer
+            open={tokensDrawerOpen}
+            onClose={() => setTokensDrawerOpen(false)}
           />
 
           <AiDrawer />
