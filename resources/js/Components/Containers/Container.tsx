@@ -9,11 +9,23 @@ type Props = PropsWithChildren<{
   background?: 'light' | 'soft' | 'none';
   rootClassName?: string
   labelClassName?: string
+  contentClassName?: string
   onClick?: () => void
   children: React.ReactNode
 }>
 
-function Container({ label, bordered = true, borderStyle = 'solid', rounded = 'md', background = 'none', rootClassName, labelClassName, onClick, children }: Props) {
+function Container({
+  label,
+  bordered = true,
+  borderStyle = 'solid',
+  rounded = 'md',
+  background = 'none',
+  rootClassName,
+  labelClassName,
+  contentClassName,
+  onClick,
+  children
+}: Props) {
   return (
     <div
       className={twMerge(
@@ -28,7 +40,7 @@ function Container({ label, bordered = true, borderStyle = 'solid', rounded = 'm
       {label && (
         <small className={`text-primary -translate-y-1 ${labelClassName}`}>{label}</small>
       )}
-      <div>
+      <div className={twMerge(contentClassName)}>
         {children}
       </div>
     </div>
