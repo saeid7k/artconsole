@@ -1,7 +1,7 @@
 import AI_MENU_ITEMS from "@/constants/Ai/aiMenuItems"
 import { useAiAssistant } from "@/contexts/AiAssistantContext"
 import colors from "@/Themes/theme"
-import { RoboticIcon } from "@hugeicons/core-free-icons"
+import { RoboticIcon, TokenCircleIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import FlexBox from "../Containers/FlexBox"
 import ItemRow from "../Containers/ItemRow"
@@ -25,7 +25,13 @@ function MainMenu() {
             icon={item.icon}
             onClick={() => setWidgetEnabled(item.id)}
           >
-            {item.label}
+            <FlexBox justifyContent="between">
+              <div>{item.label}</div>
+              <FlexBox className="opacity-75">
+                <div className="font-light">{item.token}</div>
+                <HugeiconsIcon icon={TokenCircleIcon} color={colors.yellow[600]} size={16} />
+              </FlexBox>
+            </FlexBox>
           </ItemRow>
         ))}
       </div>

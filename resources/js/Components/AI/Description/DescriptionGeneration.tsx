@@ -5,13 +5,15 @@ import NumberedSection from "@/Components/Containers/NumberedSection";
 import LoadingAi from "@/Components/Loaders/LoadingAi";
 import ResourceChips from "@/Components/ResourceChips";
 import { DESCRIPTION_LENGTHS } from "@/constants/Ai/descriptionLengths";
+import CONFIGS from "@/constants/configs.json";
 import { useAiAssistant } from "@/contexts/AiAssistantContext";
 import usePollAssistantMessage from "@/hooks/usePollAssistantMessage";
 import { AiResource } from "@/types/aiResource";
 import { AiMagicIcon, HandPointingDown01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { usePage } from "@inertiajs/react";
 import { useMutation } from "@tanstack/react-query";
-import { Button, Empty, message } from "antd";
+import { Alert, Button, Empty, message } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
@@ -21,6 +23,7 @@ function DescriptionGeneration() {
 
   // Context
 
+  const user = usePage()?.props?.auth?.user
   const { resources } = useAiAssistant()
 
   // State and Hooks
@@ -63,6 +66,7 @@ function DescriptionGeneration() {
   }, [artworkResources])
 
   const showButton = selectedLength !== null && selectedResource !== null && !conversationId
+  const tokenAvailable = user?.token_balance >= CONFIGS.ai.token_usage.description
 
   return (
     <div className="flex flex-col gap-20">
@@ -147,16 +151,28 @@ function DescriptionGeneration() {
           <AnimatedContainer
             condition={showButton}
             type="fadeUp"
-            className="flex justify-end"
           >
-            <Button
-              type="primary"
-              icon={<HugeiconsIcon icon={AiMagicIcon} />}
-              onClick={() => generateMutation.mutate()}
-              loading={generateMutation.isPending}
+            <div
+              className="flex justify-end"
             >
-              Generate Description
-            </Button>
+              <Button
+                type="primary"
+                icon={<HugeiconsIcon icon={AiMagicIcon} />}
+                onClick={() => generateMutation.mutate()}
+                loading={generateMutation.isPending}
+                disabled={!tokenAvailable}
+              >
+                Generate Description
+              </Button>
+            </div>
+            {!tokenAvailable && (
+              <Alert
+                title={`You need at least ${CONFIGS.ai.token_usage.description} tokens to generate a description.`}
+                type="warning"
+                showIcon
+                className="mt-3"
+              />
+            )}
           </AnimatedContainer>
         </>
       )}
