@@ -133,38 +133,26 @@ function Sidebar() {
             handleMenuClick(e.key);
           }}
           selectedKeys={[activeKey()]}
-        >
-          {auth?.is_logged_as && (
-            <Menu.Item
-              key="log-back"
-              title={sidebarCollapsed && "Log Back"}
-              icon={<HugeiconsIcon icon={ArrowTurnBackwardIcon} />}
-            >
-              {!sidebarCollapsed && 'Log Back'}
-            </Menu.Item>
-          )}
-
-          {showUpgrade && (
-            <Menu.Item
-              key="upgrade"
-              title={sidebarCollapsed && "Upgrade"}
-              icon={<HugeiconsIcon icon={CrownIcon} />}
-              className="text-blue-600 hover:text-purple-700 rounded-lg moving-bg"
-              onClick={() => setOpenUpgradeModal(true)}
-            >
-              {!sidebarCollapsed && 'Upgrade'}
-            </Menu.Item>
-          )}
-          {showSubscription && (
-            <Menu.Item
-              key="subscription"
-              title={sidebarCollapsed && "Subscription"}
-              icon={<HugeiconsIcon icon={CreditCard} />}
-            >
-              {!sidebarCollapsed && 'Subscription'}
-            </Menu.Item>
-          )}
-        </Menu>
+          items={[
+            ...(auth?.is_logged_as ? [{
+              key: 'log-back',
+              icon: <HugeiconsIcon icon={ArrowTurnBackwardIcon} />,
+              label: 'Log Back',
+            }] : []),
+            ...(showUpgrade ? [{
+              key: 'upgrade',
+              icon: <HugeiconsIcon icon={CrownIcon} />,
+              label: 'Upgrade',
+              className: 'text-blue-600 hover:text-purple-700 rounded-lg moving-bg',
+              onClick: () => setOpenUpgradeModal(true),
+            }] : []),
+            ...(showSubscription ? [{
+              key: 'subscription',
+              icon: <HugeiconsIcon icon={CreditCard} />,
+              label: 'Subscription',
+            }] : []),
+          ]}
+        />
 
         {user?.is_demo && !sidebarCollapsed && (
           <div className="px-2">
