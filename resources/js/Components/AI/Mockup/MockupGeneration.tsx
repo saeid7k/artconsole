@@ -5,22 +5,24 @@ import ImageGroupFlex from "@/Components/ImageGroupFlex"
 import LoadingAi from "@/Components/Loaders/LoadingAi"
 import LoadingSpinner from "@/Components/LoadingSpinner"
 import { MOCKUP_ENVIRONMENTS } from "@/constants/Ai/mockupEnvironments"
+import CONFIGS from "@/constants/configs.json"
 import { useAiAssistant } from "@/contexts/AiAssistantContext"
-import { AiMessage } from "@/types/aiMessage"
+import usePollAssistantMessage from "@/hooks/usePollAssistantMessage"
 import { AiResource } from "@/types/aiResource"
 import { AiMagicIcon, HandPointingDown01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
+import { usePage } from "@inertiajs/react"
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { Button, Empty, message, Radio } from "antd"
+import { Alert, Button, Empty, message, Radio } from "antd"
 import axios from "axios"
 import { useEffect, useRef, useState } from "react"
 import MockupResponse from "./MockupResponse"
-import usePollAssistantMessage from "@/hooks/usePollAssistantMessage"
 
 function MockupGeneration() {
 
   // Context
 
+  const { user } = usePage()?.props?.auth
   const { resources } = useAiAssistant()
 
   // State and Hooks
@@ -83,6 +85,7 @@ function MockupGeneration() {
 
   const imagesLoading = artworkIds.length > 0 && (mediaQuery.isLoading || mediaQuery.isFetching || mediaQuery.isPending)
   const showButton = selectedImageIndex !== null && selectedEnvironment !== null && !conversationId
+  const tokenAvailable = user?.token_balance >= CONFIGS.ai.token_usage.mockup
 
   return (
     <div className="flex flex-col gap-20">
@@ -166,16 +169,28 @@ function MockupGeneration() {
           <AnimatedContainer
             condition={showButton}
             type="fadeUp"
-            className="flex justify-end"
           >
-            <Button
-              type="primary"
-              icon={<HugeiconsIcon icon={AiMagicIcon} />}
-              onClick={() => generateMutation.mutate()}
-              loading={generateMutation.isPending}
+            <div
+              className="flex justify-end"
             >
-              Generate Mockup
-            </Button>
+              <Button
+                type="primary"
+                icon={<HugeiconsIcon icon={AiMagicIcon} />}
+                onClick={() => generateMutation.mutate()}
+                loading={generateMutation.isPending}
+                disabled={!tokenAvailable}
+              >
+                Generate Mockup
+              </Button>
+            </div>
+            {!tokenAvailable && (
+              <Alert
+                title={`You need at least ${CONFIGS.ai.token_usage.mockup} tokens to generate a mockup.`}
+                type="warning"
+                showIcon
+                className="mt-3"
+              />
+            )}
           </AnimatedContainer>
         </>
       )}
