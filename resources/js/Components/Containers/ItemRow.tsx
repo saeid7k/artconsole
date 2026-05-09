@@ -22,7 +22,7 @@ function ItemRow({icon, onClick, children}: Props) {
           </div>
         </>
       )}
-      <div>{children}</div>
+      <div className="grow" >{children}</div>
     </div>
   )
 }
