@@ -20,6 +20,8 @@ export type AppContextType = {
   setOpenUpgradeModal: Dispatch<SetStateAction<boolean>>;
   aiDrawerOpen: boolean;
   setAiDrawerOpen: Dispatch<SetStateAction<boolean>>;
+  tokensDrawerOpen: boolean;
+  setTokensDrawerOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 const AppContext = createContext<AppContextType>({
@@ -36,6 +38,8 @@ const AppContext = createContext<AppContextType>({
   setOpenUpgradeModal: () => {},
   aiDrawerOpen: false,
   setAiDrawerOpen: () => {},
+  tokensDrawerOpen: false,
+  setTokensDrawerOpen: () => {},
 });
 
 function AppProvider({ children }: PropsWithChildren) {
@@ -139,6 +143,10 @@ function AppProvider({ children }: PropsWithChildren) {
 
   const [aiDrawerOpen, setAiDrawerOpen] = useState(false);
 
+  // Tokens Drawer
+
+  const [tokensDrawerOpen, setTokensDrawerOpen] = useState(false);
+
   return (
     <AppContext
       value={{
@@ -155,6 +163,8 @@ function AppProvider({ children }: PropsWithChildren) {
         setOpenUpgradeModal,
         aiDrawerOpen,
         setAiDrawerOpen,
+        tokensDrawerOpen,
+        setTokensDrawerOpen,
       }}>
       {children}
     </AppContext>
