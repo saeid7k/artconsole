@@ -255,6 +255,10 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
           form={form}
           initialValues={artwork ? artwork : {
             status: DEFAULT_ARTWORK_STATUS.value,
+            artist_data: {
+              firstname: '',
+              lastname: '',
+            },
             category: DEFAULT_ARTWORK_CATEGORY.value,
             dimensions: {
               unit: 'inches',
@@ -382,7 +386,10 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                       >
                         <Input
                           placeholder="Type"
-                          defaultValue={form.getFieldValue(['artist_data', 'firstname']) + ' ' + form.getFieldValue(['artist_data', 'lastname'])}
+                          defaultValue={
+                            form.getFieldValue(['artist_data', 'firstname'])
+                            + form.getFieldValue(['artist_data', 'lastname']) ? (' ' + form.getFieldValue(['artist_data', 'lastname'])) : ''
+                          }
                           onChange={(e) => {
                             const fullName = e.target.value;
                             const [firstname, ...lastnameParts] = fullName.split(' ');
