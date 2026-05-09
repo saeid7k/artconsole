@@ -3,7 +3,7 @@ import { AiMagicIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Button } from "antd";
 
-function AiAssistantButton() {
+function AiAssistantButton({ showText = true }: { showText?: boolean }) {
 
   const { setAiDrawerOpen } = useApp()
 
@@ -13,7 +13,7 @@ function AiAssistantButton() {
       icon={<HugeiconsIcon icon={AiMagicIcon} size={24}  className="text-primary-600 dark:text-primary-400 animate-pulse" />}
       onClick={() => setAiDrawerOpen(true)}
     >
-      AI Assistant
+      {showText && "AI Assistant"}
     </Button>
   )
 }
