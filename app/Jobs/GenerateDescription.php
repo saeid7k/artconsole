@@ -3,8 +3,10 @@
 namespace App\Jobs;
 
 use App\Ai\Agents\DescriptionAgent;
+use App\Helpers\ConfigHelper;
 use App\Models\AgentConversationMessage;
 use App\Models\Media;
+use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
@@ -64,19 +66,12 @@ class GenerateDescription implements ShouldQueue
     [, $imageData] = explode(',', $base64Image, 2);
 
     $response = null;
-    try {
-      $response = $agent->prompt(
-        $userPrompt,
-        [AiImage::fromBase64($imageData, $media->mime_type)],
-        $agent->provider,
-        $agent->model,
-      );
-    } catch (\Throwable $th) {
-      Log::error('Description generation failed', [
-        'conversation_id' => $this->conversationId,
-        'error' => $th->getMessage(),
-      ]);
-    }
+    $response = $agent->prompt(
+      $userPrompt,
+      [AiImage::fromBase64($imageData, $media->mime_type)],
+      $agent->provider,
+      $agent->model,
+    );
 
     $responseMeta = [
       'artwork_id' => $artwork->id,
@@ -95,6 +90,23 @@ class GenerateDescription implements ShouldQueue
       'tool_results' => [],
       'usage' => $response ? $response->usage?->toArray() ?? [] : [],
       'meta' => $responseMeta,
+    ]);
+  }
+
+  public function failed(\Throwable $exception): void
+  {
+    $user = User::find($this->userId);
+    if ($user) {
+      $user->tokenTransactions()->create([
+        'type' => 'refund',
+        'amount' => ConfigHelper::tokenUsage('description'),
+        'description' => 'Refund for failed description generation',
+      ]);
+    }
+
+    Log::error('Description generation job failed', [
+      'conversation_id' => $this->conversationId,
+      'error' => $exception->getMessage(),
     ]);
   }
 }
