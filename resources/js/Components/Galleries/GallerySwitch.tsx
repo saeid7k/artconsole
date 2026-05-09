@@ -251,7 +251,7 @@ function GallerySwitch() {
           onClick={handleClick}
         >
           <GalleryAvatar gallery={current_gallery} size="small" shadow />
-          <div className="flex items-center gap-1">
+          <div className="hidden sm:flex items-center gap-1">
             <div className="font-semibold" >
               {current_gallery.name}
             </div>

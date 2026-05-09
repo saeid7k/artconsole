@@ -111,9 +111,7 @@ function App ({ children }: AppProps) {
                 scrollY > 0 ? ' shadow-md' : ''
               }`}
             >
-              <div>
-                <GallerySwitch />
-              </div>
+              <GallerySwitch />
               <TopbarActions />
             </Header>
             <Layout className="relative">
