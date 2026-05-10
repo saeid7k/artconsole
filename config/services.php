@@ -41,4 +41,8 @@ return [
     'redirect' => env('GOOGLE_REDIRECT_URI'),
   ],
 
+  'stripe' => [
+    'token_webhook_secret' => env('STRIPE_TOKEN_WEBHOOK_SECRET'),
+  ],
+
 ];

@@ -20,6 +20,11 @@ return new class extends Migration
       $table->integer('token_balance')->default(0)->after('bio');
       $table->boolean('is_demo')->default(false)->after('token_balance');
       $table->timestamp('demo_claimed_at')->nullable()->after('is_demo');
+      // Cashier / Stripe columns for token top-up billing
+      $table->string('stripe_id')->nullable()->index()->after('demo_claimed_at');
+      $table->string('pm_type')->nullable()->after('stripe_id');
+      $table->string('pm_last_four', 4)->nullable()->after('pm_type');
+      $table->timestamp('trial_ends_at')->nullable()->after('pm_last_four');
     });
   }
 
@@ -29,7 +34,8 @@ return new class extends Migration
   public function down(): void
   {
     Schema::table('users', function (Blueprint $table) {
-      $table->dropColumn(['country_code', 'phone', 'website', 'address', 'bio', 'token_balance', 'is_demo', 'demo_claimed_at']);
+      $table->dropIndex('users_stripe_id_index');
+      $table->dropColumn(['country_code', 'phone', 'website', 'address', 'bio', 'token_balance', 'is_demo', 'demo_claimed_at', 'stripe_id', 'pm_type', 'pm_last_four', 'trial_ends_at']);
     });
   }
 };
