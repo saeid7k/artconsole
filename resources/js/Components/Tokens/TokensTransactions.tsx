@@ -3,12 +3,13 @@ import { TokenTransaction } from "@/types/tokenTransaction";
 import { DownloadSquare01Icon, UploadSquare01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useQuery } from "@tanstack/react-query";
-import { Button } from "antd";
+import { Button, Empty } from "antd";
 import axios from "axios";
 import { useState } from "react";
 import FlexBox from "../Containers/FlexBox";
 import ItemRow from "../Containers/ItemRow";
 import InfoPopover from "../InfoPopover";
+import LoadingSpinner from "../LoadingSpinner";
 import StyledDate from "../StyledDate";
 
 function TokensTransactions() {
@@ -47,6 +48,19 @@ function TokensTransactions() {
       default:
         return <HugeiconsIcon icon={UploadSquare01Icon} size={20} className="text-green-600" />;
     }
+  }
+
+  if (transactionsQuery.isFetching || transactionsQuery.isLoading) {
+    return (
+      <LoadingSpinner
+      />
+    )
+  }
+
+  if (transactions.length === 0) {
+    return (
+      <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="You have no token transactions." />
+    )
   }
 
   return (
