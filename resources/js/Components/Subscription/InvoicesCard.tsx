@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import StyledCurrency from "../StyledCurrency";
 import StyledDate from "../StyledDate";
 import SubscriptionInvoiceStatusTag from "./SubscriptionInvoiceStatusTag";
+import ItemRow from "../Containers/ItemRow";
+import FlexBox from "../Containers/FlexBox";
 
 function InvoicesCard() {
 
@@ -44,27 +46,29 @@ function InvoicesCard() {
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No invoices found" />
         )}
         {invoices?.map((invoice: any) => (
-          <div key={invoice.id} className="flex justify-between items-center gap-3 border rounded-lg px-3 py-1">
-            <div className="flex items-center gap-3">
-              <code>{invoice.number}</code>
-              <StyledDate value={invoice.created} showTime={false} />
-            </div>
-            <StyledCurrency value={invoice.total/100} currency={invoice.currency} minimumFractionDigits={2} />
-            <div className="flex items-center gap-3">
-              <SubscriptionInvoiceStatusTag status={invoice.status} />
-              <div className="flex">
-                <Tooltip title="Download Invoice PDF">
-                  <Button
-                    variant="text"
-                    color="primary"
-                    shape="circle"
-                    icon={<HugeiconsIcon icon={DownloadIcon} size={20} />}
-                    onClick={() => window.open(invoice.invoice_pdf, '_self')}
-                  />
-                </Tooltip>
+          <ItemRow key={invoice.id}>
+            <FlexBox justifyContent="between">
+              <div className="flex items-center gap-3">
+                <code className="whitespace-nowrap">{invoice.number}</code>
+                <StyledDate value={invoice.created} showTime={false} />
               </div>
-            </div>
-          </div>
+              <StyledCurrency value={invoice.total/100} currency={invoice.currency} minimumFractionDigits={2} />
+              <div className="flex items-center gap-3">
+                <SubscriptionInvoiceStatusTag status={invoice.status} />
+                <div className="flex">
+                  <Tooltip title="Download Invoice PDF">
+                    <Button
+                      variant="text"
+                      color="primary"
+                      shape="circle"
+                      icon={<HugeiconsIcon icon={DownloadIcon} size={20} />}
+                      onClick={() => window.open(invoice.invoice_pdf, '_self')}
+                    />
+                  </Tooltip>
+                </div>
+              </div>
+            </FlexBox>
+          </ItemRow>
         ))}
       </div>
     </Card>
