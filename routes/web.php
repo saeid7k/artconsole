@@ -195,10 +195,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
   Route::prefix('tokens')->name('tokens.')->group(function () {
     Route::get('/transactions', [App\Http\Controllers\TokenTransactionController::class, 'index'])->name('transactions');
-    Route::get('/topup/packages', [App\Http\Controllers\TokenTopupController::class, 'getPackages'])->name('topup.packages');
-    Route::post('/topup/checkout', [App\Http\Controllers\TokenTopupController::class, 'checkout'])->name('topup.checkout')->middleware('verified');
-    Route::get('/topup/success', [App\Http\Controllers\TokenTopupController::class, 'success'])->name('topup.success');
-    Route::get('/topup/cancel', [App\Http\Controllers\TokenTopupController::class, 'cancel'])->name('topup.cancel');
+    Route::get('/topup/packages', [App\Http\Controllers\TokenTransactionController::class, 'getPackages'])->name('topup.packages');
+    Route::post('/topup/checkout', [App\Http\Controllers\TokenTransactionController::class, 'checkout'])->name('topup.checkout')->middleware('verified');
   });
 });
 
