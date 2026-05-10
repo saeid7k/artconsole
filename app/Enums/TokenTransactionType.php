@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 
 enum TokenTransactionType: string
 {
-  case TopUp = 'top-up';
+  case TopUp = 'top_up';
   case Credit = 'credit';
   case Usage = 'usage';
   case Refund = 'refund';
