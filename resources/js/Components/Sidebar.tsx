@@ -17,7 +17,7 @@ function Sidebar() {
 
   const items = [
     { key: 'dashboard', icon: <HugeiconsIcon icon={DashboardBrowsingIcon} />, label: 'Dashboard', route: 'dashboard' },
-    { key: 'exhibitions', icon: <HugeiconsIcon icon={PresentationLineChart01Icon} />, label: 'Exhibitions', route: 'exhibitions.index' },
+    // { key: 'exhibitions', icon: <HugeiconsIcon icon={PresentationLineChart01Icon} />, label: 'Exhibitions', route: 'exhibitions.index' },
     { key: 'artworks', label: 'Artworks Inventory', icon: <HugeiconsIcon icon={Image02Icon} />, route: 'artworks.index' },
     { key: 'locations', label: 'Locations', icon: <HugeiconsIcon icon={StoreLocation01Icon} />, route: 'locations.index' },
     { key: 'invoices', icon: <HugeiconsIcon icon={InvoiceIcon} />, label: 'Sales & Invoices', route: 'invoices.index' },
