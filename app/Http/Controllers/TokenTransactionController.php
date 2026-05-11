@@ -35,8 +35,9 @@ class TokenTransactionController extends Controller
 
       $currencies = [$price->currency => $price->unit_amount];
 
-      foreach (($price->currency_options ?? []) as $currency => $options) {
-        $currencies[$currency] = $options->unit_amount;
+      $currencyOptions = $price->currency_options ? $price->currency_options->toArray() : [];
+      foreach ($currencyOptions as $currency => $options) {
+        $currencies[$currency] = $options['unit_amount'] ?? null;
       }
 
       $packages[] = [
