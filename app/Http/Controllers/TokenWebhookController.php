@@ -70,7 +70,7 @@ class TokenWebhookController extends Controller
     $user->tokenTransactions()->create([
       'type' => 'top_up',
       'amount' => $tokens,
-      'description' => 'Token top-up via Stripe (session: ' . $session->id . ')',
+      'description' => 'Token top-up',
       'stripe_id' => $session->id,
     ]);
   }
