@@ -195,8 +195,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
   Route::prefix('tokens')->name('tokens.')->group(function () {
     Route::get('/transactions', [App\Http\Controllers\TokenTransactionController::class, 'index'])->name('transactions');
-    Route::get('/topup/packages', [App\Http\Controllers\TokenTransactionController::class, 'getPackages'])->name('topup.packages');
-    Route::post('/topup/checkout', [App\Http\Controllers\TokenTransactionController::class, 'checkout'])->name('topup.checkout')->middleware('verified');
+    Route::get('/packages', [App\Http\Controllers\TokenTransactionController::class, 'getPackages'])->name('packages');
+    Route::post('/checkout', [App\Http\Controllers\TokenTransactionController::class, 'checkout'])->name('checkout');
   });
 });
 
