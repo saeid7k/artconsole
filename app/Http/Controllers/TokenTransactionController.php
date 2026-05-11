@@ -24,13 +24,19 @@ class TokenTransactionController extends Controller
     $stripePrices = Cashier::stripe()->prices->all([
       'active' => true,
       'type' => 'one_time',
-      'expand' => ['data.product'],
+      'expand' => ['data.product', 'data.currency_options'],
     ]);
 
     $packages = [];
     foreach ($stripePrices->data as $price) {
       if (($price->product->metadata->token_topup ?? null) !== 'true') {
         continue;
+      }
+
+      $currencies = [$price->currency => $price->unit_amount];
+
+      foreach (($price->currency_options ?? []) as $currency => $options) {
+        $currencies[$currency] = $options->unit_amount;
       }
 
       $packages[] = [
@@ -40,6 +46,7 @@ class TokenTransactionController extends Controller
         'description' => $price->product->description,
         'amount' => $price->unit_amount,
         'currency' => $price->currency,
+        'currencies' => $currencies,
         'tokens' => (int) ($price->product->metadata->tokens ?? 0),
       ];
     }
