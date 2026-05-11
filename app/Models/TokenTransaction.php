@@ -11,6 +11,7 @@ class TokenTransaction extends Model
     'type',
     'amount',
     'description',
+    'stripe_id',
   ];
 
   public function user(): BelongsTo
