@@ -207,10 +207,9 @@ Route::middleware(['auth', Admin::class])->group(function () {
   });
 });
 
-Route::post('/stripe/webhook', [WebhookController::class, 'handleWebhook'])
-  ->name('cashier.webhook');
-
-Route::post('/stripe/token-webhook', [App\Http\Controllers\TokenWebhookController::class, 'handleWebhook'])
-  ->name('cashier.token-webhook');
+Route::prefix('stripe')->name('cashier.')->group(function () {
+  Route::post('/webhook', [WebhookController::class, 'handleWebhook'])->name('webhook');
+  Route::post('/token-webhook', [App\Http\Controllers\TokenWebhookController::class, 'handleWebhook'])->name('token-webhook');
+});
 
 require __DIR__.'/auth.php';
