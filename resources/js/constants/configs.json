@@ -20,7 +20,7 @@
       "description": 2
     },
     "token_price": {
-      "100_tokens": 1,
+      "500_tokens": 5,
       "1000_tokens": 9
     }
   },
