@@ -14,9 +14,10 @@ return new class extends Migration
     Schema::create('token_transactions', function (Blueprint $table) {
       $table->id();
       $table->foreignId('user_id')->constrained()->onDelete('cascade');
-      $table->string('type');// 'top-up', 'usage', 'refund'
+      $table->string('type');// 'top_up', 'usage', 'refund'
       $table->integer('amount');
       $table->string('description')->nullable();
+      $table->string('stripe_id')->nullable()->index();
       $table->timestamps();
     });
   }

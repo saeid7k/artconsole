@@ -195,6 +195,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
   Route::prefix('tokens')->name('tokens.')->group(function () {
     Route::get('/transactions', [App\Http\Controllers\TokenTransactionController::class, 'index'])->name('transactions');
+    Route::get('/topup/packages', [App\Http\Controllers\TokenTransactionController::class, 'getPackages'])->name('topup.packages');
+    Route::post('/topup/checkout', [App\Http\Controllers\TokenTransactionController::class, 'checkout'])->name('topup.checkout')->middleware('verified');
   });
 });
 
@@ -205,7 +207,9 @@ Route::middleware(['auth', Admin::class])->group(function () {
   });
 });
 
-Route::post('/stripe/webhook', [WebhookController::class, 'handleWebhook'])
-  ->name('cashier.webhook');
+Route::prefix('stripe')->name('cashier.')->group(function () {
+  Route::post('/webhook', [WebhookController::class, 'handleWebhook'])->name('webhook');
+  Route::post('/token-webhook', [App\Http\Controllers\TokenWebhookController::class, 'handleWebhook'])->name('token-webhook');
+});
 
 require __DIR__.'/auth.php';

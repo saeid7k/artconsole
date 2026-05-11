@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Http;
+use Laravel\Cashier\Billable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
@@ -24,6 +25,9 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
   /** @use HasFactory<\Database\Factories\UserFactory> */
 
   use HasFactory, Notifiable, Metable, InteractsWithMedia, LogsActivity, SoftDeletes;
+  use Billable {
+    invoices as stripeInvoices;
+  }
   /**
    * The attributes that are mass assignable.
    *
