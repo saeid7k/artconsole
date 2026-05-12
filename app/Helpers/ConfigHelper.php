@@ -24,4 +24,11 @@ class ConfigHelper
       $configsData = json_decode($configsFile, true);
       return (int) ($configsData['ai']['token_usage'][$key] ?? 0);
     }
+
+    public static function tokens(string $key)
+    {
+      $configsFile = file_get_contents(resource_path('/js/constants/configs.json'));
+      $configsData = json_decode($configsFile, true);
+      return $configsData['token'][$key] ?? null;
+    }
 }

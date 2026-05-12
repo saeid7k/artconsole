@@ -18,11 +18,14 @@
     "token_usage": {
       "mockup": 20,
       "description": 2
-    },
-    "token_price": {
-      "500_tokens": 5,
-      "1000_tokens": 9
     }
+  },
+  "token": {
+    "price": {
+      "500": 5,
+      "1000": 9
+    },
+    "free_monthly_tokens": 100
   },
   "new_tag_timeout": 5
 }
