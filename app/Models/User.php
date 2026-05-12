@@ -303,6 +303,15 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     $this->save();
   }
 
+  public function creditFreeMonthlyTokens(): void
+  {
+    $this->tokenTransactions()->create([
+      'type' => 'credit',
+      'amount' => 100,
+      'description' => 'Monthly free tokens for Pro subscription',
+    ]);
+  }
+
   /*
   |=======================================================
   | Scopes
