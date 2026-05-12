@@ -1,11 +1,18 @@
+import TokenTopupNotification from "@/Components/Tokens/TokenTopupNotification";
 import AppLayout from "@/Layouts/AppLayout";
 import { Card } from "antd";
 
 function Dashboard({ }) {
+
+
   return (
-    <Card>
-      Dashboard Content
-    </Card>
+    <div>
+      <Card>
+        Dashboard Content
+      </Card>
+
+      <TokenTopupNotification />
+    </div>
   )
 }
 
