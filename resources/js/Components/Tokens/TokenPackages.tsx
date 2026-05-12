@@ -3,8 +3,8 @@ import { formatCurrency } from "@/utils/formatHelper";
 import { Coins01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { usePage } from "@inertiajs/react";
-import { useQuery } from "@tanstack/react-query";
-import { Button, Empty } from "antd";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Button, Empty, message } from "antd";
 import axios from "axios";
 import FlexBox from "../Containers/FlexBox";
 import LoadingSpinner from "../LoadingSpinner";
@@ -22,6 +22,17 @@ function TokenPackages() {
   });
 
   const packages = !packagesQuery.data ? [] : packagesQuery.data.sort((a: any, b: any) => a.tokens - b.tokens);
+
+  const checkoutMutation = useMutation({
+    mutationKey: ['checkout'],
+    mutationFn: (priceId: number) => axios.post(route('tokens.checkout', { price_id: priceId })).then(res => res.data),
+    onSuccess: (data) => {
+      window.location.href = data.checkout_url;
+    },
+    onError: (error: any) => {
+      message.error(error.response?.data?.message || 'An error occurred while creating the checkout session.');
+    }
+  });
 
   return (
     <>
@@ -41,6 +52,7 @@ function TokenPackages() {
                 variant="outlined"
                 color="default"
                 className="h-max py-1"
+                onClick={() => checkoutMutation.mutate(pkg.price_id)}
               >
                 <div className="flex flex-col items-center gap-1">
                   <FlexBox>
