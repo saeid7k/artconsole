@@ -33,11 +33,7 @@ class FreeMonthlyTokens implements ShouldQueue
     foreach ($proUsersIds as $userId) {
       $user = User::find($userId);
       if ($user) {
-        $user->tokenTransactions()->create([
-          'type' => 'credit',
-          'amount' => 100,
-          'description' => 'Monthly free tokens for Pro subscription',
-        ]);
+        $user->creditFreeMonthlyTokens();
       }
     }
   }
