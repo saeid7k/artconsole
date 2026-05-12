@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Helpers\AddressHelper;
+use App\Helpers\ConfigHelper;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -303,12 +304,12 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     $this->save();
   }
 
-  public function creditFreeMonthlyTokens(): void
+  public function creditFreeTokens(?int $amount, ?string $description): void
   {
     $this->tokenTransactions()->create([
       'type' => 'credit',
-      'amount' => 100,
-      'description' => 'Monthly free tokens for Pro subscription',
+      'amount' => $amount ?? ConfigHelper::tokens('free_monthly_tokens'),
+      'description' => $description ?? 'Free token credit',
     ]);
   }
 

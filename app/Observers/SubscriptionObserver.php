@@ -17,7 +17,7 @@ class SubscriptionObserver
     // Credit free monthly tokens to the gallery owner
     $user = $gallery->owner;
     if ($user) {
-      $user->creditFreeMonthlyTokens();
+      $user->creditFreeTokens(description: 'Initial free token credit');
     }
   }
 }
