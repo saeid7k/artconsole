@@ -13,5 +13,11 @@ class SubscriptionObserver
     if ($gallery) {
       $gallery->fillDefaultPaymentMethod();
     }
+
+    // Credit free monthly tokens to the gallery owner
+    $user = $gallery->owner;
+    if ($user) {
+      $user->creditFreeMonthlyTokens();
+    }
   }
 }
