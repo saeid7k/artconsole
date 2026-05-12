@@ -89,6 +89,10 @@ class TokenTransactionController extends Controller
           'tokens' => $tokens,
           'type' => 'token_topup',
         ],
+        'customer_update' => [
+          'name' => 'auto',
+          'address' => 'auto',
+        ],
       ]);
     } catch (\Exception $e) {
       return response()->json([
