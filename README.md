@@ -125,9 +125,26 @@ STRIPE_WEBHOOK_SECRET=whsec_... # Webhook signing secret for subscription events
 STRIPE_TOKEN_WEBHOOK_SECRET=whsec_... # Webhook signing secret for token purchase events
 ```
 
-Register two webhooks in your Stripe dashboard pointing to:
-- `https://your-domain.com/stripe/webhook` — subscription lifecycle events
-- `https://your-domain.com/stripe/token-webhook` — token checkout events
+Register two webhooks in your [Stripe dashboard](https://dashboard.stripe.com/webhooks) pointing to:
+- `https://app.artconsole.ai/stripe/webhook` — subscription lifecycle events
+- `https://app.artconsole.ai/stripe/token-webhook` — token checkout events
+
+#### Local webhook forwarding
+
+Use the [Stripe CLI](https://docs.stripe.com/stripe-cli) to forward events to your local server while developing:
+
+```bash
+# Install the CLI then log in
+stripe login
+
+# Forward subscription webhook events
+stripe listen --forward-to http://localhost:8000/stripe/webhook
+
+# In a second terminal, forward token purchase webhook events
+stripe listen --forward-to http://localhost:8000/stripe/token-webhook
+```
+
+The CLI will print a temporary `whsec_...` signing secret for each listener. Use those values for `STRIPE_WEBHOOK_SECRET` and `STRIPE_TOKEN_WEBHOOK_SECRET` in your local `.env` while testing.
 
 ### Google OAuth (Sign in with Google)
 
