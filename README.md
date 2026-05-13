@@ -78,11 +78,11 @@ cp .env.example .env
 # 5. Generate application key
 php artisan key:generate
 
-# 6. Run database migrations and seeders
-php artisan migrate --seed
-
-# 7. Create the storage symlink
+# 6. Create the storage symlink
 php artisan storage:link
+
+# 7. Run initial setup (resets & runs migrations, clears drive folder, seeds DB, flushes queued jobs)
+php artisan app:initial-setup
 ```
 
 ### Running the Dev Server
