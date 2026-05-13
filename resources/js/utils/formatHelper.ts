@@ -70,7 +70,7 @@ function trimWebsite(website: string): string {
 }
 
 function formatNumber(
-  value: number | string,
+  value: number | string | null | undefined,
   locale: string = import.meta.env.VITE_APP_LOCALE.replace('_', '-') || 'en-US',
   removeTrailingZeros: boolean = true,
 ): string {
@@ -90,7 +90,7 @@ function formatNumber(
 }
 
 function formatCurrency(
-  amount: number | string,
+  amount: number | string | null | undefined,
   currency: string | null = null,
   minimumFractionDigits: number = 0,
   maximumFractionDigits: number = 2,
