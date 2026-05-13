@@ -20,6 +20,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
   Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+  Route::get('kpi-data', [DashboardController::class, 'kpiData'])->name('kpi-data');
   Route::get('/interval-data', [AppLayoutController::class, 'intervalData'])->name('interval-data');
 
   Route::prefix('contacts')->name('contacts.')->group(function () {
