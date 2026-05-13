@@ -1,61 +1,233 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ArtConsole
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**ArtConsole** is a SaaS gallery management platform for art galleries. It provides a full back-office console to manage artworks, contacts, invoices, locations, and team members — with AI-powered assistance and subscription billing built in.
 
-## About Laravel
+**Live app:** https://app.artconsole.ai
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Dashboard** — At-a-glance overview of key gallery metrics and recent activity.
+- **Artwork Management** — Full CRUD for artworks including multi-image upload, SKU generation, location tracking, financial records, status updates, document generation (PDF), and mass operations.
+- **Gallery Management** — Multi-gallery support per account; manage logo, address, metadata, and settings per gallery.
+- **Contact Management** — Track artists, collectors, and other contacts; attach relationships, invoices, and profile photos.
+- **Invoice Management** — Create, update, and send PDF invoices via email; track payment status; download invoice PDFs.
+- **Payment Tracking** — Log and delete payments against invoices.
+- **Reports** — Generate, download, and regenerate custom reports as PDFs.
+- **Locations** — Manage multiple physical storage/display locations for artworks; set primary location.
+- **Tags** — Create and assign grouped tags to artworks and contacts.
+- **Tax Configuration** — Define and manage tax rates; set a default tax rate per gallery.
+- **Subscriptions & Billing** — Stripe-powered subscription plans; manage payment methods, billing details, and subscription lifecycle (subscribe, cancel, resume).
+- **Token System** — Purchase AI token packages via Stripe; track transaction history.
+- **AI Assistant** — Gemini-powered sidebar assistant for contextual help; AI-generated artwork descriptions and room mockup images.
+- **Team Members** — Invite users to a gallery via invite links; manage access levels and remove members.
+- **Notifications** — In-app notification centre with mark-as-read/unread support.
+- **Activity Logs** — Per-model audit trail of changes.
+- **User Management** — Admin panel to view and delete users.
+- **Google OAuth** — Sign in with Google via Laravel Socialite.
+- **Dark Mode** — Full dark/light mode toggle throughout the UI.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Tech Stack
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+| Layer | Technology |
+|---|---|
+| Backend | PHP 8.3, Laravel 13 |
+| Frontend | React 19, TypeScript, Inertia.js |
+| UI | Ant Design 6, Tailwind CSS 4 |
+| Database | MySQL |
+| Queue | Database queue driver |
+| PDF | DomPDF, Spatie Laravel PDF (Browsershot/Puppeteer) |
+| Storage | AWS S3 (production) / Local public disk (development) |
+| Auth | Laravel Breeze + Laravel Socialite (Google) |
+| Billing | Laravel Cashier (Stripe) |
+| AI | Laravel AI (Google Gemini) |
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Local Development
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Prerequisites
 
-### Premium Partners
+- PHP 8.3+
+- Composer
+- Node.js 20+ and npm / Yarn
+- MySQL
+- (Optional) Puppeteer dependencies for PDF generation via Browsershot
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Setup
 
-## Contributing
+```bash
+# 1. Clone the repository
+git clone https://github.com/saeid7k/artconsole.git
+cd artconsole
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# 2. Install PHP dependencies
+composer install
 
-## Code of Conduct
+# 3. Install JS dependencies
+npm install
+# or: yarn install
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# 4. Copy and configure environment
+cp .env.example .env
+# Edit .env — see "External Services" section below
 
-## Security Vulnerabilities
+# 5. Generate application key
+php artisan key:generate
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# 6. Run initial setup (resets & runs migrations, clears drive folder, seeds DB, flushes queued jobs)
+php artisan app:initial-setup
+```
+
+### Running the Dev Server
+
+Use the Composer `dev` script to start all services concurrently (Laravel server, queue worker, log watcher, and Vite):
+
+```bash
+composer dev
+```
+
+Or start services individually:
+
+```bash
+php artisan serve          # Laravel dev server  → http://localhost:8000
+php artisan queue:listen   # Background job queue
+npm run dev                # Vite HMR dev server
+```
+
+### Running Tests
+
+```bash
+composer test
+# or: php artisan test
+```
+
+---
+
+## External Services Configuration
+
+All service credentials are configured in `.env`. Copy `.env.example` and fill in the values below.
+
+### Stripe (Billing & Subscriptions)
+
+Handles subscription plans and token package purchases via Laravel Cashier.
+
+```env
+STRIPE_KEY=pk_live_...          # Stripe publishable key
+STRIPE_SECRET=sk_live_...       # Stripe secret key
+STRIPE_WEBHOOK_SECRET=whsec_... # Webhook signing secret for subscription events
+STRIPE_TOKEN_WEBHOOK_SECRET=whsec_... # Webhook signing secret for token purchase events
+```
+
+Register two webhooks in your [Stripe dashboard](https://dashboard.stripe.com/webhooks) pointing to:
+
+**`https://app.artconsole.ai/stripe/webhook`** — subscription lifecycle events (Laravel Cashier)
+Enable the following events:
+- `customer.subscription.created`
+- `customer.subscription.updated`
+- `customer.subscription.deleted`
+- `customer.subscription.trial_will_end`
+- `invoice.payment_succeeded`
+- `invoice.payment_failed`
+- `invoice.payment_action_required`
+- `payment_method.automatically_updated`
+- `customer.updated`
+- `customer.deleted`
+
+**`https://app.artconsole.ai/stripe/token-webhook`** — token package purchases
+Enable the following events:
+- `checkout.session.completed`
+
+#### Local webhook forwarding
+
+Use the [Stripe CLI](https://docs.stripe.com/stripe-cli) to forward events to your local server while developing:
+
+```bash
+# Install the CLI then log in
+stripe login
+
+# Forward subscription webhook events
+stripe listen --forward-to http://localhost:8000/stripe/webhook
+
+# In a second terminal, forward token purchase webhook events
+stripe listen --forward-to http://localhost:8000/stripe/token-webhook
+```
+
+The CLI will print a temporary `whsec_...` signing secret for each listener. Use those values for `STRIPE_WEBHOOK_SECRET` and `STRIPE_TOKEN_WEBHOOK_SECRET` in your local `.env` while testing.
+
+### Google OAuth (Sign in with Google)
+
+Enables Google social login via Laravel Socialite.
+
+```env
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
+GOOGLE_REDIRECT_URI=https://app.artconsole.ai/auth/google/callback
+```
+
+Create OAuth 2.0 credentials in the [Google Cloud Console](https://console.cloud.google.com/) and add the redirect URI to the list of authorised redirect URIs.
+
+### SMTP / Email
+
+Used for sending invoice emails, authentication emails, and notifications. The example uses [Brevo (Sendinblue)](https://brevo.com) but any SMTP provider works.
+
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=smtp-relay.brevo.com
+MAIL_PORT=587
+MAIL_USERNAME=your-smtp-username
+MAIL_PASSWORD=your-smtp-password
+MAIL_FROM_ADDRESS=app@yourdomain.com
+MAIL_FROM_NAME="${APP_NAME}"
+```
+
+### Google Gemini (AI)
+
+Powers the AI assistant sidebar, artwork description generation, and room mockup image generation via `laravel/ai`.
+
+```env
+GEMINI_API_KEY=...
+```
+
+Obtain an API key from [Google AI Studio](https://aistudio.google.com/).
+
+### OpenCage (Geocoding)
+
+Resolves latitude/longitude coordinates from addresses for artwork location features.
+
+```env
+OPENCAGE_API_KEY=...
+```
+
+Obtain an API key from [OpenCage](https://opencagedata.com/).
+
+### AWS S3 (File Storage)
+
+AWS S3 is the primary file storage driver used in production for artwork images and media. Local public disk storage is also supported and is the recommended choice for local development.
+
+**Production (S3):**
+
+```env
+FILESYSTEM_DISK=s3
+AWS_ACCESS_KEY_ID=...
+AWS_SECRET_ACCESS_KEY=...
+AWS_DEFAULT_REGION=us-east-1
+AWS_BUCKET=your-bucket-name
+```
+
+**Local development (public disk):**
+
+```env
+FILESYSTEM_DISK=public
+```
+
+Set `FILESYSTEM_DISK=public` in your local `.env` to skip S3 configuration entirely and serve files from the `public/drive` directory.
+
+---
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is licensed under the [MIT License](LICENSE).
