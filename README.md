@@ -78,10 +78,7 @@ cp .env.example .env
 # 5. Generate application key
 php artisan key:generate
 
-# 6. Create the storage symlink
-php artisan storage:link
-
-# 7. Run initial setup (resets & runs migrations, clears drive folder, seeds DB, flushes queued jobs)
+# 6. Run initial setup (resets & runs migrations, clears drive folder, seeds DB, flushes queued jobs)
 php artisan app:initial-setup
 ```
 
@@ -227,7 +224,7 @@ AWS_BUCKET=your-bucket-name
 FILESYSTEM_DISK=public
 ```
 
-Set `FILESYSTEM_DISK=public` in your local `.env` to skip S3 configuration entirely and serve files from `storage/app/public` via the `storage` symlink.
+Set `FILESYSTEM_DISK=public` in your local `.env` to skip S3 configuration entirely and serve files from the `public/drive` directory.
 
 ---
 
