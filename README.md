@@ -126,8 +126,23 @@ STRIPE_TOKEN_WEBHOOK_SECRET=whsec_... # Webhook signing secret for token purchas
 ```
 
 Register two webhooks in your [Stripe dashboard](https://dashboard.stripe.com/webhooks) pointing to:
-- `https://app.artconsole.ai/stripe/webhook` — subscription lifecycle events
-- `https://app.artconsole.ai/stripe/token-webhook` — token checkout events
+
+**`https://app.artconsole.ai/stripe/webhook`** — subscription lifecycle events (Laravel Cashier)
+Enable the following events:
+- `customer.subscription.created`
+- `customer.subscription.updated`
+- `customer.subscription.deleted`
+- `customer.subscription.trial_will_end`
+- `invoice.payment_succeeded`
+- `invoice.payment_failed`
+- `invoice.payment_action_required`
+- `payment_method.automatically_updated`
+- `customer.updated`
+- `customer.deleted`
+
+**`https://app.artconsole.ai/stripe/token-webhook`** — token package purchases
+Enable the following events:
+- `checkout.session.completed`
 
 #### Local webhook forwarding
 
@@ -153,7 +168,7 @@ Enables Google social login via Laravel Socialite.
 ```env
 GOOGLE_CLIENT_ID=...
 GOOGLE_CLIENT_SECRET=...
-GOOGLE_REDIRECT_URI=https://your-domain.com/auth/google/callback
+GOOGLE_REDIRECT_URI=https://app.artconsole.ai/auth/google/callback
 ```
 
 Create OAuth 2.0 credentials in the [Google Cloud Console](https://console.cloud.google.com/) and add the redirect URI to the list of authorised redirect URIs.
