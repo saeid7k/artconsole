@@ -67,6 +67,12 @@ class TokenTransactionController extends Controller
     $user = $request->user();
     $priceId = $request->input('price_id');
 
+    if ($user->is_demo) {
+      return response()->json([
+        'message' => 'Purchasing is not available in demo mode.',
+      ], 403);
+    }
+
     try {
       $price = Cashier::stripe()->prices->retrieve($priceId, ['expand' => ['product']]);
 
