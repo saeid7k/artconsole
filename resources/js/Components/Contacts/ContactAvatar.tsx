@@ -8,10 +8,10 @@ function ContactAvatar({ contact }: { contact: ContactProps }) {
     <Avatar
       shape="square"
       className="tracking-wider min-w-8 border-none"
-      style={{ backgroundColor: stringToColor(getInitials(contact.full_name)) }}
-      src={contact.photo}
+      style={{ backgroundColor: stringToColor(getInitials(contact?.full_name)) }}
+      src={contact?.photo}
     >
-      {getInitials(contact.full_name)}
+      {getInitials(contact?.full_name)}
     </Avatar>
   )
 }
