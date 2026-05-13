@@ -2,7 +2,7 @@ import { getAgentIdByClass } from "@/constants/Ai/aiMenuItems"
 import { AiMessage } from "@/types/aiMessage"
 import { ucFirst } from "@/utils/stringHelper"
 import { useQuery } from "@tanstack/react-query"
-import { Button, Divider } from "antd"
+import { Button, Divider, Empty } from "antd"
 import axios from "axios"
 import { useState } from "react"
 import AnimatedContainer from "../AnimatedContainer"
@@ -45,7 +45,7 @@ function RecentSessions() {
     <div
       className="mt-3"
     >
-      {!selectedSession && (
+      {!selectedSession && items?.length > 0 && (
         <div className="flex flex-col gap-2 max-h-[60vh] overflow-y-auto">
           {items.map((session: AiMessage) => (
             <div
@@ -70,6 +70,11 @@ function RecentSessions() {
           </Button>
         </div>
       )}
+
+      {!selectedSession && items?.length === 0 && (
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No sessions found" className="mt-5" />
+      )}
+
       <AnimatedContainer condition={!!selectedSession} type="slideLeft" >
         {getAgentIdByClass(selectedSession?.agent ?? '') === 'mockup' && (
           <MockupResponse message={selectedSession!} />
