@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\ArtworkStatus;
+use App\Enums\InvoiceStatus;
 use App\Helpers\AddressHelper;
 use App\Helpers\ConfigHelper;
 use App\Helpers\FormatHelper;
@@ -266,6 +268,30 @@ class Gallery extends Model implements HasMedia
     if ($logoData) {
       $this->addMediaFromString($logoData)->usingFileName('gallery-' . $this->id . '-logo.svg')->toMediaCollection('gallery-logo');
     }
+  }
+
+  public function activeInventoryValue(?string $dateFrom = null): float
+  {
+    $query = $this->artworks()
+      ->whereIn('status', ArtworkStatus::unSoldValues());
+
+    if ($dateFrom) {
+      $query->where('acquisition_date', '>=', $dateFrom);
+    }
+
+    return $query->sum('price');
+  }
+
+  public function revenue(?string $dateFrom = null): float
+  {
+    $query = $this->invoices()
+      ->whereIn('status', InvoiceStatus::activeValues());
+
+    if ($dateFrom) {
+      $query->where('date', '>=', $dateFrom);
+    }
+
+    return $query->sum('subtotal');
   }
 
   /*
