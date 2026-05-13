@@ -37,4 +37,9 @@ enum ArtworkStatus: string
   {
     return array_map(fn($case) => $case->value, self::cases());
   }
+
+  public static function unSoldValues(): array
+  {
+    return array_filter(self::values(), fn($value) => $value !== self::Sold->value);
+  }
 }
