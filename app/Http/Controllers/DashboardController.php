@@ -13,4 +13,15 @@ class DashboardController extends Controller
 
     return Inertia::render('Dashboard');
   }
+
+  public function kpiData(Request $request)
+  {
+    $user = $request->user();
+    $gallery = $user->currentGallery();
+
+    return [
+      'active_inventory_value' => $gallery->activeInventoryValue(),
+      'revenue' => $gallery->revenue(),
+    ];
+  }
 }
