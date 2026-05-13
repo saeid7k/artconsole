@@ -45,11 +45,22 @@ function FinancialConsignedSummary({ artwork }: { artwork: ArtworkProps }) {
         <tr>
           <td>Consignor Share</td>
           <td className="text-muted" >
-            Sale Price - Gallery Commission
           </td>
           <td className="min-w-[80px] text-right">
             {consignorShare !== null ? (
               <StyledCurrency value={consignorShare} />
+            ) : (
+              <span className="text-ghost">-</span>
+            )}
+          </td>
+        </tr>
+        <tr>
+          <td>Gallery Share</td>
+          <td className="text-muted" >
+          </td>
+          <td className="min-w-[80px] text-right">
+            {galleryShare !== null ? (
+              <StyledCurrency value={galleryShare} />
             ) : (
               <span className="text-ghost">-</span>
             )}
