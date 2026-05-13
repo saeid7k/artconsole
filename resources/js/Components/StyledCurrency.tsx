@@ -25,7 +25,7 @@ function StyledCurrency({
 
   const displayValue = value ? Number(value) : Number(children);
 
-  const galleryCurrency = usePage<UsePageProps>().props.current_gallery?.meta?.currency
+  const galleryCurrency = usePage<UsePageProps>().props.current_gallery?.currency
   const isNegative = displayValue < 0;
   const isPositive = displayValue > 0;
 

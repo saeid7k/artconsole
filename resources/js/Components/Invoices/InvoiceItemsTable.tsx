@@ -19,7 +19,7 @@ type Props = {
 
 function InvoiceItemsTable({ items, setItems, selectedArtworksIds = [] }: Props) {
 
-  const galleryCurrency = usePage<UsePageProps>().props.current_gallery?.meta?.currency
+  const galleryCurrency = usePage<UsePageProps>().props.current_gallery?.currency
   const [showArtworkFinder, setShowArtworkFinder] = useState(false);
 
   const columns = [

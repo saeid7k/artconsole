@@ -36,7 +36,7 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
 
   const { currencySymbol } = useApp();
   const [form] = Form.useForm();
-  const currency = usePage<UsePageProps>().props.current_gallery?.meta?.currency || CONFIGS.defaults.currency
+  const currency = usePage<UsePageProps>().props.current_gallery?.currency || CONFIGS.defaults.currency
 
   // Drawer handlers
 

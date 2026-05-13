@@ -21,7 +21,7 @@ function ArtworkFinancialForm({ artwork }: { artwork: ArtworkProps }) {
   const { currencySymbol } = useApp()
   const [form] = useForm();
   const watchForm = Form.useWatch([], form);
-  const currency = usePage<UsePageProps>().props.current_gallery?.meta?.currency || CONFIGS.defaults.currency;
+  const currency = usePage<UsePageProps>().props.current_gallery?.currency || CONFIGS.defaults.currency;
   const { savingStatus, setSavingStatus, saveChipNode } = useSaveChip();
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 

@@ -15,7 +15,7 @@ import FlexBox from "./Containers/FlexBox";
 
 function LogStack({ log }: { log: ActivityLogProps }) {
 
-  const galleryMeta = usePage<UsePageProps>().props.current_gallery?.meta || {};
+  const currency = usePage<UsePageProps>().props.current_gallery?.currency;
   const [showProperties, setShowProperties] = useState<boolean>(false);
 
   const causerName = (causer: ActivityLogProps['causer']) => {
@@ -69,7 +69,7 @@ function LogStack({ log }: { log: ActivityLogProps }) {
               {isHtmlString(String(value)) ?
                 <div dangerouslySetInnerHTML={{ __html: String(value) }} />
                 :
-                formatByKey(key, value, galleryMeta)
+                formatByKey(key, value, currency)
               }
             </div>
           </FlexBox>

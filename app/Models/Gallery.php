@@ -91,7 +91,8 @@ class Gallery extends Model implements HasMedia
   {
     return Attribute::make(
       get: function () {
-        return $this->getMeta('currency', ConfigHelper::getDefault('currency'));
+        $c = $this->getMeta('currency', ConfigHelper::getDefault('currency'));
+        return $c == 'CAD' ? 'USD' : $c;
       },
       set: function ($value) {
         $this->setMeta('currency', $value);

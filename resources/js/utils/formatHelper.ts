@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import { formatAddress } from "./addressHelper";
 import { keyToTitle, stringifyArray, stringifyObject } from "./stringHelper";
 
-function formatByKey(key: string, value: any, galleryMeta?: any): any {
+function formatByKey(key: string, value: any, currency?: any): any {
   switch (key) {
     case 'phone':
     case 'mobile':
@@ -17,7 +17,7 @@ function formatByKey(key: string, value: any, galleryMeta?: any): any {
     case 'cost':
     case 'acquisition_price':
     case 'amount':
-      return formatCurrency(value, galleryMeta?.currency || null);
+      return formatCurrency(value, currency || null);
     case 'dimensions':
       return formatDimensions({ dimensions: value, showDepth: true });
     case 'address':
