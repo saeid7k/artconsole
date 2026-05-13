@@ -4,7 +4,7 @@ import { Coins01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { usePage } from "@inertiajs/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Button, Empty, message } from "antd";
+import { Alert, Button, Empty, message } from "antd";
 import axios from "axios";
 import FlexBox from "../Containers/FlexBox";
 import LoadingSpinner from "../LoadingSpinner";
@@ -12,6 +12,7 @@ import LoadingSpinner from "../LoadingSpinner";
 function TokenPackages() {
 
   const props = usePage<UsePageProps>()?.props;
+  const user = props?.auth?.user;
   const currency = props?.current_gallery?.currency;
 
   const packagesQuery = useQuery({
@@ -53,6 +54,7 @@ function TokenPackages() {
                 color="default"
                 className="h-max py-1"
                 onClick={() => checkoutMutation.mutate(pkg.price_id)}
+                disabled={user?.is_demo}
               >
                 <div className="flex flex-col items-center gap-1">
                   <FlexBox>
@@ -67,6 +69,14 @@ function TokenPackages() {
             )
           })}
         </div>
+      )}
+      {user?.is_demo && (
+        <Alert
+          title="Purchasing is not available in demo mode."
+          type="warning"
+          showIcon
+          className="my-5"
+        />
       )}
     </>
   )
