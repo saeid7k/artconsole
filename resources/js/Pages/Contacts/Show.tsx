@@ -170,12 +170,6 @@ function Show({ contact }: { contact: ContactProps }) {
             <Tabs.TabPane tab="Purchase History" key="purchases">
               <ContactPurchases contact={contact} />
             </Tabs.TabPane>
-            <Tabs.TabPane tab="Inventory" key="inventory">
-              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No inventory found" />
-            </Tabs.TabPane>
-            <Tabs.TabPane tab="Emails" key="emails">
-              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No emails found" />
-            </Tabs.TabPane>
             <Tabs.TabPane tab="Logs" key="logs">
               <ActivityLogs key={contact.updated_at} modelType="contact" modelId={contact.id} />
             </Tabs.TabPane>
