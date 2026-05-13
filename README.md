@@ -40,7 +40,7 @@
 | Database | MySQL |
 | Queue | Database queue driver |
 | PDF | DomPDF, Spatie Laravel PDF (Browsershot/Puppeteer) |
-| Storage | Local (public disk) / AWS S3 |
+| Storage | AWS S3 (production) / Local public disk (development) |
 | Auth | Laravel Breeze + Laravel Socialite (Google) |
 | Billing | Laravel Cashier (Stripe) |
 | AI | Laravel AI (Google Gemini) |
@@ -207,9 +207,11 @@ OPENCAGE_API_KEY=...
 
 Obtain an API key from [OpenCage](https://opencagedata.com/).
 
-### AWS S3 (File Storage — optional)
+### AWS S3 (File Storage)
 
-Optional alternative to local public disk storage for artwork images and media.
+AWS S3 is the primary file storage driver used in production for artwork images and media. Local public disk storage is also supported and is the recommended choice for local development.
+
+**Production (S3):**
 
 ```env
 FILESYSTEM_DISK=s3
@@ -219,7 +221,13 @@ AWS_DEFAULT_REGION=us-east-1
 AWS_BUCKET=your-bucket-name
 ```
 
-Leave `FILESYSTEM_DISK=public` to use local storage instead.
+**Local development (public disk):**
+
+```env
+FILESYSTEM_DISK=public
+```
+
+Set `FILESYSTEM_DISK=public` in your local `.env` to skip S3 configuration entirely and serve files from `storage/app/public` via the `storage` symlink.
 
 ---
 
