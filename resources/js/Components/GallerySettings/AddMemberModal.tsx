@@ -117,7 +117,7 @@ function AddMemberModal({ open = false, setOpen, gallery }: Props) {
         <Alert
           type="warning"
           showIcon
-          description="Adding members is not available for demo accounts."
+          title="Adding members is not available for demo accounts."
           className="p-2"
         />
       )}
