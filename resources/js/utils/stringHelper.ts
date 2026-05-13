@@ -8,7 +8,11 @@ function ucFirst(input: string): string {
   return upperFirst;
 }
 
-function getInitials(name: string): string {
+function getInitials(name: string | null | undefined): string {
+  if (!name) {
+    return '';
+  }
+
   let array = name.split(/[- ]/)
 
   let initials = array.map(word => word.charAt(0).toUpperCase()).join('');
