@@ -32,4 +32,10 @@ enum InvoiceStatus: string
   {
     return implode(',', array_map(fn($case) => $case->value, self::cases()));
   }
+
+  public static function activeValues(): array
+  {
+    $allValues = array_map(fn($case) => $case->value, self::cases());
+    return array_filter($allValues, fn($value) => $value !== self::Void->value);
+  }
 }
