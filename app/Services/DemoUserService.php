@@ -290,7 +290,7 @@ class DemoUserService
     $taxRate = $gallery->taxes()->first()->rate;
 
     for ($i = 1; $i <= 5; $i++) {
-      $date = now()->subDays(30 - $i * 5);
+      $date = now()->subDays(60 - $i * 10);
       Invoice::create([
         'gallery_id' => $gallery->id,
         'user_id' => $gallery->owner->id,
@@ -339,9 +339,9 @@ class DemoUserService
       $invoice->calculateTotals();
       $invoice->save();
 
-      if ($invoice->date->isBefore(now()->subDays(16))) {
+      if ($invoice->date->isBefore(now()->subDays(25))) {
         $this->payInvoiceInFull($invoice);
-      } elseif ($invoice->date->isBefore(now()->subDays(11))) {
+      } elseif ($invoice->date->isBefore(now()->subDays(12))) {
         $this->payInvoicePartially($invoice);
       }
     }
