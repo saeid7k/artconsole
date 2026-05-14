@@ -1,13 +1,11 @@
 import { UsePageProps } from "@/types/usePage";
-import { formatCurrency, formatNumber } from "@/utils/formatHelper";
+import { formatCurrency } from "@/utils/formatHelper";
+import { GoldIcon, InvoiceIcon, MoneyReceive01Icon, ShoppingBag } from "@hugeicons/core-free-icons";
 import { usePage } from "@inertiajs/react";
 import { useQuery } from "@tanstack/react-query";
-import { Card } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import FlexBox from "../Containers/FlexBox";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { GoldIcon, MoneyReceive01Icon } from "@hugeicons/core-free-icons";
 import StatisticCard from "../Widgets/StatisticCard";
 
 function DashboardKpiWidgets() {
@@ -17,12 +15,16 @@ function DashboardKpiWidgets() {
   const [data, setData] = useState<{
     active_inventory_value?: number;
     revenue?: number;
+    revenue_trend?: number | null;
+    pending_invoices_count?: number;
+    pending_invoices_amount?: number;
+    sale_count?: number;
   }>({});
 
   const kpiDataQuery = useQuery({
     queryKey: ['kpi-data'],
     queryFn: () => axios.get(route('kpi-data')).then(res => res.data),
-    enabled: true,
+    staleTime: Infinity
   });
 
   useEffect(() => {
@@ -37,20 +39,33 @@ function DashboardKpiWidgets() {
         title="Active Inventory Value"
         value={formatCurrency(data?.active_inventory_value, gallery?.currency)}
         icon={GoldIcon}
+        loading={kpiDataQuery.isLoading}
+      />
+      <StatisticCard
+        title="Total Sales"
+        value={data?.sale_count}
+        icon={ShoppingBag}
+        loading={kpiDataQuery.isLoading}
       />
       <StatisticCard
         title="Total Revenue"
-        value={formatCurrency(data?.revenue, gallery?.currency)}
         icon={MoneyReceive01Icon}
+        value={formatCurrency(data?.revenue, gallery?.currency)}
+        trend={data?.revenue_trend}
+        trendTooltip={<div>Revenue change compared to previous period.<br />Last 30 days compared to previous 30 days.</div>}
+        loading={kpiDataQuery.isLoading}
       />
-      <Card>
-        Pending Invoices
-      </Card>
-      <Card>
-      </Card>
-      <pre>
-        {JSON.stringify(data, null, 2)}
-      </pre>
+      <StatisticCard
+        title="Pending Invoices"
+        icon={InvoiceIcon}
+        value={
+          <FlexBox gap={2}>
+            <div className="font-light">{data?.pending_invoices_count}:</div>
+            {formatCurrency(data?.pending_invoices_amount, gallery?.currency)}
+          </FlexBox>
+        }
+        loading={kpiDataQuery.isLoading}
+      />
     </div>
   )
 }
