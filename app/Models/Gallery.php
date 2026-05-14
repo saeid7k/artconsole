@@ -319,6 +319,28 @@ class Gallery extends Model implements HasMedia
       ->count();
   }
 
+  public function saleCountInPeriod(?string $dateFrom = null, ?string $dateTo = null): float
+  {
+    $invoiceItems = InvoiceItem::whereNotNull('artwork_id')
+      ->whereHas('invoice', function ($q) use ($dateFrom, $dateTo) {
+        $q->where('gallery_id', $this->id)
+          ->whereIn('status', InvoiceStatus::activeValues());
+
+        if ($dateFrom) {
+          $q->where('date', '>=', $dateFrom);
+        }
+
+        if ($dateTo) {
+          $q->where('date', '<=', $dateTo);
+        }
+      })
+      ->get();
+
+    $uniqueArtworkIds = $invoiceItems->pluck('artwork_id')->unique();
+
+    return $uniqueArtworkIds->count();
+  }
+
   /*
   |=======================================================
   | Cashier Stripe Integration
