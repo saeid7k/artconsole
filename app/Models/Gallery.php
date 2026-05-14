@@ -282,7 +282,7 @@ class Gallery extends Model implements HasMedia
     return $query->sum('price');
   }
 
-  public function revenue(?string $dateFrom = null): float
+  public function revenue(?string $dateFrom = null, ?string $dateTo = null): float
   {
     $query = $this->invoices()
       ->whereIn('status', InvoiceStatus::activeValues());
@@ -291,7 +291,32 @@ class Gallery extends Model implements HasMedia
       $query->where('date', '>=', $dateFrom);
     }
 
+    if ($dateTo) {
+      $query->where('date', '<=', $dateTo);
+    }
+
     return $query->sum('subtotal');
+  }
+
+  public function pendingInvoicesCount(): float
+  {
+    return $this->invoices()
+      ->whereIn('status', InvoiceStatus::pendingValues())
+      ->count();
+  }
+
+  public function pendingInvoicesAmount(): float
+  {
+    return $this->invoices()
+      ->whereIn('status', InvoiceStatus::pendingValues())
+      ->sum('total');
+  }
+
+  public function saleCount(): float
+  {
+    return $this->artworks()
+      ->where('status', 'sold')
+      ->count();
   }
 
   /*
