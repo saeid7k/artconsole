@@ -41,6 +41,12 @@ class Invoice extends Model
   protected $casts = [
     'date' => 'date:Y-m-d',
     'due_date' => 'date:Y-m-d',
+    'subtotal' => 'decimal:2',
+    'shipping_cost' => 'decimal:2',
+    'discount_rate' => 'decimal:2',
+    'discount_amount' => 'decimal:2',
+    'tax_amount' => 'decimal:2',
+    'total' => 'decimal:2',
     'shipping' => 'object',
     'available_extra_costs' => 'object',
     'shipping_taxable' => 'boolean',
@@ -75,7 +81,7 @@ class Invoice extends Model
 
   public function getAmountPaidAttribute(): float
   {
-    return $this->payments->sum('amount');
+    return round($this->payments->sum('amount'), 2);
   }
 
   public function getAmountDueAttribute(): float
@@ -83,7 +89,7 @@ class Invoice extends Model
     if ($this->status === 'paid') {
       return 0;
     }
-    return $this->total - $this->amount_paid;
+    return round($this->total - $this->amount_paid, 2);
   }
 
   public function getDueRemainingDaysAttribute(): ?int
