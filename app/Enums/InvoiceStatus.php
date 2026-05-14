@@ -23,11 +23,6 @@ enum InvoiceStatus: string
     return self::Draft;
   }
 
-  public static function isSuccessful($value): bool
-  {
-    return $value === self::Paid->value;
-  }
-
   public static function stringifyAll(): string
   {
     return implode(',', array_map(fn($case) => $case->value, self::cases()));
@@ -37,5 +32,10 @@ enum InvoiceStatus: string
   {
     $allValues = array_map(fn($case) => $case->value, self::cases());
     return array_filter($allValues, fn($value) => $value !== self::Void->value);
+  }
+
+  public static function pendingValues(): array
+  {
+    return [self::Sent->value, self::PartiallyPaid->value, self::Overdue->value];
   }
 }
