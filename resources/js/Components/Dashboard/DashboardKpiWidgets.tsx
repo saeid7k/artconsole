@@ -19,6 +19,7 @@ function DashboardKpiWidgets() {
     pending_invoices_count?: number;
     pending_invoices_amount?: number;
     sale_count?: number;
+    sale_count_trend?: number | null;
   }>({});
 
   const kpiDataQuery = useQuery({
@@ -44,6 +45,8 @@ function DashboardKpiWidgets() {
       <StatisticCard
         title="Total Sales"
         value={data?.sale_count}
+        trend={data?.sale_count_trend}
+        trendTooltip={<div>Sales change.<br />Last 30 days compared to previous period.</div>}
         icon={ShoppingBag}
         loading={kpiDataQuery.isLoading}
       />
@@ -52,7 +55,7 @@ function DashboardKpiWidgets() {
         icon={MoneyReceive01Icon}
         value={formatCurrency(data?.revenue, gallery?.currency)}
         trend={data?.revenue_trend}
-        trendTooltip={<div>Revenue change compared to previous period.<br />Last 30 days compared to previous 30 days.</div>}
+        trendTooltip={<div>Revenue change.<br />Last 30 days compared to previous period.</div>}
         loading={kpiDataQuery.isLoading}
       />
       <StatisticCard

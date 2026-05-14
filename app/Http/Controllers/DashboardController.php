@@ -26,6 +26,9 @@ class DashboardController extends Controller
     $pendingInvoicesCount = $gallery->pendingInvoicesCount();
     $pendingInvoicesAmount = $gallery->pendingInvoicesAmount();
     $saleCount = $gallery->saleCount();
+    $saleCountCurrentPeriod = $gallery->saleCountInPeriod(dateFrom: now()->subDays(30)->toDateString());
+    $saleCountPreviousPeriod = $gallery->saleCountInPeriod(dateFrom: now()->subDays(60)->toDateString(), dateTo: now()->subDays(31)->toDateString());
+    $saleCountTrend = $saleCountPreviousPeriod > 0 ? round(($saleCountCurrentPeriod - $saleCountPreviousPeriod) / $saleCountPreviousPeriod * 100, 0) : null;
 
     return [
       'active_inventory_value' => $gallery->activeInventoryValue(),
@@ -34,6 +37,7 @@ class DashboardController extends Controller
       'pending_invoices_count' => $pendingInvoicesCount,
       'pending_invoices_amount' => $pendingInvoicesAmount,
       'sale_count' => $saleCount,
+      'sale_count_trend' => $saleCountTrend,
     ];
   }
 }
