@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ArtworkStatus;
 use App\Helpers\FormatHelper;
 use App\Traits\HasNotes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -15,6 +16,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use App\Models\Media;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
@@ -220,7 +222,11 @@ class Artwork extends Model implements HasMedia
     );
   }
 
-  // Relationships
+  /*
+  |=======================================================
+  | Relationships
+  |=======================================================
+  */
 
   public function gallery()
   {
@@ -274,7 +280,11 @@ class Artwork extends Model implements HasMedia
       ->orderBy('invoices.id', 'desc');
   }
 
-  // Methods
+  /*
+  |=======================================================
+  | Methods
+  |=======================================================
+  */
 
   public function registerMediaConversions(?BaseMedia $media = null): void
   {
@@ -298,7 +308,22 @@ class Artwork extends Model implements HasMedia
       ->get();
   }
 
-  // Activity Log
+  /*
+  |=======================================================
+  | Scopes
+  |=======================================================
+  */
+
+  public function scopeActive(Builder $query)
+  {
+    return $query->whereIn('status', ArtworkStatus::unSoldValues());
+  }
+
+  /*
+  |=======================================================
+  | Activity Log
+  |=======================================================
+  */
 
   public function getActivitylogOptions(): LogOptions
   {
