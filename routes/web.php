@@ -25,6 +25,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::prefix('dashboard-data')->name('dashboard-data.')->group(function () {
     Route::get('kpi-data', [DashboardController::class, 'kpiData'])->name('kpi-data');
     Route::get('/artworks-status', [DashboardController::class, 'artworksStatusData'])->name('artworks-status');
+    Route::get('/ownership', [DashboardController::class, 'ownershipData'])->name('ownership');
   });
 
   Route::prefix('contacts')->name('contacts.')->group(function () {

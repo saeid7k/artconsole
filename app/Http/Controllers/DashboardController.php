@@ -55,4 +55,18 @@ class DashboardController extends Controller
 
     return $data ?? [];
   }
+
+  public function ownershipData(Request $request)
+  {
+    $user = $request->user();
+    $gallery = $user->currentGallery();
+
+    $ownedCount = $gallery->artworks()->active()->where('ownership', 'owned')->count();
+    $consignedCount = $gallery->artworks()->active()->where('ownership', 'consigned')->count();
+
+    return [
+      'owned' => $ownedCount,
+      'consigned' => $consignedCount,
+    ];
+  }
 }
