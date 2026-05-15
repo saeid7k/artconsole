@@ -1,3 +1,4 @@
+import ArtworksStatusWidget from "@/Components/Dashboard/ArtworksStatusWidget";
 import DashboardKpiWidgets from "@/Components/Dashboard/DashboardKpiWidgets";
 import TokenTopupNotification from "@/Components/Tokens/TokenTopupNotification";
 import AppLayout from "@/Layouts/AppLayout";
@@ -14,7 +15,12 @@ function Dashboard({}) {
         Hello, {user?.firstname}
       </div>
 
-      <DashboardKpiWidgets />
+      <div className="flex flex-col gap-3">
+        <DashboardKpiWidgets />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+          <ArtworksStatusWidget />
+        </div>
+      </div>
 
       <TokenTopupNotification />
     </div>
