@@ -9,8 +9,11 @@ import { Card, Empty } from "antd";
 import axios from "axios";
 import FlexBox from "../Containers/FlexBox";
 import InlinePopover from "../InlinePopover";
+import { useApp } from "@/contexts/AppContext";
 
 function OwnershipWidget() {
+
+  const { darkMode } = useApp();
 
   const { data, isLoading } = useQuery({
     queryKey: ['ownership'],
@@ -21,7 +24,7 @@ function OwnershipWidget() {
   const chartData = data ? Object.entries(data).map(([key, value], index) => ({
     label: keyToTitle(key),
     value: value as number,
-    color: colors[['purple', 'orange'][index % 2]][400],
+    color: colors[['purple', 'orange'][index % 2]][darkMode ? 700 : 400],
   })) : [];
 
   const sizing = {
@@ -73,7 +76,6 @@ function OwnershipWidget() {
   return (
     <Card
       title='Ownership Split'
-      size="small"
       loading={isLoading}
     >
       {

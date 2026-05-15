@@ -6,8 +6,11 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, Empty } from "antd";
 import axios from "axios";
 import FlexBox from "../Containers/FlexBox";
+import { useApp } from "@/contexts/AppContext";
 
 function ArtworksStatusWidget() {
+
+  const { darkMode } = useApp();
 
   const { data, isLoading } = useQuery({
     queryKey: ['artworks-status'],
@@ -18,7 +21,7 @@ function ArtworksStatusWidget() {
   const chartData = data ? Object.entries(data).map(([key, value]) => ({
     label: ARTWORK_STATUSES.find(status => status.value === key)?.label || key,
     value: value as number,
-    color: colors[ARTWORK_STATUSES.find(status => status.value === key)?.color || 'default'][400],
+    color: colors[ARTWORK_STATUSES.find(status => status.value === key)?.color || 'default'][darkMode ? 700 : 400],
   })) : [];
 
   const sizing = {
@@ -66,7 +69,6 @@ function ArtworksStatusWidget() {
   return (
     <Card
       title='Artworks Status'
-      size="small"
       loading={isLoading}
     >
       {
