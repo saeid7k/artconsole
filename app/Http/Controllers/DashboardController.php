@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ArtworkStatus;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -39,5 +40,19 @@ class DashboardController extends Controller
       'sale_count' => $saleCount,
       'sale_count_trend' => $saleCountTrend,
     ];
+  }
+
+  public function artworksStatusData(Request $request)
+  {
+    $user = $request->user();
+    $gallery = $user->currentGallery();
+
+    $statuses = ArtworkStatus::values();
+    foreach ($statuses as $status) {
+      $count = $gallery->artworks()->where('status', $status)->count();
+      $data[$status] = $count;
+    }
+
+    return $data ?? [];
   }
 }
