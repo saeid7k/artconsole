@@ -13,14 +13,14 @@ function DashboardKpiWidgets() {
   const gallery = usePage<UsePageProps>().props.current_gallery
 
   const [data, setData] = useState<{
-    active_inventory_value?: number;
-    revenue?: number;
-    revenue_trend?: number | null;
-    pending_invoices_count?: number;
-    pending_invoices_amount?: number;
-    sale_count?: number;
-    sale_count_trend?: number | null;
-  }>({});
+    active_inventory_value: number;
+    revenue: number;
+    revenue_trend: number | null;
+    pending_invoices_count: number;
+    pending_invoices_amount: number;
+    sale_count: number;
+    sale_count_trend: number | null;
+  } | null>(null);
 
   const kpiDataQuery = useQuery({
     queryKey: ['kpi-data'],
@@ -35,40 +35,42 @@ function DashboardKpiWidgets() {
   }, [kpiDataQuery.data])
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
-      <StatisticCard
-        title="Active Inventory Value"
-        value={formatCurrency(data?.active_inventory_value, gallery?.currency)}
-        icon={GoldIcon}
-        loading={kpiDataQuery.isLoading}
-      />
-      <StatisticCard
-        title="Total Sales"
-        value={data?.sale_count}
-        trend={data?.sale_count_trend}
-        trendTooltip={<div>Sales change.<br />Last 30 days compared to previous period.</div>}
-        icon={ShoppingBag}
-        loading={kpiDataQuery.isLoading}
-      />
-      <StatisticCard
-        title="Total Revenue"
-        icon={MoneyReceive01Icon}
-        value={formatCurrency(data?.revenue, gallery?.currency)}
-        trend={data?.revenue_trend}
-        trendTooltip={<div>Revenue change.<br />Last 30 days compared to previous period.</div>}
-        loading={kpiDataQuery.isLoading}
-      />
-      <StatisticCard
-        title="Pending Invoices"
-        icon={InvoiceIcon}
-        value={
-          <FlexBox gap={2}>
-            <div className="font-light">{data?.pending_invoices_count}:</div>
-            {formatCurrency(data?.pending_invoices_amount, gallery?.currency)}
-          </FlexBox>
-        }
-        loading={kpiDataQuery.isLoading}
-      />
+    <div className="w-full overflow-x-auto pb-2 sm:pb-0">
+      <div className="grid grid-cols-4 sm:grid-cols-2 xl:grid-cols-4 gap-3 w-full min-w-max">
+        <StatisticCard
+          title="Active Inventory Value"
+          value={formatCurrency(data?.active_inventory_value, gallery?.currency)}
+          icon={GoldIcon}
+          loading={kpiDataQuery.isLoading}
+        />
+        <StatisticCard
+          title="Total Sales"
+          value={data?.sale_count}
+          trend={data?.sale_count_trend}
+          trendTooltip={<div>Sales change.<br />Last 30 days compared to previous period.</div>}
+          icon={ShoppingBag}
+          loading={kpiDataQuery.isLoading}
+        />
+        <StatisticCard
+          title="Total Revenue"
+          icon={MoneyReceive01Icon}
+          value={formatCurrency(data?.revenue, gallery?.currency)}
+          trend={data?.revenue_trend}
+          trendTooltip={<div>Revenue change.<br />Last 30 days compared to previous period.</div>}
+          loading={kpiDataQuery.isLoading}
+        />
+        <StatisticCard
+          icon={InvoiceIcon}
+          title="Pending Invoices"
+          titleBadge={(data?.pending_invoices_count ?? 0) > 0 ? data?.pending_invoices_count : undefined}
+          value={
+            <FlexBox gap={2}>
+              {formatCurrency(data?.pending_invoices_amount, gallery?.currency)}
+            </FlexBox>
+          }
+          loading={kpiDataQuery.isLoading}
+        />
+      </div>
     </div>
   )
 }

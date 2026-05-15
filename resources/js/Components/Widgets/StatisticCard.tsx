@@ -1,18 +1,19 @@
-import { TradeDownIcon, TradeUpIcon } from "@hugeicons/core-free-icons";
+import { ArrowRight04Icon, DashedLine01Icon, TradeDownIcon, TradeUpIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Card, Popover, Tag } from "antd";
 import FlexBox from "../Containers/FlexBox";
 
 type Props = {
-  title: string;
   icon?: any;
+  title: string;
+  titleBadge?: string | number | undefined;
   value: string | number | React.ReactNode;
   trend?: number | null;
   trendTooltip?: string | React.ReactNode;
   loading?: boolean;
 };
 
-function StatisticCard({ title, icon, value, trend, trendTooltip, loading }: Props) {
+function StatisticCard({ title, icon, titleBadge, value, trend, trendTooltip, loading }: Props) {
   return (
     <Card
       size="small"
@@ -22,18 +23,19 @@ function StatisticCard({ title, icon, value, trend, trendTooltip, loading }: Pro
         <FlexBox className="text-muted" >
           {icon && <HugeiconsIcon icon={icon} size={20} />}
           <div>{title}</div>
+          {titleBadge && <Tag>{titleBadge}</Tag>}
         </FlexBox>
         <FlexBox alignItems="end" gap={2}>
           <div className="text-2xl">
             {value}
           </div>
-          {trend !== null && trend !== undefined && trend !== 0 && (
+          {trend !== null && trend !== undefined && (
             <Popover content={trendTooltip} placement="bottom" mouseEnterDelay={0.5} >
               <Tag
                 color={trend == 0 ? 'blue' : trend > 0 ? 'green' : 'red'}
               >
                 <FlexBox>
-                  <HugeiconsIcon icon={trend > 0 ? TradeUpIcon : TradeDownIcon} size={20} />
+                  <HugeiconsIcon icon={trend == 0 ? ArrowRight04Icon : trend > 0 ? TradeUpIcon : TradeDownIcon} size={20} />
                   <div>{`${trend}%`}</div>
                 </FlexBox>
               </Tag>
