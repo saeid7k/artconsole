@@ -272,8 +272,7 @@ class Gallery extends Model implements HasMedia
 
   public function activeInventoryValue(?string $dateFrom = null): float
   {
-    $query = $this->artworks()
-      ->whereIn('status', ArtworkStatus::unSoldValues());
+    $query = $this->artworks()->active();
 
     if ($dateFrom) {
       $query->where('acquisition_date', '>=', $dateFrom);
