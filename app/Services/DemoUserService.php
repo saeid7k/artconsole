@@ -134,12 +134,14 @@ class DemoUserService
     $statuses = array_diff(ArtworkStatus::values(), ['sold']);
 
     foreach ($data as $artworkData) {
+      $ownership = $this->faker->randomElement(['owned', 'owned', 'owned', 'consigned']);
       $artwork = $gallery->artworks()->create($artworkData + [
         'creator_id' => $gallery->owner->id,
         'location_id' => $locationIds[array_rand($locationIds)],
-        'ownership' => 'owned',
-        'acquisition_date' => now()->subDays(rand(365, 3650)),
-        'acquisition_price' => round($artworkData['price'] * rand(50, 90) / 100),
+        'ownership' => $ownership,
+        'acquisition_date' => $ownership == 'owned' ? now()->subDays(rand(365, 3650)) : null,
+        'acquisition_price' => $ownership == 'owned' ? round($artworkData['price'] * rand(50, 90) / 100) : null,
+        'commission_value' => $ownership == 'consigned' ? $this->faker->randomElement([30, 25, 20]) : 0,
         'status' => $statuses[array_rand($statuses)]
       ]);
       $imagesDirectory = resource_path('demo/demo-artworks-images/' . str_replace([','], '', $artworkData['title']));
