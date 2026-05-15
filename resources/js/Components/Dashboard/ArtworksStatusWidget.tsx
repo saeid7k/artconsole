@@ -3,7 +3,7 @@ import colors from "@/Themes/theme";
 import { DefaultizedPieValueType } from '@mui/x-charts/models';
 import { PieChart, pieClasses } from '@mui/x-charts/PieChart';
 import { useQuery } from "@tanstack/react-query";
-import { Card } from "antd";
+import { Card, Empty } from "antd";
 import axios from "axios";
 import FlexBox from "../Containers/FlexBox";
 
@@ -28,7 +28,7 @@ function ArtworksStatusWidget() {
     hideLegend: true,
     gapAngle: 1,
   };
-  
+
   const TOTAL = chartData.map((item) => item.value).reduce((a, b) => a + b, 0);
 
   const getArcLabel = (params: DefaultizedPieValueType) => {
@@ -61,33 +61,41 @@ function ArtworksStatusWidget() {
     );
   }
 
+  const totalArtworks = chartData.reduce((sum, item) => sum + item.value, 0);
+
   return (
     <Card
       title='Artworks Status'
       size="small"
       loading={isLoading}
     >
-      <div className="flex items-end flex-wrap gap-4">
-        <Chart />
-        <div>
-          {chartData.map((item) => (
-            <FlexBox key={item.label} justifyContent="between" gap={3}>
-              <FlexBox>
-                <div
-                  style={{
-                    width: 12,
-                    height: 12,
-                    backgroundColor: item.color,
-                    borderRadius: '50%',
-                  }}
-                />
-                <div>{item.label}</div>
+      {
+        totalArtworks == 0 && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No artworks found" />
+      }
+
+      { totalArtworks > 0 && (
+        <div className="flex items-end flex-wrap gap-4">
+          <Chart />
+          <div>
+            {chartData.map((item) => (
+              <FlexBox key={item.label} justifyContent="between" gap={3}>
+                <FlexBox>
+                  <div
+                    style={{
+                      width: 12,
+                      height: 12,
+                      backgroundColor: item.color,
+                      borderRadius: '50%',
+                    }}
+                  />
+                  <div>{item.label}</div>
+                </FlexBox>
+                <div>{item.value}</div>
               </FlexBox>
-              <div>{item.value}</div>
-            </FlexBox>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </Card>
   );
 }
