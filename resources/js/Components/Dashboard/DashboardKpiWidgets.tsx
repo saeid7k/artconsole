@@ -24,7 +24,7 @@ function DashboardKpiWidgets() {
 
   const kpiDataQuery = useQuery({
     queryKey: ['kpi-data'],
-    queryFn: () => axios.get(route('kpi-data')).then(res => res.data),
+    queryFn: () => axios.get(route('dashboard-data.kpi-data')).then(res => res.data),
     staleTime: Infinity
   });
 
