@@ -543,6 +543,10 @@ class ArtworkController extends Controller
   {
     $this->authorize('viewAny', Artwork::class);
 
+    $validated = $request->validate([
+      'ids' => ['required', 'string'],
+    ]);
+
     $user = auth()->user();
     $gallery = $user->currentGallery();
     $idArray = explode(',', $request->input('ids', ''));
@@ -569,5 +573,27 @@ class ArtworkController extends Controller
     return response()->json([
       'message' => 'Financial details updated successfully.',
     ]);
+  }
+
+  public function getRecent(Request $request)
+  {
+    $this->authorize('viewAny', Artwork::class);
+
+    $validated = $request->validate([
+      'limit' => ['sometimes', 'integer', 'min:1', 'max:100'],
+    ]);
+
+    $user = auth()->user();
+    $gallery = $user->currentGallery();
+
+    $limit = $validated['limit'] ?? 10;
+
+    $artworks = $gallery->artworks()
+      ->with(['artist:id,firstname,lastname'])
+      ->orderBy('created_at', 'desc')
+      ->take($limit)
+      ->get();
+
+    return response()->json($artworks);
   }
 }

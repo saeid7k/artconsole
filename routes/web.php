@@ -77,6 +77,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/{artwork}/render-document', [App\Http\Controllers\ArtworkController::class, 'renderDocument'])->name('render-document');
     Route::get('/{artwork}/download-document', [App\Http\Controllers\ArtworkController::class, 'downloadDocument'])->name('download-document');
     Route::post('/{artwork}/store-financial', [App\Http\Controllers\ArtworkController::class, 'storeFinancial'])->name('store-financial');
+    Route::post('/get-recent', [App\Http\Controllers\ArtworkController::class, 'getRecent'])->name('get-recent');
   });
 
   Route::prefix('members')->name('members.')->group(function () {
