@@ -55,7 +55,7 @@ function ArtworkStack({ artwork, isSelected, size = 'md', variant = 'outline', r
           showConsignment={false}
           disableLinks
         />
-        {['md', 'lg'].includes(size) && (
+        {['sm', 'md', 'lg'].includes(size) && (
           <ArtworkStatusTag
             status={artwork.status}
             fontSize="xs"
