@@ -70,6 +70,7 @@ function ArtworksStatusWidget() {
     <Card
       title='Artworks Status'
       loading={isLoading}
+      className={isLoading ? 'h-[265px]' : ''}
     >
       {
         totalArtworks == 0 && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No artworks found" />

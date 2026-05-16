@@ -18,6 +18,7 @@ function StatisticCard({ title, icon, titleBadge, value, trend, trendTooltip, lo
     <Card
       size="small"
       loading={loading}
+      className={loading ? 'h-[84px]' : ''}
     >
       <div className="flex flex-col gap-1">
         <FlexBox className="text-muted" >
