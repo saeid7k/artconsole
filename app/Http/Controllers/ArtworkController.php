@@ -539,7 +539,7 @@ class ArtworkController extends Controller
     return $pdf;
   }
 
-  public function get(Request $request)
+  public function getByIds(Request $request)
   {
     $this->authorize('viewAny', Artwork::class);
 
