@@ -9,9 +9,11 @@ type Props = {
   artwork: ArtworkProps;
   isSelected?: boolean;
   size?: 'xs' | 'sm' | 'md' | 'lg';
+  variant?: 'filled' | 'outline';
+  rounded?: boolean;
 } & React.HTMLAttributes<HTMLDivElement>
 
-function ArtworkStack({ artwork, isSelected, size = 'md', ...props }: Props) {
+function ArtworkStack({ artwork, isSelected, size = 'md', variant = 'outline', rounded = false, ...props }: Props) {
 
   const imageSizeClass = {
     xs: "w-8",
@@ -23,8 +25,11 @@ function ArtworkStack({ artwork, isSelected, size = 'md', ...props }: Props) {
   return (
     <div key={artwork.id}
       className={twMerge(
-        "relative flex items-start border hover:bg-primary-50 dark:hover:bg-primary-900 cursor-pointer transition-all",
-        isSelected && "bg-primary-50 dark:bg-primary-900 !border-primary"
+        "relative flex items-start hover:!bg-primary-50 dark:hover:!bg-primary-900 cursor-pointer transition-all overflow-hidden",
+        isSelected && "bg-primary-50 dark:bg-primary-900 !border-primary",
+        variant === 'filled' && 'bg-soft',
+        variant === 'outline' && 'border',
+        rounded && 'rounded-md'
       )}
       {...props}
     >
