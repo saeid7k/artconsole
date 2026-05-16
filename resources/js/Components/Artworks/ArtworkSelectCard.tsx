@@ -8,15 +8,23 @@ import ArtworkStatusTag from "./ArtworkStatusTag";
 type Props = {
   artwork: ArtworkProps;
   isSelected?: boolean;
-  size?: 'small' | 'default';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
 } & React.HTMLAttributes<HTMLDivElement>
 
-function ArtworkSelectCard({ artwork, isSelected, size = 'default', ...props }: Props) {
+function ArtworkSelectCard({ artwork, isSelected, size = 'md', ...props }: Props) {
+
+  const imageSizeClass = {
+    xs: "w-8",
+    sm: "w-14",
+    md: "w-20",
+    lg: "w-32",
+  }
+
   return (
     <div key={artwork.id}
       className={twMerge(
-        "relative flex items-start border hover:bg-primary-light cursor-pointer transition-all",
-        isSelected && "bg-primary-light !border-primary"
+        "relative flex items-start border hover:bg-primary-50 dark:hover:bg-primary-900 cursor-pointer transition-all",
+        isSelected && "bg-primary-50 dark:bg-primary-900 !border-primary"
       )}
       {...props}
     >
@@ -26,7 +34,7 @@ function ArtworkSelectCard({ artwork, isSelected, size = 'default', ...props }: 
           alt={artwork.title}
           className={twMerge(
             "aspect-square object-cover",
-            size === 'small' ? "w-8" : "w-20"
+            imageSizeClass[size]
           )}
         />
       )}
@@ -35,14 +43,14 @@ function ArtworkSelectCard({ artwork, isSelected, size = 'default', ...props }: 
       >
         <ArtworkTitleStack
           artwork={artwork}
-          showArtist={size === 'small' ? false : true}
-          showYear={size === 'small' ? false : true}
+          showArtist={size === 'xs' ? false : true}
+          showYear={['lg', 'xl'].includes(size) ? true : false}
           showSigned={false}
           showEdition={false}
           showConsignment={false}
           disableLinks
         />
-        {size !== 'small' && (
+        {['md', 'lg'].includes(size) && (
           <ArtworkStatusTag
             status={artwork.status}
             fontSize="xs"

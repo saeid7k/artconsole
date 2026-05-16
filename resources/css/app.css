@@ -89,9 +89,9 @@
   --text-link: theme('colors.blue.200');
   --text-link-hover: theme('colors.blue.300');
 
-  --primary: var(--primary-400);
-  --primary-foreground: var(--primary-900);
-  --primary-light: var(--primary-900);
+  --primary: theme('colors.primary.400');
+  --primary-foreground: theme('colors.primary.900');
+  --primary-light: theme('colors.primary.900');
 }
 
 body {
@@ -180,10 +180,6 @@ blockquote {
 
 .bg-soft {
   background-color: var(--bg-soft);
-}
-
-.bg-primary-light {
-  background-color: var(--primary-light);
 }
 
 .border-light {

@@ -213,7 +213,7 @@ function ArtworkSelector({ setSelectedIds }: Props) {
               key={artwork.id}
               artwork={artwork}
               isSelected={checkedSelectedItems && checkedSelectedItems.find((c) => c.id === artwork.id)}
-              size="small"
+              size="xs"
               onClick={() => toggleCheckSelected(artwork)}
             />
           ))}
