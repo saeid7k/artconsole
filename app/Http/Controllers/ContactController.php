@@ -275,4 +275,17 @@ class ContactController extends Controller
 
     return response()->json($invoices);
   }
+
+  public function topSellingArtists(Request $request)
+  {
+    $this->authorize('viewAny', Contact::class);
+
+    $user = auth()->user();
+    $gallery = $user->currentGallery();
+
+    $topArtists = $gallery->artists()->withCount('soldArts')->get();
+    $topArtists = $topArtists->sortByDesc('sold_arts_count')->take(5);
+
+    return response()->json($topArtists);
+  }
 }

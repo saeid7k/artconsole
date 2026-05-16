@@ -114,9 +114,14 @@ class Contact extends Model implements HasMedia
     return $this->belongsTo(User::class, 'user_id');
   }
 
-  public function artworks()
+  public function arts()
   {
-    return $this->hasMany(Artwork::class);
+    return $this->hasMany(Artwork::class, 'artist_id');
+  }
+
+  public function soldArts()
+  {
+    return $this->arts()->where('status', 'sold');
   }
 
   public function invoices() :HasMany
