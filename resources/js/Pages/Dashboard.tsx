@@ -1,6 +1,7 @@
 import ArtworksStatusWidget from "@/Components/Dashboard/ArtworksStatusWidget";
 import DashboardKpiWidgets from "@/Components/Dashboard/DashboardKpiWidgets";
 import OwnershipWidget from "@/Components/Dashboard/OwnershipWidget";
+import RecentArtworksWidget from "@/Components/Dashboard/RecentArtworksWidget";
 import TokenTopupNotification from "@/Components/Tokens/TokenTopupNotification";
 import AppLayout from "@/Layouts/AppLayout";
 import { UsePageProps } from "@/types/usePage";
@@ -21,6 +22,9 @@ function Dashboard({}) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           <ArtworksStatusWidget />
           <OwnershipWidget />
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+          <RecentArtworksWidget />
         </div>
       </div>
 
