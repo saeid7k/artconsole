@@ -170,7 +170,7 @@ function InvoiceItemsTable({ items, setItems, selectedArtworksIds = [] }: Props)
 
   const selectedArtworksQuery = useQuery({
     queryKey: ['invoice-selected-artworks', selectedArtworksIds],
-    queryFn: () => axios.get(route('artworks.get'), { params: { ids: selectedArtworksIds.join(',') } })
+    queryFn: () => axios.get(route('artworks.get-by-ids'), { params: { ids: selectedArtworksIds.join(',') } })
       .then(res => res.data),
     enabled: selectedArtworksIds.length > 0
   });
