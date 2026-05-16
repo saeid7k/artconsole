@@ -6,7 +6,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import ColumnTitle from "../Containers/ColumnTitle";
 import LoadingSpinner from "../LoadingSpinner";
-import ArtworkSelectCard from "./ArtworkSelectCard";
+import ArtworkStack from "./ArtworkStack";
 
 type Props = {
   setSelectedIds: (ids: number[]) => void;
@@ -140,7 +140,7 @@ function ArtworkSelector({ setSelectedIds }: Props) {
             <Empty description="No artworks found" />
           )}
           {sourceItems.length > 0 && sourceItems.map((artwork: any) => (
-            <ArtworkSelectCard
+            <ArtworkStack
               key={artwork.id}
               artwork={artwork}
               isSelected={checkedSourceItems && checkedSourceItems.find((c) => c.id === artwork.id)}
@@ -209,7 +209,7 @@ function ArtworkSelector({ setSelectedIds }: Props) {
             <Empty description="No artworks selected yet" className="mt-5" />
           )}
           {selectedItems.length > 0 && selectedItems.map((artwork: any) => (
-            <ArtworkSelectCard
+            <ArtworkStack
               key={artwork.id}
               artwork={artwork}
               isSelected={checkedSelectedItems && checkedSelectedItems.find((c) => c.id === artwork.id)}
