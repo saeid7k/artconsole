@@ -140,12 +140,14 @@ function ArtworkSelector({ setSelectedIds }: Props) {
             <Empty description="No artworks found" />
           )}
           {sourceItems.length > 0 && sourceItems.map((artwork: any) => (
-            <ArtworkStack
-              key={artwork.id}
-              artwork={artwork}
-              isSelected={checkedSourceItems && checkedSourceItems.find((c) => c.id === artwork.id)}
-              onClick={() => toggleCheckSource(artwork)}
-            />
+            <div>
+              <ArtworkStack
+                key={artwork.id}
+                artwork={artwork}
+                isSelected={checkedSourceItems && checkedSourceItems.find((c) => c.id === artwork.id)}
+                onClick={() => toggleCheckSource(artwork)}
+              />
+            </div>
           ))}
           <div className="mx-1 mb-3">
             <Button

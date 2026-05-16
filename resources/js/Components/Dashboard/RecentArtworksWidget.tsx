@@ -30,14 +30,16 @@ function RecentArtworksWidget() {
     >
       <div className="flex flex-col gap-2">
         {data && data.length > 0 && data.map((artwork: ArtworkProps) => (
-          <ArtworkStack
-            key={artwork.id}
-            artwork={artwork}
-            size="sm"
-            variant="outline"
-            rounded
-            onClick={() => router.visit(route('artworks.show', artwork.id))}
-          />
+          <div>
+            <ArtworkStack
+              key={artwork.id}
+              artwork={artwork}
+              size="sm"
+              variant="outline"
+              rounded
+              onClick={() => router.visit(route('artworks.show', artwork.id))}
+            />
+          </div>
         ))}
       </div>
     </Card>
