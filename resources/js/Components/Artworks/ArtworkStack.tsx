@@ -11,7 +11,7 @@ type Props = {
   size?: 'xs' | 'sm' | 'md' | 'lg';
 } & React.HTMLAttributes<HTMLDivElement>
 
-function ArtworkSelectCard({ artwork, isSelected, size = 'md', ...props }: Props) {
+function ArtworkStack({ artwork, isSelected, size = 'md', ...props }: Props) {
 
   const imageSizeClass = {
     xs: "w-8",
@@ -68,4 +68,4 @@ function ArtworkSelectCard({ artwork, isSelected, size = 'md', ...props }: Props
   )
 }
 
-export default ArtworkSelectCard
+export default ArtworkStack

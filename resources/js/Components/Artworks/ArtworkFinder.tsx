@@ -5,7 +5,7 @@ import { Button, Empty, Input, message, Space } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import LoadingSpinner from "../LoadingSpinner";
-import ArtworkSelectCard from "./ArtworkSelectCard";
+import ArtworkStack from "./ArtworkStack";
 
 type Props = {
   onSelect?: (artwork: any) => void;
@@ -87,7 +87,7 @@ function ArtworkFinder({ onSelect }: Props) {
             key={artwork.id}
             onClick={() => onSelect && onSelect(artwork)}
           >
-            <ArtworkSelectCard
+            <ArtworkStack
               artwork={artwork}
             />
           </div>

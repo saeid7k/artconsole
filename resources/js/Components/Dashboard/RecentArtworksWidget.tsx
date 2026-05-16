@@ -2,7 +2,7 @@ import { ArtworkProps } from "@/types/artwork";
 import { useQuery } from "@tanstack/react-query";
 import { Card } from "antd";
 import axios from "axios";
-import ArtworkSelectCard from "../Artworks/ArtworkSelectCard";
+import ArtworkStack from "../Artworks/ArtworkStack";
 
 function RecentArtworksWidget() {
 
@@ -19,7 +19,7 @@ function RecentArtworksWidget() {
     >
       <div className="flex flex-col gap-2">
         {data && data.length > 0 && data.map((artwork: ArtworkProps) => (
-          <ArtworkSelectCard
+          <ArtworkStack
             key={artwork.id}
             artwork={artwork}
             size="sm"
