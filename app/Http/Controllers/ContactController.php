@@ -283,8 +283,11 @@ class ContactController extends Controller
     $user = auth()->user();
     $gallery = $user->currentGallery();
 
-    $topArtists = $gallery->artists()->withCount('soldArts')->get();
-    $topArtists = $topArtists->sortByDesc('sold_arts_count')->take(5);
+    $topArtists = $gallery->artists()
+      ->withCount('soldArts')
+      ->orderByDesc('sold_arts_count')
+      ->limit(5)
+      ->get();
 
     return response()->json($topArtists);
   }
