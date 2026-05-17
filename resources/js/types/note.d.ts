@@ -2,6 +2,7 @@ import { UserProps } from "./user";
 
 export interface NoteProps {
   id: number;
+  gallery_id: number;
   user_id?: number | null;
   noteable_type?: string;
   noteable_id?: number;

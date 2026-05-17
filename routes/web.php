@@ -131,6 +131,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::prefix('notes')->name('notes.')->group(function () {
     Route::get('/{note}/collaborators', [App\Http\Controllers\NoteController::class, 'getCollaborators'])->name('collaborators');
     Route::delete('/{note}', [App\Http\Controllers\NoteController::class, 'destroy']) ->name('destroy');
+    Route::get('/recent', [App\Http\Controllers\NoteController::class, 'recent'])->name('recent');
   });
 
   Route::prefix('reports')->name('reports.')->group(function () {
