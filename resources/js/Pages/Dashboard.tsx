@@ -2,6 +2,7 @@ import ArtworksStatusWidget from "@/Components/Dashboard/ArtworksStatusWidget";
 import DashboardKpiWidgets from "@/Components/Dashboard/DashboardKpiWidgets";
 import OwnershipWidget from "@/Components/Dashboard/OwnershipWidget";
 import RecentArtworksWidget from "@/Components/Dashboard/RecentArtworksWidget";
+import TopSellingArtistsWidget from "@/Components/Dashboard/TopSellingArtistsWidget";
 import TokenTopupNotification from "@/Components/Tokens/TokenTopupNotification";
 import AppLayout from "@/Layouts/AppLayout";
 import { UsePageProps } from "@/types/usePage";
@@ -19,12 +20,13 @@ function Dashboard({}) {
 
       <div className="flex flex-col gap-3">
         <DashboardKpiWidgets />
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-3">
           <ArtworksStatusWidget />
           <OwnershipWidget />
+          <RecentArtworksWidget />
         </div>
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-3">
-          <RecentArtworksWidget />
+          <TopSellingArtistsWidget />
         </div>
       </div>
 
