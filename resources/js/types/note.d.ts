@@ -12,11 +12,13 @@ export interface NoteProps {
   updated_at: string;
   // Relations
   creator?: UserProps;
+  // Appends
+  noteable_path?: string;
 }
 
 /** Represents an unsaved note placeholder before it is persisted to the database. */
 export interface NewNoteProps {
-  id: null;
+  id: string;
   content: string | null;
 }
 

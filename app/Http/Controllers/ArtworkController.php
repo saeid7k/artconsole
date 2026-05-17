@@ -12,6 +12,7 @@ use App\Services\ArtworkService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Spatie\LaravelPdf\Enums\Format;
+use Illuminate\Support\Str;
 
 use function Spatie\LaravelPdf\Support\pdf;
 
@@ -344,11 +345,17 @@ class ArtworkController extends Controller
     $this->authorize('update', $artwork);
 
     $request->validate([
-      'note_id' => ['nullable', 'exists:notes,id'],
+      'note_id' => ['required'],
       'content' => ['nullable', 'string', 'max:1000'],
     ]);
 
-    if ($request->note_id) {
+    if (Str::startsWith($request->note_id, 'new')) {
+      $note = $artwork->addNote($request->content);
+      return response()->json([
+        'message' => 'Note added successfully.',
+        'note_id' => $note->id,
+      ]);
+    } else {
       $updated = $artwork->updateNote($request->note_id, $request->content);
       if ($updated) {
         return response()->json([
@@ -361,13 +368,6 @@ class ArtworkController extends Controller
         ], 404);
       }
     }
-
-    $note = $artwork->addNote($request->content);
-
-    return response()->json([
-      'message' => 'Note added successfully.',
-      'note_id' => $note->id,
-    ]);
   }
 
   public function copy(Artwork $artwork)
