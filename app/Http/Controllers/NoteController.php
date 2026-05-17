@@ -30,4 +30,19 @@ class NoteController extends Controller
       'message' => 'Note deleted successfully',
     ]);
   }
+
+  public function recent(Request $request)
+  {
+    $user = $request->user();
+    $gallery = $user->currentGallery();
+
+    $notes = Note::where('gallery_id', $gallery->id)
+      ->latest('updated_at')
+      ->take(5)
+      ->get();
+
+    return response()->json([
+      'notes' => $notes,
+    ]);
+  }
 }

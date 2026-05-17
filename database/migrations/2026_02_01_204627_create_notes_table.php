@@ -9,6 +9,7 @@ return new class extends Migration {
   {
     Schema::create('notes', function (Blueprint $table) {
       $table->id();
+      $table->foreignId('gallery_id')->constrained()->cascadeOnDelete();
       $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
       $table->morphs('noteable');
       $table->text('content')->nullable();

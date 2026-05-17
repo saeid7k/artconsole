@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class Note extends Model
 {
   protected $fillable = [
+    'gallery_id',
     'user_id',
     'content',
     'collaborators_ids',
