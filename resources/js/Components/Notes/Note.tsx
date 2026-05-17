@@ -13,15 +13,20 @@ import FlexBox from "../Containers/FlexBox";
 type Props = {
   index: number;
   note: NoteOrNew;
-  onChange: (index: number, newContent: string|null) => void;
+  rows?: number;
+  onChange?: (index: number, newContent: string|null) => void;
+  onClickRoot?: () => void;
+  deletable?: boolean;
 }
 
-function Note({ index, note, onChange }: Props) {
+function Note({ index, note, rows = 3, onChange, onClickRoot, deletable = true }: Props) {
 
   // Handle content change
 
   const handleChange = (newContent: string|null) => {
-    onChange(index, newContent);
+    if (onChange) {
+      onChange(index, newContent);
+    }
   }
 
   // Get Collaborators
@@ -30,7 +35,7 @@ function Note({ index, note, onChange }: Props) {
     queryKey: ['note-collaborators', note.id],
     queryFn: () => axios.get(route('notes.collaborators', {note: note.id}))
       .then(res => res.data.collaborators),
-    enabled: !!note.id,
+    enabled: !!note.id && typeof note.id === 'number',
   });
 
   // Delete Note
@@ -44,21 +49,28 @@ function Note({ index, note, onChange }: Props) {
 
   return (
     <Card
-      className="bg-yellow-500/20 hover:shadow-lg transition-all h-max"
+      className={twMerge(
+        "bg-yellow-500/20 transition-all h-max",
+        (onChange || onClickRoot) && "hover:shadow-lg",
+        onClickRoot && "cursor-pointer"
+      )}
       styles={{
         body: { padding: '1rem' },
       }}
+      onClick={onClickRoot}
     >
       <Input.TextArea
         className={twMerge(
           "mb-2 p-1 border-none focus:!shadow-none focus:!bg-transparent hover:!bg-transparent",
-          note.content ? "!bg-transparent" : "bg-yellow-500/10"
+          note.content ? "!bg-transparent" : "bg-yellow-500/10",
+          !onChange && "pointer-events-none"
         )}
-        autoSize={{ minRows: 3 }}
+        autoSize={{ minRows: rows }}
         onChange={(e) => handleChange(e.target.value)}
         defaultValue={note.content ?? undefined}
+        readOnly={!onChange}
       />
-      {note.id && (
+      {typeof note.id === 'number' && (
         <FlexBox direction="col" alignItems="start" >
           <FlexBox justifyContent="between" >
             <Avatar.Group max={{count: 5}} size="small">
@@ -78,19 +90,21 @@ function Note({ index, note, onChange }: Props) {
               ))}
             </Avatar.Group>
             <div className="text-ghost">
-              {note.updated_at && dayjsUserTz(note.updated_at).format('MMM D, YYYY h:mm A')}
+              {'updated_at' in note && dayjsUserTz(note.updated_at).format('MMM D, YYYY h:mm A')}
             </div>
           </FlexBox>
-          <FlexBox justifyContent="end" >
-            <Button
-              type="text"
-              shape="circle"
-              size="small"
-              onClick={() => deleteNoteMutation.mutate()}
-            >
-              <HugeiconsIcon icon={Delete02Icon} size={16} />
-            </Button>
-          </FlexBox>
+          {deletable && (
+            <FlexBox justifyContent="end" >
+              <Button
+                type="text"
+                shape="circle"
+                size="small"
+                onClick={() => deleteNoteMutation.mutate()}
+              >
+                <HugeiconsIcon icon={Delete02Icon} size={16} />
+              </Button>
+            </FlexBox>
+          )}
         </FlexBox>
       )}
     </Card>

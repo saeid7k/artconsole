@@ -1,6 +1,6 @@
 import colors from "@/Themes/theme";
 import { ArtworkProps } from "@/types/artwork";
-import { NoteOrNew, NoteProps } from "@/types/note";
+import { NoteOrNew } from "@/types/note";
 import { AddIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useMutation } from "@tanstack/react-query";
@@ -18,7 +18,7 @@ function ArtworkNotes({ artwork }: { artwork: ArtworkProps }) {
 
   function addNote() {
     const updatedNotes = [...notes, {
-      id: null,
+      id: 'new-' + Math.random().toString(36).substring(2, 10),
       content: null,
     }];
     setNotes(updatedNotes);
@@ -44,8 +44,7 @@ function ArtworkNotes({ artwork }: { artwork: ArtworkProps }) {
   }
 
   const saveNoteMutation = useMutation({
-    mutationFn: ({ noteId = null, newContent = null }: { noteId?: number | null, newContent: string | null }) => {
-      return axios.post(route('artworks.save-note', {
+    mutationFn: ({ noteId = null, newContent = null }: { noteId?: any, newContent: string | null }) => axios.post(route('artworks.save-note', {
         artwork: artwork
       }), {
         note_id: noteId,
@@ -53,13 +52,12 @@ function ArtworkNotes({ artwork }: { artwork: ArtworkProps }) {
       })
         .then(res => {
           // Update note ID if it's a new note
-          if (!noteId) {
-            const updatedNotes = [...notes];
-            updatedNotes.find(n => n.id === null && n.content === newContent)!.id = res.data.note_id;
-            setNotes(updatedNotes);
+          if (noteId.startsWith('new')) {
+            setNotes(prev => prev.map(n =>
+              n.id === noteId ? { ...n, id: res.data.note_id } : n
+            ));
           }
         })
-    }
   });
 
   useEffect(() => {
