@@ -43,7 +43,7 @@ function Index({ invoices }: { invoices: PageProps }) {
     <div>
       <PageTitle title="Invoices"
         counter={invoices?.total || 0}
-        createButtonDisabled={!user.has_edit_access}
+        createButtonDisabled={!user?.has_edit_access}
         onCreateButtonClick={() => setShowInvoiceFormDrawer(true)}
         toolbar={renderToolbar()}
       />

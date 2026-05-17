@@ -1,5 +1,6 @@
 import colors from "@/Themes/theme";
 import { ArtworkProps } from "@/types/artwork";
+import { NoteOrNew, NoteProps } from "@/types/note";
 import { AddIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useMutation } from "@tanstack/react-query";
@@ -10,7 +11,7 @@ import Note from "../Notes/Note";
 
 function ArtworkNotes({ artwork }: { artwork: ArtworkProps }) {
 
-  const [notes, setNotes] = useState(artwork.notes || []);
+  const [notes, setNotes] = useState<NoteOrNew[]>(artwork.notes || []);
   const saveTimerRef = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   // add note

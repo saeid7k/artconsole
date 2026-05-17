@@ -35,7 +35,7 @@ function ArtworksMassActions({ selectedIds }: { selectedIds: number[] }) {
     }
   })
 
-  const showTriggerButton = selectedIds.length > 0 && user.has_edit_access;
+  const showTriggerButton = selectedIds.length > 0 && !!user?.has_edit_access;
 
   return (<>
     <AnimatedContainer type="fadeRight" condition={showTriggerButton} >
@@ -49,7 +49,7 @@ function ArtworksMassActions({ selectedIds }: { selectedIds: number[] }) {
                 icon: <HugeiconsIcon icon={ArrowDataTransferHorizontalIcon} size={16} />,
                 label: 'Move to new Location',
                 onClick: () => setShowMoveModal(true),
-                disabled: !user.has_edit_access
+                disabled: !user?.has_edit_access
               },
               {
                 key: 'update-status',
@@ -60,7 +60,7 @@ function ArtworksMassActions({ selectedIds }: { selectedIds: number[] }) {
                   label: status.label,
                   onClick: () => updateStatusMutation.mutate(status.value)
                 })),
-                disabled: !user.has_edit_access
+                disabled: !user?.has_edit_access
               },
               {
                 key: 'divider-reports',
@@ -71,7 +71,7 @@ function ArtworksMassActions({ selectedIds }: { selectedIds: number[] }) {
                 icon: <HugeiconsIcon icon={SaveMoneyDollarIcon} size={16} />,
                 label: <div>Sell <span className="text-ghost">(Create Invoice)</span></div>,
                 onClick: () => setShowInvoiceDrawer(true),
-                disabled: !user.has_edit_access
+                disabled: !user?.has_edit_access
               },
               {
                 key: 'divider-reports',
@@ -82,14 +82,14 @@ function ArtworksMassActions({ selectedIds }: { selectedIds: number[] }) {
                 icon: <HugeiconsIcon icon={NoteIcon} size={16} />,
                 label: 'Create Labels Report',
                 onClick: () => setShowCreateLabelsReportsDrawer(true),
-                disabled: !user.has_edit_access
+                disabled: !user?.has_edit_access
               },
               {
                 key: 'inventory-report',
                 icon: <HugeiconsIcon icon={LayoutTable02Icon} size={16} />,
                 label: 'Create Inventory Report',
                 onClick: () => setShowCreateInventoryReportsDrawer(true),
-                disabled: !user.has_edit_access
+                disabled: !user?.has_edit_access
               },
             ]}
           />

@@ -126,9 +126,9 @@ function Members() {
               defaultValue={text}
               value={text}
               onChange={(value) => changeAccessLevel((record as UserProps).id, value)}
-              disabled={gallery.user_id == record.id || user.id == record.id}
+              disabled={gallery.user_id == record.id || user?.id == record.id}
               options={
-                ACCESS_LEVELS.filter(level => level.name !== 'owner' || gallery.user_id == user.id).map(level => ({
+                ACCESS_LEVELS.filter(level => level.name !== 'owner' || gallery.user_id == user?.id).map(level => ({
                   value: level.name,
                   label: ucFirst(level.name),
                 }))
@@ -146,7 +146,7 @@ function Members() {
       key: 'actions',
       render: (_, record) => (
         <div className="flex justify-end">
-          {gallery.user_id !== record.id && user.id !== record.id && gallery.abilities.manage_members && (
+          {gallery.user_id !== record.id && user?.id !== record.id && gallery.abilities.manage_members && (
             <Tooltip title="Remove Member">
               <Popconfirm
                 title="Remove the member"

@@ -164,7 +164,7 @@ function LocationCard({ location }: { location: LocationProps }) {
                   <Menu.Divider />
                   <Menu.Item key="labels-report"
                     onClick={() => setShowCreateLabelsReportModal(true)}
-                    disabled={!user.has_edit_access}
+                    disabled={!user?.has_edit_access}
                   >
                     <FlexBox>
                       <HugeiconsIcon icon={NoteIcon} size={20} />
@@ -173,7 +173,7 @@ function LocationCard({ location }: { location: LocationProps }) {
                   </Menu.Item>
                   <Menu.Item key="inventory-report"
                     onClick={() => setShowCreateInventoryReportModal(true)}
-                    disabled={!user.has_edit_access}
+                    disabled={!user?.has_edit_access}
                   >
                     <FlexBox>
                       <HugeiconsIcon icon={LayoutTable02Icon} size={20} />

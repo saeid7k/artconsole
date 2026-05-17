@@ -18,12 +18,12 @@ function UserMenu() {
         key: 'user-info',
         label: (
           <div className="flex gap-2 cursor-default">
-            <Avatar size="large" src={user.photo ? user.photo : undefined}>
-              {getInitials(user.full_name)}
+            <Avatar size="large" src={user?.photo ? user.photo : undefined}>
+              {getInitials(user?.full_name ?? "")}
             </Avatar>
             <div>
-              <div className="font-semibold text-body">{user.full_name}</div>
-              <div className="text-sm text-slate-500">{user.email}</div>
+              <div className="font-semibold text-body">{user?.full_name}</div>
+              <div className="text-sm text-slate-500">{user?.email}</div>
             </div>
           </div>
         ),
@@ -67,10 +67,10 @@ function UserMenu() {
       >
         <Avatar
           size="default"
-          src={user.photo ? user.photo : undefined}
+          src={user?.photo ? user.photo : undefined}
           className="cursor-pointer border-2 hover:border-primary transition-all"
         >
-          {getInitials(user.full_name)}
+          {getInitials(user?.full_name ?? "")}
         </Avatar>
       </Dropdown>
 
