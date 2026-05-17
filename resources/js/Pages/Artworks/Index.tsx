@@ -99,7 +99,7 @@ function Index({ artworks, locations }: { artworks: PageProps, locations: Array<
     <ArtworkIndexProvider value={{ selectedIds, setSelectedIds }}>
       <PageTitle title="Artworks Inventory"
         counter={artworks.total}
-        createButtonDisabled={!user.has_edit_access}
+        createButtonDisabled={!user?.has_edit_access}
         onCreateButtonClick={() => setShowCreateDrawer(true)}
         toolbar={renderToolbar()}
       />

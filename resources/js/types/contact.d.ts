@@ -7,20 +7,23 @@ export interface ContactProps {
   firstname: string;
   lastname: string;
   email: string;
+  country_code?: string | null;
   phone: string;
-  address: Address;
   website: string;
+  address: Address;
   relationship: Array<string>;
   business: Business;
   birthday: string | Date;
-  photo?: string;
+  photo?: string | null;
   created_at: string;
   updated_at: string;
+  deleted_at?: string | null;
 
   // Appended properties
   abilities: { [key: string]: boolean };
   full_name: string;
   formatted_address: string;
   business_formatted_address: string;
+  formatted_phone_number: string;
   sold_arts_count?: number;
 }

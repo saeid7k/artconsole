@@ -9,6 +9,7 @@ export interface GalleryProps {
   name: string;
   about?: string | null;
   address?: Address | null;
+  country_code?: string | null;
   phone?: string | null;
   website?: string | null;
   email?: string | null;
@@ -29,9 +30,11 @@ export interface GalleryProps {
   members_count?: number;
   logo_url?: string | null;
   formatted_address?: string | null;
+  formatted_phone_number: string;
   meta?: { [key: string]: any };
   currency: string;
   invoice_prefix?: string | null;
   is_subscribed?: boolean;
+  subscribed_price_id?: string | null;
   on_grace_period?: boolean;
 }

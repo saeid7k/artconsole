@@ -56,7 +56,7 @@ function Note({ index, note, onChange }: Props) {
         )}
         autoSize={{ minRows: 3 }}
         onChange={(e) => handleChange(e.target.value)}
-        defaultValue={note.content}
+        defaultValue={note.content ?? undefined}
       />
       {note.id && (
         <FlexBox direction="col" alignItems="start" >

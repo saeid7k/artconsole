@@ -50,7 +50,7 @@ function InvoicesActions({ invoice } : { invoice: InvoiceProps }) {
             shape="circle"
             icon={<HugeiconsIcon icon={PencilEdit02Icon} size={20} />}
             onClick={() => setShowEditDrawer(true)}
-            disabled={!user.has_edit_access}
+            disabled={!user?.has_edit_access}
           />
         </Tooltip>
         <Tooltip title="Payments">
@@ -87,7 +87,7 @@ function InvoicesActions({ invoice } : { invoice: InvoiceProps }) {
                   icon: <HugeiconsIcon icon={Delete02Icon} size={16} />,
                   label: 'Delete Invoice',
                   onClick: handleDelete,
-                  disabled: !user.has_edit_access
+                  disabled: !user?.has_edit_access
                 },
               ]}
             />

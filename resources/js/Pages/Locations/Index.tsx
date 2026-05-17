@@ -32,15 +32,15 @@ function Index({ locations }: { locations: PageProps }) {
   return (
     <div>
       <PageTitle title="Locations"
-        counter={locations.data.length}
-        createButtonDisabled={!user.has_edit_access}
+        counter={locations.data?.length}
+        createButtonDisabled={!user?.has_edit_access}
         onCreateButtonClick={() => setOpenCreateModal(true)}
         toolbar={renderToolbar()}
       />
       <div className="grid items-start grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-        {locations.data.length > 0 && (
+        {(locations.data?.length ?? 0) > 0 && (
           <>
-            {[...locations.data].map((location: any) => (
+            {[...(locations.data ?? [])].map((location: any) => (
               <LocationCard key={location.id} location={location} />
             ))}
           </>

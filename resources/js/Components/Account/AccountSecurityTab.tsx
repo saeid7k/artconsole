@@ -19,15 +19,15 @@ function AccountSecurityTab() {
           <div>
             <strong>Password</strong>
             <div className="text-muted">
-              {!user.has_password && (<>You have not set a password yet.</>)}
-              {user.has_password && (<>Change your password regularly to keep your account secure.</>)}
+              {!user?.has_password && (<>You have not set a password yet.</>)}
+              {user?.has_password && (<>Change your password regularly to keep your account secure.</>)}
             </div>
           </div>
           <div>
             <Button
               onClick={() => setShowPasswordModal(true)}
             >
-              {user.has_password ? 'Change Password' : 'Set Password'}
+            {user?.has_password ? 'Change Password' : 'Set Password'}
             </Button>
           </div>
         </div>
@@ -36,7 +36,7 @@ function AccountSecurityTab() {
       <ChangePasswordModal
         open={showPasswordModal}
         setOpen={setShowPasswordModal}
-        action={user.has_password ? 'change' : 'set'}
+        action={user?.has_password ? 'change' : 'set'}
       />
     </>
   )

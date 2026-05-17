@@ -29,7 +29,7 @@ function Index({ contacts }: { contacts: PageProps }) {
       <PageTitle
         title="Contacts"
         counter={contacts.total}
-        createButtonDisabled={!user.has_edit_access}
+        createButtonDisabled={!user?.has_edit_access}
         onCreateButtonClick={() => { setShowCreateDrawer(true) }}
         toolbar={
           <Search
