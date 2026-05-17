@@ -6,11 +6,16 @@ import { Tooltip } from "antd";
 import NewTag from "../NewTag";
 import ContactAvatar from "./ContactAvatar";
 
-function ContactStack({contact}: {contact: ContactProps}) {
+type Props = {
+  contact: ContactProps;
+  rootClassName?: string;
+}
+
+function ContactStack({contact, rootClassName}: Props) {
 
   return (
     <div
-      className="flex items-center gap-2 cursor-pointer group"
+      className={`relative flex items-center gap-2 cursor-pointer group ${rootClassName}`}
       onClick={() => router.get(route('contacts.show', contact.id))}
     >
       <ContactAvatar contact={contact} />
