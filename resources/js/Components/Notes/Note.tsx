@@ -1,4 +1,4 @@
-import { NoteProps } from "@/types/note";
+import { NoteOrNew } from "@/types/note";
 import { dayjsUserTz } from "@/utils/dateTimeHelper";
 import { getInitials } from "@/utils/stringHelper";
 import { Delete02Icon } from "@hugeicons/core-free-icons";
@@ -12,7 +12,7 @@ import FlexBox from "../Containers/FlexBox";
 
 type Props = {
   index: number;
-  note: NoteProps;
+  note: NoteOrNew;
   onChange: (index: number, newContent: string|null) => void;
 }
 
