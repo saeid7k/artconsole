@@ -2,11 +2,14 @@ import { Address } from "./commonObjects";
 
 export interface LocationProps {
   id: number;
+  gallery_id: number;
   type: string;
-  contact_id?: number|null;
+  contact_id?: number | null;
   name: string;
-  description?: string|null;
-  address?: Address|null;
+  description?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  address?: Address | null;
   address_same_as_gallery: boolean;
   is_primary: boolean;
   is_active: boolean;

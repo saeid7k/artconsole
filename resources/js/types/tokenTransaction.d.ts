@@ -4,6 +4,7 @@ export interface TokenTransaction {
   type: 'top_up' | 'credit' | 'usage' | 'refund';
   amount: number;
   description?: string | null;
+  stripe_id?: string | null;
   created_at: string;
   updated_at: string;
 }

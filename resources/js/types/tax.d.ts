@@ -5,4 +5,6 @@ export interface TaxProps {
   rate: number;
   description?: string | null;
   default: boolean;
+  created_at: string;
+  updated_at: string;
 }

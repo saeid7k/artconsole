@@ -11,7 +11,7 @@ function ArtworksGrids({ artworks }: { artworks?: PageProps }) {
         <Masonry
           columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5, xxl: 6 }}
           gutter={{ xs: 16, sm: 16, lg: 24, xxl: 32 }}
-          items={artworks?.data.map((a: ArtworkProps) => ({
+          items={artworks?.data?.map((a: ArtworkProps) => ({
             key: a.id,
             data: a
           }))}

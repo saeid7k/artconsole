@@ -57,7 +57,7 @@ function Index({ reports }: any) {
                 type="text"
                 shape="circle"
                 icon={<HugeiconsIcon icon={AddSquareIcon} size={20} />}
-                disabled={!user.has_edit_access}
+                disabled={!user?.has_edit_access}
               >
               </Button>
             </Tooltip>
