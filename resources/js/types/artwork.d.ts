@@ -1,6 +1,8 @@
 import { ContactProps } from "./contact";
 import { DimensionsProps } from "./dimensions";
+import { InvoiceProps } from "./invoice";
 import { LocationProps } from "./location";
+import { NoteProps } from "./note";
 import { UserProps } from "./user";
 
 export interface ArtworkProps {
@@ -50,6 +52,7 @@ export interface ArtworkProps {
   // Attributes not in database
   abilities: {
     create: boolean;
+    view: boolean;
     update: boolean;
     delete: boolean;
   };

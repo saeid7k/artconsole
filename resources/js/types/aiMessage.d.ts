@@ -7,14 +7,14 @@ export interface AiMessage {
   agent: string;
   role: 'user' | 'assistant';
   content: string;
-  attachments?: {
+  attachments?: Array<{
     type: string;
     media_id: number;
-  };
-  tool_calls?: any[];
-  tools_results?: any[];
-  usage?: any[];
-  meta?: any[];
+  }> | null;
+  tool_calls?: any[] | null;
+  tool_results?: any[] | null;
+  usage?: any[] | null;
+  meta?: any[] | null;
   created_at: string;
   updated_at: string;
 

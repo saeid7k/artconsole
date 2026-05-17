@@ -20,7 +20,7 @@ function AccountModal({ open, setOpen }: { open: boolean, setOpen: (open: boolea
   // Constants and States
 
   const pictureUploadRef = useRef<HTMLInputElement | null>(null)
-  const [preview, setPreview] = useState<string>(user.photo ?? '')
+  const [preview, setPreview] = useState<string>(user?.photo ?? '')
   const [profileTriggerCounter, setProfileTriggerCounter] = useState(0)
 
   const tabItems = [
@@ -122,7 +122,7 @@ function AccountModal({ open, setOpen }: { open: boolean, setOpen: (open: boolea
               />
             ) : (
               <div className="w-full h-full bg-gray-300 grid place-content-center">
-                <Avatar size={80} className="text-white">{getInitials(user.full_name)}</Avatar>
+                <Avatar size={80} className="text-white">{getInitials(user?.full_name ?? '')}</Avatar>
               </div>
             )}
             <div

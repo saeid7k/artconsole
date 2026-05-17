@@ -85,7 +85,7 @@ function MockupGeneration() {
 
   const imagesLoading = artworkIds.length > 0 && (mediaQuery.isLoading || mediaQuery.isFetching || mediaQuery.isPending)
   const showButton = selectedImageIndex !== null && selectedEnvironment !== null && !conversationId
-  const tokenAvailable = user?.token_balance >= CONFIGS.ai.token_usage.mockup
+  const tokenAvailable = (user?.token_balance ?? 0) >= CONFIGS.ai.token_usage.mockup
 
   return (
     <div className="flex flex-col gap-20">

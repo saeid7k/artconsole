@@ -128,7 +128,7 @@ function ArtworksActions({ artwork }: { artwork: ArtworkProps }) {
                   key: 'invoice',
                   icon: <HugeiconsIcon icon={SaveMoneyDollarIcon} size={16} />,
                   label: <div>Sell <span className="text-ghost">(Create Invoice)</span></div>,
-                  disabled: !user.has_edit_access,
+                  disabled: !user?.has_edit_access,
                   onClick: () => setShowInvoiceDrawer(true),
                 }
               ]}

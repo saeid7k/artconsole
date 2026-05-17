@@ -18,7 +18,7 @@ function TokensCounter({ showBalance = true }: { showBalance?: boolean }) {
         icon={<TokenIcon />}
         onClick={() => setTokensDrawerOpen(true)}
       >
-        {showBalance && <div className="font-mono">{formatNumber(user.token_balance)}</div>}
+        {showBalance && <div className="font-mono">{formatNumber(user?.token_balance ?? 0)}</div>}
       </Button>
     </Tooltip>
   )

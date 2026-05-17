@@ -57,7 +57,7 @@ function ReportsTableActions({ report }: any) {
               shape="circle"
               icon={<HugeiconsIcon icon={Delete02Icon} size={20} />}
               loading={deleteMutation.isPending}
-              disabled={!user.has_edit_access}
+              disabled={!user?.has_edit_access}
             />
           </Popconfirm>
         </Tooltip>
@@ -75,10 +75,10 @@ function ReportsTableActions({ report }: any) {
                     <InfoPopover
                       title="Regenerate Report"
                       content="The report will be regenerated based on the latest artworks data."
-                      condition={user.has_edit_access}
+                      condition={user?.has_edit_access}
                     />
                   </>),
-                  disabled: !user.has_edit_access
+                  disabled: !user?.has_edit_access
                 },
               ]}
             />

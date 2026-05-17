@@ -38,7 +38,7 @@ function AccountPreferencesTab() {
         <Select
           options={timeZoneOptions}
           showSearch
-          defaultValue={user.timezone}
+          defaultValue={user?.timezone}
           className="w-full md:w-1/2"
           onChange={(value) => handleChange("timezone", value)}
         />

@@ -66,7 +66,7 @@ function DescriptionGeneration() {
   }, [artworkResources])
 
   const showButton = selectedLength !== null && selectedResource !== null && !conversationId
-  const tokenAvailable = user?.token_balance >= CONFIGS.ai.token_usage.description
+  const tokenAvailable = (user?.token_balance ?? 0) >= CONFIGS.ai.token_usage.description
 
   return (
     <div className="flex flex-col gap-20">

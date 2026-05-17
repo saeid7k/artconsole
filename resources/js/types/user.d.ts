@@ -5,22 +5,29 @@ export interface UserProps {
   id: number;
   firstname: string;
   lastname: string;
+  username?: string | null;
   email: string;
-  phone?: string;
-  website?: string;
-  address?: Address;
-  bio?: string;
+  email_verified_at?: string | null;
+  country_code?: string | null;
+  phone?: string | null;
+  website?: string | null;
+  address?: Address | null;
+  bio?: string | null;
+  token_balance: number;
   is_demo?: boolean;
-  email_verified_at?: string;
-  is_admin: boolean;
-  formatted_address?: string;
-  full_name: string;
-  photo?: string;
+  demo_claimed_at?: string | null;
+  deleted_at?: string | null;
 
   // Appends
   abilities: {
     [key: string]: boolean;
   };
-  access: accessLevelsType;
+  is_admin: boolean;
   full_name: string;
+  formatted_address: string;
+  photo?: string | null;
+  has_password: boolean;
+  timezone?: string | null;
+  access: accessLevelsType;
+  has_edit_access: boolean;
 }
