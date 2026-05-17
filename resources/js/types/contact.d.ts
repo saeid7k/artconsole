@@ -13,11 +13,14 @@ export interface ContactProps {
   relationship: Array<string>;
   business: Business;
   birthday: string | Date;
-  full_name: string;
-  abilities: { [key: string]: boolean };
-  formatted_address: string;
-  business_formatted_address: string;
   photo?: string;
   created_at: string;
   updated_at: string;
+
+  // Appended properties
+  abilities: { [key: string]: boolean };
+  full_name: string;
+  formatted_address: string;
+  business_formatted_address: string;
+  sold_arts_count?: number;
 }
