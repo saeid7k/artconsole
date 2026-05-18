@@ -24,8 +24,7 @@ function GallerySwitch() {
   // Hooks
 
   const { intervalData } = useApp();
-  const { auth, current_gallery, galleries } = usePage<UsePageProps>().props;
-  const user = auth.user
+  const { current_gallery, galleries } = usePage<UsePageProps>().props;
   const [messageApi, messageContextHolder] = useMessage();
 
   // States
@@ -101,7 +100,7 @@ function GallerySwitch() {
 
   // Derived States
 
-  const inviteForbidden = !current_gallery.is_subscribed && !user?.is_demo && !user?.is_admin
+  const inviteForbidden = !current_gallery.is_subscribed
 
   return (
     <>
@@ -151,7 +150,7 @@ function GallerySwitch() {
                         invite members
                       </Button>
                     </div>
-                    <AnimatedContainer condition={showProBadge && inviteForbidden} type="fadeRight" speed="slow" >
+                    <AnimatedContainer condition={showProBadge} type="fadeRight" speed="slow" >
                       <ProBadge onClick={() => setOpen(false)} />
                     </AnimatedContainer>
                   </div>

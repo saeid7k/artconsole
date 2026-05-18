@@ -12,10 +12,12 @@ type Props = {
 
 function ProBadge({ size = 'small', onClick }: Props) {
 
-  const gallery = usePage<UsePageProps>().props?.current_gallery
+  const { auth: { user }, current_gallery: gallery } = usePage<UsePageProps>().props
+
   const { setOpenUpgradeModal } = useApp()
 
   const isPro = gallery?.is_subscribed
+  const isDemo = user?.is_demo
 
   function handleClick() {
     if (onClick) {
@@ -35,6 +37,7 @@ function ProBadge({ size = 'small', onClick }: Props) {
       color="purple"
       icon={<HugeiconsIcon icon={Rocket01Icon} size={16} />}
       onClick={handleClick}
+      disabled={isDemo}
     >
       PRO
     </Button>
