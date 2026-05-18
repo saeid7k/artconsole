@@ -7,6 +7,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import FlexBox from "../Containers/FlexBox";
 import StatisticCard from "../Widgets/StatisticCard";
+import InfoPopover from "../InfoPopover";
 
 function DashboardKpiWidgets() {
 
@@ -38,7 +39,8 @@ function DashboardKpiWidgets() {
     <div className="w-full overflow-x-auto pb-2 sm:pb-0">
       <div className="grid grid-cols-4 sm:grid-cols-2 xl:grid-cols-4 gap-3 w-full min-w-max">
         <StatisticCard
-          title="Active Inventory Value"
+          title='Active Inventory Value'
+          titleHint="Total value of artworks that are not sold yet"
           value={formatCurrency(data?.active_inventory_value, gallery?.currency)}
           icon={GoldIcon}
           loading={kpiDataQuery.isLoading}
