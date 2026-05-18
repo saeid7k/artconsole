@@ -30,18 +30,24 @@ function RecentNotesWidget() {
           scrollbarWidth: 'none',
         }}
       >
-        {data && data.length > 0 && data.map((note: NoteProps) => (
-          <Note
-            key={note.id}
-            note={note}
-            index={note.id}
-            rows={2}
-            deletable={false}
-            readonly={true}
-            readonlyClassName="line-clamp-2"
-            onClickRoot={note.noteable_path ? () => router.visit(note.noteable_path ?? '#') : undefined}
-          />
-        ))}
+        {data && data.length > 0 && data.map((note: NoteProps) => {
+          let route = note.noteable_path;
+          if (note.noteable_type?.toLowerCase().includes('artwork')) {
+            route += '?tab=notes';
+          }
+          return (
+            <Note
+              key={note.id}
+              note={note}
+              index={note.id}
+              rows={2}
+              deletable={false}
+              readonly={true}
+              readonlyClassName="line-clamp-2"
+              onClickRoot={route ? () => router.visit(route) : undefined}
+            />
+          )
+        })}
       </div>
     </Card>
   )
