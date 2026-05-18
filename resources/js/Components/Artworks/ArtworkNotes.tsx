@@ -66,7 +66,7 @@ function ArtworkNotes({ artwork }: { artwork: ArtworkProps }) {
 
   return (
     <div
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3"
+      className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3 items-start"
     >
       {notes.map((item, index) => (
         <div key={item.id || `new-${index}`} >
@@ -79,7 +79,7 @@ function ArtworkNotes({ artwork }: { artwork: ArtworkProps }) {
       ))}
 
       <div
-        className="flex justify-center items-center border-dashed border-2 border-light rounded-lg p-3 hover:bg-gray-500/5 cursor-pointer transition-all"
+        className="flex justify-center items-center min-h-[170px] border-dashed border-2 border-light rounded-lg p-5 hover:bg-gray-500/5 cursor-pointer transition-all"
         onClick={addNote}
       >
         <FlexBox direction="col" className="text-muted" >
