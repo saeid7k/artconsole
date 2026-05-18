@@ -2,6 +2,7 @@ import ArtworksStatusWidget from "@/Components/Dashboard/ArtworksStatusWidget";
 import DashboardKpiWidgets from "@/Components/Dashboard/DashboardKpiWidgets";
 import OwnershipWidget from "@/Components/Dashboard/OwnershipWidget";
 import RecentArtworksWidget from "@/Components/Dashboard/RecentArtworksWidget";
+import RecentNotesWidget from "@/Components/Dashboard/RecentNotesWidget";
 import TopSellingArtistsWidget from "@/Components/Dashboard/TopSellingArtistsWidget";
 import TokenTopupNotification from "@/Components/Tokens/TokenTopupNotification";
 import AppLayout from "@/Layouts/AppLayout";
@@ -20,13 +21,16 @@ function Dashboard({}) {
 
       <div className="flex flex-col gap-3">
         <DashboardKpiWidgets />
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-3">
-          <ArtworksStatusWidget />
-          <OwnershipWidget />
-          <RecentArtworksWidget />
-        </div>
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-3">
-          <TopSellingArtistsWidget />
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-3">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 xl:col-span-3">
+            <ArtworksStatusWidget />
+            <OwnershipWidget />
+            <RecentArtworksWidget />
+            <TopSellingArtistsWidget />
+          </div>
+          <div className="flex flex-col xl:col-span-1 gap-3">
+            <RecentNotesWidget />
+          </div>
         </div>
       </div>
 
