@@ -1,5 +1,5 @@
 import colors from "@/Themes/theme";
-import { InformationCircleIcon } from "@hugeicons/core-free-icons";
+import { HelpCircleIcon, InformationCircleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Popover } from "antd";
 import { TooltipPlacement } from "antd/es/tooltip";
@@ -8,13 +8,19 @@ import React from "react";
 type Props = {
   title?: string;
   content: string | React.ReactNode;
+  iconType?: 'info' | 'question';
   placement?: TooltipPlacement;
   condition?: boolean;
 }
 
-function InfoPopover({ title, content, placement, condition = true }: Props) {
+function InfoPopover({ title, content, iconType = 'info', placement, condition = true }: Props) {
 
   if (!condition) return null;
+
+  const icon = {
+    info: InformationCircleIcon,
+    question: HelpCircleIcon,
+  }
 
   return (
     <Popover
@@ -22,7 +28,7 @@ function InfoPopover({ title, content, placement, condition = true }: Props) {
       content={content}
       placement={placement || undefined}
     >
-      <HugeiconsIcon icon={InformationCircleIcon} size={16} color={colors.gray[500]} />
+      <HugeiconsIcon icon={icon[iconType]} size={16} color={colors.gray[500]} />
     </Popover>
   )
 }
