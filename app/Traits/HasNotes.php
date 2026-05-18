@@ -12,8 +12,13 @@ trait HasNotes
   public function notes(): MorphMany
   {
     $user = Auth::user();
-    $gallery = $user->currentGallery();
-    return $this->morphMany(Note::class, 'noteable')->where('gallery_id', $gallery->id);
+    $gallery = $user?->currentGallery();
+
+    return $this->morphMany(Note::class, 'noteable')
+      ->when($gallery, function ($q) use ($gallery) {
+        $q->where('gallery_id', $gallery?->id);
+      });
+
   }
 
   public function addNote(string|null $content, ?int $userId = null): Note
