@@ -12,12 +12,13 @@ use App\Models\Payment;
 use App\Models\Report;
 use App\Models\User;
 use Faker\Factory;
+use Faker\Generator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class DemoUserService
 {
-  protected $faker;
+  protected Generator $faker;
 
   public function __construct(protected ?User $user = null)
   {
@@ -130,13 +131,15 @@ class DemoUserService
     $data = json_decode(file_get_contents(resource_path('demo/demo_artworks.json')), true);
     shuffle($data);
 
+    $ownerId = $gallery->owner->id;
     $locationIds = $gallery->locations()->pluck('id')->toArray();
     $statuses = array_diff(ArtworkStatus::values(), ['sold']);
 
-    foreach ($data as $artworkData) {
+    foreach ($data as $index => $artworkData) {
+      // add artwork
       $ownership = $this->faker->randomElement(['owned', 'owned', 'owned', 'consigned']);
       $artwork = $gallery->artworks()->create($artworkData + [
-        'creator_id' => $gallery->owner->id,
+        'creator_id' => $ownerId,
         'location_id' => $locationIds[array_rand($locationIds)],
         'ownership' => $ownership,
         'acquisition_date' => $ownership == 'owned' ? now()->subDays(rand(365, 3650)) : null,
@@ -144,6 +147,8 @@ class DemoUserService
         'commission_value' => $ownership == 'consigned' ? $this->faker->randomElement([30, 25, 20]) : 0,
         'status' => $statuses[array_rand($statuses)]
       ]);
+
+      // add images
       $imagesDirectory = resource_path('demo/demo-artworks-images/' . str_replace([','], '', $artworkData['title']));
       if (is_dir($imagesDirectory)) {
         $imagePaths = glob($imagesDirectory . '/*.{jpg,jpeg,png,webp,avif}', GLOB_BRACE);
@@ -156,6 +161,16 @@ class DemoUserService
             ->withCustomProperties(['is_main' => $i === 0])
             ->toMediaCollection('artwork-images');
         }
+      }
+
+      // add notes
+      $j = $j ?? 0;
+      if ($index % 3 === 0) {
+        $artwork->addNote(
+          $this->sampleNotes()[$j],
+          $ownerId
+        );
+        $j++;
       }
     }
   }
@@ -238,7 +253,6 @@ class DemoUserService
       (new ReportService($report))->generatePdf();
     }
   }
-
 
   private function createTaxes(Gallery $gallery): void
   {
@@ -389,5 +403,16 @@ class DemoUserService
       'reference' => strtoupper($this->faker->bothify('??-#####-######-??')),
       'notes' => 'Partial payment for invoice #' . $invoice->invoice_number,
     ]);
+  }
+
+  private function sampleNotes(): array
+  {
+    return [
+      "Potential buyer (David L.) requested a private viewing before the OCEAN GALLERY spring exhibition officially opens. He specifically asked about the abstract background techniques, noting he loves how there is no realism in the foreground. Viewing scheduled for next Tuesday at 2 PM.",
+      "Sent to the framer this morning. We opted for a custom matte black float frame to better highlight the delicate textures and precise pencil work without overpowering the piece. Expected back in the gallery inventory by Thursday.",
+      "Susie advised that this piece must be displayed away from direct UV light to prevent any fading of the high-quality soft pastels used in the underlayer. It has been assigned to the north wall of the main viewing room.",
+      "Condition report completed prior to transit. There is a very minor scuff on the bottom left edge of the temporary gallery frame, but the canvas itself is in pristine condition. Custom crated, insured, and shipped out this morning.",
+      "Final layer of retouch varnish applied. The specific oil painting techniques utilized on this canvas required an extended drying period, so we've postponed the official catalog photography until the 15th. It will be marked as 'Available' in the system once the high-res photos are uploaded."
+    ];
   }
 }
