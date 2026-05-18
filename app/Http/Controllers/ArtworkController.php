@@ -575,7 +575,7 @@ class ArtworkController extends Controller
     ]);
   }
 
-  public function getRecent(Request $request)
+  public function recent(Request $request)
   {
     $this->authorize('viewAny', Artwork::class);
 
