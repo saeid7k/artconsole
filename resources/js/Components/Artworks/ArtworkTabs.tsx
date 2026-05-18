@@ -6,8 +6,11 @@ import ArtworkImages from "./ArtworkImages";
 import ArtworkImageUpload from "./ArtworkImageUpload";
 import ArtworkNotes from "./ArtworkNotes";
 import ArtworkFinancial from "./Financial/Financial";
+import { getQueryParam } from "@/utils/urlHelper";
 
 function ArtworkTabs({ artwork }: { artwork: ArtworkProps }) {
+
+  const activeTab = getQueryParam('tab') || 'images';
 
   const items = [
     {
@@ -50,6 +53,7 @@ function ArtworkTabs({ artwork }: { artwork: ArtworkProps }) {
     <Tabs
       items={items}
       className="min-h-[300px]"
+      defaultActiveKey={activeTab}
     />
   );
 }
