@@ -17,9 +17,11 @@ type Props = {
   onChange?: (index: number, newContent: string|null) => void;
   onClickRoot?: () => void;
   deletable?: boolean;
+  readonly?: boolean;
+  readonlyClassName?: string;
 }
 
-function Note({ index, note, rows = 3, onChange, onClickRoot, deletable = true }: Props) {
+function Note({ index, note, rows = 3, onChange, onClickRoot, deletable = true, readonly = false, readonlyClassName }: Props) {
 
   // Handle content change
 
@@ -59,17 +61,29 @@ function Note({ index, note, rows = 3, onChange, onClickRoot, deletable = true }
       }}
       onClick={onClickRoot}
     >
-      <Input.TextArea
-        className={twMerge(
-          "mb-2 p-1 border-none focus:!shadow-none focus:!bg-transparent hover:!bg-transparent",
-          note.content ? "!bg-transparent" : "bg-yellow-500/10",
-          !onChange && "pointer-events-none"
-        )}
-        autoSize={{ minRows: rows }}
-        onChange={(e) => handleChange(e.target.value)}
-        defaultValue={note.content ?? undefined}
-        readOnly={!onChange}
-      />
+      {!readonly && (
+        <Input.TextArea
+          className={twMerge(
+            "mb-2 p-1 border-none focus:!shadow-none focus:!bg-transparent hover:!bg-transparent",
+            note.content ? "!bg-transparent" : "bg-yellow-500/10",
+            (!onChange || readonly) && "pointer-events-none",
+          )}
+          autoSize={{ minRows: rows }}
+          onChange={(e) => handleChange(e.target.value)}
+          defaultValue={note.content ?? undefined}
+          readOnly={readonly}
+        />
+      )}
+      {readonly && (
+        <div
+          className={twMerge(
+            'mb-2 whitespace-pre-wrap',
+            readonlyClassName
+          )}
+        >
+          {note.content || 'No content'}
+        </div>
+      )}
       {typeof note.id === 'number' && (
         <FlexBox direction="col" alignItems="start" >
           <FlexBox justifyContent="between" >
