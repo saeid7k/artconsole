@@ -2,18 +2,20 @@ import { ArrowRight04Icon, DashedLine01Icon, TradeDownIcon, TradeUpIcon } from "
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Card, Popover, Tag } from "antd";
 import FlexBox from "../Containers/FlexBox";
+import InfoPopover from "../InfoPopover";
 
 type Props = {
   icon?: any;
-  title: string;
+  title: string | React.ReactNode;
   titleBadge?: string | number | undefined;
+  titleHint?: string;
   value: string | number | React.ReactNode;
   trend?: number | null;
   trendTooltip?: string | React.ReactNode;
   loading?: boolean;
 };
 
-function StatisticCard({ title, icon, titleBadge, value, trend, trendTooltip, loading }: Props) {
+function StatisticCard({ title, icon, titleBadge, titleHint, value, trend, trendTooltip, loading }: Props) {
   return (
     <Card
       size="small"
@@ -24,6 +26,7 @@ function StatisticCard({ title, icon, titleBadge, value, trend, trendTooltip, lo
         <FlexBox className="text-muted" >
           {icon && <HugeiconsIcon icon={icon} size={20} />}
           <div>{title}</div>
+          {titleHint && <InfoPopover content={titleHint} iconType="question" />}
           {titleBadge && <Tag>{titleBadge}</Tag>}
         </FlexBox>
         <FlexBox alignItems="end" gap={2}>
