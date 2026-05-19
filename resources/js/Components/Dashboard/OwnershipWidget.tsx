@@ -88,7 +88,7 @@ function OwnershipWidget() {
             <HugeiconsIcon icon={InformationCircleIcon} size={16} />
             <div>
               Ownership split of
-              <InlinePopover content='All artworks that are not marked as "sold".'>
+              <InlinePopover content='All artworks that are not sold yet.'>
                 active
               </InlinePopover>
               artworks.
