@@ -1,4 +1,5 @@
 import { Address, Business } from "./commonObjects";
+import { NoteProps } from "./note";
 
 export interface ContactProps {
   id: number;
@@ -26,4 +27,7 @@ export interface ContactProps {
   business_formatted_address: string;
   formatted_phone_number: string;
   sold_arts_count?: number;
+
+  // Relationships
+  notes?: Array<NoteProps>;
 }

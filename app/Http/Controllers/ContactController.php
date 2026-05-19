@@ -9,6 +9,7 @@ use App\Models\Invoice;
 use App\Models\Media;
 use App\Rules\Phone;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ContactController extends Controller
 {
@@ -120,6 +121,8 @@ class ContactController extends Controller
   public function show(Contact $contact)
   {
     $this->authorize('view', $contact);
+
+    $contact->load('notes');
 
     return inertia('Contacts/Show', [
       'contact' => $contact
@@ -290,5 +293,35 @@ class ContactController extends Controller
       ->get();
 
     return response()->json($topArtists);
+  }
+
+  public function saveNote(Request $request, Contact $contact)
+  {
+    $this->authorize('update', $contact);
+
+    $request->validate([
+      'note_id' => ['required'],
+      'content' => ['nullable', 'string', 'max:1000'],
+    ]);
+
+    if (Str::startsWith($request->note_id, 'new')) {
+      $note = $contact->addNote($request->content);
+      return response()->json([
+        'message' => 'Note added successfully.',
+        'note_id' => $note->id,
+      ]);
+    } else {
+      $updated = $contact->updateNote($request->note_id, $request->content);
+      if ($updated) {
+        return response()->json([
+          'message' => 'Note updated successfully.',
+          'note_id' => $request->note_id,
+        ]);
+      } else {
+        return response()->json([
+          'message' => 'Note not found.'
+        ], 404);
+      }
+    }
   }
 }

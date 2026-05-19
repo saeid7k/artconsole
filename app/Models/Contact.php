@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Helpers\AddressHelper;
 use App\Helpers\FormatHelper;
+use App\Traits\HasNotes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,7 +18,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Contact extends Model implements HasMedia
 {
-  use HasFactory, InteractsWithMedia, LogsActivity, SoftDeletes;
+  use HasFactory, InteractsWithMedia, LogsActivity, SoftDeletes, HasNotes;
 
   protected $fillable = [
     'gallery_id',

@@ -42,6 +42,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/{contact}/delete', [App\Http\Controllers\ContactController::class, 'destroy'])->name('delete');
     Route::post('/{contact}/update-relationships', [App\Http\Controllers\ContactController::class, 'updateRelationships'])->name('update-relationships');
     Route::get('/{contact}/invoices', [App\Http\Controllers\ContactController::class, 'getInvoices'])->name('invoices');
+    Route::post('/{contact}/save-note', [App\Http\Controllers\ContactController::class, 'saveNote'])->name('save-note');
   });
 
   Route::prefix('galleries')->name('galleries.')->group(function () {

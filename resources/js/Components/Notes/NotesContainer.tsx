@@ -50,7 +50,7 @@ function NotesContainer({ modelType, modelId, notes }: Props) {
 
   const saveEndpoints: Record<string, string> = {
     artwork: route('artworks.save-note', { artwork: modelId }),
-    // contact: route('contacts.save-note', { contact: modelId }),
+    contact: route('contacts.save-note', { contact: modelId }),
   }
 
   const saveNoteMutation = useMutation({
