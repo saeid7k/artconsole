@@ -305,10 +305,7 @@ class ContactController extends Controller
     $gallery = $user->currentGallery();
 
     $topCustomers = $gallery->contacts()
-      ->withCount(['purchasedArts' => function ($query) use ($gallery) {
-        $query->where('invoices.gallery_id', $gallery->id);
-      }])
-      ->having('purchased_arts_count', '>', 0)
+      ->withCount('purchasedArts')
       ->orderByDesc('purchased_arts_count')
       ->limit(5)
       ->get();
