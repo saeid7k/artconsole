@@ -301,6 +301,215 @@
   },
   {
     "artist_data": {
+      "firstname": "Andy",
+      "lastname": "Warhol"
+    },
+    "title": "Marilyn Diptych",
+    "year": "1962",
+    "price": "6800",
+    "edition": {
+      "size": 1,
+      "type": "unique",
+      "number": 1
+    },
+    "signed": true,
+    "description": "One of the most iconic works of Pop Art, created just weeks after Marilyn Monroe's death. The diptych presents fifty repeated images of the actress sourced from a single publicity photograph, divided between a vibrant left half in hot pinks, yellows, and turquoise, and a fading, ghostly right half in black and white — a meditation on celebrity, mass production, and mortality.",
+    "category": "painting",
+    "subjects": [
+      "Portrait",
+      "Pop Culture"
+    ],
+    "mediums": [
+      "Acrylic and Silkscreen Ink on Canvas"
+    ],
+    "styles": [
+      "Pop Art"
+    ],
+    "dimensions": {
+      "unit": "inches",
+      "depth": 1.5,
+      "width": 114,
+      "height": 81
+    }
+  },
+  {
+    "artist_data": {
+      "firstname": "Jackson",
+      "lastname": "Pollock"
+    },
+    "title": "No. 5, 1948",
+    "year": "1948",
+    "price": "8900",
+    "edition": {
+      "size": 1,
+      "type": "unique",
+      "number": 1
+    },
+    "signed": false,
+    "description": "A towering achievement of Abstract Expressionism and one of the most expensive paintings ever sold. Created using Pollock's signature drip technique, the composition — dense webs of yellow, brown, white, and grey paint poured and flung onto fiberboard laid flat on the floor — dissolves the boundary between artist and canvas, transforming the act of painting itself into the subject.",
+    "category": "painting",
+    "subjects": [
+      "Abstract"
+    ],
+    "mediums": [
+      "Oil and Enamel on Fiberboard"
+    ],
+    "styles": [
+      "Abstract Expressionism",
+      "Action Painting"
+    ],
+    "dimensions": {
+      "unit": "inches",
+      "depth": 1,
+      "width": 48,
+      "height": 96
+    }
+  },
+  {
+    "artist_data": {
+      "firstname": "Frida",
+      "lastname": "Kahlo"
+    },
+    "title": "The Two Fridas",
+    "year": "1939",
+    "price": "5100",
+    "edition": {
+      "size": 1,
+      "type": "unique",
+      "number": 1
+    },
+    "signed": true,
+    "description": "Kahlo's largest and most ambitious canvas, painted in the wake of her divorce from Diego Rivera. The two self-portraits sit side by side, connected by a shared artery: the European Frida on the left, her heart cut open and bleeding; the Mexican Frida on the right, holding a small portrait of Rivera. The work is a raw exploration of dual identity, emotional pain, and cultural heritage.",
+    "category": "painting",
+    "subjects": [
+      "Self-Portrait",
+      "Identity",
+      "Women"
+    ],
+    "mediums": [
+      "Oil on Canvas"
+    ],
+    "styles": [
+      "Surrealism",
+      "Symbolism",
+      "Magical Realism"
+    ],
+    "dimensions": {
+      "unit": "inches",
+      "depth": 1.5,
+      "width": 68,
+      "height": 68
+    }
+  },
+  {
+    "artist_data": {
+      "firstname": "Jeff",
+      "lastname": "Koons"
+    },
+    "title": "Rabbit",
+    "year": "1986",
+    "price": "7200",
+    "edition": {
+      "size": 3,
+      "type": "edition",
+      "number": 1
+    },
+    "signed": true,
+    "description": "Perhaps the single most recognizable sculpture of the late 20th century, this stainless steel cast of an inflatable toy rabbit became the highest-priced work by a living artist when it sold in 2019. Its seamless, mirror-like surface reflects and distorts the surrounding environment, turning viewers into participants. Simultaneously banal and transcendent, it interrogates consumerism, desire, and the nature of value with cool, inscrutable wit.",
+    "category": "sculpture",
+    "subjects": [
+      "Pop Culture",
+      "Everyday Objects",
+      "Childhood"
+    ],
+    "mediums": [
+      "Mirror-Polished Stainless Steel"
+    ],
+    "styles": [
+      "Pop Art",
+      "Neo-Pop"
+    ],
+    "dimensions": {
+      "unit": "inches",
+      "depth": 12,
+      "width": 19,
+      "height": 41
+    }
+  },
+  {
+    "artist_data": {
+      "firstname": "Alberto",
+      "lastname": "Giacometti"
+    },
+    "title": "Walking Man I",
+    "year": "1960",
+    "price": "6500",
+    "edition": {
+      "size": 6,
+      "type": "edition",
+      "number": 1
+    },
+    "signed": true,
+    "description": "A gaunt, elongated bronze figure mid-stride, stripped of all individual identity and reduced to the bare condition of presence. Cast in the final year of Giacometti's most celebrated period, it became the defining image of Existentialist art and one of the most expensive sculptures ever auctioned. The figure moves forward yet seems simultaneously rooted — eroded by existential weight, persisting nonetheless. Its radical attenuation transforms the human body into a question about what it means to occupy space and keep moving through a world that offers no guarantee of arrival.",
+    "category": "sculpture",
+    "subjects": [
+      "Figure",
+      "Psychological",
+      "Existential"
+    ],
+    "mediums": [
+      "Bronze"
+    ],
+    "styles": [
+      "Existentialism",
+      "Expressionism",
+      "Figurative"
+    ],
+    "dimensions": {
+      "unit": "inches",
+      "depth": 38,
+      "width": 9.5,
+      "height": 71
+    }
+  },
+  {
+    "artist_data": {
+      "firstname": "Damien",
+      "lastname": "Hirst"
+    },
+    "title": "For the Love of God",
+    "year": "2007",
+    "price": "9500",
+    "edition": {
+      "size": 3,
+      "type": "edition",
+      "number": 1
+    },
+    "signed": true,
+    "description": "A platinum cast of an 18th-century human skull encrusted with 8,601 diamonds — including a pear-shaped pink diamond set in the forehead. The title, taken from an exclamation Hirst's mother reportedly made upon hearing of the project, captures its audacity perfectly. At once a memento mori in the oldest tradition and a maximalist provocation of the contemporary art market, it collapses the distance between vanitas, luxury, and spectacle into an object small enough to hold in two hands.",
+    "category": "sculpture",
+    "subjects": [
+      "Death",
+      "Luxury",
+      "Conceptual"
+    ],
+    "mediums": [
+      "Platinum, Diamonds, and Human Teeth"
+    ],
+    "styles": [
+      "Conceptual Art",
+      "Neo-Conceptualism"
+    ],
+    "dimensions": {
+      "unit": "inches",
+      "depth": 5.1,
+      "width": 5.1,
+      "height": 6.7
+    }
+  },
+
+  {
+    "artist_data": {
       "firstname": "Mahshid",
       "lastname": "K.V."
     },
