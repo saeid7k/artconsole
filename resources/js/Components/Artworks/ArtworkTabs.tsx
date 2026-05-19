@@ -1,12 +1,12 @@
 import { ArtworkProps } from "@/types/artwork";
+import { getQueryParam } from "@/utils/urlHelper";
 import { Tabs } from "antd";
 import ActivityLogs from "../ActivityLogs";
+import NotesContainer from "../Notes/NotesContainer";
 import ArtworkDocuments from "./ArtworkDocuments";
 import ArtworkImages from "./ArtworkImages";
 import ArtworkImageUpload from "./ArtworkImageUpload";
-import ArtworkNotes from "./ArtworkNotes";
 import ArtworkFinancial from "./Financial/Financial";
-import { getQueryParam } from "@/utils/urlHelper";
 
 function ArtworkTabs({ artwork }: { artwork: ArtworkProps }) {
 
@@ -30,7 +30,11 @@ function ArtworkTabs({ artwork }: { artwork: ArtworkProps }) {
     {
       key: 'notes',
       label: 'Notes',
-      children: <ArtworkNotes artwork={artwork} />,
+      children: <NotesContainer
+        modelType="artwork"
+        modelId={artwork.id}
+        notes={artwork.notes || []}
+      />,
     },
     {
       key: 'documents',
