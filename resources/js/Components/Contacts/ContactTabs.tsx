@@ -1,9 +1,10 @@
 import { ContactProps } from "@/types/contact";
-import { Tabs } from "antd";
-import ContactPurchases from "./ContactPurchases";
-import ActivityLogs from "../ActivityLogs";
-import NotesContainer from "../Notes/NotesContainer";
 import { getQueryParam } from "@/utils/urlHelper";
+import { Tabs, Tag } from "antd";
+import ActivityLogs from "../ActivityLogs";
+import FlexBox from "../Containers/FlexBox";
+import NotesContainer from "../Notes/NotesContainer";
+import ContactPurchases from "./ContactPurchases";
 
 type Props = {
   contact: ContactProps;
@@ -21,7 +22,12 @@ function ContactTabs({ contact }: Props) {
     },
     {
       key: 'notes',
-      label: 'Notes',
+      label:
+        <FlexBox>
+          <div>Notes</div>
+          {(contact.notes?.length && contact.notes?.length > 0) ? <Tag>{contact.notes.length}</Tag> : null}
+        </FlexBox>
+      ,
       children: <NotesContainer
         modelType="contact"
         modelId={contact.id}

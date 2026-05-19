@@ -1,7 +1,8 @@
 import { ArtworkProps } from "@/types/artwork";
 import { getQueryParam } from "@/utils/urlHelper";
-import { Tabs } from "antd";
+import { Tabs, Tag } from "antd";
 import ActivityLogs from "../ActivityLogs";
+import FlexBox from "../Containers/FlexBox";
 import NotesContainer from "../Notes/NotesContainer";
 import ArtworkDocuments from "./ArtworkDocuments";
 import ArtworkImages from "./ArtworkImages";
@@ -29,7 +30,11 @@ function ArtworkTabs({ artwork }: { artwork: ArtworkProps }) {
     },
     {
       key: 'notes',
-      label: 'Notes',
+      label:
+        <FlexBox>
+          <div>Notes</div>
+          {(artwork.notes?.length && artwork.notes?.length > 0) ? <Tag>{artwork.notes.length}</Tag> : null}
+        </FlexBox>,
       children: <NotesContainer
         modelType="artwork"
         modelId={artwork.id}
