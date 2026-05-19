@@ -165,11 +165,16 @@ class DemoUserService
 
       // add notes
       $j = $j ?? 0;
-      if ($index % 3 === 0) {
-        $artwork->addNote(
+      if ($index % 3 === 0 && $j < count($this->sampleNotes())) {
+        $n = $artwork->addNote(
           $this->sampleNotes()[$j],
           $ownerId
         );
+        $randomDate = now()->subDays(rand(1, 10))->subMinutes(rand(1, 1440));
+        $n->update([
+          'created_at' => $randomDate,
+          'updated_at' => $randomDate,
+        ]);
         $j++;
       }
     }
@@ -305,8 +310,8 @@ class DemoUserService
     $taxId = $gallery->taxes()->first()->id;
     $taxRate = $gallery->taxes()->first()->rate;
 
-    for ($i = 1; $i <= 5; $i++) {
-      $date = now()->subDays(60 - $i * 10);
+    for ($i = 1; $i <= 7; $i++) {
+      $date = now()->subDays(60 - $i * 8);
       Invoice::create([
         'gallery_id' => $gallery->id,
         'user_id' => $gallery->owner->id,
