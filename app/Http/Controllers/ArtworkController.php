@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ArtworkCategory;
 use App\Enums\ArtworkStatus;
 use App\Helpers\FormatHelper;
+use App\Http\Controllers\Concerns\SavesNotes;
 use App\Http\Requests\ArtworkStoreUpdateRequest;
 use App\Models\Artwork;
 use App\Models\Location;
@@ -12,12 +13,12 @@ use App\Services\ArtworkService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Spatie\LaravelPdf\Enums\Format;
-use Illuminate\Support\Str;
-
 use function Spatie\LaravelPdf\Support\pdf;
 
 class ArtworkController extends Controller
 {
+  use SavesNotes;
+
   public function index(Request $request)
   {
     $this->authorize('viewAny', Artwork::class);
@@ -344,30 +345,7 @@ class ArtworkController extends Controller
   {
     $this->authorize('update', $artwork);
 
-    $request->validate([
-      'note_id' => ['required'],
-      'content' => ['nullable', 'string', 'max:1000'],
-    ]);
-
-    if (Str::startsWith($request->note_id, 'new')) {
-      $note = $artwork->addNote($request->content);
-      return response()->json([
-        'message' => 'Note added successfully.',
-        'note_id' => $note->id,
-      ]);
-    } else {
-      $updated = $artwork->updateNote($request->note_id, $request->content);
-      if ($updated) {
-        return response()->json([
-          'message' => 'Note updated successfully.',
-          'note_id' => $request->note_id,
-        ]);
-      } else {
-        return response()->json([
-          'message' => 'Note not found.'
-        ], 404);
-      }
-    }
+    return $this->performSaveNote($request, $artwork);
   }
 
   public function copy(Artwork $artwork)
