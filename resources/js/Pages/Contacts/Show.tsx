@@ -20,6 +20,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { useRef, useState } from "react";
 import ContactFormDrawer from "./Partials/ContactFormDrawer";
+import ContactTabs from "@/Components/Contacts/ContactTabs";
 
 function Show({ contact }: { contact: ContactProps }) {
 
@@ -166,14 +167,7 @@ function Show({ contact }: { contact: ContactProps }) {
         <Card
           className="grow overflow-x-auto"
         >
-          <Tabs defaultActiveKey="purchases" >
-            <Tabs.TabPane tab="Purchase History" key="purchases">
-              <ContactPurchases contact={contact} />
-            </Tabs.TabPane>
-            <Tabs.TabPane tab="Logs" key="logs">
-              <ActivityLogs key={contact.updated_at} modelType="contact" modelId={contact.id} />
-            </Tabs.TabPane>
-          </Tabs>
+          <ContactTabs contact={contact} />
         </Card>
       </div>
       <ContactFormDrawer
