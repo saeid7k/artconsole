@@ -16,7 +16,10 @@ function TopCustomersWidget() {
 
   return (
     <Card
-      title="Top Customers"
+      title={<FlexBox direction="col" gap={0} alignItems="start">
+        <div>Top Customers</div>
+        <div className="text-ghost">by most purchased artworks</div>
+      </FlexBox>}
       loading={isLoading}
       extra={
         data && data.length > 0 && (
