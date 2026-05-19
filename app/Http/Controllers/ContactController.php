@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\DataHelper;
+use App\Http\Controllers\Concerns\SavesNotes;
 use App\Http\Requests\ContactStoreUpdateRequest;
 use App\Models\Contact;
 use App\Models\Invoice;
 use App\Models\Media;
 use App\Rules\Phone;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class ContactController extends Controller
 {
+  use SavesNotes;
+
   /**
    * Display a listing of the resource.
    */
@@ -299,29 +301,6 @@ class ContactController extends Controller
   {
     $this->authorize('update', $contact);
 
-    $request->validate([
-      'note_id' => ['required'],
-      'content' => ['nullable', 'string', 'max:1000'],
-    ]);
-
-    if (Str::startsWith($request->note_id, 'new')) {
-      $note = $contact->addNote($request->content);
-      return response()->json([
-        'message' => 'Note added successfully.',
-        'note_id' => $note->id,
-      ]);
-    } else {
-      $updated = $contact->updateNote($request->note_id, $request->content);
-      if ($updated) {
-        return response()->json([
-          'message' => 'Note updated successfully.',
-          'note_id' => $request->note_id,
-        ]);
-      } else {
-        return response()->json([
-          'message' => 'Note not found.'
-        ], 404);
-      }
-    }
+    return $this->performSaveNote($request, $contact);
   }
 }
