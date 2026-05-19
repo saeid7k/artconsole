@@ -297,6 +297,36 @@ class ContactController extends Controller
     return response()->json($topArtists);
   }
 
+  public function topCustomers(Request $request)
+  {
+    $this->authorize('viewAny', Contact::class);
+
+    $user = auth()->user();
+    $gallery = $user->currentGallery();
+
+    $galleryId = $gallery->id;
+
+    $topCustomers = $gallery->contacts()
+      ->select('contacts.*')
+      ->selectSub(
+        \DB::table('invoice_items')
+          ->selectRaw('COUNT(*)')
+          ->join('invoices', 'invoices.id', '=', 'invoice_items.invoice_id')
+          ->whereColumn('invoices.contact_id', 'contacts.id')
+          ->where('invoices.gallery_id', $galleryId)
+          ->whereNull('invoices.deleted_at')
+          ->where('invoices.status', '!=', 'void')
+          ->where('invoice_items.type', 'artwork'),
+        'purchased_arts_count'
+      )
+      ->having('purchased_arts_count', '>', 0)
+      ->orderByDesc('purchased_arts_count')
+      ->limit(5)
+      ->get();
+
+    return response()->json($topCustomers);
+  }
+
   public function saveNote(Request $request, Contact $contact)
   {
     $this->authorize('update', $contact);
