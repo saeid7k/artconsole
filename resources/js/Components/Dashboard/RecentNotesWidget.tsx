@@ -32,7 +32,7 @@ function RecentNotesWidget() {
       >
         {data && data.length > 0 && data.map((note: NoteProps) => {
           let route = note.noteable_path;
-          if (note.noteable_type?.toLowerCase().includes('artwork')) {
+          if (['artwork', 'contact'].some(type => note.noteable_type?.toLowerCase().includes(type))) {
             route += '?tab=notes';
           }
           return (

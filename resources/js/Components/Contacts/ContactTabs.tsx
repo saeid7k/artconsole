@@ -3,12 +3,15 @@ import { Tabs } from "antd";
 import ContactPurchases from "./ContactPurchases";
 import ActivityLogs from "../ActivityLogs";
 import NotesContainer from "../Notes/NotesContainer";
+import { getQueryParam } from "@/utils/urlHelper";
 
 type Props = {
   contact: ContactProps;
 };
 
 function ContactTabs({ contact }: Props) {
+
+  const activeTab = getQueryParam('tab') || 'purchases';
 
   const items = [
     {
@@ -34,7 +37,7 @@ function ContactTabs({ contact }: Props) {
 
   return (
     <Tabs
-      defaultActiveKey="purchases"
+      defaultActiveKey={activeTab}
       items={items}
     />
   )
