@@ -1,5 +1,4 @@
 import colors from "@/Themes/theme";
-import { ArtworkProps } from "@/types/artwork";
 import { NoteOrNew } from "@/types/note";
 import { AddIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -7,29 +6,35 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import FlexBox from "../Containers/FlexBox";
-import Note from "../Notes/Note";
+import Note from "./Note";
 
-function ArtworkNotes({ artwork }: { artwork: ArtworkProps }) {
+type Props = {
+  modelType: 'artwork' | 'contact';
+  modelId: number;
+  notes: NoteOrNew[];
+};
 
-  const [notes, setNotes] = useState<NoteOrNew[]>(artwork.notes || []);
+function NotesContainer({ modelType, modelId, notes }: Props) {
+
+  const [data, setData] = useState<NoteOrNew[]>(notes || []);
   const saveTimerRef = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   // add note
 
   function addNote() {
-    const updatedNotes = [...notes, {
+    const updatedNotes = [...data, {
       id: 'new-' + Math.random().toString(36).substring(2, 10),
       content: null,
     }];
-    setNotes(updatedNotes);
+    setData(updatedNotes);
   }
 
   // save note
 
   function handleNoteChange(index: number, newContent: string|null) {
-    const updatedNotes = [...notes];
+    const updatedNotes = [...data];
     updatedNotes[index].content = newContent;
-    setNotes(updatedNotes);
+    setData(updatedNotes);
 
     // debounce save
     if (saveTimerRef.current[index]) {
@@ -43,17 +48,20 @@ function ArtworkNotes({ artwork }: { artwork: ArtworkProps }) {
     }, 2000);
   }
 
+  const saveEndpoints: Record<string, string> = {
+    artwork: route('artworks.save-note', { artwork: modelId }),
+    // contact: route('contacts.save-note', { contact: modelId }),
+  }
+
   const saveNoteMutation = useMutation({
-    mutationFn: ({ noteId = null, newContent = null }: { noteId?: any, newContent: string | null }) => axios.post(route('artworks.save-note', {
-        artwork: artwork
-      }), {
+    mutationFn: ({ noteId = null, newContent = null }: { noteId?: any, newContent: string | null }) => axios.post(saveEndpoints[modelType], {
         note_id: noteId,
         content: newContent,
       })
         .then(res => {
           // Update note ID if it's a new note
           if (noteId.startsWith('new')) {
-            setNotes(prev => prev.map(n =>
+            setData(prev => prev.map(n =>
               n.id === noteId ? { ...n, id: res.data.note_id } : n
             ));
           }
@@ -61,14 +69,14 @@ function ArtworkNotes({ artwork }: { artwork: ArtworkProps }) {
   });
 
   useEffect(() => {
-    setNotes(artwork.notes || []);
-  }, [artwork.notes]);
+    setData(notes || []);
+  }, [notes]);
 
   return (
     <div
       className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3 items-start"
     >
-      {notes.map((item, index) => (
+      {data.map((item, index) => (
         <div key={item.id || `new-${index}`} >
           <Note
             index={index}
@@ -91,4 +99,4 @@ function ArtworkNotes({ artwork }: { artwork: ArtworkProps }) {
   );
 }
 
-export default ArtworkNotes;
+export default NotesContainer;
