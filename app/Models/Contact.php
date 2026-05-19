@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -128,6 +129,21 @@ class Contact extends Model implements HasMedia
   public function invoices() :HasMany
   {
     return $this->hasMany(Invoice::class);
+  }
+
+  public function purchasedArts(): HasManyThrough
+  {
+    return $this->hasManyThrough(
+      InvoiceItem::class,
+      Invoice::class,
+      'contact_id',
+      'invoice_id',
+      'id',
+      'id'
+    )
+      ->where('invoice_items.type', 'artwork')
+      ->where('invoices.status', '!=', 'void')
+      ->whereNull('invoices.deleted_at');
   }
 
   /*
