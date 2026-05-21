@@ -49,8 +49,9 @@ function ArtworksStatusWidget() {
             data: chartData,
             arcLabel: getArcLabel,
             paddingAngle: 2,
-            arcLabelMinAngle: 5,
+            arcLabelMinAngle: 20,
             highlightScope: { fade: 'global', highlight: 'none' },
+            valueFormatter: (value) => `${value.value} (${(value.value / TOTAL * 100).toFixed(0)}%)`,
           },
         ]}
         sx={{
