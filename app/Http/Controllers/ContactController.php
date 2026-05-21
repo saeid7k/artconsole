@@ -297,6 +297,22 @@ class ContactController extends Controller
     return response()->json($topArtists);
   }
 
+  public function topCustomers(Request $request)
+  {
+    $this->authorize('viewAny', Contact::class);
+
+    $user = auth()->user();
+    $gallery = $user->currentGallery();
+
+    $topCustomers = $gallery->contacts()
+      ->withCount('purchasedArts')
+      ->orderByDesc('purchased_arts_count')
+      ->limit(5)
+      ->get();
+
+    return response()->json($topCustomers);
+  }
+
   public function saveNote(Request $request, Contact $contact)
   {
     $this->authorize('update', $contact);
