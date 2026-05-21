@@ -21,15 +21,23 @@ function Dashboard({}) {
       </div>
 
       <div className="flex flex-col gap-3">
+
+        {/* 1st Row: KPI Widgets */}
         <DashboardKpiWidgets />
+
+        {/* 2nd Row: Main Content */}
         <div className="grid grid-cols-1 xl:grid-cols-4 gap-3">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 xl:col-span-3">
+
+          {/* Left Col */}
+          <div className="xl:col-span-3 grid grid-cols-1 xl:grid-cols-2 items-start h-min gap-3">
             <ArtworksStatusWidget />
             <OwnershipWidget />
             <RecentArtworksWidget />
             <TopSellingArtistsWidget />
           </div>
-          <div className="flex flex-col xl:col-span-1 gap-3">
+
+          {/* Right Col */}
+          <div className="xl:col-span-1 flex flex-col gap-3">
             <RecentNotesWidget />
             <TopCustomersWidget />
           </div>
