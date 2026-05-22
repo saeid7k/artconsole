@@ -4,6 +4,7 @@ import { Tabs, Tag } from "antd";
 import ActivityLogs from "../ActivityLogs";
 import FlexBox from "../Containers/FlexBox";
 import NotesContainer from "../Notes/NotesContainer";
+import ContactArtworks from "./ContactArtworks";
 import ContactPurchases from "./ContactPurchases";
 
 type Props = {
@@ -12,9 +13,15 @@ type Props = {
 
 function ContactTabs({ contact }: Props) {
 
-  const activeTab = getQueryParam('tab') || 'purchases';
+  const preferredTab = contact?.relationship.includes('artist') ? 'artworks' : 'purchases';
+  const activeTab = getQueryParam('tab') || preferredTab;
 
   const items = [
+    {
+      key: 'artworks',
+      label: 'Artworks',
+      children: <ContactArtworks contact={contact} />,
+    },
     {
       key: 'purchases',
       label: 'Purchase History',
@@ -42,10 +49,13 @@ function ContactTabs({ contact }: Props) {
   ];
 
   return (
-    <Tabs
-      defaultActiveKey={activeTab}
-      items={items}
-    />
+    <>
+      <Tabs
+        defaultActiveKey={activeTab}
+        items={items}
+        className="select-none"
+      />
+    </>
   )
 }
 
