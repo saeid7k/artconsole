@@ -47,11 +47,6 @@ function GallerySettingsModal({ open, setOpen }: { open: boolean, setOpen: (open
       label: <div className="flex items-center gap-1"><HugeiconsIcon icon={BankIcon} size={20} />Accounting</div>,
       children: <Accounting />
     },
-    {
-      key: 'security',
-      label: <div className="flex items-center gap-1"><HugeiconsIcon icon={Key01Icon} size={20} />Security</div>,
-      children: <div>Security Settings...</div>
-    },
   ]
 
   return (
