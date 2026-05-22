@@ -124,6 +124,9 @@ class DemoUserService
 
     // create invoices
     $this->createInvoices($gallery);
+
+    // add notes to contacts with sold or purchased arts
+    $this->addContactNotes($gallery);
   }
 
   private function addArtworks(Gallery $gallery): void
@@ -410,6 +413,33 @@ class DemoUserService
     ]);
   }
 
+  private function addContactNotes(Gallery $gallery): void
+  {
+    $ownerId = $gallery->owner->id;
+    $notes = $this->sampleContactNotes();
+    $noteIndex = 0;
+
+    $contacts = $gallery->contacts()
+      ->where(function ($q) {
+        $q->whereHas('soldArts')
+          ->orWhereHas('purchasedArts');
+      })
+      ->get();
+
+    foreach ($contacts as $contact) {
+      $numberOfNotes = rand(1, 2);
+      for ($i = 0; $i < $numberOfNotes; $i++) {
+        $n = $contact->addNote($notes[$noteIndex % count($notes)], $ownerId);
+        $randomDate = now()->subDays(rand(1, 30))->subMinutes(rand(1, 1440));
+        $n->update([
+          'created_at' => $randomDate,
+          'updated_at' => $randomDate,
+        ]);
+        $noteIndex++;
+      }
+    }
+  }
+
   private function sampleNotes(): array
   {
     return [
@@ -418,6 +448,18 @@ class DemoUserService
       "Susie advised that this piece must be displayed away from direct UV light to prevent any fading of the high-quality soft pastels used in the underlayer. It has been assigned to the north wall of the main viewing room.",
       "Condition report completed prior to transit. There is a very minor scuff on the bottom left edge of the temporary gallery frame, but the canvas itself is in pristine condition. Custom crated, insured, and shipped out this morning.",
       "Final layer of retouch varnish applied. The specific oil painting techniques utilized on this canvas required an extended drying period, so we've postponed the official catalog photography until the 15th. It will be marked as 'Available' in the system once the high-res photos are uploaded."
+    ];
+  }
+
+  private function sampleContactNotes(): array
+  {
+    return [
+      "Met at the Spring Exhibition opening. Very interested in acquiring more abstract works. Prefers pieces in the 24×36 inch range and leans toward cool, muted tones. Follow up in two weeks with new arrivals.",
+      "Collector has expressed strong interest in consigning two pieces from her personal collection. Discussed a 30% commission rate. Awaiting her confirmation before drafting the consignment agreement.",
+      "Artist confirmed availability for an exclusive solo show in November. Requires a minimum of 15 new works by end of September. Studio visit arranged for next Friday to review works in progress.",
+      "Called regarding the delayed shipment of her last purchase. The crate arrived with minor cosmetic damage to the outer packaging, but the artwork itself is in perfect condition. She was understanding and satisfied with the outcome.",
+      "Long-standing client — has purchased multiple pieces over the past three years. Birthday coming up on March 22nd; consider sending a personalized note and a preview of upcoming acquisitions.",
+      "First-time buyer referred by a collector circle member. Showed keen interest in limited-edition prints. Scheduled a private viewing for two upcoming series. Strong potential for a long-term collecting relationship.",
     ];
   }
 }
