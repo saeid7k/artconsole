@@ -24,7 +24,7 @@ enum ArtworkStatus: string
       self::OnHold => 'yellow',
       self::Sold => 'red',
       self::InTransit => 'purple',
-      self::ConsignedOut => 'teal',
+      self::ConsignedOut => 'cyan',
     };
   }
 
