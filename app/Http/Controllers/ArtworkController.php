@@ -450,6 +450,7 @@ class ArtworkController extends Controller
     $request->validate([
       'query' => ['sometimes', 'nullable', 'string'],
       'all' => ['sometimes', 'boolean'],
+      'artist_id' => ['sometimes', 'integer', 'exists:contacts,id'],
     ]);
 
     $user = auth()->user();
@@ -462,13 +463,16 @@ class ArtworkController extends Controller
           $qq->whereRaw('LOWER(title) LIKE ?', $search)
             ->orWhereRaw('LOWER(sku) LIKE ?', $search);
         });
+      })
+      ->when($request->artist_id, function ($q) use ($request) {
+        $q->where('artist_id', $request->artist_id);
       });
 
     if ($request->all) {
       $count = $artworksQuery->count();
       $artworks = $artworksQuery->paginate($count > 1000 ? 1000 : $count);
     } else {
-      $artworks = $artworksQuery->paginate(10);
+      $artworks = $artworksQuery->paginate($request->per_page ?? 10);
     }
 
     return response()->json($artworks);
