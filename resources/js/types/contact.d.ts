@@ -26,6 +26,7 @@ export interface ContactProps {
   formatted_address: string;
   business_formatted_address: string;
   formatted_phone_number: string;
+  arts_count?: number;
   sold_arts_count?: number;
   purchased_arts_count?: number;
 
