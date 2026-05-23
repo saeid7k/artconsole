@@ -127,6 +127,9 @@ class DemoUserService
 
     // add notes to contacts with sold or purchased arts
     $this->addContactNotes($gallery);
+
+    // add photos to contacts with purchased arts
+    $this->addContactPhotos($gallery);
   }
 
   private function addArtworks(Gallery $gallery): void
@@ -437,6 +440,34 @@ class DemoUserService
         ]);
         $noteIndex++;
       }
+    }
+  }
+
+  private function addContactPhotos(Gallery $gallery): void
+  {
+    $imagePaths = glob(resource_path('demo/demo-contacts/*.jpg')) ?: [];
+    if (empty($imagePaths)) {
+      return;
+    }
+    sort($imagePaths);
+
+    $contacts = $gallery->contacts()
+      ->whereHas('purchasedArts')
+      ->withCount('purchasedArts')
+      ->orderByDesc('purchased_arts_count')
+      ->limit(count($imagePaths))
+      ->get();
+
+    foreach ($contacts as $index => $contact) {
+      if (!isset($imagePaths[$index])) {
+        break;
+      }
+      $imagePath = $imagePaths[$index];
+      $extension = pathinfo($imagePath, PATHINFO_EXTENSION);
+      $contact->addMedia($imagePath)
+        ->preservingOriginal()
+        ->usingFileName('contact-' . $contact->id . '.' . $extension)
+        ->toMediaCollection('contact-photo');
     }
   }
 
