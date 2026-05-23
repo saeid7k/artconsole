@@ -34,6 +34,7 @@ function Index({ contacts }: { contacts: PageProps }) {
         onCreateButtonClick={() => { setShowCreateDrawer(true) }}
         toolbar={
           <div className="flex items-start gap-2 flex-wrap">
+            <ContactsFilter />
             <Search
               placeholder="search contacts..."
               style={{ width: 200 }}
@@ -41,7 +42,6 @@ function Index({ contacts }: { contacts: PageProps }) {
               onSearch={handleSearch}
               onChange={(e) => debouncedSearch(e.target.value, 1000)}
             />
-            <ContactsFilter />
           </div>
         }
       />

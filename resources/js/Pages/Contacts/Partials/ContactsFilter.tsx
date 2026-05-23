@@ -24,7 +24,7 @@ function ContactsFilter() {
       <Select
         mode="multiple"
         options={RELATIONSHIPS.map((rel) => ({ label: rel.label, value: rel.value }))}
-        className={`min-w-[110px] ${className}`}
+        className={`min-w-[130px] ${className}`}
         popupMatchSelectWidth={false}
         placeholder="Relationship"
         optionLabelProp="label"
