@@ -13,7 +13,7 @@ import colors from "@/Themes/theme";
 
 function ReportsTable({ reports }: any) {
 
-  const { breakpoint } = useWindow()
+  const { breakpoint, windowWidth } = useWindow()
 
   const reportTypeIcon: { [key: string]: React.ReactNode } = {
     'wall_label': <HugeiconsIcon icon={LabelIcon} size={20} color={colors.blue[600]} />,
@@ -89,7 +89,8 @@ function ReportsTable({ reports }: any) {
       dataSource={reports.data}
       columns={columns}
       scroll={{
-        x: 'max-content'
+        x: 'max-content',
+        y: windowWidth < 1024 ? '70vh' : '70vh'
       }}
       pagination={{
         current: reports.current_page,

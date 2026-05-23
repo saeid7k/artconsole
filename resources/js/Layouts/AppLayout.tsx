@@ -143,9 +143,6 @@ function App ({ children }: AppProps) {
                 </Content>
               </Layout>
             </Layout>
-            <Footer className="py-2">
-              <div className="text-center">...footer...</div>
-            </Footer>
           </Layout>
 
           <SelectPlanModal

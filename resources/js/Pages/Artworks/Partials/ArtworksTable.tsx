@@ -175,7 +175,7 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
       columns={columns}
       dataSource={artworks.data}
       size='small'
-      scroll={{ x: 'max-content', y: windowWidth < 640 ? '60vh' : '70vh' }}
+      scroll={{ x: 'max-content', y: windowWidth < 1024 ? '70vh' : '75vh' }}
       pagination={{
         current: artworks.current_page,
         total: artworks.total,
