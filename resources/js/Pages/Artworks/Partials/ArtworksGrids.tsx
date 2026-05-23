@@ -7,7 +7,7 @@ import { Masonry, Pagination } from "antd";
 function ArtworksGrids({ artworks }: { artworks?: PageProps }) {
   return (
     <div className="flex flex-col gap-3">
-      <div className="h-[70vh] sm:h-[75vh] md:h-[78vh] overflow-y-auto">
+      <div className="h-[70vh] sm:h-[75vh] lg:h-[80vh] overflow-y-auto">
         <Masonry
           columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5, xxl: 6 }}
           gutter={{ xs: 16, sm: 16, lg: 24, xxl: 32 }}
