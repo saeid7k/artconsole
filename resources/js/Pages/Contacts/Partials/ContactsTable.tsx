@@ -1,6 +1,7 @@
 import ContactStack from '@/Components/Contacts/ContactStack';
 import RelationshipTags from '@/Components/RelationshipTags';
 import RELATIONSHIPS from '@/constants/relationships';
+import useFilters from '@/hooks/useFilters';
 import { useWindow } from '@/hooks/useWindow';
 import { PageProps } from '@/types';
 import { ContactProps } from '@/types/contact';
@@ -17,6 +18,7 @@ import ContactsActions from './ContactsActions';
 function ContactsTable({ contacts }: { contacts: PageProps }) {
 
   const { breakpoint } = useWindow()
+  const { filters } = useFilters('contacts.index')
   const [ paginationLoading, setPaginationLoading ] = useState(false);
 
   const columns: TableProps['columns'] = [
@@ -72,6 +74,7 @@ function ContactsTable({ contacts }: { contacts: PageProps }) {
       dataIndex: 'relationship',
       key: 'relationship',
       filters: RELATIONSHIPS.map(rel => ({ text: rel.label, value: rel.value })),
+      filteredValue: filters?.relationship?.length > 0 ? filters.relationship : null,
       sorter: true,
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
