@@ -13,6 +13,7 @@ function useFilters(routeName: string) {
     'customer',
     'date_from',
     'date_to',
+    'relationship',
   ];
 
   const filters = (() => {
