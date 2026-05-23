@@ -6,6 +6,7 @@ import { deleteQueryParam, getQueryParam } from "@/utils/urlHelper";
 import Search from "antd/es/input/Search";
 import { useEffect, useState } from "react";
 import ContactFormDrawer from "./Partials/ContactFormDrawer";
+import ContactsFilter from "./Partials/ContactsFilter";
 import ContactsTable from "./Partials/ContactsTable";
 import { usePage } from "@inertiajs/react";
 
@@ -32,13 +33,16 @@ function Index({ contacts }: { contacts: PageProps }) {
         createButtonDisabled={!user?.has_edit_access}
         onCreateButtonClick={() => { setShowCreateDrawer(true) }}
         toolbar={
-          <Search
-            placeholder="search contacts..."
-            style={{ width: 200 }}
-            allowClear
-            onSearch={handleSearch}
-            onChange={(e) => debouncedSearch(e.target.value, 1000)}
-          />
+          <div className="flex items-start gap-2 flex-wrap">
+            <ContactsFilter />
+            <Search
+              placeholder="search contacts..."
+              style={{ width: 200 }}
+              allowClear
+              onSearch={handleSearch}
+              onChange={(e) => debouncedSearch(e.target.value, 1000)}
+            />
+          </div>
         }
       />
       <ContactsTable contacts={contacts} />
