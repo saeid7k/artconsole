@@ -237,11 +237,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
   |=======================================================
   */
 
-  public function is_admin()
-  {
-    return $this->id == 1;
-  }
-
   public function setCurrentGallery($galleryId = null)
   {
     if (!$galleryId) {
