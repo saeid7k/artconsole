@@ -68,14 +68,14 @@ class AuthenticatedSessionController extends Controller
         return redirect('/');
     }
 
-    public function loginAs(User $user)
+    public function loginAs(Request $request, User $user)
     {
-      if (!session()->has('original_user_id')) {
-        session(['original_user_id' => auth()->id()]);
+      if (!$request->session()->has('original_user_id')) {
+        $request->session()->put('original_user_id', auth()->id()); 
       }
 
       auth()->login($user);
-      session()->regenerate();
+      $request->session()->regenerate();
 
       return redirect()->route('dashboard')->with('flash', [
         'type' => 'success',
@@ -83,12 +83,12 @@ class AuthenticatedSessionController extends Controller
       ]);
     }
 
-    public function logoutAs()
+    public function logoutAs(Request $request)
     {
-      $originalUserId = session('original_user_id');
+      $originalUserId = $request->session()->get('original_user_id');
       if ($originalUserId) {
         auth()->loginUsingId($originalUserId);
-        session()->forget('original_user_id');
+        $request->session()->forget('original_user_id');
       }
 
       return redirect()->route('users.index')->with('flash', [
@@ -97,7 +97,7 @@ class AuthenticatedSessionController extends Controller
       ]);
     }
 
-    public function demoLogin()
+    public function demoLogin(Request $request)
     {
       $user = User::where('is_demo', true)->where('demo_claimed_at', null)->first();
 
@@ -109,7 +109,7 @@ class AuthenticatedSessionController extends Controller
       }
 
       auth()->login($user);
-      session()->regenerate();
+      $request->session()->regenerate();
 
       $user->updateQuietly(['demo_claimed_at' => now()]);
 
