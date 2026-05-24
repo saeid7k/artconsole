@@ -18,14 +18,14 @@ function RecentNotesWidget() {
       title="Recent Notes"
       loading={isLoading}
       className='min-h-[240px]'
-      >
+    >
       {
         data?.length == 0 && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No notes found" />
       }
 
       <div className="flex flex-col gap-2"
         style={{
-          maxHeight: '400px',
+          maxHeight: '300px',
           overflowY: 'auto',
           scrollbarWidth: 'none',
         }}
