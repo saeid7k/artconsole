@@ -102,7 +102,7 @@ export default function Login({ status, canResetPassword, default_values }: Prop
         </div>
       </form>
 
-      <StyledDivider variant='light' >OR</StyledDivider>
+      <StyledDivider variant='light' size='small' >OR</StyledDivider>
 
       <div className="flex flex-col gap-3">
         <Button
