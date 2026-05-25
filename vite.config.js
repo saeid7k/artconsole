@@ -17,6 +17,12 @@ export default defineConfig({
     '**/*.lottie'
   ],
   server: {
+    host: '0.0.0.0',
+    port: 5173,
+    origin: 'http://localhost:5173',
+    hmr: {
+      host: 'localhost',
+    },
     watch: {
       ignored: ['**/*.php'],
     },

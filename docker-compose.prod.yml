@@ -1,0 +1,112 @@
+services:
+
+  app:
+    build:
+      context: .
+      target: production
+    image: artconsole-app:latest
+    env_file:
+      - .env.production
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "false"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - /var/www/artconsole/storage/app/public:/var/www/html/storage/app/public
+      - /var/www/artconsole/public/drive:/var/www/html/public/drive
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - artconsole
+
+  nginx:
+    image: nginx:1.27-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      APP_DOMAIN: "${APP_DOMAIN}"   # set in .env.production
+    volumes:
+      # nginx will run envsubst on *.template files and write to conf.d/
+      - ./docker/nginx/prod.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - certbot_www:/var/www/certbot:ro
+      - certbot_certs:/etc/letsencrypt:ro
+      - /var/www/artconsole/storage/app/public:/var/www/html/storage/app/public:ro
+      - /var/www/artconsole/public/drive:/var/www/html/public/drive:ro
+    depends_on:
+      - app
+    restart: unless-stopped
+    networks:
+      - artconsole
+
+  certbot:
+    image: certbot/certbot:latest
+    restart: unless-stopped
+    volumes:
+      - certbot_certs:/etc/letsencrypt
+      - certbot_www:/var/www/certbot
+    entrypoint: >
+      /bin/sh -c "trap exit TERM;
+      while :; do
+        certbot renew --webroot -w /var/www/certbot --quiet;
+        sleep 12h & wait $${!};
+      done"
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --requirepass "${REDIS_PASSWORD}"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - artconsole
+
+  queue:
+    image: artconsole-app:latest
+    command: ["php", "artisan", "queue:work", "--tries=3", "--sleep=3", "--timeout=90", "--max-time=3600"]
+    env_file:
+      - .env.production
+    environment:
+      APP_ENV: production
+      SKIP_BOOTSTRAP: "true"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - app
+      - redis
+    restart: unless-stopped
+    networks:
+      - artconsole
+
+  scheduler:
+    image: artconsole-app:latest
+    command: ["php", "artisan", "schedule:work"]
+    env_file:
+      - .env.production
+    environment:
+      APP_ENV: production
+      SKIP_BOOTSTRAP: "true"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - app
+    restart: unless-stopped
+    networks:
+      - artconsole
+
+networks:
+  artconsole:
+    driver: bridge
+
+volumes:
+  redis_data:
+  certbot_certs:
+  certbot_www:
