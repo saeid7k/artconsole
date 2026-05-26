@@ -10,9 +10,10 @@ mkdir -p \
     /var/www/html/public/drive \
     /var/www/html/bootstrap/cache
 
+chmod -R 777 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public/drive
+
 if [ "${APP_ENV}" = "production" ]; then
     chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public/drive
-    chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public/drive
 fi
 
 # Skip app bootstrap for worker containers (queue, scheduler)
