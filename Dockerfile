@@ -36,6 +36,10 @@ RUN apk add --no-cache \
     freetype-dev \
     imagemagick-dev \
     imagemagick \
+    pkgconf \
+    autoconf \
+    g++ \
+    make \
     chromium \
     nss \
     freetype \
@@ -59,7 +63,7 @@ RUN docker-php-ext-configure gd --with-jpeg --with-webp --with-freetype \
         intl \
         opcache \
         dom \
-    && pecl install redis imagick \
+    && pecl install redis imagick-3.7.0 \
     && docker-php-ext-enable redis imagick \
     && rm -rf /tmp/pear
 
