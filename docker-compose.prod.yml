@@ -28,9 +28,8 @@ services:
       - "80:80"
       - "443:443"
     environment:
-      APP_DOMAIN: "${APP_DOMAIN}"   # set in .env.production
+      APP_DOMAIN: "${APP_DOMAIN}"
     volumes:
-      # nginx will run envsubst on *.template files and write to conf.d/
       - ./docker/nginx/prod.conf.template:/etc/nginx/templates/default.conf.template:ro
       - certbot_www:/var/www/certbot:ro
       - certbot_certs:/etc/letsencrypt:ro
