@@ -24,35 +24,24 @@ services:
 
   nginx:
     image: nginx:1.27-alpine
-    ports:
-      - "80:80"
-      - "443:443"
     environment:
       APP_DOMAIN: "${APP_DOMAIN}"
     volumes:
       - ./docker/nginx/prod.conf.template:/etc/nginx/templates/default.conf.template:ro
-      - certbot_www:/var/www/certbot:ro
-      - certbot_certs:/etc/letsencrypt:ro
       - /var/www/artconsole/storage/app/public:/var/www/html/storage/app/public:ro
       - /var/www/artconsole/public/drive:/var/www/html/public/drive:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.artconsole.rule=Host(`${APP_DOMAIN}`)"
+      - "traefik.http.routers.artconsole.entrypoints=websecure"
+      - "traefik.http.routers.artconsole.tls.certresolver=le"
+      - "traefik.http.services.artconsole.loadbalancer.server.port=80"
     depends_on:
       - app
     restart: unless-stopped
     networks:
       - artconsole
-
-  certbot:
-    image: certbot/certbot:latest
-    restart: unless-stopped
-    volumes:
-      - certbot_certs:/etc/letsencrypt
-      - certbot_www:/var/www/certbot
-    entrypoint: >
-      /bin/sh -c "trap exit TERM;
-      while :; do
-        certbot renew --webroot -w /var/www/certbot --quiet;
-        sleep 12h & wait $${!};
-      done"
+      - proxy
 
   redis:
     image: redis:7-alpine
@@ -104,8 +93,8 @@ services:
 networks:
   artconsole:
     driver: bridge
+  proxy:
+    external: true
 
 volumes:
   redis_data:
-  certbot_certs:
-  certbot_www:
