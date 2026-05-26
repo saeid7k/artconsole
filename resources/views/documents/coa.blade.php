@@ -8,9 +8,9 @@
     HTML;
   };
 
-  $fontEbGaramondBase64 = base64_encode(file_get_contents(Vite::asset('resources/fonts/EBGaramond.woff2')));
-  $fontTangerineRegularBase64 = base64_encode(file_get_contents(Vite::asset('resources/fonts/Tangerine-Regular.woff2')));
-  $fontTangerineBoldBase64 = base64_encode(file_get_contents(Vite::asset('resources/fonts/Tangerine-Bold.woff2')));
+  $fontEbGaramondBase64 = base64_encode(file_get_contents(base_path('resources/fonts/EBGaramond.woff2')));
+  $fontTangerineRegularBase64 = base64_encode(file_get_contents(base_path('resources/fonts/Tangerine-Regular.woff2')));
+  $fontTangerineBoldBase64 = base64_encode(file_get_contents(base_path('resources/fonts/Tangerine-Bold.woff2')));
 @endphp
 
 <!DOCTYPE html>
