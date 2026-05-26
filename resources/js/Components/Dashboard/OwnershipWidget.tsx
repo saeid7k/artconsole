@@ -32,7 +32,7 @@ function OwnershipWidget() {
     width: 260,
     height: 130,
     hideLegend: true,
-    gapAngle: 1,
+    gapangle: 1,
   };
 
   const TOTAL = chartData.map((item) => item.value).reduce((a, b) => a + b, 0);

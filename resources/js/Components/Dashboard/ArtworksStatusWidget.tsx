@@ -29,7 +29,7 @@ function ArtworksStatusWidget() {
     width: 160,
     height: 160,
     hideLegend: true,
-    gapAngle: 1,
+    gapangle: 1,
   };
 
   const TOTAL = chartData.map((item) => item.value).reduce((a, b) => a + b, 0);
