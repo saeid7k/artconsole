@@ -1,8 +1,8 @@
 @php
-  $fontEbGaramondBase64 = base64_encode(file_get_contents(Vite::asset('resources/fonts/EBGaramond.woff2')));
-  $fontTangerineRegularBase64 = base64_encode(file_get_contents(Vite::asset('resources/fonts/Tangerine-Regular.woff2')));
-  $fontTangerineBoldBase64 = base64_encode(file_get_contents(Vite::asset('resources/fonts/Tangerine-Bold.woff2')));
-  $fontSegoeUiBase64 = base64_encode(file_get_contents(Vite::asset('resources/fonts/SegoeUI.woff2')));
+  $fontEbGaramondBase64 = base64_encode(file_get_contents(base_path('resources/fonts/EBGaramond.woff2')));
+  $fontTangerineRegularBase64 = base64_encode(file_get_contents(base_path('resources/fonts/Tangerine-Regular.woff2')));
+  $fontTangerineBoldBase64 = base64_encode(file_get_contents(base_path('resources/fonts/Tangerine-Bold.woff2')));
+  $fontSegoeUiBase64 = base64_encode(file_get_contents(base_path('resources/fonts/SegoeUI.woff2')));
   $invoiceDate = Carbon\Carbon::parse($invoice->date)->format('F j, Y');
   $dueDate = Carbon\Carbon::parse($invoice->due_date)->format('F j, Y');
   $amountDue = \App\Helpers\FormatHelper::formatCurrency($invoice->amount_due, $gallery->currency);

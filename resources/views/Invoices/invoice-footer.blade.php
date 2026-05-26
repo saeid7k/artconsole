@@ -1,5 +1,5 @@
 @php
-  $fontSegoeUiBase64 = base64_encode(file_get_contents(Vite::asset('resources/fonts/SegoeUI.woff2')));
+  $fontSegoeUiBase64 = base64_encode(file_get_contents(base_path('resources/fonts/SegoeUI.woff2')));
   $defaultFooter = \App\Helpers\ConfigHelper::getDefault('invoice_footer');
   $appInfo = \App\Helpers\ConfigHelper::getAppInfo();
 @endphp
