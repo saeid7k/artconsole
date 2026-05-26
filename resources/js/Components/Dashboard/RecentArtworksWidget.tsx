@@ -33,9 +33,8 @@ function RecentArtworksWidget() {
       }
       <div className="flex flex-col gap-2">
         {data && data.length > 0 && data.map((artwork: ArtworkProps) => (
-          <div>
+          <div key={artwork.id} >
             <ArtworkStack
-              key={artwork.id}
               artwork={artwork}
               size="sm"
               variant="outline"
