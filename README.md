@@ -44,6 +44,7 @@
 | Auth | Laravel Breeze + Laravel Socialite (Google) |
 | Billing | Laravel Cashier (Stripe) |
 | AI | Laravel AI (Google Gemini) |
+| Infrastructure | Docker, Docker Compose, Nginx, Redis |
 
 ---
 
@@ -51,11 +52,8 @@
 
 ### Prerequisites
 
-- PHP 8.3+
-- Composer
-- Node.js 20+ and npm / Yarn
-- MySQL
-- (Optional) Puppeteer dependencies for PDF generation via Browsershot
+- [Docker](https://docs.docker.com/get-docker/) with the Compose plugin
+- MySQL running on the host (the app connects via `host.docker.internal`)
 
 ### Setup
 
@@ -64,45 +62,49 @@
 git clone https://github.com/saeid7k/artconsole.git
 cd artconsole
 
-# 2. Install PHP dependencies
-composer install
-
-# 3. Install JS dependencies
-npm install
-# or: yarn install
-
-# 4. Copy and configure environment
+# 2. Copy and configure environment
 cp .env.example .env
-# Edit .env — see "External Services" section below
+# Edit .env — set DB_USERNAME, DB_PASSWORD, and any external service keys (see below)
 
-# 5. Generate application key
-php artisan key:generate
-
-# 6. Run initial setup (resets & runs migrations, clears drive folder, seeds DB, flushes queued jobs)
-php artisan app:initial-setup
+# 3. Start all containers
+docker compose up -d
 ```
 
-### Running the Dev Server
+On first start the entrypoint automatically runs `composer install` and generates `APP_KEY` if missing.
 
-Use the Composer `dev` script to start all services concurrently (Laravel server, queue worker, log watcher, and Vite):
+### Services
+
+| Service | URL / Port |
+|---|---|
+| App (Nginx) | http://localhost:8080 |
+| Vite HMR | http://localhost:5173 |
+| Redis | localhost:6380 |
+
+Queue worker, scheduler, and Pulse worker each run as separate containers and start automatically with `docker compose up`.
+
+### First-Time Database Setup
 
 ```bash
-composer dev
+docker compose exec app php artisan app:initial-setup
 ```
 
-Or start services individually:
-
-```bash
-php artisan serve          # Laravel dev server  → http://localhost:8000
-php artisan queue:listen   # Background job queue
-npm run dev                # Vite HMR dev server
-```
+> Resets and seeds the database. Only run once (or when you want a clean slate).
 
 ### Running Tests
 
 ```bash
-composer test
-# or: php artisan test
+docker compose exec app php artisan test
+```
+
+### Useful Commands
+
+```bash
+docker compose exec app bash                 # Shell into app container
+docker compose exec app php artisan <cmd>    # Run any Artisan command
+docker compose exec app composer <cmd>       # Run any Composer command
+docker compose logs -f app                   # Tail app logs
+docker compose down                          # Stop all containers
+docker compose build --no-cache             # Rebuild images
 ```
 
 ---
