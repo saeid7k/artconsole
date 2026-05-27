@@ -37,7 +37,7 @@ class GoogleAuthController extends Controller
             'social_auth_id' => ['google' => $googleUser->id],
             'email_verified_at' => now(),
           ]);
-          $user->addMediaFromUrl($googleUser->avatar)->toMediaCollection('profile-photo');
+          $user->addMediaFromUrl($googleUser->avatar)->toMediaCollection('profile');
         }
       }
 
