@@ -65,7 +65,6 @@ services:
     depends_on:
       - app
       - redis
-    restart: unless-stopped
     networks:
       - artconsole
 
@@ -85,7 +84,6 @@ services:
       - "host.docker.internal:host-gateway"
     depends_on:
       - app
-    restart: unless-stopped
     networks:
       - artconsole
 
