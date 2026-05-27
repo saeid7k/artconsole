@@ -42,7 +42,7 @@ class CreateAdminUser extends Command
       'password' => Hash::make(env('ADMIN_DEFAULT_PASSWORD', '12345678')),
     ]);
     $avatarData = file_get_contents(resource_path('images/avatar/admin-avatar.png'));
-    $admin->addMediaFromString($avatarData)->usingFileName('user-' . $admin->id . '-photo.png')->toMediaCollection('profile-photo');
+    $admin->addMediaFromString($avatarData)->usingFileName('user-' . $admin->id . '-photo.png')->toMediaCollection('profile');
 
     $gallery = Gallery::first();
     $gallery->update([

@@ -113,7 +113,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
   public function getPhotoAttribute(): ?string
   {
-    $media = $this->getLastMedia('profile-photo');
+    $media = $this->getLastMedia('profile');
     return $media ? $media->getUrl() : null;
   }
 
@@ -272,7 +272,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
   {
     $photoData = Http::get("https://i.pravatar.cc/{$size}")->body() ?? null;
     if ($photoData) {
-      $this->addMediaFromString($photoData)->usingFileName('user-' . $this->id . '-photo.jpg')->toMediaCollection('profile-photo');
+      $this->addMediaFromString($photoData)->usingFileName('user-' . $this->id . '-photo.jpg')->toMediaCollection('profile');
     }
   }
 

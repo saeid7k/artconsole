@@ -73,21 +73,21 @@ class ProfileController extends Controller
     $user = $request->user();
 
     $user->addMediaFromRequest('photo')
-      ->toMediaCollection('profile-photo');
+      ->toMediaCollection('profile');
 
     activity()
       ->performedOn($user)
       ->log('updated profile photo');
 
     // delete previous photos
-    $medias = $user->getMedia('profile-photo');
+    $medias = $user->getMedia('profile');
     if ($medias->count() > 1) {
       $medias->sortByDesc('id')->skip(1)->each(function (Media $media) {
         $media->delete();
       });
     }
 
-    return Response()->json(['message' => 'Profile photo updated successfully']);
+    return response()->json(['message' => 'Profile photo updated successfully']);
   }
 
   public function setMeta(Request $request)
@@ -100,7 +100,7 @@ class ProfileController extends Controller
     $user = $request->user();
     $user->setMeta($request->input('key'), $request->input('value'));
 
-    return Response()->json([
+    return response()->json([
       'message' => $request->input('key') . ' updated successfully'
     ]);
   }
