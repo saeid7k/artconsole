@@ -2,7 +2,7 @@ import { useApp } from "@/contexts/AppContext";
 import colors from "@/Themes/theme";
 import { AuthProps } from "@/types/auth";
 import { GalleryProps } from "@/types/gallery";
-import { ArrowTurnBackwardIcon, ContactIcon, CreditCard, CrownIcon, DashboardBrowsingIcon, File01Icon, Image02Icon, InvoiceIcon, PresentationLineChart01Icon, Rocket01Icon, StoreLocation01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons";
+import { ArrowTurnBackwardIcon, ContactIcon, CreditCard, CrownIcon, DashboardBrowsingIcon, File01Icon, HeartPulse, Image02Icon, InvoiceIcon, PresentationLineChart01Icon, PulseRectangleIcon, Rocket01Icon, StoreLocation01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
 import { Button, Divider, Menu } from "antd";
@@ -27,6 +27,7 @@ function Sidebar() {
 
   const adminItems = [
     { key: 'users', icon: <HugeiconsIcon icon={UserMultipleIcon} />, label: 'Users', route: 'users.index' },
+    { key: 'server-monitor', icon: <HugeiconsIcon icon={PulseRectangleIcon} />, label: 'Server Monitor', path: '/pulse' },
   ]
 
   const lowerItems = [
@@ -63,6 +64,8 @@ function Sidebar() {
       } else {
         router.visit(route(selected.route))
       }
+    } else if (selected?.path) {
+      window.open(selected.path, '_self');
     }
   }
 

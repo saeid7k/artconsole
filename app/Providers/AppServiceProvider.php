@@ -25,6 +25,7 @@ use App\Observers\PaymentObserver;
 use App\Observers\SubscriptionObserver;
 use App\Observers\TokenTransactionObserver;
 use App\Observers\UserObserver;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Cashier\Cashier;
@@ -73,5 +74,9 @@ class AppServiceProvider extends ServiceProvider
 
         Cashier::calculateTaxes();
         Cashier::useCustomerModel(Gallery::class);
+
+        Gate::define('viewPulse', function (User $user) {
+            return $user->is_admin;
+        });
     }
 }
