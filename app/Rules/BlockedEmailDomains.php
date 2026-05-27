@@ -11,7 +11,7 @@ class BlockedEmailDomains implements ValidationRule
   public function __construct(protected array $blockedDomains = [])
   {
     $this->blockedDomains = empty($blockedDomains)
-      ? ['artconsole.ai']
+      ? ['artconsole.io', 'artconsole.ai']
       : $blockedDomains;
   }
 
