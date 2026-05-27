@@ -87,6 +87,26 @@ services:
     networks:
       - artconsole
 
+  pulse:
+    build:
+      context: .
+      target: base
+    command: ["php", "artisan", "pulse:work"]
+    volumes:
+      - .:/var/www/html
+      - vendor_data:/var/www/html/vendor
+    env_file:
+      - .env
+    environment:
+      SKIP_BOOTSTRAP: "true"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - app
+      - redis
+    networks:
+      - artconsole
+
   vite:
     image: node:20-alpine
     working_dir: /app
