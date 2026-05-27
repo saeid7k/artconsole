@@ -21,7 +21,7 @@ jobs:
             cd /var/www/artconsole
 
             echo "▶ Pulling latest code..."
-            git pull origin main
+            git pull --rebase --force origin main
 
             echo "▶ Building new image..."
             docker compose -f docker-compose.prod.yml build app

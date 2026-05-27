@@ -31,17 +31,16 @@ One key pair serves both purposes: the droplet uses the private key to pull from
 ## 4. Install MySQL on Host
 - [ ] Install MySQL: `apt install mysql-server -y`
 - [ ] Set root password and secure installation: `mysql_secure_installation`
-- [ ] Switch root to password auth and allow remote connections:
+- [ ] Create application DB user for production:
   ```sql
-  ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '<root-password>';
-  CREATE USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '<root-password>';
-  GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
-  FLUSH PRIVILEGES;
   CREATE DATABASE artconsole;
+  CREATE USER 'artconsole'@'%' IDENTIFIED WITH mysql_native_password BY '<db-password>';
+  GRANT ALL PRIVILEGES ON artconsole.* TO 'artconsole'@'%';
+  FLUSH PRIVILEGES;
   ```
 - [ ] Allow MySQL to listen on `0.0.0.0` in `/etc/mysql/mysql.conf.d/mysqld.cnf`: set `bind-address = 0.0.0.0`
 - [ ] Restart MySQL: `systemctl restart mysql`
-- [ ] Set in `.env.production`: `DB_USERNAME=root`, `DB_PASSWORD=<root-password>`
+- [ ] Set in `.env.production`: `DB_USERNAME=artconsole`, `DB_PASSWORD=<db-password>`
 
 ## 5. Set Up Traefik (External Proxy)
 - [ ] Create the external `proxy` network: `docker network create proxy`
@@ -51,7 +50,7 @@ One key pair serves both purposes: the droplet uses the private key to pull from
 - [ ] Fill in all blank values in `.env.production` before pushing:
   - `APP_KEY` — run `php artisan key:generate --show` locally
   - `ADMIN_DEFAULT_PASSWORD`
-  - `DB_USERNAME=root`, `DB_PASSWORD`
+  - `DB_USERNAME=artconsole`, `DB_PASSWORD`
   - `REDIS_PASSWORD`
 - [ ] Push the env file from your local machine:
   ```sh
