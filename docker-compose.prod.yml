@@ -90,6 +90,23 @@ services:
     networks:
       - artconsole
 
+  pulse:
+    image: artconsole-app:latest
+    command: ["php", "artisan", "pulse:work"]
+    env_file:
+      - .env.production
+    environment:
+      APP_ENV: production
+      SKIP_BOOTSTRAP: "true"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - app
+      - redis
+    restart: unless-stopped
+    networks:
+      - artconsole
+
 networks:
   artconsole:
     driver: bridge
