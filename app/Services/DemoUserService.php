@@ -32,7 +32,7 @@ class DemoUserService
       'firstname' => 'John',
       'lastname' => 'Doe',
       'username' => 'demo_' . $order,
-      'email' => 'demo_' . $order . '@artconsole.ai',
+      'email' => 'demo_' . $order . '@artconsole.io',
       'country_code' => '+1',
       'phone' => $this->faker->numerify(mt_rand(2, 9) . str_repeat('#', 9)),
       'website' => 'example.com',

@@ -2,7 +2,7 @@
 
 **ArtConsole** is a SaaS gallery management platform for art galleries. It provides a full back-office console to manage artworks, contacts, invoices, locations, and team members — with AI-powered assistance and subscription billing built in.
 
-**Live app:** https://app.artconsole.ai
+**Live app:** https://app.artconsole.io
 
 ---
 
@@ -126,7 +126,7 @@ STRIPE_TOKEN_WEBHOOK_SECRET=whsec_... # Webhook signing secret for token purchas
 
 Register two webhooks in your [Stripe dashboard](https://dashboard.stripe.com/webhooks) pointing to:
 
-**`https://app.artconsole.ai/stripe/webhook`** — subscription lifecycle events (Laravel Cashier)
+**`https://app.artconsole.io/stripe/webhook`** — subscription lifecycle events (Laravel Cashier)
 Enable the following events:
 - `customer.subscription.created`
 - `customer.subscription.updated`
@@ -139,7 +139,7 @@ Enable the following events:
 - `customer.updated`
 - `customer.deleted`
 
-**`https://app.artconsole.ai/stripe/token-webhook`** — token package purchases
+**`https://app.artconsole.io/stripe/token-webhook`** — token package purchases
 Enable the following events:
 - `checkout.session.completed`
 
@@ -167,7 +167,7 @@ Enables Google social login via Laravel Socialite.
 ```env
 GOOGLE_CLIENT_ID=...
 GOOGLE_CLIENT_SECRET=...
-GOOGLE_REDIRECT_URI=https://app.artconsole.ai/auth/google/callback
+GOOGLE_REDIRECT_URI=https://app.artconsole.io/auth/google/callback
 ```
 
 Create OAuth 2.0 credentials in the [Google Cloud Console](https://console.cloud.google.com/) and add the redirect URI to the list of authorised redirect URIs.
