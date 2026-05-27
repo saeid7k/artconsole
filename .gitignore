@@ -5,6 +5,7 @@
 /public/storage
 /public/drive
 /storage/*.key
+/storage/*/temp
 /storage/pail
 /vendor
 .env
