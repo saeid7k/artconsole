@@ -99,6 +99,16 @@ services:
     networks:
       - artconsole
 
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - "8025:8025"   # web UI
+      - "1025:1025"   # SMTP
+    depends_on:
+      - app
+    networks:
+      - artconsole
+
 networks:
   artconsole:
     driver: bridge
