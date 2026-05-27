@@ -1,7 +1,7 @@
 # ================================================================
 # Stage 1: Build frontend assets
 # ================================================================
-FROM node:20-alpine AS frontend
+FROM node:20 AS frontend
 
 WORKDIR /app
 
@@ -15,43 +15,41 @@ RUN npm run build
 # ================================================================
 # Stage 2: PHP base image (shared between dev and production)
 # ================================================================
-FROM php:8.3-fpm-alpine AS base
+FROM php:8.3-fpm AS base
 
 LABEL maintainer="ArtConsole"
 
 # Install system dependencies
-RUN apk add --no-cache \
-    bash \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     curl \
     zip \
     unzip \
     libpng-dev \
-    libjpeg-turbo-dev \
+    libjpeg62-turbo-dev \
     libwebp-dev \
     libzip-dev \
-    icu-dev \
-    oniguruma-dev \
+    libicu-dev \
+    libonig-dev \
     libxml2-dev \
-    freetype-dev \
-    imagemagick-dev \
+    libfreetype6-dev \
+    libavif-dev \
+    libmagickwand-dev \
     imagemagick \
-    pkgconf \
+    pkg-config \
     autoconf \
     g++ \
     make \
     chromium \
-    nss \
-    freetype \
-    harfbuzz \
     ca-certificates \
-    ttf-freefont \
-    nodejs \
-    npm \
-    supervisor
+    fonts-freefont-ttf \
+    supervisor \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && rm -rf /var/lib/apt/lists/*
 
 # Configure and install PHP extensions
-RUN docker-php-ext-configure gd --with-jpeg --with-webp --with-freetype \
+RUN docker-php-ext-configure gd --with-jpeg --with-webp --with-freetype --with-avif \
     && docker-php-ext-install \
         pdo_mysql \
         mbstring \
@@ -69,8 +67,8 @@ RUN docker-php-ext-configure gd --with-jpeg --with-webp --with-freetype \
 
 # Tell Puppeteer/Browsershot to use the system-installed Chromium
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
-    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser \
-    CHROME_PATH=/usr/bin/chromium-browser
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium \
+    CHROME_PATH=/usr/bin/chromium
 
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
