@@ -40,21 +40,21 @@ npm: ## Run yarn command in vite container (make npm cmd="add pkg")
 	docker compose exec vite yarn $(cmd)
 
 prod-build: ## Build the production Docker image
-	docker compose -f docker-compose.prod.yml build
+	docker compose -f docker-compose.prod.yml --env-file .env.production build
 
 prod-up: ## Start production stack
-	docker compose -f docker-compose.prod.yml up -d
+	docker compose -f docker-compose.prod.yml --env-file .env.production up -d
 
 prod-down: ## Stop production stack
-	docker compose -f docker-compose.prod.yml down
+	docker compose -f docker-compose.prod.yml --env-file .env.production down
 
 prod-deploy: ## Build image first, then swap containers (~5s downtime)
-	docker compose -f docker-compose.prod.yml build app
-	docker compose -f docker-compose.prod.yml up -d --no-build --remove-orphans
+	docker compose -f docker-compose.prod.yml --env-file .env.production build app
+	docker compose -f docker-compose.prod.yml --env-file .env.production up -d --no-build --remove-orphans
 	docker image prune -f
 
 prod-setup: ## FIRST-TIME ONLY: reset DB, run migrations, seed (app:initial-setup)
-	docker compose -f docker-compose.prod.yml exec app php artisan app:initial-setup
+	docker compose -f docker-compose.prod.yml --env-file .env.production exec app php artisan app:initial-setup
 
 push-env: ## Upload .env.production to the droplet (make push-env SERVER=root@IP)
 	scp .env.production $(SERVER):/var/www/artconsole/.env.production
