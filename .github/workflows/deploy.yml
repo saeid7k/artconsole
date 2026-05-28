@@ -24,10 +24,10 @@ jobs:
             git pull --rebase --force origin main
 
             echo "▶ Building new image..."
-            docker compose -f docker-compose.prod.yml build app
+            docker compose --env-file .env.production -f docker-compose.prod.yml build app
 
             echo "▶ Swapping containers..."
-            docker compose -f docker-compose.prod.yml up -d --no-build \
+            docker compose --env-file .env.production -f docker-compose.prod.yml up -d --no-build \
               --remove-orphans
 
             echo "▶ Cleaning up old images..."
