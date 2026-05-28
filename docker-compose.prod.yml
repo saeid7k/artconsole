@@ -32,6 +32,7 @@ services:
       - /var/www/artconsole/public/drive:/var/www/html/public/drive:ro
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
       - "traefik.http.routers.artconsole.rule=Host(`${APP_DOMAIN}`)"
       - "traefik.http.routers.artconsole.entrypoints=websecure"
       - "traefik.http.routers.artconsole.tls.certresolver=le"
