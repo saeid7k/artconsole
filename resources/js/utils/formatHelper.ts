@@ -71,7 +71,8 @@ function trimWebsite(website: string): string {
 
 function formatNumber(
   value: number | string | null | undefined,
-  locale: string = import.meta.env.VITE_APP_LOCALE.replace('_', '-') || 'en-US',
+  locale: string = (import.meta.env.VITE_APP_LOCALE ?? 'en_US').replace('_', '-'),
+
   removeTrailingZeros: boolean = true,
 ): string {
   if (value === null || value === undefined || value === '') return '';
@@ -94,7 +95,8 @@ function formatCurrency(
   currency: string | null = null,
   minimumFractionDigits: number = 0,
   maximumFractionDigits: number = 2,
-  locale: string = import.meta.env.VITE_APP_LOCALE.replace('_', '-') || 'en-US',
+  locale: string = (import.meta.env.VITE_APP_LOCALE ?? 'en_US').replace('_', '-'),
+
   useParensForNegatives: boolean = true
 ): string {
   if (amount === null || amount === undefined || amount === '') return '';
