@@ -1,7 +1,9 @@
 name: Deploy to Production
 
 on:
-  workflow_dispatch: # push trigger temporarily disabled
+  push:
+    branches:
+      - main
 
 jobs:
   deploy:
