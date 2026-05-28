@@ -61,9 +61,16 @@ RUN docker-php-ext-configure gd --with-jpeg --with-webp --with-freetype --with-a
         intl \
         opcache \
         dom \
-    && pecl install redis imagick-3.7.0 \
-    && docker-php-ext-enable redis imagick \
-    && rm -rf /tmp/pear
+    && pecl install redis \
+    && docker-php-ext-enable redis \
+    && git clone https://github.com/Imagick/imagick.git /tmp/imagick \
+    && cd /tmp/imagick \
+    && phpize \
+    && ./configure \
+    && make \
+    && make install \
+    && docker-php-ext-enable imagick \
+    && rm -rf /tmp/pear /tmp/imagick
 
 # Tell Puppeteer/Browsershot to use the system-installed Chromium
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \

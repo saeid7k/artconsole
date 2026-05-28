@@ -59,13 +59,13 @@ One key pair serves both purposes: the droplet uses the private key to pull from
 
 ## 7. Clone Repo & Build
 - [ ] Clone the repo: `git clone git@github.com:saeid7k/artconsole.git /var/www/artconsole`
-- [ ] Build the production image: `docker compose -f docker-compose.prod.yml build`
-- [ ] Start the stack: `docker compose -f docker-compose.prod.yml up -d`
+- [ ] Build the production image: `docker compose --env-file .env.production -f docker-compose.prod.yml build`
+- [ ] Start the stack: `docker compose --env-file .env.production -f docker-compose.prod.yml up -d`
 
 ## 8. First-Time Database Setup
 - [ ] Run initial setup (migrations + seeders):
   ```sh
-  docker compose -f docker-compose.prod.yml exec app php artisan app:initial-setup
+  docker compose --env-file .env.production -f docker-compose.prod.yml exec app php artisan app:initial-setup
   ```
   > **Only run once** — resets and seeds the DB.
 
