@@ -130,3 +130,12 @@ RUN composer run-script post-autoload-dump --no-interaction
 # Harden permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 storage bootstrap/cache
+
+
+# ================================================================
+# Stage 4: nginx with public assets baked in
+# ================================================================
+FROM nginx:1.27-alpine AS nginx-prod
+
+COPY --from=production /var/www/html/public /var/www/html/public
+COPY docker/nginx/prod.conf.template /etc/nginx/templates/default.conf.template
