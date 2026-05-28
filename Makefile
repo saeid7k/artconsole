@@ -49,7 +49,7 @@ prod-down: ## Stop production stack
 	docker compose -f docker-compose.prod.yml --env-file .env.production down
 
 prod-deploy: ## Build image first, then swap containers (~5s downtime)
-	docker compose -f docker-compose.prod.yml --env-file .env.production build app
+	docker compose -f docker-compose.prod.yml --env-file .env.production build app nginx
 	docker compose -f docker-compose.prod.yml --env-file .env.production up -d --no-build --remove-orphans
 	docker image prune -f
 
