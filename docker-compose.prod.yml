@@ -23,11 +23,13 @@ services:
       - artconsole
 
   nginx:
-    image: nginx:1.27-alpine
+    build:
+      context: .
+      target: nginx-prod
+    image: artconsole-nginx:latest
     environment:
       APP_DOMAIN: "${APP_DOMAIN}"
     volumes:
-      - ./docker/nginx/prod.conf.template:/etc/nginx/templates/default.conf.template:ro
       - /var/www/artconsole/storage/app/public:/var/www/html/storage/app/public:ro
       - /var/www/artconsole/public/drive:/var/www/html/public/drive:ro
     labels:
