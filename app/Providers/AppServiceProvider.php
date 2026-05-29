@@ -66,7 +66,7 @@ class AppServiceProvider extends ServiceProvider
         Pdf::default()
           ->withBrowsershot(function (Browsershot $browsershot) {
             $browsershot->noSandbox()->newHeadless()->timeout(120)
-              ->setEnvironmentOptions(['HOME' => '/tmp'])
+              ->setNodeEnv(['HOME' => '/tmp'])
               ->addChromiumArguments([
                 'disable-gpu',
                 'disable-dev-shm-usage',
