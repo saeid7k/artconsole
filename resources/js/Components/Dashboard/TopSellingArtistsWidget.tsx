@@ -10,7 +10,8 @@ function TopSellingArtistsWidget() {
 
   const { data, isLoading } = useQuery({
     queryKey: ['top-selling-artists'],
-    queryFn: () => axios.post(route('contacts.top-selling-artists')).then(res => res.data),
+    queryFn: () => axios.post(route('contacts.top-selling-artists'), { limit: 7 })
+      .then(res => res.data),
     staleTime: Infinity
   });
 
