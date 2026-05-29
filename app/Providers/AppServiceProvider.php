@@ -67,10 +67,12 @@ class AppServiceProvider extends ServiceProvider
           ->withBrowsershot(function (Browsershot $browsershot) {
             $browsershot->noSandbox()->timeout(120)
               ->addChromiumArguments([
-                'disable-crash-reporter',
                 'disable-gpu',
                 'disable-dev-shm-usage',
                 'no-first-run',
+                'disable-extensions',
+                'disable-setuid-sandbox',
+                'crash-dumps-dir' => '/tmp',
               ]);
             if (app()->environment('production', 'staging')) {
               $browsershot->setNodeBinary('/usr/bin/node')
