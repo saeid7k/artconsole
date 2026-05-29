@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 
 type Props = {
-  type?: 'fade' | 'fadeDown' | 'fadeUp' | 'fadeRight' | 'fadeLeft' | 'slideRight' | 'slideLeft';
+  type?: 'fade' | 'fadeDown' | 'fadeUp' | 'fadeRight' | 'fadeLeft' | 'slideRight' | 'slideLeft' | 'expandHorizontal' | 'expandVertical';
   speed?: 'fast' | 'normal' | 'slow' | 'slower' | 'slowest';
   onlyInitial?: boolean;
   condition: boolean;
@@ -46,6 +46,16 @@ function AnimatedContainer({ type = 'fadeDown', speed = 'normal', onlyInitial = 
       initial: { x: 40, opacity: 0 },
       animate: { x: 0, opacity: 1 },
       exit: { x: -40, opacity: 0 }
+    },
+    expandHorizontal: {
+      initial: { width: 0, opacity: 0 },
+      animate: { width: 'auto', opacity: 1 },
+      exit: { width: 0, opacity: 0 }
+    },
+    expandVertical: {
+      initial: { height: 0, opacity: 0 },
+      animate: { height: 'auto', opacity: 1 },
+      exit: { height: 0, opacity: 0 }
     }
   }
 
