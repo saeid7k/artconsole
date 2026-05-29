@@ -52,7 +52,7 @@
       font-family: 'EB Garamond', 'Times New Roman', Times, serif;
       line-height: 1.5em;
       box-sizing: border-box;
-      background-image: url("{{ Vite::asset('resources/documents/coa/coa-frame-01.svg') }}");
+      background-image: url("data:image/svg+xml;base64,{{ base64_encode(file_get_contents(base_path('resources/documents/coa/coa-frame-01.svg'))) }}");
       background-size: contain;
       background-repeat: no-repeat;
     }
