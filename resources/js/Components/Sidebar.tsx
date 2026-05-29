@@ -69,7 +69,9 @@ function Sidebar() {
     } else if (selected?.path) {
       window.open(selected.path, '_self');
     }
-    toggleSidebar();
+    if (isMobile) {
+      toggleSidebar();
+    }
   }
 
   const activeKey = () => {
