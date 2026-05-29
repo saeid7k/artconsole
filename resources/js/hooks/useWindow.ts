@@ -51,5 +51,7 @@ export const useWindow = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  return {windowWidth, breakpoint, scrollY, scrollX}
+  const isMobile = breakpoint === 'xs';
+
+  return {windowWidth, breakpoint, isMobile, scrollY, scrollX}
 };

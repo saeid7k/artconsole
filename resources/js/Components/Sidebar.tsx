@@ -1,8 +1,9 @@
 import { useApp } from "@/contexts/AppContext";
+import { useWindow } from "@/hooks/useWindow";
 import colors from "@/Themes/theme";
 import { AuthProps } from "@/types/auth";
 import { GalleryProps } from "@/types/gallery";
-import { ArrowTurnBackwardIcon, ContactIcon, CreditCard, CrownIcon, DashboardBrowsingIcon, File01Icon, HeartPulse, Image02Icon, InvoiceIcon, PresentationLineChart01Icon, PulseRectangleIcon, Rocket01Icon, StoreLocation01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons";
+import { ArrowTurnBackwardIcon, ContactIcon, CreditCard, CrownIcon, DashboardBrowsingIcon, File01Icon, Image02Icon, InvoiceIcon, PulseRectangleIcon, Rocket01Icon, StoreLocation01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
 import { Button, Divider, Menu } from "antd";
@@ -13,7 +14,8 @@ function Sidebar() {
   const auth = props.auth as AuthProps
   const user = auth.user
   const gallery = props.current_gallery as GalleryProps
-  const { sidebarCollapsed, darkMode, setOpenUpgradeModal } = useApp()
+  const { sidebarCollapsed, toggleSidebar, darkMode, setOpenUpgradeModal } = useApp()
+  const { isMobile } = useWindow()
 
   const items = [
     { key: 'dashboard', icon: <HugeiconsIcon icon={DashboardBrowsingIcon} />, label: 'Dashboard', route: 'dashboard' },
@@ -67,6 +69,7 @@ function Sidebar() {
     } else if (selected?.path) {
       window.open(selected.path, '_self');
     }
+    toggleSidebar();
   }
 
   const activeKey = () => {
@@ -95,7 +98,7 @@ function Sidebar() {
     >
       <Menu
         mode="inline"
-        inlineCollapsed={sidebarCollapsed}
+        inlineCollapsed={sidebarCollapsed && !isMobile}
         items={items}
         className="pt-10 !border-none"
         onClick={(e) => {
@@ -107,14 +110,14 @@ function Sidebar() {
       {user?.is_admin && (
         <>
           <Divider>
-            {!sidebarCollapsed && (
+            {(!sidebarCollapsed || isMobile) && (
               <div className="text-sm font-light">Admin Area</div>
             )}
           </Divider>
 
           <Menu
             mode="inline"
-            inlineCollapsed={sidebarCollapsed}
+            inlineCollapsed={sidebarCollapsed && !isMobile}
             items={adminItems}
             className="!border-none"
             onClick={(e) => {
@@ -130,7 +133,7 @@ function Sidebar() {
       >
         <Menu
           mode="inline"
-          inlineCollapsed={sidebarCollapsed}
+          inlineCollapsed={sidebarCollapsed && !isMobile}
           className='!border-none'
           onClick={(e) => {
             handleMenuClick(e.key);
@@ -157,7 +160,7 @@ function Sidebar() {
           ]}
         />
 
-        {user?.is_demo && !sidebarCollapsed && (
+        {user?.is_demo && (!sidebarCollapsed || isMobile) && (
           <div className="px-2">
             <div
               className="flex flex-col gap-1 w-full p-2"

@@ -1,4 +1,5 @@
 import AiDrawer from "@/Components/AI/AiDrawer";
+import FlexBox from "@/Components/Containers/FlexBox";
 import GallerySwitch from "@/Components/Galleries/GallerySwitch";
 import ServerFlashMessage from "@/Components/ServerFlashMessage";
 import Sidebar from "@/Components/Sidebar";
@@ -10,13 +11,14 @@ import { useWindow } from "@/hooks/useWindow";
 import colors from "@/Themes/theme";
 import { oklchToHex } from "@/utils/colorHelper";
 import { StyleProvider } from '@ant-design/cssinjs';
-import { ArrowLeftDoubleFreeIcons, ArrowRightDoubleFreeIcons } from "@hugeicons/core-free-icons";
+import { ArrowLeftDoubleFreeIcons, ArrowRightDoubleFreeIcons, Hamburger } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Button, ConfigProvider, Layout, theme } from "antd";
-import { Content, Footer, Header } from "antd/es/layout/layout";
+import { Content, Header } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
 import React, { PropsWithChildren, useEffect } from "react";
+import { twMerge } from "tailwind-merge";
 
 interface AppProps extends PropsWithChildren {
   title?: string|React.ReactNode,
@@ -26,7 +28,7 @@ interface AppProps extends PropsWithChildren {
 function App ({ children }: AppProps) {
 
   const { sidebarCollapsed, toggleSidebar, darkMode, openUpgradeModal, setOpenUpgradeModal, tokensDrawerOpen, setTokensDrawerOpen } = useApp()
-  const { scrollY, windowWidth } = useWindow()
+  const { scrollY, windowWidth, isMobile } = useWindow()
   const collapsedWidth = 50
   const expandedWidth = 200
 
@@ -112,29 +114,57 @@ function App ({ children }: AppProps) {
                 scrollY > 0 ? ' shadow-md' : ''
               }`}
             >
-              <GallerySwitch />
+              <FlexBox>
+                {isMobile && (
+                  <Button
+                    type="text"
+                    onClick={toggleSidebar}
+                    className="px-2"
+                  >
+                    <HugeiconsIcon size={20} icon={ArrowLeftDoubleFreeIcons} altIcon={Hamburger} showAlt={sidebarCollapsed} />
+                  </Button>
+                )}
+                <GallerySwitch />
+              </FlexBox>
               <TopbarActions />
             </Header>
             <Layout className="relative">
-              <Button
-                shape="circle"
-                type="default"
-                className={`absolute top-2 z-10`}
-                style={{ left: sidebarCollapsed ? collapsedWidth - 16 : expandedWidth - 16 }}
-                onClick={toggleSidebar}
-              >
-                <HugeiconsIcon size={20} icon={ArrowLeftDoubleFreeIcons} altIcon={ArrowRightDoubleFreeIcons} showAlt={sidebarCollapsed} />
-              </Button>
+
+              {/* Sidebar toggle button */}
+              {!isMobile && (
+                <Button
+                  shape="circle"
+                  type="default"
+                  className={`absolute top-2 z-10`}
+                  style={{ left: sidebarCollapsed ? collapsedWidth - 16 : expandedWidth - 16 }}
+                  onClick={toggleSidebar}
+                >
+                  <HugeiconsIcon size={20} icon={ArrowLeftDoubleFreeIcons} altIcon={ArrowRightDoubleFreeIcons} showAlt={sidebarCollapsed} />
+                </Button>
+              )}
+
+              {/* Sidebar */}
               <Sider
-                className="h-full overflow-y-auto overflow-x-visible"
-                collapsed={sidebarCollapsed}
+                className={twMerge(
+                  "h-full overflow-y-auto overflow-x-visible",
+                  isMobile && 'absolute z-100 left-0 ',
+                  (isMobile && sidebarCollapsed) ? '-translate-x-[100%]' : 'translate-x-0',
+                )}
+                collapsed={sidebarCollapsed && !isMobile}
                 collapsedWidth={collapsedWidth}
                 width={expandedWidth}
               >
                 <Sidebar />
               </Sider>
+
+              {/* Main content */}
               <Layout
                 className="overflow-y-auto my-1"
+                onClick={() => {
+                  if (isMobile && !sidebarCollapsed) {
+                    toggleSidebar()
+                  }
+                }}
               >
                 <Content
                   className="p-3 w-full m-x-auto min-h-max"
@@ -142,6 +172,7 @@ function App ({ children }: AppProps) {
                   {children}
                 </Content>
               </Layout>
+
             </Layout>
           </Layout>
 
