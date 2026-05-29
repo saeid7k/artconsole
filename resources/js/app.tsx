@@ -10,7 +10,7 @@ const metaAppName = typeof document !== 'undefined' ? document.querySelector('me
 const appName = metaAppName || import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
+    title: (title) => (title ? `${title} - ${appName}` : appName),
     resolve: (name) =>
         resolvePageComponent(
             `./Pages/${name}.tsx`,
