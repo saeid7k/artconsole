@@ -66,6 +66,7 @@ class AppServiceProvider extends ServiceProvider
         Pdf::default()
           ->withBrowsershot(function (Browsershot $browsershot) {
             $browsershot->noSandbox()->newHeadless()->timeout(120)
+              ->setEnvironmentOptions(['HOME' => '/tmp'])
               ->addChromiumArguments([
                 'disable-gpu',
                 'disable-dev-shm-usage',
@@ -73,7 +74,6 @@ class AppServiceProvider extends ServiceProvider
                 'disable-extensions',
                 'disable-setuid-sandbox',
                 'no-zygote',
-                'crash-dumps-dir' => '/tmp',
               ]);
             if (app()->environment('production', 'staging')) {
               $browsershot->setNodeBinary('/usr/bin/node')
