@@ -9,7 +9,8 @@ function RecentArtworksWidget() {
 
   const { data, isLoading } = useQuery({
     queryKey: ['recent-artworks'],
-    queryFn: () => axios.post(route('artworks.recent'), { limit: 4 }).then(res => res.data),
+    queryFn: () => axios.post(route('artworks.recent'), { limit: 6 })
+      .then(res => res.data),
     staleTime: Infinity
   });
 

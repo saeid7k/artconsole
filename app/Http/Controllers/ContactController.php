@@ -285,13 +285,18 @@ class ContactController extends Controller
   {
     $this->authorize('viewAny', Contact::class);
 
+    $validated = $request->validate([
+      'limit' => ['sometimes', 'integer', 'min:1', 'max:100'],
+    ]);
+
     $user = auth()->user();
     $gallery = $user->currentGallery();
+    $limit = $validated['limit'] ?? 5;
 
     $topArtists = $gallery->artists()
       ->withCount('soldArts')
       ->orderByDesc('sold_arts_count')
-      ->limit(5)
+      ->limit($limit)
       ->get();
 
     return response()->json($topArtists);
