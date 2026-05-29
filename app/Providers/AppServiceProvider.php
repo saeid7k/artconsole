@@ -65,13 +65,14 @@ class AppServiceProvider extends ServiceProvider
 
         Pdf::default()
           ->withBrowsershot(function (Browsershot $browsershot) {
-            $browsershot->noSandbox()->timeout(120)
+            $browsershot->noSandbox()->newHeadless()->timeout(120)
               ->addChromiumArguments([
                 'disable-gpu',
                 'disable-dev-shm-usage',
                 'no-first-run',
                 'disable-extensions',
                 'disable-setuid-sandbox',
+                'no-zygote',
                 'crash-dumps-dir' => '/tmp',
               ]);
             if (app()->environment('production', 'staging')) {
