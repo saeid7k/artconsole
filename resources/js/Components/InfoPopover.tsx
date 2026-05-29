@@ -1,3 +1,4 @@
+import { useWindow } from "@/hooks/useWindow";
 import colors from "@/Themes/theme";
 import { HelpCircleIcon, InformationCircleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -15,7 +16,9 @@ type Props = {
 
 function InfoPopover({ title, content, iconType = 'info', placement, condition = true }: Props) {
 
-  if (!condition) return null;
+  const { isMobile } = useWindow();
+
+  if (!condition || isMobile) return null;
 
   const icon = {
     info: InformationCircleIcon,

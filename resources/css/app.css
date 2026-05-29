@@ -290,6 +290,12 @@ table .ant-image {
   background: theme('colors.purple.200') !important;
 }
 
+@media (max-width: 640px) {
+  .ant-tooltip, .ant-popover {
+    display: none !important;
+  }
+}
+
 @keyframes bg_moving {
   0% {
     background-position: 0% 50%;
