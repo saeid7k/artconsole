@@ -1,19 +1,17 @@
+import PageSearchBox from "@/Components/PageSearchBox";
 import PageTitle from "@/Components/PageTitle";
-import { useSearch } from "@/hooks/useSearch";
 import AppLayout from "@/Layouts/AppLayout";
 import { PageProps } from "@/types";
 import { deleteQueryParam, getQueryParam } from "@/utils/urlHelper";
-import Search from "antd/es/input/Search";
+import { usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import ContactFormDrawer from "./Partials/ContactFormDrawer";
 import ContactsFilter from "./Partials/ContactsFilter";
 import ContactsTable from "./Partials/ContactsTable";
-import { usePage } from "@inertiajs/react";
 
 function Index({ contacts }: { contacts: PageProps }) {
 
   const user = usePage().props.auth.user;
-  const { handleSearch, debouncedSearch } = useSearch('contacts.index');
 
   const [showCreateDrawer, setShowCreateDrawer] = useState(false)
 
@@ -35,13 +33,7 @@ function Index({ contacts }: { contacts: PageProps }) {
         toolbar={
           <div className="flex items-start gap-2 flex-wrap">
             <ContactsFilter />
-            <Search
-              placeholder="search contacts..."
-              style={{ width: 200 }}
-              allowClear
-              onSearch={handleSearch}
-              onChange={(e) => debouncedSearch(e.target.value, 1000)}
-            />
+            <PageSearchBox routeName="contacts.index" placeHolder="Search contacts..." />
           </div>
         }
       />

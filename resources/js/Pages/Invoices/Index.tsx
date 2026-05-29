@@ -1,19 +1,17 @@
 import InvoiceFormDrawer from "@/Components/Invoices/InvoiceFormDrawer";
 import InvoicesFilter from "@/Components/Invoices/InvoicesFilter";
 import InvoiceTable from "@/Components/Invoices/InvoiceTable";
+import PageSearchBox from "@/Components/PageSearchBox";
 import PageTitle from "@/Components/PageTitle";
-import { useSearch } from "@/hooks/useSearch";
 import AppLayout from "@/Layouts/AppLayout";
 import { PageProps } from "@/types";
 import { deleteQueryParam, getQueryParam } from "@/utils/urlHelper";
 import { usePage } from "@inertiajs/react";
-import Search from "antd/es/input/Search";
 import { useEffect, useState } from "react";
 
 function Index({ invoices }: { invoices: PageProps }) {
 
   const user = usePage().props.auth.user;
-  const { debouncedSearch } = useSearch('invoices.index');
 
   const [ showInvoiceFormDrawer, setShowInvoiceFormDrawer ] = useState(false);
 
@@ -28,13 +26,7 @@ function Index({ invoices }: { invoices: PageProps }) {
   const renderToolbar = () => (
     <div className="flex items-start gap-2 flex-wrap">
       <InvoicesFilter />
-      <Search
-        placeholder="search invoices..."
-        style={{ width: 200 }}
-        size="middle"
-        allowClear
-        onChange={(e) => debouncedSearch(e.target.value, 1000)}
-      />
+      <PageSearchBox routeName="invoices.index" placeHolder="Search invoices..." />
 
     </div>
   )

@@ -1,31 +1,22 @@
 import LocationCard from "@/Components/Locations/LocationCard";
 import LocationCreateEditModal from "@/Components/Locations/LocationCreateEditModal";
+import PageSearchBox from "@/Components/PageSearchBox";
 import PageTitle from "@/Components/PageTitle";
-import { useSearch } from "@/hooks/useSearch";
 import AppLayout from "@/Layouts/AppLayout";
 import { PageProps } from "@/types";
 import { usePage } from "@inertiajs/react";
-import Search from "antd/es/input/Search";
 import { useState } from "react";
 
 function Index({ locations }: { locations: PageProps }) {
 
   const user = usePage().props.auth.user;
-  const { handleSearch, debouncedSearch } = useSearch('locations.index');
   const [openCreateModal, setOpenCreateModal] = useState(false);
 
   // Render
 
   const renderToolbar = () => (
     <div className="flex gap-2">
-      <Search
-        placeholder="search locations..."
-        style={{ width: 200 }}
-        size="middle"
-        allowClear
-        onSearch={handleSearch}
-        onChange={(e) => debouncedSearch(e.target.value, 1000)}
-      />
+      <PageSearchBox routeName="locations.index" placeHolder="Search locations..." />
     </div>
   )
 
