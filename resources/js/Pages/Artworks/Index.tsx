@@ -1,7 +1,8 @@
 import ArtworksMassActions from "@/Components/Artworks/ArtworksMassActions"
+import PageSearchBox from "@/Components/PageSearchBox"
 import PageTitle from "@/Components/PageTitle"
 import { ArtworkIndexProvider } from "@/contexts/ArtworksIndexContext"
-import { useSearch } from "@/hooks/useSearch"
+import { useWindow } from "@/hooks/useWindow"
 import AppLayout from "@/Layouts/AppLayout"
 import { PageProps } from "@/types"
 import { LocationProps } from "@/types/location"
@@ -10,7 +11,6 @@ import { GridViewIcon, TableIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { router, usePage } from "@inertiajs/react"
 import { Segmented, Tooltip } from "antd"
-import Search from "antd/es/input/Search"
 import { useEffect, useState } from "react"
 import ArtworkFormDrawer from "./Partials/ArtworkFormDrawer"
 import ArtworksFilter from "./Partials/ArtworksFilter"
@@ -20,7 +20,7 @@ import ArtworksTable from "./Partials/ArtworksTable"
 function Index({ artworks, locations }: { artworks: PageProps, locations: Array<LocationProps> }) {
 
   const user = usePage().props.auth.user;
-  const { debouncedSearch } = useSearch('artworks.index');
+  const { isMobile } = useWindow();
 
   // Switch Mode
 
@@ -85,19 +85,13 @@ function Index({ artworks, locations }: { artworks: PageProps, locations: Array<
         onChange={(value) => switchViewMode(value as 'table' | 'grid')}
       />
 
-      <Search
-        placeholder="search artworks..."
-        style={{ width: 200 }}
-        size="middle"
-        allowClear
-        onChange={(e) => debouncedSearch(e.target.value, 1000)}
-      />
+      <PageSearchBox routeName="artworks.index" placeHolder="Search artworks..."/>
     </div>
   )
 
   return (
     <ArtworkIndexProvider value={{ selectedIds, setSelectedIds }}>
-      <PageTitle title="Artworks Inventory"
+      <PageTitle title={ isMobile ? "Artworks" : "Artworks Inventory"}
         counter={artworks.total}
         createButtonDisabled={!user?.has_edit_access}
         onCreateButtonClick={() => setShowCreateDrawer(true)}
