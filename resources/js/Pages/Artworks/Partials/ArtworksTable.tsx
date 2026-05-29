@@ -36,27 +36,6 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
 
   const columns: TableProps['columns'] = [
     {
-      title: 'SKU',
-      dataIndex: 'sku',
-      key: 'sku',
-      sorter: true,
-      sortDirections: ['ascend', 'descend'],
-      showSorterTooltip: false,
-      render: (_, record) => (
-        <div className="flex items-center gap-1">
-          <Link
-            className='font-mono text-body text-xs whitespace-nowrap'
-            href={route('artworks.show', record.id)}
-          >
-            {record.sku}
-          </Link>
-          <CopyToClipboard content={record.sku} title="SKU" />
-        </div>
-      ),
-      width: 100,
-      // fixed: breakpoint == 'xs' ? undefined : 'left',
-    },
-    {
       title: 'Preview',
       key: 'image',
       render: (_, record) => (
@@ -104,6 +83,27 @@ function ArtworksTable({ artworks, locations }: { artworks: PageProps, locations
         </div>
       ),
       // width: 250,
+    },
+    {
+      title: 'SKU',
+      dataIndex: 'sku',
+      key: 'sku',
+      sorter: true,
+      sortDirections: ['ascend', 'descend'],
+      showSorterTooltip: false,
+      render: (_, record) => (
+        <div className="flex items-center gap-1">
+          <Link
+            className='font-mono text-body text-xs whitespace-nowrap'
+            href={route('artworks.show', record.id)}
+          >
+            {record.sku}
+          </Link>
+          <CopyToClipboard content={record.sku} title="SKU" />
+        </div>
+      ),
+      width: 100,
+      // fixed: breakpoint == 'xs' ? undefined : 'left',
     },
     {
       title: 'Category',
