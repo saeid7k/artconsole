@@ -65,10 +65,17 @@ class AppServiceProvider extends ServiceProvider
 
         Pdf::default()
           ->withBrowsershot(function (Browsershot $browsershot) {
-            $browsershot->noSandbox()->timeout(120);
+            $browsershot->noSandbox()->timeout(120)
+              ->addChromiumArguments([
+                'disable-crash-reporter',
+                'disable-gpu',
+                'disable-dev-shm-usage',
+                'no-first-run',
+              ]);
             if (app()->environment('production', 'staging')) {
               $browsershot->setNodeBinary('/usr/bin/node')
-                 ->setNpmBinary('/usr/bin/npm');
+                 ->setNpmBinary('/usr/bin/npm')
+                 ->setChromePath('/usr/bin/chromium');
             }
           });
 
