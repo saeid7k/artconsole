@@ -184,7 +184,7 @@ class InvoiceController extends Controller
     $this->authorize('view', $invoice);
     $user = $request->user();
 
-    SendInvoiceMailJob::dispatch($invoice->id, $invoice->contact->email);
+    SendInvoiceMailJob::dispatch($invoice->id);
 
     if ($invoice->status == 'draft') {
       $invoice->update(['status' => 'sent']);
@@ -193,7 +193,7 @@ class InvoiceController extends Controller
     activity()
       ->performedOn($invoice->contact)
       ->causedBy($user)
-      ->log('sent invoice email to contact');
+      ->log('sent invoice (' . $invoice->invoice_number . ') via email to contact');
 
     return response()->json([
       'message' => 'Invoice email sent successfully',
