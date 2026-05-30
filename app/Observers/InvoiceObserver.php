@@ -8,7 +8,7 @@ use App\Services\InvoiceService;
 
 class InvoiceObserver
 {
-  public function creating($invoice)
+  public function creating(Invoice $invoice)
   {
     // Set default values for new invoices
     if (!$invoice->status) {
@@ -22,14 +22,17 @@ class InvoiceObserver
     }
   }
 
-  public function saved($invoice)
+  public function saved(Invoice $invoice)
   {
     $invoiceService = new InvoiceService($invoice);
 
     if ($invoice->wasChanged('total') || $invoice->wasChanged('due_date')) {
       $invoiceService->autoUpdateStatus();
     }
+  }
 
+  public function created(Invoice $invoice)
+  {
     activity()
       ->performedOn($invoice->contact)
       ->causedBy($invoice->creator)
