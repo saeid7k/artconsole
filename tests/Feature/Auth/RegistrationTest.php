@@ -11,6 +11,8 @@ class RegistrationTest extends TestCase
 {
     use RefreshDatabase;
 
+    private const TEST_UK_IP = '81.2.69.142';
+
     public function test_registration_screen_can_be_rendered(): void
     {
         Http::fake(['api.dicebear.com/*' => Http::response('<svg></svg>', 200)]);
@@ -50,7 +52,7 @@ class RegistrationTest extends TestCase
             ], 200),
         ]);
 
-        $this->withServerVariables(['REMOTE_ADDR' => '81.2.69.142'])->post('/register', [
+        $this->withServerVariables(['REMOTE_ADDR' => self::TEST_UK_IP])->post('/register', [
             'firstname'             => 'Jane',
             'lastname'              => 'Doe',
             'email'                 => 'jane@example.com',
@@ -74,7 +76,7 @@ class RegistrationTest extends TestCase
             ], 200),
         ]);
 
-        $this->withServerVariables(['REMOTE_ADDR' => '81.2.69.142'])->post('/register', [
+        $this->withServerVariables(['REMOTE_ADDR' => self::TEST_UK_IP])->post('/register', [
             'firstname'             => 'Jane',
             'lastname'              => 'Doe',
             'email'                 => 'jane@example.com',
