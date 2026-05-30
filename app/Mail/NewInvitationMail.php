@@ -4,16 +4,12 @@ namespace App\Mail;
 
 use App\Models\Gallery;
 use App\Models\InviteLink;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Queue\SerializesModels;
 
-class NewInvitationMail extends Mailable implements ShouldQueue
+class NewInvitationMail extends Mailable
 {
-  use Queueable, SerializesModels;
 
   /**
    * Create a new message instance.

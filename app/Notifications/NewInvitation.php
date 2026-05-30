@@ -5,9 +5,10 @@ namespace App\Notifications;
 use App\Mail\NewInvitationMail;
 use App\Models\InviteLink;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 
-class NewInvitation extends Notification
+class NewInvitation extends Notification implements ShouldQueue
 {
   use Queueable;
 
