@@ -49,7 +49,7 @@ class UserObserver
     if (!empty($locationData['countryCode'])) {
       $currency = LocationHelper::getCurrencyByCountryCode($locationData['countryCode']);
       if ($currency) {
-        $gallery->currency = $currency;
+        $gallery->setMeta('currency', $currency);
       }
     }
   }
