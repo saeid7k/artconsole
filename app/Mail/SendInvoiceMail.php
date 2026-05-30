@@ -5,19 +5,14 @@ namespace App\Mail;
 use App\Models\Gallery;
 use App\Models\Invoice;
 use App\Services\InvoiceExportService;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
 
-class SendInvoiceMail extends Mailable implements ShouldQueue
+class SendInvoiceMail extends Mailable
 {
-  use Queueable, SerializesModels;
 
   /**
    * Create a new message instance.
@@ -68,17 +63,5 @@ class SendInvoiceMail extends Mailable implements ShouldQueue
       }, 'Invoice - ' . $this->invoice->invoice_number . '.pdf')
         ->withMime('application/pdf'),
     ];
-  }
-
-  /**
-   * Handle a job failure.
-   */
-  public function failed(\Throwable $exception): void
-  {
-    Log::error('SendInvoiceMail failed', [
-      'invoice_id' => $this->invoice->id,
-      'invoice_number' => $this->invoice->invoice_number,
-      'exception' => $exception->getMessage(),
-    ]);
   }
 }
