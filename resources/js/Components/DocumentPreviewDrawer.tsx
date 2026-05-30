@@ -9,6 +9,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import FlexBox from "./Containers/FlexBox";
 import LoadingSpinner from "./LoadingSpinner";
+import { useWindow } from "@/hooks/useWindow";
 
 type Props = {
   artwork: ArtworkProps;
@@ -19,6 +20,7 @@ type Props = {
 
 function DocumentPreviewDrawer({ artwork, document, show, onClose }: Props) {
 
+  const { isMobile } = useWindow();
   const [htmlContent, setHtmlContent] = useState<string | null>(null);
 
   const renderDocumentMutation = useMutation({
@@ -80,6 +82,15 @@ function DocumentPreviewDrawer({ artwork, document, show, onClose }: Props) {
       extra={renderToolbar()}
       resizable
       defaultSize={1280}
+      styles={{
+        header: {
+          flexDirection: isMobile ? 'column' : 'row',
+          gap: '8px',
+        },
+        extra: {
+          alignSelf: 'end',
+        }
+      }}
     >
       {renderDocumentMutation.isPending && (
         <LoadingSpinner size="large" className="py-20" />
