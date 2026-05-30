@@ -4,11 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Enums\InvoiceStatus;
 use App\Http\Requests\InvoiceRequest;
-use App\Mail\SendInvoiceMail;
+use App\Jobs\SendInvoiceMailJob;
 use App\Models\Invoice;
 use App\Services\InvoiceExportService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class InvoiceController extends Controller
@@ -185,8 +184,7 @@ class InvoiceController extends Controller
     $this->authorize('view', $invoice);
     $user = $request->user();
 
-    Mail::to($invoice->contact->email)
-      ->send(new SendInvoiceMail($invoice));
+    SendInvoiceMailJob::dispatch($invoice->id, $invoice->contact->email);
 
     if ($invoice->status == 'draft') {
       $invoice->update(['status' => 'sent']);
