@@ -23,7 +23,7 @@ class UserObserver
       $user->setTimezoneFromAddress();
     } else {
       $ip = request()->ip();
-      $user->setLocationDataFromIp($ip);
+      $user->setTimezoneFromIp($ip);
       $gallery->setCurrencyFromIp($ip);
     }
   }
