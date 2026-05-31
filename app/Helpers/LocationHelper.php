@@ -16,9 +16,9 @@ class LocationHelper
 
     try {
       $data = Cache::get("location_data_{$ip}");
-
+      
       if (!$data) {
-        $response = Http::timeout(5)->get("https://ip-api.com/json/{$ip}", [
+        $response = Http::timeout(5)->get("http://ip-api.com/json/{$ip}", [
             'fields' => 'status,countryCode,timezone',
           ]);
 
