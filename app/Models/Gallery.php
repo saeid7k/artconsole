@@ -7,6 +7,7 @@ use App\Enums\InvoiceStatus;
 use App\Helpers\AddressHelper;
 use App\Helpers\ConfigHelper;
 use App\Helpers\FormatHelper;
+use App\Helpers\LocationHelper;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -338,6 +339,22 @@ class Gallery extends Model implements HasMedia
     $uniqueArtworkIds = $invoiceItems->pluck('artwork_id')->unique();
 
     return $uniqueArtworkIds->count();
+  }
+
+  public function setCurrencyFromIp($ip = null): void
+  {
+    if (!$ip) {
+      return;
+    }
+
+    $locationData = LocationHelper::getLocationFromIp($ip);
+
+    if (!empty($locationData['countryCode'])) {
+      $currency = LocationHelper::getCurrencyByCountryCode($locationData['countryCode']);
+      if ($currency) {
+        $this->setMeta('currency', $currency);
+      }
+    }
   }
 
   /*

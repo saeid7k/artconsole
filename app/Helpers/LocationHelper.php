@@ -2,14 +2,59 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class LocationHelper
 {
-  /**
-   * Maps country ISO codes to currency codes supported by the app.
-   */
+  public static function getLocationFromIp(string $ip): ?array
+  {
+    if (!self::isPublicIp($ip)) {
+      return null;
+    }
+
+    try {
+      $data = Cache::get("location_data_{$ip}");
+
+      if (!$data) {
+        $response = Http::timeout(5)->get("https://ip-api.com/json/{$ip}", [
+            'fields' => 'status,countryCode,timezone',
+          ]);
+
+        if ($response->successful()) {
+          $data = $response->json();
+          Cache::put("location_data_{$ip}", $data, now()->addMonth());
+        }
+      }
+
+      if (($data['status'] ?? '') === 'success') {
+        return [
+          'countryCode' => $data['countryCode'] ?? null,
+          'timezone'    => $data['timezone'] ?? null,
+        ];
+      }
+    } catch (\Exception $e) {
+      Log::warning('IP geolocation failed for IP ' . $ip . ': ' . $e->getMessage());
+    }
+
+    return null;
+  }
+
+  public static function getCurrencyByCountryCode(string $countryCode): ?string
+  {
+    return self::$countryCurrencyMap[strtoupper($countryCode)] ?? null;
+  }
+
+  private static function isPublicIp(string $ip): bool
+  {
+    return (bool) filter_var(
+      $ip,
+      FILTER_VALIDATE_IP,
+      FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
+    );
+  }
+
   private static array $countryCurrencyMap = [
     // North America
     'US' => 'USD',
@@ -52,58 +97,4 @@ class LocationHelper
     'CH' => 'CHF',
     'LI' => 'CHF',
   ];
-
-  /**
-   * Get location data from an IP address using the ip-api.com free service.
-   *
-   * @param string $ip
-   * @return array{countryCode: string, timezone: string}|null
-   */
-  public static function getLocationFromIp(string $ip): ?array
-  {
-    if (!self::isPublicIp($ip)) {
-      return null;
-    }
-
-    try {
-      $response = Http::timeout(5)->get("https://ip-api.com/json/{$ip}", [
-        'fields' => 'status,countryCode,timezone',
-      ]);
-
-      if ($response->successful()) {
-        $data = $response->json();
-        if (($data['status'] ?? '') === 'success') {
-          return [
-            'countryCode' => $data['countryCode'] ?? null,
-            'timezone'    => $data['timezone'] ?? null,
-          ];
-        }
-      }
-    } catch (\Exception $e) {
-      Log::warning('IP geolocation failed for IP ' . $ip . ': ' . $e->getMessage());
-    }
-
-    return null;
-  }
-
-  /**
-   * Get the currency code for a given country ISO code.
-   * Returns null if the country is not mapped to a supported currency.
-   */
-  public static function getCurrencyByCountryCode(string $countryCode): ?string
-  {
-    return self::$countryCurrencyMap[strtoupper($countryCode)] ?? null;
-  }
-
-  /**
-   * Check whether an IP address is a routable public IP.
-   */
-  private static function isPublicIp(string $ip): bool
-  {
-    return (bool) filter_var(
-      $ip,
-      FILTER_VALIDATE_IP,
-      FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
-    );
-  }
 }
