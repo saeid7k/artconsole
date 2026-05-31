@@ -18,39 +18,13 @@ class UserObserver
     ]);
     $gallery->setRandomLogo();
 
-    // Set timezone and gallery currency based on address (if present) or IP location
+    // Set timezone and gallery currency based on address or IP
     if ($user->address) {
       $user->setTimezoneFromAddress();
     } else {
-      $this->applyLocationFromIp($user, $gallery);
-    }
-  }
-
-  /**
-   * Detect the user's location from their request IP and apply timezone and
-   * default gallery currency accordingly.
-   */
-  private function applyLocationFromIp(User $user, $gallery): void
-  {
-    $ip = request()->ip();
-    if (!$ip) {
-      return;
-    }
-
-    $locationData = LocationHelper::getLocationFromIp($ip);
-    if (!$locationData) {
-      return;
-    }
-
-    if (!empty($locationData['timezone'])) {
-      $user->setMeta('timezone', $locationData['timezone']);
-    }
-
-    if (!empty($locationData['countryCode'])) {
-      $currency = LocationHelper::getCurrencyByCountryCode($locationData['countryCode']);
-      if ($currency) {
-        $gallery->setMeta('currency', $currency);
-      }
+      $ip = request()->ip();
+      $user->setLocationDataFromIp($ip);
+      $gallery->setCurrencyFromIp($ip);
     }
   }
 

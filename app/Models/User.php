@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Helpers\AddressHelper;
 use App\Helpers\ConfigHelper;
+use App\Helpers\LocationHelper;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -284,6 +285,19 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
       if ($geocode && isset($geocode['timezone'])) {
         $this->setMeta('timezone', $geocode['timezone']);
       }
+    }
+  }
+
+  public function setTimezoneFromIp($ip = null): void
+  {
+    if (!$ip) {
+      return;
+    }
+
+    $locationData = LocationHelper::getLocationFromIp($ip);
+
+    if (!empty($locationData['timezone'])) {
+      $this->setMeta('timezone', $locationData['timezone']);
     }
   }
 
