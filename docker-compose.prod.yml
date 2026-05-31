@@ -90,6 +90,9 @@ services:
       SKIP_BOOTSTRAP: "true"
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    volumes:
+      - /var/www/artconsole/storage/app/public:/var/www/html/storage/app/public
+      - /var/www/artconsole/public/drive:/var/www/html/public/drive
     depends_on:
       - app
     restart: unless-stopped
