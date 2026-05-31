@@ -2,10 +2,8 @@
 
 namespace App\Observers;
 
-use App\Helpers\AddressHelper;
-use App\Helpers\ConfigHelper;
+use App\Helpers\LocationHelper;
 use App\Models\User;
-use Illuminate\Support\Facades\Http;
 
 class UserObserver
 {
@@ -20,9 +18,13 @@ class UserObserver
     ]);
     $gallery->setRandomLogo();
 
-    // Set User Settings
+    // Set timezone and gallery currency based on address or IP
     if ($user->address) {
       $user->setTimezoneFromAddress();
+    } else {
+      $ip = request()->ip();
+      $user->setLocationDataFromIp($ip);
+      $gallery->setCurrencyFromIp($ip);
     }
   }
 
