@@ -90,6 +90,7 @@ function UsersTable({ users }: { users: PageProps }) {
     <Table
       columns={columns}
       dataSource={users.data}
+      rowKey="id"
       size='small'
       scroll={{ x: 'max-content' }}
       pagination={{
