@@ -35,7 +35,6 @@ function PhoneField({ form, fieldNames = defaultFieldNames }: Props) {
           noStyle
         >
           <Select
-            defaultValue="+1"
             options={
               COUNTRIES.map((country) => ({
                 key: country.iso,

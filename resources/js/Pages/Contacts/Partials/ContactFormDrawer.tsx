@@ -73,7 +73,12 @@ function ContactFormDrawer({ mode = 'create', contact = null, show, onClose }: P
               birthday: contact?.birthday ? dayjs(contact?.birthday) : null
             }
           :
-            {}
+            {
+              country_code: '+1',
+              business: {
+                country_code: '+1',
+              }
+            }
         }
         validateTrigger="onBlur"
       >

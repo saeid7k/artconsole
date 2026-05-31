@@ -47,7 +47,10 @@ function AccountPersonalTab() {
       layout="vertical"
       className="w-full"
       form={form}
-      initialValues={{...user}}
+      initialValues={{
+        ...user,
+        country_code: user?.country_code || '+1',
+      }}
       onKeyDown={(e: React.KeyboardEvent<HTMLFormElement>) => {
         if (e.key === 'Enter') {
           e.preventDefault()
