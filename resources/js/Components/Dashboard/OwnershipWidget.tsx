@@ -1,3 +1,4 @@
+import { useApp } from "@/contexts/AppContext";
 import colors from "@/Themes/theme";
 import { keyToTitle } from "@/utils/stringHelper";
 import { InformationCircleIcon } from "@hugeicons/core-free-icons";
@@ -9,7 +10,6 @@ import { Card, Empty } from "antd";
 import axios from "axios";
 import FlexBox from "../Containers/FlexBox";
 import InlinePopover from "../InlinePopover";
-import { useApp } from "@/contexts/AppContext";
 
 function OwnershipWidget() {
 
@@ -77,6 +77,7 @@ function OwnershipWidget() {
     <Card
       title='Ownership Split'
       loading={isLoading}
+      className='min-h-[265px]'
     >
       {
         totalArtworks == 0 && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No artworks found" />

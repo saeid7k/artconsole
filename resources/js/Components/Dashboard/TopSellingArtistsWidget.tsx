@@ -33,7 +33,7 @@ function TopSellingArtistsWidget() {
       className={isLoading ? 'h-[295px]' : ''}
     >
       {
-        data?.length == 0 && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No artworks found" />
+        data?.length == 0 && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No artists found" />
       }
 
       <div className="flex flex-col gap-1">

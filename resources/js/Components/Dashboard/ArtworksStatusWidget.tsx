@@ -1,12 +1,13 @@
 import ARTWORK_STATUSES from "@/constants/artworkStatuses";
+import { useApp } from "@/contexts/AppContext";
 import colors from "@/Themes/theme";
+import { router } from "@inertiajs/react";
 import { DefaultizedPieValueType } from '@mui/x-charts/models';
 import { PieChart, pieClasses } from '@mui/x-charts/PieChart';
 import { useQuery } from "@tanstack/react-query";
-import { Card, Empty } from "antd";
+import { Button, Card, Empty } from "antd";
 import axios from "axios";
 import FlexBox from "../Containers/FlexBox";
-import { useApp } from "@/contexts/AppContext";
 
 function ArtworksStatusWidget() {
 
@@ -71,10 +72,23 @@ function ArtworksStatusWidget() {
     <Card
       title='Artworks Status'
       loading={isLoading}
-      className={isLoading ? 'h-[265px]' : ''}
+      className='min-h-[265px]'
     >
       {
-        totalArtworks == 0 && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No artworks found" />
+        totalArtworks == 0 && (
+          <FlexBox direction="col" >
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={null} rootClassName="m-1" />
+            <Button
+              onClick={() => {router.visit(route('artworks.index'), {
+                data: {
+                  action: 'create',
+                }
+              })}}
+            >
+              Add your first Artwork
+            </Button>
+          </FlexBox>
+        )
       }
 
       { totalArtworks > 0 && (
