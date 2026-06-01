@@ -3,7 +3,8 @@ import { useWindow } from "@/hooks/useWindow";
 import colors from "@/Themes/theme";
 import { AuthProps } from "@/types/auth";
 import { GalleryProps } from "@/types/gallery";
-import { ArrowTurnBackwardIcon, ContactIcon, CreditCard, CrownIcon, DashboardBrowsingIcon, File01Icon, Image02Icon, InvoiceIcon, PulseRectangleIcon, Rocket01Icon, StoreLocation01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons";
+import { getDomain } from "@/utils/urlHelper";
+import { ArrowTurnBackwardIcon, ContactIcon, CreditCard, CrownIcon, DashboardBrowsingIcon, File01Icon, Image02Icon, InvoiceIcon, PulseRectangleIcon, Rocket01Icon, ServerStack02Icon, StoreLocation01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
 import { Button, Divider, Menu } from "antd";
@@ -29,7 +30,8 @@ function Sidebar() {
 
   const adminItems = [
     { key: 'users', icon: <HugeiconsIcon icon={UserMultipleIcon} />, label: 'Users', route: 'users.index' },
-    { key: 'server-monitor', icon: <HugeiconsIcon icon={PulseRectangleIcon} />, label: 'Server Monitor', path: '/pulse' },
+    { key: 'app-monitor', icon: <HugeiconsIcon icon={PulseRectangleIcon} />, label: 'App Monitor', path: '/pulse' },
+    { key: 'server-monitor', icon: <HugeiconsIcon icon={ServerStack02Icon} />, label: 'Server Monitor', url: `server.${getDomain()}` },
   ]
 
   const lowerItems = [
@@ -68,6 +70,9 @@ function Sidebar() {
       }
     } else if (selected?.path) {
       window.open(selected.path, '_self');
+    } else if (selected?.url) {
+      const url = selected.url.startsWith('http') ? selected.url : `https://${selected.url}`;
+      window.open(url, '_blank');
     }
     if (isMobile) {
       toggleSidebar();

@@ -12,4 +12,10 @@ function deleteQueryParam(param: string): void {
   window.history.replaceState({}, '', newUrl);
 }
 
-export { getQueryParam, deleteQueryParam }
+function getDomain() {
+  const url = new URL(window.location.href);
+  return url.hostname;
+}
+
+export { deleteQueryParam, getDomain, getQueryParam };
+
