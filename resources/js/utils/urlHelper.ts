@@ -14,7 +14,7 @@ function deleteQueryParam(param: string): void {
 
 function getDomain() {
   const url = new URL(window.location.href);
-  return url.hostname;
+  return url.hostname.split('.').slice(-2).join('.');
 }
 
 export { deleteQueryParam, getDomain, getQueryParam };
