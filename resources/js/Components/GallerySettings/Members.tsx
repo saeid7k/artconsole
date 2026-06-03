@@ -128,7 +128,7 @@ function Members() {
               onChange={(value) => changeAccessLevel((record as UserProps).id, value)}
               disabled={gallery.user_id == record.id || user?.id == record.id}
               options={
-                ACCESS_LEVELS.filter(level => level.name !== 'owner' || gallery.user_id == user?.id).map(level => ({
+                ACCESS_LEVELS.filter(level => level.name !== 'owner').map(level => ({
                   value: level.name,
                   label: ucFirst(level.name),
                 }))

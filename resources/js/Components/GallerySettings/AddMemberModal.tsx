@@ -95,13 +95,13 @@ function AddMemberModal({ open = false, setOpen, gallery }: Props) {
           <Select
             placeholder="Select access level"
             defaultValue={CONFIGS.defaults.access_level}
-          >
-            {ACCESS_LEVELS.map(level => (
-              <Select.Option key={level.name} value={level.name}>
-                {ucFirst(level.name)}
-              </Select.Option>
-            ))}
-          </Select>
+            options={
+              ACCESS_LEVELS.filter(level => level.name !== 'owner').map(level => ({
+                value: level.name,
+                label: ucFirst(level.name),
+              }))
+            }
+          />
         </Form.Item>
         <Form.Item
           label="Message (optional)"

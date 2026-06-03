@@ -27,7 +27,7 @@ class MemberController extends Controller
 
     $request->validate([
       'email' => 'required|email|max:255',
-      'access' => 'required|string|in:viewer,editor,owner',
+      'access' => 'required|string|in:viewer,editor',
       'message' => 'nullable|string|max:1000',
     ]);
 
@@ -74,7 +74,7 @@ class MemberController extends Controller
 
     $request->validate([
       'member_id' => 'required|integer|exists:users,id',
-      'access' => 'required|string|in:viewer,editor,owner',
+      'access' => 'required|string|in:viewer,editor',
     ]);
 
     if ($request->member_id == $gallery->user_id) {
@@ -86,12 +86,6 @@ class MemberController extends Controller
     if ($request->member_id == $request->user()->id) {
       return response([
         'message' => 'Cannot change your own access level.',
-      ], 422);
-    }
-
-    if ($request->input('access') == 'owner' && $gallery->user_id != $request->user()->id) {
-      return response([
-        'message' => 'Only the gallery creator can assign owner access level.',
       ], 422);
     }
 
