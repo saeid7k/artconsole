@@ -58,6 +58,9 @@ jobs:
             set -e
             cd /var/www/artconsole
 
+            echo "▶ Pulling latest code..."
+            git pull --rebase --force origin main
+
             echo "▶ Loading new images..."
             docker load -i app-image.tar
             docker load -i nginx-image.tar
