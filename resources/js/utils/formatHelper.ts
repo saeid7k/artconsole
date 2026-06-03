@@ -47,7 +47,7 @@ function formatByKey(key: string, value: any, currency?: any): any {
   }
 }
 
-function formatPhoneNumber(phoneNumber: string, countryCode: string = '+1'): string {
+function formatPhoneNumber(phoneNumber: string | null, countryCode: string = '+1'): string {
   if (!phoneNumber) return '';
 
   const cleaned = phoneNumber.replace(/\D/g, '');
@@ -139,4 +139,5 @@ function ucWords(str: string | null | undefined): string {
   return str.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
 }
 
-export { formatByKey, formatNumber, formatCurrency, formatDimensions, formatPhoneNumber, trimWebsite, ucWords };
+export { formatByKey, formatCurrency, formatDimensions, formatNumber, formatPhoneNumber, trimWebsite, ucWords };
+

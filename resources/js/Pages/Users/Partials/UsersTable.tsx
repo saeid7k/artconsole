@@ -1,16 +1,14 @@
+import StyledEmail from '@/Components/StyledData/StyledEmail';
+import StyledPhone from '@/Components/StyledData/StyledPhone';
 import UserStack from '@/Components/UserStack';
 import { useWindow } from '@/hooks/useWindow';
 import { PageProps } from '@/types';
 import { UserProps } from '@/types/user';
-import { formatPhoneNumber } from '@/utils/formatHelper';
-import { Call02Icon } from '@hugeicons/core-free-icons';
-import { HugeiconsIcon } from '@hugeicons/react';
 import { router } from '@inertiajs/react';
 import type { TableProps } from 'antd';
 import { Table } from 'antd';
-import UsersActions from './UsersActions';
 import { JSX } from 'react';
-import StyledEmail from '@/Components/StyledData/StyledEmail';
+import UsersActions from './UsersActions';
 
 function UsersTable({ users }: { users: PageProps }) {
 
@@ -65,18 +63,7 @@ function UsersTable({ users }: { users: PageProps }) {
       sorter: (a, b) => a.phone.localeCompare(b.phone),
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
-      render: (text) => {
-        return (
-          <>
-            {text && (
-              <div className='flex items-center gap-1'>
-                <HugeiconsIcon icon={Call02Icon} strokeWidth={1} size={20} />
-                {formatPhoneNumber(text)}
-              </div>
-            )}
-          </>
-        )
-      },
+      render: (text) => text && <StyledPhone phone={text} />,
       width: 180,
     },
     {
