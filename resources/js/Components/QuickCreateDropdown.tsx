@@ -1,10 +1,12 @@
-import { AddInvoiceIcon, AddSquareIcon, ContactIcon, ImageAdd02Icon, InvoiceIcon } from "@hugeicons/core-free-icons";
+import { AddInvoiceIcon, AddSquareIcon, ContactIcon, ImageAdd02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { router } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 import { Button, Dropdown, Menu } from "antd";
 import FlexBox from "./Containers/FlexBox";
 
 function QuickCreateDropdown() {
+
+  const user = usePage().props.auth.user;
 
   const popup = () => {
     return (
@@ -48,6 +50,10 @@ function QuickCreateDropdown() {
       </Menu>
     );
   };
+
+  if (!user?.has_edit_access) {
+    return null;
+  }
 
   return (
     <Dropdown

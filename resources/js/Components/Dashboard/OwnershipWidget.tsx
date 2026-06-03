@@ -80,7 +80,7 @@ function OwnershipWidget() {
       className='min-h-[265px]'
     >
       {
-        totalArtworks == 0 && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No artworks found" />
+        totalArtworks == 0 && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No artworks found" rootClassName="m-1" />
       }
 
       { totalArtworks > 0 && (
