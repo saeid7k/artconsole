@@ -39,7 +39,7 @@ export default function Register() {
 
       {gallery_invited && (
         <>
-          Register to join <strong>{gallery_invited}</strong>.
+          Register to join <strong>{gallery_invited}</strong>
           <Divider />
         </>
       )}
@@ -51,7 +51,7 @@ export default function Register() {
               type='text'
               placeholder='First Name'
               value={data.firstname}
-              autoComplete="name"
+              autoComplete="given-name"
               onChange={(e) => setData('firstname', e.target.value)}
               ref={firstnameRef}
               size='large'
@@ -66,7 +66,7 @@ export default function Register() {
               type='text'
               placeholder='Last Name'
               value={data.lastname}
-              autoComplete="lastname"
+              autoComplete="family-name"
               onChange={(e) => setData('lastname', e.target.value)}
               size='large'
             />
