@@ -3,7 +3,7 @@ import colors from "@/Themes/theme";
 import { GalleryProps } from "@/types/gallery";
 import { InviteLinkProps } from "@/types/inviteLink";
 import { UsePageProps } from "@/types/usePage";
-import { AddIcon, AddMaleIcon, ArrowDown01Icon, Cancel01Icon, CheckmarkCircle01Icon, CircleIcon, SettingsFreeIcons, Tick02Icon } from "@hugeicons/core-free-icons";
+import { AddMaleIcon, ArrowDown01Icon, Cancel01Icon, CheckmarkCircle01Icon, CircleIcon, SettingsFreeIcons, Tick02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { router, usePage } from "@inertiajs/react";
 import { Badge, Button, Card, Divider, Dropdown, message, Tooltip } from "antd";
@@ -161,16 +161,7 @@ function GallerySwitch() {
 
               {/* Switch Galleries */}
               <div className="flex flex-col gap-1">
-                <div className="flex items-center justify-between">
-                  <div className="text-ghost">Switch Gallery</div>
-                  <Tooltip title="Create New Gallery" >
-                    <Button
-                      size="small"
-                      icon={<HugeiconsIcon icon={AddIcon} size={16} />}
-                      onClick={() => {setShowCreateGalleryModal(true); setOpen(false);}}
-                    />
-                  </Tooltip>
-                </div>
+                <div className="text-ghost">Switch Gallery</div>
                 {galleries.length > 0 && galleries.map((gallery: GalleryProps) => (
                   <Button
                     key={gallery.id}
@@ -197,46 +188,50 @@ function GallerySwitch() {
                 ))}
               </div>
 
+              {/* Invitations */}
               {hasInvitations && (
-                <>
-                  <Divider className="my-3" />
-
-                  {/* Invitations */}
-                  <div className="flex flex-col gap-1">
-                    <div className="text-ghost tracking-wide">Invitations<Badge status="warning" className="ms-1" /></div>
-                    {invitations.map((invitation: any) => (
-                      <div className="flex items-center justify-between gap-2">
-                        <div className="flex items-center gap-1">
-                          <GalleryAvatar gallery={invitation.gallery} size="small" shadow />
-                          <div>{invitation.gallery.name}</div>
-                          <GalleryAccessTag access={invitation.settings?.access} className="ms-1" />
-                        </div>
-                        <div className="flex">
-                          <Tooltip title="Join">
-                            <Button
-                              type="text"
-                              shape="circle"
-                              onClick={() => acceptInvitation(invitation.id)}
-                            >
-                              <HugeiconsIcon icon={Tick02Icon} size={20} className="text-green-600" />
-                            </Button>
-                          </Tooltip>
-                          <Tooltip title="Decline">
-                            <Button
-                              type="text"
-                              shape="circle"
-                              onClick={() => declineInvitation(invitation.id)}
-                            >
-                              <HugeiconsIcon icon={Cancel01Icon} size={20} className="text-red-600" />
-                            </Button>
-                          </Tooltip>
-                        </div>
+                <div className="flex flex-col gap-1 mt-2">
+                  <div className="text-ghost tracking-wide">Invitations<Badge status="warning" className="ms-1" /></div>
+                  {invitations.map((invitation: any) => (
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-1">
+                        <GalleryAvatar gallery={invitation.gallery} size="small" shadow />
+                        <div>{invitation.gallery.name}</div>
+                        <GalleryAccessTag access={invitation.settings?.access} className="ms-1" />
                       </div>
-                    ))}
-                  </div>
-                </>
+                      <div className="flex">
+                        <Tooltip title="Join">
+                          <Button
+                            type="text"
+                            shape="circle"
+                            onClick={() => acceptInvitation(invitation.id)}
+                          >
+                            <HugeiconsIcon icon={Tick02Icon} size={20} className="text-green-600" />
+                          </Button>
+                        </Tooltip>
+                        <Tooltip title="Decline">
+                          <Button
+                            type="text"
+                            shape="circle"
+                            onClick={() => declineInvitation(invitation.id)}
+                          >
+                            <HugeiconsIcon icon={Cancel01Icon} size={20} className="text-red-600" />
+                          </Button>
+                        </Tooltip>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               )}
 
+              <Button
+                type="dashed"
+                size="small"
+                className="mt-3 font-light w-full"
+                onClick={() => {setShowCreateGalleryModal(true); setOpen(false);}}
+              >
+                Create New Gallery
+              </Button>
             </Card>
           )
         }
