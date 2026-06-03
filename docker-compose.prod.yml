@@ -1,7 +1,7 @@
 services:
 
   app:
-    image: ghcr.io/saeid7k/artconsole-app:latest
+    image: ghcr.io/saeid7k/artconsole/artconsole-app:latest
     env_file:
       - .env.production
     environment:
@@ -20,7 +20,7 @@ services:
       - artconsole
 
   nginx:
-    image: ghcr.io/saeid7k/artconsole-nginx:latest
+    image: ghcr.io/saeid7k/artconsole/artconsole-nginx:latest
     environment:
       APP_DOMAIN: "${APP_DOMAIN}"
     volumes:
@@ -55,7 +55,7 @@ services:
       - artconsole
 
   queue:
-    image: ghcr.io/saeid7k/artconsole-app:latest
+    image: ghcr.io/saeid7k/artconsole/artconsole-app:latest
     command: ["php", "artisan", "queue:work", "--tries=3", "--sleep=3", "--timeout=90", "--max-time=3600"]
     env_file:
       - .env.production
@@ -75,7 +75,7 @@ services:
       - artconsole
 
   scheduler:
-    image: ghcr.io/saeid7k/artconsole-app:latest
+    image: ghcr.io/saeid7k/artconsole/artconsole-app:latest
     command: ["php", "artisan", "schedule:work"]
     env_file:
       - .env.production
@@ -94,7 +94,7 @@ services:
       - artconsole
 
   pulse:
-    image: ghcr.io/saeid7k/artconsole-app:latest
+    image: ghcr.io/saeid7k/artconsole/artconsole-app:latest
     command: ["php", "artisan", "pulse:work"]
     env_file:
       - .env.production
