@@ -26,7 +26,7 @@ function ProBadge({ size = 'small', onClick }: Props) {
     setOpenUpgradeModal(true);
   }
 
-  if (isPro) {
+  if (isPro || user?.is_admin) {
     return null
   }
 

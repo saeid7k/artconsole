@@ -24,7 +24,7 @@ function GallerySwitch() {
   // Hooks
 
   const { intervalData } = useApp();
-  const { current_gallery, galleries } = usePage<UsePageProps>().props;
+  const { current_gallery, galleries, auth } = usePage<UsePageProps>().props;
   const [messageApi, messageContextHolder] = useMessage();
 
   // States
@@ -100,7 +100,7 @@ function GallerySwitch() {
 
   // Derived States
 
-  const inviteForbidden = !current_gallery.is_subscribed
+  const inviteForbidden = !current_gallery.is_subscribed && !auth.user?.is_admin
 
   return (
     <>
