@@ -64,7 +64,7 @@ function Invoicing() {
             <Switch
               defaultChecked={gallery?.meta?.app_branding ?? true}
               onChange={(checked) => setMeta("app_branding", checked)}
-              disabled={!gallery?.is_subscribed || !user?.is_demo}
+              disabled={!gallery?.is_subscribed}
             />
             <div className="text-ghost">Show "Powered by {CONFIGS.app.name}" in invoices' footer</div>
           </div>
