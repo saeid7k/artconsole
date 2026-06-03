@@ -107,6 +107,10 @@ class AddressHelper
 
   public static function countryToIso(string $country): ?string
   {
+    if (empty($country)) {
+      return null;
+    }
+
     $countryMap = Cache::rememberForever('country_iso_map', function () {
       $path = resource_path('js/constants/countries.json');
 

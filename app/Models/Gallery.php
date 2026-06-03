@@ -386,7 +386,7 @@ class Gallery extends Model implements HasMedia
       'city' => $targetAddress->city ?? null,
       'state' => $targetAddress->province ?? null,
       'postal_code' => $targetAddress->postal_code ?? null,
-      'country' => AddressHelper::countryToIso($targetAddress->country) ?? null,
+      'country' => empty($targetAddress->country) ? null : AddressHelper::countryToIso($targetAddress->country),
     ];
   }
 
