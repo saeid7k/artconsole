@@ -9,6 +9,9 @@ jobs:
   deploy:
     name: Build and Deploy
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - name: Checkout code
@@ -17,23 +20,30 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and Package App Image
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Push App Image
         uses: docker/build-push-action@v5
         with:
           context: .
           target: production
-          tags: artconsole-app:latest
-          outputs: type=docker,dest=app-image.tar
+          push: true
+          tags: ghcr.io/${{ github.repository }}/artconsole-app:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Build and Package Nginx Image
+      - name: Build and Push Nginx Image
         uses: docker/build-push-action@v5
         with:
           context: .
           target: nginx-prod
-          tags: artconsole-nginx:latest
-          outputs: type=docker,dest=nginx-image.tar
+          push: true
+          tags: ghcr.io/${{ github.repository }}/artconsole-nginx:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -44,7 +54,7 @@ jobs:
           username: ${{ secrets.PROD_USER }}
           key: ${{ secrets.PROD_SSH_KEY }}
           port: ${{ secrets.PROD_PORT || 22 }}
-          source: "app-image.tar,nginx-image.tar,docker-compose.prod.yml"
+          source: "docker-compose.prod.yml"
           target: "/var/www/artconsole"
 
       - name: Deploy via SSH
@@ -58,19 +68,19 @@ jobs:
             set -e
             cd /var/www/artconsole
 
+            echo "▶ Authenticating with GitHub Container Registry..."
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
             echo "▶ Pulling latest code..."
             git pull --rebase --force origin main
 
-            echo "▶ Loading new images..."
-            docker load -i app-image.tar
-            docker load -i nginx-image.tar
+            echo "▶ Pulling new images..."
+            docker compose --env-file .env.production -f docker-compose.prod.yml pull
 
             echo "▶ Swapping containers..."
-            docker compose --env-file .env.production -f docker-compose.prod.yml up -d --no-build \
-              --remove-orphans
+            docker compose --env-file .env.production -f docker-compose.prod.yml up -d --no-build --remove-orphans
 
             echo "▶ Cleaning up..."
-            rm app-image.tar nginx-image.tar
-            docker image prune -f
+            docker image prune -a -f
 
             echo "✅ Deployment complete."
