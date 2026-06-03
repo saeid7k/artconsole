@@ -1,9 +1,10 @@
 import { ContactProps } from "@/types/contact";
 import { router } from "@inertiajs/react";
 import { useQuery } from "@tanstack/react-query";
-import { Button, Card, Empty } from "antd";
+import { Button, Card } from "antd";
 import axios from "axios";
 import ContactStack from "../Contacts/ContactStack";
+import EmptyContactStack from "../Contacts/EmptyContactStack";
 import FlexBox from "../Containers/FlexBox";
 
 function TopSellingArtistsWidget() {
@@ -30,10 +31,10 @@ function TopSellingArtistsWidget() {
           </Button>
         )
       }
-      className={isLoading ? 'h-[295px]' : ''}
+      className='min-h-[265px]'
     >
       {
-        data?.length == 0 && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No artists found" />
+        data?.length == 0 && <EmptyContactStack />
       }
 
       <div className="flex flex-col gap-1">

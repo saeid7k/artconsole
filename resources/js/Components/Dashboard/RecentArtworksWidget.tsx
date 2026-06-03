@@ -1,9 +1,10 @@
 import { ArtworkProps } from "@/types/artwork";
+import { router } from "@inertiajs/react";
 import { useQuery } from "@tanstack/react-query";
-import { Button, Card, Empty } from "antd";
+import { Button, Card } from "antd";
 import axios from "axios";
 import ArtworkStack from "../Artworks/ArtworkStack";
-import { router } from "@inertiajs/react";
+import EmptyArtworkStack from "../Artworks/EmptyArtworkStack";
 
 function RecentArtworksWidget() {
 
@@ -27,10 +28,10 @@ function RecentArtworksWidget() {
           </Button>
         )
       }
-      className={isLoading ? 'h-[295px]' : ''}
+      className='min-h-[265px]'
     >
       {
-        data?.length == 0 && <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No artworks found" />
+        data?.length == 0 && <EmptyArtworkStack />
       }
       <div className="flex flex-col gap-2">
         {data && data.length > 0 && data.map((artwork: ArtworkProps) => (
