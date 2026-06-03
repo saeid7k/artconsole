@@ -20,7 +20,7 @@ function GalleryAvatar({ gallery, size = 'default', shape = 'square', shadow, bo
       src={gallery?.logo_url}
       shape={shape}
       size={size}
-      className={twMerge(
+      className={twMerge('[&_img]:object-contain',
         shadow ? 'shadow' : '',
         border ? 'border-1 border-solid border-gray-200' : '',
       )}
