@@ -1,4 +1,3 @@
-import CONFIGS from "@/constants/configs.json";
 import { CURRENCIES_OPTIONS } from "@/constants/currencies";
 import { useGallerySettings } from "@/contexts/GallerySettingsContext";
 import useGalleryMeta from "@/hooks/useGalleryMeta";
@@ -19,7 +18,7 @@ function Currency() {
         options={CURRENCIES_OPTIONS}
         popupMatchSelectWidth={false}
         showSearch
-        defaultValue={gallery?.currency}
+        defaultValue={gallery?.meta?.currency} // NOTE: it should be derived from meta to reflect real selected value, not model normalized one
         onChange={(value) => setMeta("currency", value)}
       />
     </div>
