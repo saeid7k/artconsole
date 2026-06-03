@@ -7,10 +7,46 @@ on:
 
 jobs:
   deploy:
-    name: Deploy
+    name: Build and Deploy
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and Package App Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          target: production
+          tags: artconsole-app:latest
+          outputs: type=docker,dest=app-image.tar
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and Package Nginx Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          target: nginx-prod
+          tags: artconsole-nginx:latest
+          outputs: type=docker,dest=nginx-image.tar
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Copy Files to Production
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          port: ${{ secrets.PROD_PORT || 22 }}
+          source: "app-image.tar,nginx-image.tar,docker-compose.prod.yml"
+          target: "/var/www/artconsole"
+
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.2.0
         with:
@@ -22,17 +58,16 @@ jobs:
             set -e
             cd /var/www/artconsole
 
-            echo "▶ Pulling latest code..."
-            git pull --rebase --force origin main
-
-            echo "▶ Building new image..."
-            docker compose --env-file .env.production -f docker-compose.prod.yml build app nginx
+            echo "▶ Loading new images..."
+            docker load -i app-image.tar
+            docker load -i nginx-image.tar
 
             echo "▶ Swapping containers..."
             docker compose --env-file .env.production -f docker-compose.prod.yml up -d --no-build \
               --remove-orphans
 
-            echo "▶ Cleaning up old images..."
+            echo "▶ Cleaning up..."
+            rm app-image.tar nginx-image.tar
             docker image prune -f
 
             echo "✅ Deployment complete."
