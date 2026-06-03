@@ -5,6 +5,7 @@ namespace App\Mail;
 use App\Models\Gallery;
 use App\Models\InviteLink;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 
@@ -29,6 +30,7 @@ class NewInvitationMail extends Mailable
   public function envelope(): Envelope
   {
     return new Envelope(
+      from: new Address(config('mail.from.address'), $this->inviteLink->creator?->firstname . ' via ' . config('app.name')),
       subject: 'Invitation from ' . $this->inviteLink->creator?->full_name,
     );
   }
