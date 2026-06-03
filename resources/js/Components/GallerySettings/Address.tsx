@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react"
 import ActionFooter from "../ActionFooter"
 import AddressFields from "../FormFields/AddressFields"
 import GoogleMap from "../GoogleMap"
+import CONFIGS from "@/constants/configs.json"
 
 function Address() {
 
@@ -102,7 +103,10 @@ function Address() {
         form={form}
         layout="vertical"
         initialValues={{
-          address: gallery?.address || '',
+          address: {
+            ...gallery?.address,
+            country: gallery?.address?.country || CONFIGS.defaults.country
+          },
         }}
         validateTrigger="onSubmit"
       >

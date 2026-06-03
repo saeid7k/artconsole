@@ -67,7 +67,6 @@ function AddressFields({ namePathPrefix = [] }: Props) {
           <Select
             options={countryOptions}
             showSearch
-            defaultValue={CONFIGS.defaults.country}
           />
         </Form.Item>
       </div>

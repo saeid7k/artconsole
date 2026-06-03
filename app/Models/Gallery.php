@@ -376,7 +376,7 @@ class Gallery extends Model implements HasMedia
   public function stripeAddress(): array|null
   {
     $targetAddress = $this->getMeta('billing_to') == 'owner' ? $this->owner->address : $this->address;
-    if (!$targetAddress) {
+    if (!$targetAddress || empty($targetAddress->country)) {
       return null;
     }
 
@@ -386,7 +386,7 @@ class Gallery extends Model implements HasMedia
       'city' => $targetAddress->city ?? null,
       'state' => $targetAddress->province ?? null,
       'postal_code' => $targetAddress->postal_code ?? null,
-      'country' => empty($targetAddress->country) ? null : AddressHelper::countryToIso($targetAddress->country),
+      'country' => AddressHelper::countryToIso($targetAddress->country),
     ];
   }
 
