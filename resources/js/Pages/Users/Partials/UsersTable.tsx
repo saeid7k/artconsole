@@ -10,6 +10,7 @@ import type { TableProps } from 'antd';
 import { Table } from 'antd';
 import UsersActions from './UsersActions';
 import { JSX } from 'react';
+import StyledEmail from '@/Components/StyledData/StyledEmail';
 
 function UsersTable({ users }: { users: PageProps }) {
 
@@ -54,6 +55,7 @@ function UsersTable({ users }: { users: PageProps }) {
       sorter: (a, b) => a.email.localeCompare(b.email),
       sortDirections: ['ascend', 'descend'],
       showSorterTooltip: false,
+      render: (text, record) => <StyledEmail email={text} verified={!!record.email_verified_at} />,
       width: 200,
     },
     {
