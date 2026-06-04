@@ -1,5 +1,8 @@
+import FlexBox from '@/Components/Containers/FlexBox';
+import StyledDivider from '@/Components/StyledDivider';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { UsePageProps } from '@/types/usePage';
+import googleLogo from '@images/logo/google-logo.svg';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { Alert, Button, Divider, Input, InputRef } from 'antd';
 import { FormEventHandler, useEffect, useRef } from 'react';
@@ -133,6 +136,20 @@ export default function Register() {
           >
             Already registered? Login here.
           </Link>
+
+          <StyledDivider variant='light' size='small' >OR</StyledDivider>
+
+          <Button
+            type="default"
+            size='large'
+            href={route('auth.google')}
+            className="w-full"
+          >
+            <FlexBox gap={3} >
+              <img src={googleLogo} alt="Google Logo" className="h-5 w-5" />
+              Continue with Google
+            </FlexBox>
+          </Button>
         </div>
       </form>
     </GuestLayout>
