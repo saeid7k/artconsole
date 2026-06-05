@@ -1,7 +1,6 @@
-import tailwindConfig from "~/tailwind.config.js";
 import defaultColors from 'tailwindcss/colors';
+import { palette } from './palette';
 
-const customColors = (tailwindConfig as any).theme?.extend?.colors || {};
-const colors = { ...defaultColors, ...customColors } as Record<string, any>;
+const colors = { ...defaultColors, ...palette } as Record<string, any>;
 
 export { colors as default };
