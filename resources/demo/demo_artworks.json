@@ -509,6 +509,179 @@
   },
   {
     "artist_data": {
+      "firstname": "Rembrandt",
+      "lastname": "van Rijn"
+    },
+    "title": "The Night Watch",
+    "year": "1642",
+    "price": "8400",
+    "edition": {
+      "size": 1,
+      "type": "unique",
+      "number": 1
+    },
+    "signed": true,
+    "description": "A monumental Baroque masterpiece famous for its colossal size, dramatic use of tenebrism (light and shadow), and the dynamic depiction of a city guard moving out, which broke traditional static group portrait conventions.",
+    "category": "painting",
+    "subjects": [
+      "Portrait",
+      "Historical",
+      "Military"
+    ],
+    "mediums": [
+      "Oil on Canvas"
+    ],
+    "styles": [
+      "Baroque",
+      "Dutch Golden Age"
+    ],
+    "dimensions": {
+      "unit": "inches",
+      "depth": 2.5,
+      "width": 172,
+      "height": 143.3
+    }
+  },
+  {
+    "artist_data": {
+      "firstname": "Diego",
+      "lastname": "Velázquez"
+    },
+    "title": "Las Meninas",
+    "year": "1656",
+    "price": "7100",
+    "edition": {
+      "size": 1,
+      "type": "unique",
+      "number": 1
+    },
+    "signed": false,
+    "description": "A complex and enigmatic composition that raises questions about reality and illusion, creating an intricate relationship between the viewer, the figures of the Spanish royal court, and the artist himself shown working at the canvas.",
+    "category": "painting",
+    "subjects": [
+      "Portrait",
+      "Royal Court"
+    ],
+    "mediums": [
+      "Oil on Canvas"
+    ],
+    "styles": [
+      "Baroque",
+      "Spanish Golden Age"
+    ],
+    "dimensions": {
+      "unit": "inches",
+      "depth": 2,
+      "width": 108.7,
+      "height": 125.2
+    }
+  },
+  {
+    "artist_data": {
+      "firstname": "Georges",
+      "lastname": "Seurat"
+    },
+    "title": "A Sunday Afternoon on the Island of La Grande Jatte",
+    "year": "1886",
+    "price": "5900",
+    "edition": {
+      "size": 1,
+      "type": "unique",
+      "number": 1
+    },
+    "signed": false,
+    "description": "A monumental Pointillist painting composed entirely of tiny, meticulously placed dots of pure color that blend optically in the viewer's eye, capturing Parisians enjoying a leisurely afternoon along the River Seine.",
+    "category": "painting",
+    "subjects": [
+      "Landscape",
+      "Leisure",
+      "Figures"
+    ],
+    "mediums": [
+      "Oil on Canvas"
+    ],
+    "styles": [
+      "Post-Impressionism",
+      "Pointillism"
+    ],
+    "dimensions": {
+      "unit": "inches",
+      "depth": 2,
+      "width": 121.25,
+      "height": 81.7
+    }
+  },
+  {
+    "artist_data": {
+      "firstname": "Pablo",
+      "lastname": "Picasso"
+    },
+    "title": "Guernica",
+    "year": "1937",
+    "price": "9200",
+    "edition": {
+      "size": 1,
+      "type": "unique",
+      "number": 1
+    },
+    "signed": false,
+    "description": "A colossal monochrome anti-war masterpiece painted in response to the bombing of the Basque town of Guernica during the Spanish Civil War, utilizing Cubist distortions to portray universal suffering and the horrors of violence.",
+    "category": "painting",
+    "subjects": [
+      "Historical",
+      "War",
+      "Allegorical"
+    ],
+    "mediums": [
+      "Oil on Canvas"
+    ],
+    "styles": [
+      "Cubism",
+      "Surrealism"
+    ],
+    "dimensions": {
+      "unit": "inches",
+      "depth": 1.5,
+      "width": 305.5,
+      "height": 137.4
+    }
+  },
+  {
+    "artist_data": {
+      "firstname": "James McNeill",
+      "lastname": "Whistler"
+    },
+    "title": "Whistler's Mother",
+    "year": "1871",
+    "price": "4800",
+    "edition": {
+      "size": 1,
+      "type": "unique",
+      "number": 1
+    },
+    "signed": true,
+    "description": "Formally titled 'Arrangement in Grey and Black No. 1', this severe and starkly geometric composition is a masterclass in tonal harmony and maternal dignity, becoming an enduring American cultural icon.",
+    "category": "painting",
+    "subjects": [
+      "Portrait",
+      "Maturity"
+    ],
+    "mediums": [
+      "Oil on Canvas"
+    ],
+    "styles": [
+      "Realism",
+      "Tonalism"
+    ],
+    "dimensions": {
+      "unit": "inches",
+      "depth": 1.5,
+      "width": 63.9,
+      "height": 56.8
+    }
+  },
+  {
+    "artist_data": {
       "firstname": "Mahshid",
       "lastname": "K.V."
     },
