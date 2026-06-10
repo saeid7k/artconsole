@@ -78,4 +78,9 @@ jobs:
             echo "▶ Cleaning up..."
             docker image prune -a -f
 
+            echo "▶ Fixing permissions for mounted volumes..."
+            sudo chown -R 33:33 /var/www/artconsole/public/drive /var/www/artconsole/storage/app/public || true
+            sudo find /var/www/artconsole/public/drive /var/www/artconsole/storage/app/public -type d -exec chmod 775 {} \; || true
+            sudo find /var/www/artconsole/public/drive /var/www/artconsole/storage/app/public -type f -exec chmod 664 {} \; || true
+
             echo "✅ Deployment complete."
