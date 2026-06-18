@@ -21,8 +21,8 @@ return [
     'default_for_reranking' => 'cohere',
 
     'models' => [
-      'mockup' => env('gemini-2.5-flash-image'),
-      'description' => env('gemini-2.5-flash'),
+      'mockup' => 'gemini-2.5-flash-image',
+      'description' => 'gemini-2.5-flash',
     ],
 
     /*
