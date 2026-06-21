@@ -6,7 +6,7 @@ import { useWindow } from "@/hooks/useWindow";
 import colors from "@/Themes/theme";
 import { UsePageProps } from "@/types/usePage";
 import { formatCurrency } from "@/utils/formatHelper";
-import { AiMagicIcon, CheckmarkCircle02Icon, MinusSignCircleIcon } from "@hugeicons/core-free-icons";
+import { AiMagicIcon, CheckmarkCircle02Icon, InfinityCircleIcon, MinusSignCircleIcon, OneCircleIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { usePage } from "@inertiajs/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -136,35 +136,48 @@ function SelectPlanModal({ open, onClose }: Props) {
     )
   }
 
-  const featureRow = ({ title, type = "check", color = "green", description = null }: {
+  const featureRow = ({ title, type = "check", color = "green", bold = false, description = null }: {
     title: string,
-    type?: "check" | "disabled" | "ai",
-    color?: "green" | "gray" | "purple" | "gold",
+    type?: "check" | "disabled" | "ai" | "one" | "infinite",
+    color?: "green" | "gray" | "purple" | "gold" | "blue",
+    bold?: boolean,
     description?: string | null
   }) => {
-    let colorVar = {
+    const colorVar = {
       "green": colors.green[600],
       "gray": colors.gray[500],
       "purple": colors.purple[600],
-      "gold": colors.yellow[600]
+      "gold": colors.yellow[600],
+      "blue": colors.blue[600],
     }
-    let icon = {
+    const icon = {
       "check": CheckmarkCircle02Icon,
       "disabled": MinusSignCircleIcon,
-      "ai": AiMagicIcon
+      "ai": AiMagicIcon,
+      "one": OneCircleIcon,
+      "infinite": InfinityCircleIcon
     }
     return (
-    <div className="flex items-center gap-1">
-      <HugeiconsIcon
-        icon={icon[type]}
-        strokeWidth={1}
-        color={ colorVar[color]}
-        size={20}
-      />
-      <div className={twMerge("text-sm", type === "disabled" && "text-muted")}>{title}</div>
-      {description && <div className="text-ghost">{description}</div>}
-    </div>
-  )}
+      <div className="flex items-center gap-1">
+        <HugeiconsIcon
+          icon={icon[type]}
+          strokeWidth={1}
+          color={colorVar[color]}
+          size={20}
+        />
+        <div
+          className={twMerge(
+            "text-sm",
+            type === "disabled" && "text-muted",
+            bold && "font-semibold"
+          )}
+        >
+            {title}
+        </div>
+        {description && <div className="text-ghost">{description}</div>}
+      </div>
+    )
+  }
 
   return (
     <Modal
@@ -185,7 +198,7 @@ function SelectPlanModal({ open, onClose }: Props) {
             <Segmented
               options={[
                 { label: "Monthly", value: "month" },
-                { label: "Yearly", value: "year" },
+                { label: "Annual", value: "year" },
               ]}
               value={billingCycle}
               onChange={setBillingCycle}
@@ -205,7 +218,7 @@ function SelectPlanModal({ open, onClose }: Props) {
               price={0}
             >
               <div className="flex flex-col gap-2">
-                {featureRow({ title: "Single Member", color: "gray" })}
+                {featureRow({ title: "Single Member", color: "gray", type: "one" })}
                 {featureRow({ title: "Unlimited Members" })}
                 {featureRow({ title: "Unlimited Artworks" })}
                 {featureRow({ title: "AI Assistant", type: "ai", description: '(no free tokens)' })}
@@ -232,7 +245,7 @@ function SelectPlanModal({ open, onClose }: Props) {
               price={proPriceAmount}
             >
               <div className="flex flex-col gap-2">
-                {featureRow({ title: "Unlimited Members" })}
+                {featureRow({ title: "Unlimited Members", color: "gray", type: "infinite" })}
                 {featureRow({ title: "Unlimited Artworks" })}
                 {featureRow({ title: "Unlimited Locations" })}
                 {featureRow({
@@ -257,7 +270,7 @@ function SelectPlanModal({ open, onClose }: Props) {
                     >
                       Upgrade
                     </Button>
-                    <div className="text-muted text-center mt-1">14 days money back guarantee</div>
+                    <div className="text-ghost mt-1">14 days money back guarantee</div>
                     </>
                   )}
                   {showResumeButton && (
