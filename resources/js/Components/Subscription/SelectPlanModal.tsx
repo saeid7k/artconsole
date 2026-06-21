@@ -219,8 +219,8 @@ function SelectPlanModal({ open, onClose }: Props) {
             >
               <div className="flex flex-col gap-2">
                 {featureRow({ title: "Single Member", color: "gray", type: "one" })}
-                {featureRow({ title: "Unlimited Members" })}
                 {featureRow({ title: "Unlimited Artworks" })}
+                {featureRow({ title: "Unlimited Locations" })}
                 {featureRow({ title: "AI Assistant", type: "ai", description: '(no free tokens)' })}
                 <Divider size='small' />
                 {featureRow({ title: `${CONFIGS.app.name} Branding`, color: "gray" })}
