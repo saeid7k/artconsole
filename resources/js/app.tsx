@@ -1,7 +1,7 @@
 import '../css/app.css';
 import './bootstrap';
 
-import { createInertiaApp } from '@inertiajs/react';
+import { createInertiaApp, router } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 import colors from './Themes/theme';
@@ -24,4 +24,12 @@ createInertiaApp({
     progress: {
         color: colors.purple[500],
     },
+});
+
+router.on('navigate', (event) => {
+    if (import.meta.env.PROD && typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
+        (window as any).gtag('config', 'G-EH7WD273HX', {
+            page_path: event.detail.page.url,
+        });
+    }
 });
