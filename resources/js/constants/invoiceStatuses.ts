@@ -5,7 +5,7 @@ const INVOICE_STATUSES = [
   { label: 'Partially Paid', value: 'partially_paid', color: 'yellow' },
   { label: 'Paid', value: 'paid', color: 'green' },
   { label: 'Overdue', value: 'overdue', color: 'red' },
-  { label: 'Void', value: 'void', color: 'black' },
+  { label: 'Void', value: 'void', color: 'gray' },
 ];
 
 const DEFAULT_INVOICE_STATUS = INVOICE_STATUSES.find(status => status.default) || INVOICE_STATUSES[0];

@@ -76,7 +76,7 @@ function InvoiceStatusTag({ invoice, variant = "filled", fontSize = "base", clas
       popupRender={popupRender}
     >
       <Tag
-        color={selectedStatus?.color || 'default'}
+        color={selectedStatus?.color == 'gray' ? 'default' : selectedStatus?.color}
         variant={variant}
         className={twMerge(
           'font-semibold cursor-pointer select-none w-max',
