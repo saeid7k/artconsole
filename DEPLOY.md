@@ -72,3 +72,17 @@ One key pair serves both purposes: the droplet uses the private key to pull from
 ## 9. Ongoing Deploys
 Handled automatically by the GitHub Actions workflow (`.github/workflows/deploy.yml`).  
 Trigger manually from **Actions → Deploy to Production → Run workflow**.
+
+## 10. Updating Environment Variables
+If you make changes to your `.env.production` file, you must push it manually since it is not tracked by version control.
+
+- [ ] Push the updated environment file from your local machine:
+  ```sh
+  scp -i ~/.ssh/<your-local-key> .env.production root@<DROPLET_IP>:/var/www/artconsole/.env.production
+  ```
+- [ ] SSH into the production server and restart the containers to apply the new variables:
+  ```sh
+  ssh -i ~/.ssh/<your-local-key> root@<DROPLET_IP>
+  cd /var/www/artconsole
+  docker compose --env-file .env.production -f docker-compose.prod.yml up -d
+  ```
