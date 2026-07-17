@@ -1,0 +1,26 @@
+services:
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    environment:
+      PMA_HOST: host.docker.internal
+      PMA_PORT: 3306
+      PMA_ABSOLUTE_URI: "https://db.artconsole.io/"
+      UPLOAD_LIMIT: 512M
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.pma.rule=Host(`db.artconsole.io`)"
+      - "traefik.http.routers.pma.entrypoints=websecure"
+      - "traefik.http.routers.pma.tls.certresolver=le"
+      - "traefik.http.services.pma.loadbalancer.server.port=80"
+
+    restart: unless-stopped
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
