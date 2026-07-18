@@ -18,7 +18,7 @@ function UserMenu() {
         key: 'user-info',
         label: (
           <div className="flex gap-2 cursor-default">
-            <Avatar size="large" src={user?.photo ? user.photo : undefined}>
+            <Avatar size="large" src={user?.photo_small ?? undefined}>
               {getInitials(user?.full_name ?? "")}
             </Avatar>
             <div>
@@ -67,7 +67,7 @@ function UserMenu() {
       >
         <Avatar
           size="default"
-          src={user?.photo ? user.photo : undefined}
+          src={user?.photo_small ?? undefined}
           className="cursor-pointer border-2 hover:border-primary transition-all"
         >
           {getInitials(user?.full_name ?? "")}

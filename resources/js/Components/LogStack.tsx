@@ -87,7 +87,7 @@ function LogStack({ log }: { log: ActivityLogProps }) {
         <FlexBox>
           <Avatar
             size={24}
-            src={log.causer?.photo}
+            src={log.causer?.photo_small}
           >
             {getInitials(causerName(log.causer))}
           </Avatar>

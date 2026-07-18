@@ -18,7 +18,7 @@ function MembersAvatar({gallery}: {gallery: GalleryProps}) {
           {gallery?.members?.length > 1 && gallery?.members?.map((member) => {
             return (
               <Avatar
-                src={member?.photo}
+                src={member?.photo_small}
               >
                 {getInitials(member?.full_name)}
               </Avatar>

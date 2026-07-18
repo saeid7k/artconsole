@@ -95,7 +95,7 @@ function Note({ index, note, rows = 3, onChange, onClickRoot, deletable = true, 
                   placement="bottomLeft"
                 >
                   <Avatar
-                    src={item.photo}
+                    src={item.photo_small}
                     size='small'
                   >
                     {getInitials(item.full_name || '')}
