@@ -32,8 +32,12 @@ class Media extends BaseMedia
     ];
 
     foreach ($this->generated_conversions as $name => $isGenerated) {
-      if ($isGenerated) {
-        $urls[$name] = $this->getUrl($name);
+      if ($isGenerated && $this->hasGeneratedConversion($name)) {
+        try {
+          $urls[$name] = $this->getUrl($name);
+        } catch (\Spatie\MediaLibrary\MediaCollections\Exceptions\InvalidConversion $e) {
+          // ignore invalid conversions
+        }
       }
     }
 
