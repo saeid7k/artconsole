@@ -9,16 +9,8 @@ class NoteController extends Controller
 {
   public function getCollaborators(Request $request, Note $note)
   {
-    $collaborators = $note->collaborators()->map(function ($user) {
-      return [
-        'id' => $user->id,
-        'full_name' => $user->full_name,
-        'photo' => $user->photo,
-      ];
-    });
-
     return response()->json([
-      'collaborators' => $collaborators,
+      'collaborators' => $note->collaborators(),
     ]);
   }
 

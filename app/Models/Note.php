@@ -52,7 +52,10 @@ class Note extends Model
 
   public function collaborators()
   {
-    return User::whereIn('id', $this->collaborators_ids ?? [])->get();
+    return User::whereIn('id', $this->collaborators_ids ?? [])
+      ->select('id', 'firstname', 'lastname')
+      ->get()
+      ->setAppends(['full_name', 'photo', 'photo_thumb', 'photo_small']);
   }
 
   /*
