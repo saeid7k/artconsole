@@ -26,6 +26,8 @@ export interface UserProps {
   full_name: string;
   formatted_address: string;
   photo?: string | null;
+  photo_thumb?: string | null;
+  photo_small?: string | null;
   has_password: boolean;
   timezone?: string | null;
   access: accessLevelsType;

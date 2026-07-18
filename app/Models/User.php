@@ -21,6 +21,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Zoha\Metable;
+use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 
 class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {
@@ -88,7 +89,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
   |=======================================================
   */
 
-  protected $appends = ['abilities', 'full_name', 'is_admin', 'formatted_address', 'photo', 'has_password', 'timezone', 'access', 'has_edit_access'];
+  protected $appends = ['abilities', 'full_name', 'is_admin', 'formatted_address', 'photo', 'photo_thumb', 'photo_small', 'has_password', 'timezone', 'access', 'has_edit_access'];
 
   public function getAbilitiesAttribute(): array
   {
@@ -116,6 +117,18 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
   {
     $media = $this->getLastMedia('profile');
     return $media ? $media->getUrl() : null;
+  }
+
+  public function getPhotoThumbAttribute(): ?string
+  {
+    $media = $this->getLastMedia('profile');
+    return $media ? $media->getUrl('thumb') : null;
+  }
+
+  public function getPhotoSmallAttribute(): ?string
+  {
+    $media = $this->getLastMedia('profile');
+    return $media ? $media->getUrl('small') : null;
   }
 
   public function getHasPasswordAttribute(): bool
@@ -336,6 +349,27 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
   public function scopeUnverified(Builder $query): void
   {
     $query->whereNull('email_verified_at');
+  }
+
+  /*
+  |=======================================================
+  | Media Conversions
+  |=======================================================
+  */
+
+  public function registerMediaConversions(?BaseMedia $media = null): void
+  {
+    $this->addMediaConversion('thumb')
+      ->width(200)
+      ->height(200)
+      ->sharpen(0)
+      ->nonQueued();
+
+    $this->addMediaConversion('small')
+      ->width(40)
+      ->height(40)
+      ->sharpen(0)
+      ->nonQueued();
   }
 
   /*
