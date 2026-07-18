@@ -15,7 +15,6 @@ export interface ContactProps {
   relationship: Array<string>;
   business: Business;
   birthday: string | Date;
-  photo?: string | null;
   created_at: string;
   updated_at: string;
   deleted_at?: string | null;
@@ -23,6 +22,9 @@ export interface ContactProps {
   // Appended properties
   abilities: { [key: string]: boolean };
   full_name: string;
+  photo?: string | null;
+  photo_small?: string | null;
+  photo_thumb?: string | null;
   formatted_address: string;
   business_formatted_address: string;
   formatted_phone_number: string;

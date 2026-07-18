@@ -9,7 +9,7 @@ function ContactAvatar({ contact }: { contact: ContactProps }) {
       shape="square"
       className="tracking-wider min-w-8 border-none"
       style={{ backgroundColor: stringToColor(getInitials(contact?.full_name)) }}
-      src={contact?.photo}
+      src={contact?.photo_small}
     >
       {getInitials(contact?.full_name)}
     </Avatar>

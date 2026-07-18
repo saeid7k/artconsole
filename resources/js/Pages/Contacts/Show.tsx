@@ -91,7 +91,7 @@ function Show({ contact }: { contact: ContactProps }) {
                 size={64}
                 shape="square"
                 style={{ backgroundColor: stringToColor(getInitials(contact.full_name)) }}
-                src={contact.photo}
+                src={contact.photo_thumb}
                 className="border-none"
               >
                 {getInitials(contact.full_name)}

@@ -16,6 +16,7 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 
 class Contact extends Model implements HasMedia
 {
@@ -49,7 +50,7 @@ class Contact extends Model implements HasMedia
   |=======================================================
   */
 
-  protected $appends = ['abilities', 'full_name', 'formatted_address', 'business_formatted_address', 'photo', 'formatted_phone_number'];
+  protected $appends = ['abilities', 'full_name', 'formatted_address', 'business_formatted_address', 'photo', 'photo_small', 'photo_thumb', 'formatted_phone_number'];
 
   public function getAbilitiesAttribute(): array
   {
@@ -82,6 +83,18 @@ class Contact extends Model implements HasMedia
   {
     $media = $this->getLastMedia('contact-photo');
     return $media ? $media->getUrl() : null;
+  }
+
+  public function getPhotoSmallAttribute(): ?string
+  {
+    $media = $this->getLastMedia('contact-photo');
+    return $media ? $media->getUrl('small') : null;
+  }
+
+  public function getPhotoThumbAttribute(): ?string
+  {
+    $media = $this->getLastMedia('contact-photo');
+    return $media ? $media->getUrl('thumb') : null;
   }
 
   public function phone(): Attribute
@@ -144,6 +157,27 @@ class Contact extends Model implements HasMedia
       ->where('invoice_items.type', 'artwork')
       ->where('invoices.status', '!=', 'void')
       ->whereNull('invoices.deleted_at');
+  }
+
+  /*
+  |=======================================================
+  | Media Conversions
+  |=======================================================
+  */
+
+  public function registerMediaConversions(?BaseMedia $media = null): void
+  {
+    $this->addMediaConversion('thumb')
+      ->width(200)
+      ->height(200)
+      ->sharpen(0)
+      ->nonQueued();
+
+    $this->addMediaConversion('small')
+      ->width(40)
+      ->height(40)
+      ->sharpen(0)
+      ->nonQueued();
   }
 
   /*
