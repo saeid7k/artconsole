@@ -28,7 +28,9 @@ export interface GalleryProps {
     manage_members: boolean;
   };
   members_count?: number;
-  logo_url?: string | null;
+  logo?: string | null;
+  logo_thumb?: string | null;
+  logo_small?: string | null;
   formatted_address?: string | null;
   formatted_phone_number: string;
   meta?: { [key: string]: any };

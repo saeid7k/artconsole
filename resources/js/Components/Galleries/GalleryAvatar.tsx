@@ -15,9 +15,22 @@ function GalleryAvatar({ gallery, size = 'default', shape = 'square', shadow, bo
 
   const initials = getInitials(gallery?.name ?? 'LI')
 
+  const logoUrl = () => {
+    if (typeof size === 'number' && size > 200) {
+      return gallery?.logo
+    } else if (
+      ['large', 'default'].includes(String(size))
+      || (typeof size === 'number' && size > 40)
+    ) {
+      return gallery?.logo_thumb
+    } else {
+      return gallery?.logo_small
+    }
+  }
+
   return (
     <Avatar
-      src={gallery?.logo_url}
+      src={logoUrl()}
       shape={shape}
       size={size}
       className={twMerge('[&_img]:object-contain',

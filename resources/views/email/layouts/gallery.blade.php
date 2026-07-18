@@ -16,7 +16,7 @@
         @yield('header')
       @else
         <img
-          src="{{ $gallery->logo_url }}"
+          src="{{ $gallery->logo }}"
           alt="{{ $gallery->name }} Logo"
           class="mx-auto"
           style="max-height: 80px;"

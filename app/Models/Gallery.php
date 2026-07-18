@@ -18,6 +18,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Zoha\Metable;
+use Spatie\MediaLibrary\MediaCollections\Models\Media as BaseMedia;
 
 class Gallery extends Model implements HasMedia
 {
@@ -50,7 +51,9 @@ class Gallery extends Model implements HasMedia
     'abilities',
     'currency',
     'invoice_prefix',
-    'logo_url',
+    'logo',
+    'logo_thumb',
+    'logo_small',
     'formatted_address',
     'formatted_phone_number',
     'is_subscribed',
@@ -74,10 +77,32 @@ class Gallery extends Model implements HasMedia
     return $this->members()->count();
   }
 
-  public function getLogoUrlAttribute(): ?string
+  public function getLogoAttribute(): ?string
   {
     $media = $this->logo();
     return $media ? $media->getUrl() : null;
+  }
+
+  public function getLogoThumbAttribute(): ?string
+  {
+    $media = $this->logo();
+    if (!$media) {
+      return null;
+    }
+
+    if (str_contains($media->mime_type ?? '', 'svg')) return $media->getUrl();
+    return $media->hasGeneratedConversion('thumb') ? $media->getUrl('thumb') : $media->getUrl();
+  }
+
+  public function getLogoSmallAttribute(): ?string
+  {
+    $media = $this->logo();
+    if (!$media) {
+      return null;
+    }
+
+    if (str_contains($media->mime_type ?? '', 'svg')) return $media->getUrl();
+    return $media->hasGeneratedConversion('small') ? $media->getUrl('small') : $media->getUrl();
   }
 
   public function getFormattedAddressAttribute(): string
@@ -355,6 +380,35 @@ class Gallery extends Model implements HasMedia
         $this->setMeta('currency', $currency);
       }
     }
+  }
+
+  /*
+  |=======================================================
+  | Media Conversions
+  |=======================================================
+  */
+
+  public function registerMediaConversions(?BaseMedia $media = null): void
+  {
+    if ($media && str_contains($media->mime_type ?? '', 'svg')) {
+      return;
+    }
+
+    $this->addMediaConversion('thumb')
+      ->width(200)
+      ->height(200)
+      ->sharpen(0)
+      ->format('webp')
+      ->performOnCollections('gallery-logo')
+      ->nonQueued();
+
+    $this->addMediaConversion('small')
+      ->width(40)
+      ->height(40)
+      ->sharpen(0)
+      ->format('webp')
+      ->performOnCollections('gallery-logo')
+      ->nonQueued();
   }
 
   /*
