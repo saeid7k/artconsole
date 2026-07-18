@@ -105,7 +105,13 @@ class Artwork extends Model implements HasMedia
     $media = $this->media()->where('collection_name', 'artwork-images')
       ->where('custom_properties->is_main', true)
       ->first();
-    return $media ? $media->getUrl('thumb') : null;
+
+    if (!$media) {
+      return null;
+    }
+
+    if (str_contains($media->mime_type ?? '', 'svg')) return $media->getUrl();
+    return $media->hasGeneratedConversion('thumb') ? $media->getUrl('thumb') : $media->getUrl();
   }
 
   public function getInvoiceDescriptionAttribute(): string
@@ -288,16 +294,22 @@ class Artwork extends Model implements HasMedia
 
   public function registerMediaConversions(?BaseMedia $media = null): void
   {
+    if ($media && str_contains($media->mime_type ?? '', 'svg')) {
+      return;
+    }
+
     $this->addMediaConversion('thumb')
       ->width(200)
       ->height(200)
-      ->sharpen(10)
+      ->format('webp')
+      ->performOnCollections('artwork-images')
       ->nonQueued();
 
     $this->addMediaConversion('small')
       ->width(40)
       ->height(40)
-      ->sharpen(10)
+      ->format('webp')
+      ->performOnCollections('artwork-images')
       ->nonQueued();
   }
 
