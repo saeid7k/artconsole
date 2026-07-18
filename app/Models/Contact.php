@@ -85,16 +85,28 @@ class Contact extends Model implements HasMedia
     return $media ? $media->getUrl() : null;
   }
 
-  public function getPhotoSmallAttribute(): ?string
-  {
-    $media = $this->getLastMedia('contact-photo');
-    return $media ? $media->getUrl('small') : null;
-  }
-
   public function getPhotoThumbAttribute(): ?string
   {
     $media = $this->getLastMedia('contact-photo');
-    return $media ? $media->getUrl('thumb') : null;
+
+    if (!$media) {
+      return null;
+    }
+
+    if (str_contains($media->mime_type ?? '', 'svg')) return $media->getUrl();
+    return $media->hasGeneratedConversion('thumb') ? $media->getUrl('thumb') : $media->getUrl();
+  }
+
+  public function getPhotoSmallAttribute(): ?string
+  {
+    $media = $this->getLastMedia('contact-photo');
+
+    if (!$media) {
+      return null;
+    }
+
+    if (str_contains($media->mime_type ?? '', 'svg')) return $media->getUrl();
+    return $media->hasGeneratedConversion('small') ? $media->getUrl('small') : $media->getUrl();
   }
 
   public function phone(): Attribute
@@ -167,16 +179,22 @@ class Contact extends Model implements HasMedia
 
   public function registerMediaConversions(?BaseMedia $media = null): void
   {
+    if ($media && str_contains($media->mime_type ?? '', 'svg')) {
+      return;
+    }
+
     $this->addMediaConversion('thumb')
       ->width(200)
       ->height(200)
-      ->sharpen(0)
+      ->format('webp')
+      ->performOnCollections('contact-photo')
       ->nonQueued();
 
     $this->addMediaConversion('small')
       ->width(40)
       ->height(40)
-      ->sharpen(0)
+      ->format('webp')
+      ->performOnCollections('contact-photo')
       ->nonQueued();
   }
 

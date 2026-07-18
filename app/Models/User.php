@@ -122,13 +122,25 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
   public function getPhotoThumbAttribute(): ?string
   {
     $media = $this->getLastMedia('profile');
-    return $media ? $media->getUrl('thumb') : null;
+
+    if (!$media) {
+      return null;
+    }
+
+    if (str_contains($media->mime_type ?? '', 'svg')) return $media->getUrl();
+    return $media->hasGeneratedConversion('thumb') ? $media->getUrl('thumb') : $media->getUrl();
   }
 
   public function getPhotoSmallAttribute(): ?string
   {
     $media = $this->getLastMedia('profile');
-    return $media ? $media->getUrl('small') : null;
+
+    if (!$media) {
+      return null;
+    }
+
+    if (str_contains($media->mime_type ?? '', 'svg')) return $media->getUrl();
+    return $media->hasGeneratedConversion('small') ? $media->getUrl('small') : $media->getUrl();
   }
 
   public function getHasPasswordAttribute(): bool
@@ -359,16 +371,22 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
   public function registerMediaConversions(?BaseMedia $media = null): void
   {
+    if ($media && str_contains($media->mime_type ?? '', 'svg')) {
+      return;
+    }
+
     $this->addMediaConversion('thumb')
       ->width(200)
       ->height(200)
-      ->sharpen(0)
+      ->format('webp')
+      ->performOnCollections('profile')
       ->nonQueued();
 
     $this->addMediaConversion('small')
       ->width(40)
       ->height(40)
-      ->sharpen(0)
+      ->format('webp')
+      ->performOnCollections('profile')
       ->nonQueued();
   }
 
