@@ -279,8 +279,34 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
               }
               key="general"
             >
-              {/* Title & Status */}
+              {/* Images */}
+              {mode === 'create' && (
+                <Form.Item
+                  // label="Upload Files"
+                  name="images"
+                  valuePropName="fileList"
+                  getValueFromEvent={(e) => {
+                    if (Array.isArray(e)) {
+                      return e;
+                    }
+                    return e?.fileList;
+                  }}
+                >
+                  <Dragger
+                    multiple
+                    beforeUpload={() => false}
+                    listType="picture"
+                  >
+                    <FlexBox direction="col" className="font-light p-5" >
+                      <HugeiconsIcon icon={InboxUploadIcon} size={48} strokeWidth={0.5} />
+                      <div className="text-xl text-gray-500 mt-3" >Click or drag files here to upload</div>
+                      <div className="text-sm text-gray-400" >All image types are supported</div>
+                    </FlexBox>
+                  </Dragger>
+                </Form.Item>
+              )}
 
+              {/* Title & Status */}
               <div className="flex flex-col sm:flex-row gap-x-4">
                 <Form.Item
                   label="Title"
@@ -359,8 +385,8 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
                   >
                     <Segmented
                       options={[
+                        { label: 'New', value: 'add' },
                         { label: 'Select from Contacts', value: 'select' },
-                        { label: 'Type Name', value: 'add' },
                       ]}
                       defaultValue={defaultArtistMode}
                     />
@@ -513,35 +539,6 @@ function ArtworkFormDrawer({ mode = 'create', artwork = null, show, onClose }: P
               </div>
 
             </Tabs.TabPane>
-
-            {/* Images */}
-            {mode === 'create' && (
-              <Tabs.TabPane tab="Images" key="images">
-                <Form.Item
-                  // label="Upload Files"
-                  name="images"
-                  valuePropName="fileList"
-                  getValueFromEvent={(e) => {
-                    if (Array.isArray(e)) {
-                      return e;
-                    }
-                    return e?.fileList;
-                  }}
-                >
-                  <Dragger
-                    multiple
-                    beforeUpload={() => false}
-                    listType="picture"
-                  >
-                    <FlexBox direction="col" className="font-light p-5" >
-                      <HugeiconsIcon icon={InboxUploadIcon} size={48} strokeWidth={0.5} />
-                      <div className="text-xl text-gray-500 mt-3" >Click or drag files here to upload</div>
-                      <div className="text-sm text-gray-400" >All image types are supported</div>
-                    </FlexBox>
-                  </Dragger>
-                </Form.Item>
-              </Tabs.TabPane>
-            )}
 
             {/* Description */}
             <Tabs.TabPane
