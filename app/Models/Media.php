@@ -13,8 +13,8 @@ class Media extends BaseMedia
   {
     $disk = $this->disk;
 
-    if ($disk === 's3') {
-      // Temporary signed URL for S3
+    if (in_array($disk, ['s3', 'r2'])) {
+      // Temporary signed URL for S3 and R2
       return Storage::disk($disk)->temporaryUrl(
         $this->getPath($conversionName),
         now()->addHours(10)
