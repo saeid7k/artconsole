@@ -257,6 +257,11 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     return $this->hasMany(TokenTransaction::class);
   }
 
+  public function conversations(): HasMany
+  {
+    return $this->hasMany(AgentConversation::class);
+  }
+
   /*
   |=======================================================
   | Methods
