@@ -51,7 +51,7 @@ services:
     build:
       context: .
       target: base
-    command: ["php", "artisan", "queue:work", "--tries=3", "--sleep=3", "--timeout=90"]
+    command: ["php", "artisan", "queue:work", "--tries=3", "--sleep=3", "--timeout=600"]
     volumes:
       - .:/var/www/html
       - vendor_data:/var/www/html/vendor

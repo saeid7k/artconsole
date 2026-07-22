@@ -56,7 +56,7 @@ services:
 
   queue:
     image: ghcr.io/saeid7k/artconsole/artconsole-app:latest
-    command: ["php", "artisan", "queue:work", "--tries=3", "--sleep=3", "--timeout=90", "--max-time=3600"]
+    command: ["php", "artisan", "queue:work", "--tries=3", "--sleep=3", "--timeout=600", "--max-time=3600"]
     env_file:
       - .env.production
     environment:
