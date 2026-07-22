@@ -48,92 +48,69 @@ class CleanupOldDemoUsers implements ShouldQueue
     }
 
     foreach ($usersToDelete as $user) {
-      DB::transaction(function () use ($user) {
-        $user->media->each(function ($media) {
-          app(\Spatie\MediaLibrary\MediaCollections\Filesystem::class)->removeAllFiles($media);
-          $media->forceDelete();
-        });
+      $user->media->each->forceDelete();
 
-        foreach ($user->contacts as $contact) {
-          $contact->media->each(function ($media) {
-            app(\Spatie\MediaLibrary\MediaCollections\Filesystem::class)->removeAllFiles($media);
-            $media->forceDelete();
-          });
+      foreach ($user->contacts as $contact) {
+        $contact->media->each->forceDelete();
+        $contact->forceDelete();
+      }
+
+      $user->notes()->delete();
+
+      foreach ($user->invoices as $invoice) {
+        $invoice->items()->delete();
+        $invoice->payments()->delete();
+        $invoice->forceDelete();
+      }
+
+      $user->payments()->delete();
+      $user->tokenTransactions()->delete();
+      $user->invitations()->delete();
+
+      foreach ($user->conversations as $conversation) {
+        foreach ($conversation->messages as $message) {
+          $message->media->each->forceDelete();
+          $message->delete();
+        }
+        $conversation->delete();
+      }
+
+      DB::table('gallery_user')->where('user_id', $user->id)->delete();
+      Activity::causedBy($user)->delete();
+      Activity::forSubject($user)->delete();
+      $user->notifications()->delete();
+      DB::table('password_reset_tokens')->where('email', $user->email)->delete();
+      DB::table('sessions')->where('user_id', $user->id)->delete();
+      $user->meta()->delete();
+
+      foreach ($user->galleriesOwned as $gallery) {
+
+        foreach ($gallery->artworks as $artwork) {
+          $artwork->media->each->forceDelete();
+          $artwork->forceDelete();
+        }
+
+        foreach ($gallery->contacts as $contact) {
+          $contact->media->each->forceDelete();
           $contact->forceDelete();
         }
 
-        $user->notes()->delete();
-
-        foreach ($user->invoices as $invoice) {
-          $invoice->items()->delete();
-          $invoice->payments()->delete();
-          $invoice->forceDelete();
+        foreach ($gallery->reports as $report) {
+          $report->media->each->forceDelete();
+          $report->delete();
         }
 
-        $user->payments()->delete();
-        $user->tokenTransactions()->delete();
-        $user->invitations()->delete();
+        $gallery->locations()->delete();
+        $gallery->tags()->delete();
+        $gallery->taxes()->delete();
+        $gallery->invitations()->delete();
+        $gallery->meta()->delete();
+        $gallery->media->each->forceDelete();
 
-        foreach ($user->conversations as $conversation) {
-          foreach ($conversation->messages as $message) {
-            $message->media->each(function ($media) {
-              app(\Spatie\MediaLibrary\MediaCollections\Filesystem::class)->removeAllFiles($media);
-              $media->forceDelete();
-            });
-            $message->delete();
-          }
-          $conversation->delete();
-        }
+        $gallery->forceDelete();
+      }
 
-        DB::table('gallery_user')->where('user_id', $user->id)->delete();
-        Activity::causedBy($user)->delete();
-        Activity::forSubject($user)->delete();
-        $user->notifications()->delete();
-        DB::table('password_reset_tokens')->where('email', $user->email)->delete();
-        DB::table('sessions')->where('user_id', $user->id)->delete();
-        $user->meta()->delete();
-
-        foreach ($user->galleriesOwned as $gallery) {
-
-          foreach ($gallery->artworks as $artwork) {
-            $artwork->media->each(function ($media) {
-              app(\Spatie\MediaLibrary\MediaCollections\Filesystem::class)->removeAllFiles($media);
-              $media->forceDelete();
-            });
-            $artwork->forceDelete();
-          }
-
-          foreach ($gallery->contacts as $contact) {
-            $contact->media->each(function ($media) {
-              app(\Spatie\MediaLibrary\MediaCollections\Filesystem::class)->removeAllFiles($media);
-              $media->forceDelete();
-            });
-            $contact->delete();
-          }
-
-          foreach ($gallery->reports as $report) {
-            $report->media->each(function ($media) {
-              app(\Spatie\MediaLibrary\MediaCollections\Filesystem::class)->removeAllFiles($media);
-              $media->forceDelete();
-            });
-            $report->delete();
-          }
-
-          $gallery->locations()->delete();
-          $gallery->tags()->delete();
-          $gallery->taxes()->delete();
-          $gallery->invitations()->delete();
-          $gallery->meta()->delete();
-          $gallery->media->each(function ($media) {
-            app(\Spatie\MediaLibrary\MediaCollections\Filesystem::class)->removeAllFiles($media);
-            $media->forceDelete();
-          });
-
-          $gallery->delete();
-        }
-
-        $user->forceDelete();
-      });
+      $user->forceDelete();
     }
   }
 }
