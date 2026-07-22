@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Spatie\Activitylog\Models\Activity;
 
 class CleanupOldDemoUsers implements ShouldQueue
@@ -50,19 +49,25 @@ class CleanupOldDemoUsers implements ShouldQueue
 
     foreach ($usersToDelete as $user) {
       DB::transaction(function () use ($user) {
-        $user->media->each->forceDelete();
+        $user->media->each(function ($media) {
+          app(\Spatie\MediaLibrary\MediaCollections\Filesystem::class)->removeAllFiles($media);
+          $media->forceDelete();
+        });
 
         foreach ($user->contacts as $contact) {
-            $contact->media->each->forceDelete();
-            $contact->forceDelete();
+          $contact->media->each(function ($media) {
+            app(\Spatie\MediaLibrary\MediaCollections\Filesystem::class)->removeAllFiles($media);
+            $media->forceDelete();
+          });
+          $contact->forceDelete();
         }
 
         $user->notes()->delete();
 
         foreach ($user->invoices as $invoice) {
-            $invoice->items()->delete();
-            $invoice->payments()->delete();
-            $invoice->forceDelete();
+          $invoice->items()->delete();
+          $invoice->payments()->delete();
+          $invoice->forceDelete();
         }
 
         $user->payments()->delete();
@@ -70,11 +75,14 @@ class CleanupOldDemoUsers implements ShouldQueue
         $user->invitations()->delete();
 
         foreach ($user->conversations as $conversation) {
-            foreach ($conversation->messages as $message) {
-                $message->media->each->forceDelete();
-                $message->delete();
-            }
-            $conversation->delete();
+          foreach ($conversation->messages as $message) {
+            $message->media->each(function ($media) {
+              app(\Spatie\MediaLibrary\MediaCollections\Filesystem::class)->removeAllFiles($media);
+              $media->forceDelete();
+            });
+            $message->delete();
+          }
+          $conversation->delete();
         }
 
         DB::table('gallery_user')->where('user_id', $user->id)->delete();
@@ -88,18 +96,27 @@ class CleanupOldDemoUsers implements ShouldQueue
         foreach ($user->galleriesOwned as $gallery) {
 
           foreach ($gallery->artworks as $artwork) {
-              $artwork->media->each->forceDelete();
-              $artwork->forceDelete();
+            $artwork->media->each(function ($media) {
+              app(\Spatie\MediaLibrary\MediaCollections\Filesystem::class)->removeAllFiles($media);
+              $media->forceDelete();
+            });
+            $artwork->forceDelete();
           }
 
           foreach ($gallery->contacts as $contact) {
-              $contact->media->each->forceDelete();
-              $contact->delete();
+            $contact->media->each(function ($media) {
+              app(\Spatie\MediaLibrary\MediaCollections\Filesystem::class)->removeAllFiles($media);
+              $media->forceDelete();
+            });
+            $contact->delete();
           }
 
           foreach ($gallery->reports as $report) {
-              $report->media->each->forceDelete();
-              $report->delete();
+            $report->media->each(function ($media) {
+              app(\Spatie\MediaLibrary\MediaCollections\Filesystem::class)->removeAllFiles($media);
+              $media->forceDelete();
+            });
+            $report->delete();
           }
 
           $gallery->locations()->delete();
@@ -107,7 +124,10 @@ class CleanupOldDemoUsers implements ShouldQueue
           $gallery->taxes()->delete();
           $gallery->invitations()->delete();
           $gallery->meta()->delete();
-          $gallery->media->each->forceDelete();
+          $gallery->media->each(function ($media) {
+            app(\Spatie\MediaLibrary\MediaCollections\Filesystem::class)->removeAllFiles($media);
+            $media->forceDelete();
+          });
 
           $gallery->delete();
         }
@@ -115,7 +135,5 @@ class CleanupOldDemoUsers implements ShouldQueue
         $user->forceDelete();
       });
     }
-
-    Log::info('Deleted ' . $usersToDelete->count() . ' old demo users.');
   }
 }
