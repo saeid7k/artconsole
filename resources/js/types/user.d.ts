@@ -32,4 +32,5 @@ export interface UserProps {
   timezone?: string | null;
   access: accessLevelsType;
   has_edit_access: boolean;
+  days_to_delete?: number;
 }
