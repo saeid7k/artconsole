@@ -36,7 +36,9 @@ class UserController extends Controller
       }, function ($q) {
         $q->orderBy('firstname', 'asc')->orderBy('lastname', 'asc');
       })
-      ->paginate($request->per_page ?? 20)->withQueryString();
+      ->paginate($request->per_page ?? 20)
+      ->withQueryString()
+      ->through(fn ($user) => $user->append('days_to_delete'));
 
     return inertia('Users/Index', [
       'users' => $users

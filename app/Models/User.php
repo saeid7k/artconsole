@@ -9,6 +9,7 @@ use App\Helpers\ConfigHelper;
 use App\Helpers\LocationHelper;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -89,7 +90,19 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
   |=======================================================
   */
 
-  protected $appends = ['abilities', 'full_name', 'is_admin', 'formatted_address', 'photo', 'photo_thumb', 'photo_small', 'has_password', 'timezone', 'access', 'has_edit_access'];
+  protected $appends = [
+    'abilities',
+    'full_name',
+    'is_admin',
+    'formatted_address',
+    'photo',
+    'photo_thumb',
+    'photo_small',
+    'has_password',
+    'timezone',
+    'access',
+    'has_edit_access',
+  ];
 
   public function getAbilitiesAttribute(): array
   {
@@ -171,6 +184,22 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     }
 
     return $currentGallery->hasEditAccess($this);
+  }
+
+  public function daysToDelete(): Attribute
+  {
+    return new Attribute(
+      get: function ($value) {
+        if (!$this->is_demo || !$this->demo_claimed_at) {
+          return null;
+        }
+
+        $daysSinceClaimed = now()->diffInDays($this->demo_claimed_at);
+        $daysToDelete = $daysSinceClaimed <= 0 ? 0 : round(7 - $daysSinceClaimed);
+
+        return $daysToDelete;
+      }
+    );
   }
 
   /*
