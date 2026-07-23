@@ -9,6 +9,7 @@ import type { TableProps } from 'antd';
 import { Table } from 'antd';
 import { JSX } from 'react';
 import UsersActions from './UsersActions';
+import StyledDate from '@/Components/StyledDate';
 
 function UsersTable({ users }: { users: PageProps }) {
 
@@ -65,6 +66,16 @@ function UsersTable({ users }: { users: PageProps }) {
       showSorterTooltip: false,
       render: (text) => text && <StyledPhone phone={text} />,
       width: 180,
+    },
+    {
+      title: 'Created At',
+      dataIndex: 'created_at',
+      key: 'created_at',
+      sorter: (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
+      sortDirections: ['ascend', 'descend'],
+      showSorterTooltip: false,
+      render: (text) => <StyledDate value={text} />,
+      width: 190,
     },
     {
       title: 'Actions',
