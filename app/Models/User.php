@@ -195,7 +195,8 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         }
 
         $daysSinceClaimed = now()->diffInDays($this->demo_claimed_at);
-        $daysToDelete = $daysSinceClaimed <= 0 ? 0 : round(7 - $daysSinceClaimed);
+        $daysSinceClaimed = $daysSinceClaimed > 7 ? 7 : $daysSinceClaimed;
+        $daysToDelete = round(7 - $daysSinceClaimed);
 
         return $daysToDelete;
       }
