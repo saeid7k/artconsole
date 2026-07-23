@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Activitylog\Models\Activity;
 
 class CleanupOldDemoUsers implements ShouldQueue
@@ -47,11 +48,17 @@ class CleanupOldDemoUsers implements ShouldQueue
       $usersToDelete = $usersToDelete->take($limit);
     }
 
+    $deleteMedia = function ($media) {
+      $path = app(\Spatie\MediaLibrary\Support\PathGenerator\PathGenerator::class)->getPath($media);
+      Storage::disk($media->disk)->deleteDirectory($path);
+      $media->forceDelete();
+    };
+
     foreach ($usersToDelete as $user) {
-      $user->media->each->forceDelete();
+      $user->media->each($deleteMedia);
 
       foreach ($user->contacts as $contact) {
-        $contact->media->each->forceDelete();
+        $contact->media->each($deleteMedia);
         $contact->forceDelete();
       }
 
@@ -69,7 +76,7 @@ class CleanupOldDemoUsers implements ShouldQueue
 
       foreach ($user->conversations as $conversation) {
         foreach ($conversation->messages as $message) {
-          $message->media->each->forceDelete();
+          $message->media->each($deleteMedia);
           $message->delete();
         }
         $conversation->delete();
@@ -86,17 +93,17 @@ class CleanupOldDemoUsers implements ShouldQueue
       foreach ($user->galleriesOwned as $gallery) {
 
         foreach ($gallery->artworks as $artwork) {
-          $artwork->media->each->forceDelete();
+          $artwork->media->each($deleteMedia);
           $artwork->forceDelete();
         }
 
         foreach ($gallery->contacts as $contact) {
-          $contact->media->each->forceDelete();
+          $contact->media->each($deleteMedia);
           $contact->forceDelete();
         }
 
         foreach ($gallery->reports as $report) {
-          $report->media->each->forceDelete();
+          $report->media->each($deleteMedia);
           $report->delete();
         }
 
@@ -105,7 +112,7 @@ class CleanupOldDemoUsers implements ShouldQueue
         $gallery->taxes()->delete();
         $gallery->invitations()->delete();
         $gallery->meta()->delete();
-        $gallery->media->each->forceDelete();
+        $gallery->media->each($deleteMedia);
 
         $gallery->forceDelete();
       }
