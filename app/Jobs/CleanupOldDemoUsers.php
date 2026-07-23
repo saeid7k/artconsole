@@ -49,7 +49,8 @@ class CleanupOldDemoUsers implements ShouldQueue
     }
 
     $deleteMedia = function ($media) {
-      $path = app(\Spatie\MediaLibrary\Support\PathGenerator\PathGenerator::class)->getPath($media);
+      $pathGenerator = app(config('media-library.path_generator', \Spatie\MediaLibrary\Support\PathGenerator\DefaultPathGenerator::class));
+      $path = $pathGenerator->getPath($media);
       Storage::disk($media->disk)->deleteDirectory($path);
       $media->forceDelete();
     };
