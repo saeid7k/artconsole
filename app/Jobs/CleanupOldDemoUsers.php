@@ -8,6 +8,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Activitylog\Models\Activity;
+use Spatie\MediaLibrary\Support\PathGenerator\DefaultPathGenerator;
 
 class CleanupOldDemoUsers implements ShouldQueue
 {
@@ -49,9 +50,17 @@ class CleanupOldDemoUsers implements ShouldQueue
     }
 
     $deleteMedia = function ($media) {
-      $pathGenerator = app(config('media-library.path_generator', \Spatie\MediaLibrary\Support\PathGenerator\DefaultPathGenerator::class));
+      $pathGenerator = app(config('media-library.path_generator', DefaultPathGenerator::class));
       $path = $pathGenerator->getPath($media);
-      Storage::disk($media->disk)->deleteDirectory($path);
+
+      $disk = Storage::disk($media->disk);
+      $disk->deleteDirectory($path);
+
+      $parentPath = dirname(rtrim($path, '/'));
+      if (empty($disk->files($parentPath)) && empty($disk->directories($parentPath))) {
+        $disk->deleteDirectory($parentPath);
+      }
+
       $media->forceDelete();
     };
 
