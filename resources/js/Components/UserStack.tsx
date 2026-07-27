@@ -9,16 +9,20 @@ type Props = {
 function UserStack({ user }: Props) {
 
   const renderDeletingTag = () => {
-    if (user?.days_to_delete !== null) {
-      if (user.days_to_delete == 0) {
-        return <Tag color='red'>Will be deleted soon</Tag>
-      } else if (user.days_to_delete == 1) {
-        return <Tag color='red'>Delete in 1 day</Tag>
-      } else {
-        return <Tag color='red'>Delete in {user.days_to_delete} days</Tag>
-      }
+    if (
+      typeof user?.days_to_delete == 'undefined'
+      || user?.days_to_delete == null
+    ) {
+      return null;
     }
-    return null;
+
+    if (user.days_to_delete == 0) {
+      return <Tag color='red'>Will be deleted soon</Tag>
+    } else if (user.days_to_delete == 1) {
+      return <Tag color='red'>Delete in 1 day</Tag>
+    } else {
+      return <Tag color='red'>Delete in {user.days_to_delete} days</Tag>
+    }
   }
 
   return (
