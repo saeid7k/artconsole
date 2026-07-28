@@ -99,6 +99,7 @@ class TokenTransactionController extends Controller
           'name' => 'auto',
           'address' => 'auto',
         ],
+        'managed_payments' => ['enabled' => false],
       ]);
     } catch (\Exception $e) {
       return response()->json([
