@@ -44,31 +44,41 @@ function TokenPackages() {
         )
       }
       {packages.length > 0 && (
-        <div className="grid grid-cols-2 gap-3">
-          {packages.map((pkg: any) => {
-            let iconQty = Math.round(pkg.tokens / 500);
-            return (
-              <Button
-                key={pkg.id}
-                variant="outlined"
-                color="default"
-                className="h-max py-1"
-                onClick={() => checkoutMutation.mutate(pkg.price_id)}
-                disabled={user?.is_demo}
-              >
-                <div className="flex flex-col items-center gap-1">
-                  <FlexBox>
-                    {Array(iconQty).fill(null).map((_, i) => (
-                      <HugeiconsIcon key={i} icon={Coins01Icon} size={24} strokeWidth={1} className="text-yellow-500" />
-                    ))}
-                  </FlexBox>
-                  <div>{pkg.name}</div>
-                  <div className="text-lg">{formatCurrency(pkg.currencies[currency.toLowerCase()] / 100, currency)}</div>
-                </div>
-              </Button>
-            )
-          })}
-        </div>
+        <>
+          <div className="grid grid-cols-2 gap-3">
+            {packages.map((pkg: any) => {
+              let iconQty = Math.round(pkg.tokens / 500);
+              return (
+                <Button
+                  key={pkg.id}
+                  variant="outlined"
+                  color="default"
+                  className="h-max py-1"
+                  onClick={import.meta.env.PROD ? undefined : () => checkoutMutation.mutate(pkg.price_id)}
+                  disabled={user?.is_demo || import.meta.env.PROD}
+                >
+                  <div className="flex flex-col items-center gap-1">
+                    <FlexBox>
+                      {Array(iconQty).fill(null).map((_, i) => (
+                        <HugeiconsIcon key={i} icon={Coins01Icon} size={24} strokeWidth={1} className="text-yellow-500" />
+                      ))}
+                    </FlexBox>
+                    <div>{pkg.name}</div>
+                    <div className="text-lg">{formatCurrency(pkg.currencies[currency.toLowerCase()] / 100, currency)}</div>
+                  </div>
+                </Button>
+              )
+            })}
+          </div>
+          {import.meta.env.PROD && (
+            <Alert
+              title='Coming Soon'
+              type="info"
+              showIcon
+              className="mt-3"
+            />
+          )}
+        </>
       )}
       {user?.is_demo && (
         <Alert

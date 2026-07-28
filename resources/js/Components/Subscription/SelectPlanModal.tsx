@@ -266,9 +266,10 @@ function SelectPlanModal({ open, onClose }: Props) {
                       variant="solid"
                       color="blue"
                       className="mt-5 w-full"
-                      onClick={() => subscribeMutation.mutate(proPriceId)}
+                      onClick={import.meta.env.PROD ? undefined : () => subscribeMutation.mutate(proPriceId)}
+                      disabled={import.meta.env.PROD}
                     >
-                      Upgrade
+                      {import.meta.env.PROD ? 'Coming Soon' : 'Upgrade'}
                     </Button>
                     <div className="text-ghost mt-1">14 days money back guarantee</div>
                     </>
