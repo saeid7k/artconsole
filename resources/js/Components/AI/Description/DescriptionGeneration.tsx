@@ -31,7 +31,7 @@ function DescriptionGeneration() {
   const [selectedResource, setSelectedResource] = useState<AiResource | null>(null)
   const [conversationId, setConversationId] = useState<string | null>(null)
   const [selectedLength, setSelectedLength] = useState<string | null>(null)
-  const { status, agentMessage } = usePollAssistantMessage(conversationId)
+  const result = usePollAssistantMessage(conversationId)
 
   // Derived state
 
@@ -177,7 +177,7 @@ function DescriptionGeneration() {
         </>
       )}
 
-      {status === 'pending' && (
+      {result.status === 'pending' && (
         <div className="py-5">
           <LoadingAi
             message="Generating Description..."
@@ -185,10 +185,10 @@ function DescriptionGeneration() {
         </div>
       )}
 
-      {status === 'success' && agentMessage && (
+      {result.status === 'success' && result.assistantMessage && (
         <div className="flex flex-col gap-3">
           <div className="text-lg font-semibold">Here is your generated description</div>
-          <DescriptionResponse message={agentMessage} />
+          <DescriptionResponse message={result.assistantMessage} />
         </div>
       )}
     </div>
