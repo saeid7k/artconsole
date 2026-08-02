@@ -87,28 +87,41 @@ class TokenTransactionController extends Controller
 
       $tokens = (int) ($price->product->metadata->tokens ?? 0);
 
-      $checkout = $user->checkout([$priceId => 1], [
-        'success_url' => route('dashboard', ['token-topup' => 'success']),
-        'cancel_url' => route('dashboard', ['token-topup' => 'canceled']),
-        'metadata' => [
-          'user_id' => $user->id,
-          'tokens' => $tokens,
-          'type' => 'token_topup',
-        ],
-        'customer_update' => [
-          'name' => 'auto',
-          'address' => 'auto',
-        ],
-        'managed_payments' => ['enabled' => false],
-      ]);
+      if (env('MOCK_ACTIONS', false)) {
+        $user->tokenTransactions()->create([
+          'type' => 'top_up',
+          'amount' => $tokens,
+          'description' => 'Token top-up',
+          'stripe_id' => 'XXXX TEST XXXX',
+        ]);
+
+        return response()->json([
+          'checkout_url' => '#',
+        ]);
+      } else {
+        $checkout = $user->checkout([$priceId => 1], [
+          'success_url' => route('dashboard', ['token-topup' => 'success']),
+          'cancel_url' => route('dashboard', ['token-topup' => 'canceled']),
+          'metadata' => [
+            'user_id' => $user->id,
+            'tokens' => $tokens,
+            'type' => 'token_topup',
+          ],
+          'customer_update' => [
+            'name' => 'auto',
+            'address' => 'auto',
+          ],
+          'managed_payments' => ['enabled' => false],
+        ]);
+
+        return response()->json([
+          'checkout_url' => $checkout->url,
+        ]);
+      }
     } catch (\Exception $e) {
       return response()->json([
         'message' => 'Failed to create checkout session: ' . $e->getMessage(),
       ], 500);
     }
-
-    return response()->json([
-      'checkout_url' => $checkout->url,
-    ]);
   }
 }
