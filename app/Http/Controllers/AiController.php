@@ -144,6 +144,7 @@ class AiController extends Controller
       ->firstOrFail();
 
     $assistantMessage = $conversation->messages()
+      ->with(['artwork' => fn($q) => $q->select('id', 'title')])
       ->where('role', 'assistant')
       ->first();
 

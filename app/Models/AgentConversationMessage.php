@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\MediaLibrary\HasMedia;
@@ -41,9 +42,11 @@ class AgentConversationMessage extends Model implements HasMedia
     return $this->belongsTo(AgentConversation::class, 'conversation_id');
   }
 
-  public function getArtworkIdAttribute(): ?int
+  public function artworkId(): Attribute
   {
-    return $this->meta['artwork_id'] ?? null;
+    return Attribute::make(
+      get: fn ($value, $attributes) => $this->meta['artwork_id'] ?? null,
+    );
   }
 
   public function artwork(): BelongsTo

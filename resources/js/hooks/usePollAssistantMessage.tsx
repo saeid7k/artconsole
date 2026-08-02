@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 
 function usePollAssistantMessage(conversationId: string | null) {
 
-  const [result, setResult] = useState<{ status: 'pending' | 'success' | 'error' | null, agentMessage?: AiMessage }>({
+  const [result, setResult] = useState<{ status: 'pending' | 'success' | 'error' | null, assistantMessage?: AiMessage }>({
     status: null,
-    agentMessage: undefined,
+    assistantMessage: undefined,
   })
 
   function pollForResult() {
@@ -21,7 +21,7 @@ function usePollAssistantMessage(conversationId: string | null) {
             message.success('AI response received successfully!')
             setResult({
               status: 'success',
-              agentMessage: res.data,
+              assistantMessage: res.data,
             })
             clearInterval(interval)
           }
@@ -41,10 +41,7 @@ function usePollAssistantMessage(conversationId: string | null) {
 
   useEffect(pollForResult, [conversationId])
 
-  return {
-    status: result.status,
-    agentMessage: result.agentMessage,
-  }
+  return result
 }
 
 export default usePollAssistantMessage

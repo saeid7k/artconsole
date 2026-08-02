@@ -33,7 +33,7 @@ function MockupGeneration() {
   const [selectedEnvironment, setSelectedEnvironment] = useState<string | null>(null)
   const [conversationId, setConversationId] = useState<string | null>(null)
 
-  const { status, agentMessage } = usePollAssistantMessage(conversationId)
+  const result = usePollAssistantMessage(conversationId)
 
   const artworkIds = resources.filter((resource: AiResource) => resource.type === 'artworks').map((resource: AiResource) => resource.id)
 
@@ -195,7 +195,7 @@ function MockupGeneration() {
         </>
       )}
 
-      {status === 'pending' && (
+      {result?.status === 'pending' && (
         <div className="py-5">
           <LoadingAi
             message="Generating Mockup..."
@@ -203,10 +203,10 @@ function MockupGeneration() {
         </div>
       )}
 
-      {status === 'success' && agentMessage && (
+      {result?.status === 'success' && result?.assistantMessage && (
         <div className="flex flex-col gap-3">
           <div className="text-lg font-semibold">Here is your generated mockup</div>
-          <MockupResponse message={agentMessage} />
+          <MockupResponse message={result.assistantMessage} />
         </div>
       )}
     </div>

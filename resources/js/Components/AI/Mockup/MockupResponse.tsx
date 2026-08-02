@@ -50,21 +50,23 @@ function MockupResponse({ message }: { message: AiMessage }) {
 
   return (
     <div className="flex flex-col gap-3">
-      <Container label="Resource" labelClassName="text-muted" rounded="lg" >
-          <ResourceChips
-            resource={{
-              "type": "artworks",
-              "id": message?.artwork?.id || 0,
-              "name": message?.artwork?.title || 'Unknown Artwork',
-              "image": message?.artwork?.main_image_thumb_url || '',
-            }}
-            closable={false}
-            onClick={() => {
-              router.get(route('artworks.show', message?.artwork?.id))
-              setAiDrawerOpen(false)
-            }}
-          />
-      </Container>
+      {message?.artwork && (
+        <Container label="Resource" labelClassName="text-muted" rounded="lg" >
+            <ResourceChips
+              resource={{
+                "type": "artworks",
+                "id": message?.artwork?.id || 0,
+                "name": message?.artwork?.title || 'Unknown Artwork',
+                "image": message?.artwork?.main_image_thumb_url || '',
+              }}
+              closable={false}
+              onClick={() => {
+                router.get(route('artworks.show', message?.artwork?.id))
+                setAiDrawerOpen(false)
+              }}
+            />
+        </Container>
+      )}
       <Card
         title="Generated Mockup"
         actions={[
