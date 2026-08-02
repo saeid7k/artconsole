@@ -48,7 +48,7 @@ class AgentMessageController extends Controller
     if (!$media) {
       return response()->json(['error' => 'Media not found'], 404);
     }
-    $fileContent = file_get_contents($media->getPath());
+    $fileContent = $media->fileContent();
 
     $artwork = Artwork::find($message->artwork_id);
     if (!$artwork) {
