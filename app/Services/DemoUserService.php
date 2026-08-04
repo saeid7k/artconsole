@@ -130,6 +130,9 @@ class DemoUserService
 
     // add photos to contacts with purchased arts
     $this->addContactPhotos($gallery);
+
+    // Free Tokens
+    $user->creditFreeTokens(amount: 30, description: 'Initial free token credit');
   }
 
   private function addArtworks(Gallery $gallery): void
