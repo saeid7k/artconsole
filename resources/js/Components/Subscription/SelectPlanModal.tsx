@@ -218,7 +218,7 @@ function SelectPlanModal({ open, onClose }: Props) {
               price={0}
             >
               <div className="flex flex-col gap-2">
-                {featureRow({ title: "Single Member", color: "gray", type: "one" })}
+                {featureRow({ title: "Unlimited Members" })}
                 {featureRow({ title: "Unlimited Artworks" })}
                 {featureRow({ title: "Unlimited Locations" })}
                 {featureRow({ title: "AI Assistant", type: "ai", description: '(no free tokens)' })}
@@ -245,7 +245,7 @@ function SelectPlanModal({ open, onClose }: Props) {
               price={proPriceAmount}
             >
               <div className="flex flex-col gap-2">
-                {featureRow({ title: "Unlimited Members", color: "gray", type: "infinite" })}
+                {featureRow({ title: "Unlimited Members" })}
                 {featureRow({ title: "Unlimited Artworks" })}
                 {featureRow({ title: "Unlimited Locations" })}
                 {featureRow({

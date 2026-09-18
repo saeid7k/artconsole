@@ -100,7 +100,8 @@ function GallerySwitch() {
 
   // Derived States
 
-  const inviteForbidden = !current_gallery.is_subscribed && !auth.user?.is_admin
+  // const inviteForbidden = !current_gallery.is_subscribed && !auth.user?.is_admin
+  const inviteForbidden = false
 
   return (
     <>

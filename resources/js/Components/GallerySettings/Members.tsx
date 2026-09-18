@@ -247,7 +247,8 @@ function Members() {
 
   // Derived States
 
-  const inviteForbidden = !gallery.is_subscribed && !user?.is_demo && !user?.is_admin
+  // const inviteForbidden = !gallery.is_subscribed && !user?.is_demo && !user?.is_admin
+  const inviteForbidden = false
 
   return (
     <>
