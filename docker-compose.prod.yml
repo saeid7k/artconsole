@@ -68,8 +68,10 @@ services:
       - /var/www/artconsole/storage/app/public:/var/www/html/storage/app/public
       - /var/www/artconsole/public/drive:/var/www/html/public/drive
     depends_on:
-      - app
-      - redis
+      app:
+        condition: service_started
+      redis:
+        condition: service_healthy
     restart: unless-stopped
     networks:
       - artconsole
@@ -88,7 +90,10 @@ services:
       - /var/www/artconsole/storage/app/public:/var/www/html/storage/app/public
       - /var/www/artconsole/public/drive:/var/www/html/public/drive
     depends_on:
-      - app
+      app:
+        condition: service_started
+      redis:
+        condition: service_healthy
     restart: unless-stopped
     networks:
       - artconsole
@@ -104,8 +109,10 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
-      - app
-      - redis
+      app:
+        condition: service_started
+      redis:
+        condition: service_healthy
     restart: unless-stopped
     networks:
       - artconsole
