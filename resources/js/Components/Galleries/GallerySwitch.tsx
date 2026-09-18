@@ -10,12 +10,10 @@ import { Badge, Button, Card, Divider, Dropdown, message, Tooltip } from "antd";
 import useMessage from "antd/es/message/useMessage";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import AnimatedContainer from "../AnimatedContainer";
 import CreateGalleryModal from "../CreateGalleryModal";
 import AddMemberModal from "../GallerySettings/AddMemberModal";
 import GallerySettingsModal from "../GallerySettings/GallerySettingsModal";
 import MembersAvatar from "../MembersAvatar";
-import ProBadge from "../Subscription/ProBadge";
 import GalleryAccessTag from "./GalleryAccessTag";
 import GalleryAvatar from "./GalleryAvatar";
 
@@ -24,7 +22,7 @@ function GallerySwitch() {
   // Hooks
 
   const { intervalData } = useApp();
-  const { current_gallery, galleries, auth } = usePage<UsePageProps>().props;
+  const { current_gallery, galleries } = usePage<UsePageProps>().props;
   const [messageApi, messageContextHolder] = useMessage();
 
   // States
@@ -32,7 +30,6 @@ function GallerySwitch() {
   const [open, setOpen] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [showAddMemberModal, setShowAddMemberModal] = useState(false);
-  const [showProBadge, setShowProBadge] = useState(false);
 
   // First Time Clicked
 
@@ -98,11 +95,6 @@ function GallerySwitch() {
 
   const [showCreateGalleryModal, setShowCreateGalleryModal] = useState(false)
 
-  // Derived States
-
-  // const inviteForbidden = !current_gallery.is_subscribed && !auth.user?.is_admin
-  const inviteForbidden = false
-
   return (
     <>
       {messageContextHolder}
@@ -136,24 +128,15 @@ function GallerySwitch() {
                 </div>
                 <MembersAvatar gallery={current_gallery} />
                 {current_gallery.abilities?.manage_members && (
-                  <div
-                    className="flex gap-1"
-                    onMouseLeave={() => setShowProBadge(false)}
-                  >
-                    <div onMouseEnter={() => setShowProBadge(true)} >
-                      <Button
-                        size="small"
-                        icon={<HugeiconsIcon icon={AddMaleIcon} size={16} />}
-                        className="text-gray-500"
-                        onClick={() => {setShowAddMemberModal(true); setOpen(false);}}
-                        disabled={inviteForbidden}
-                      >
-                        invite members
-                      </Button>
-                    </div>
-                    <AnimatedContainer condition={showProBadge} type="fadeRight" speed="slow" >
-                      <ProBadge onClick={() => setOpen(false)} />
-                    </AnimatedContainer>
+                  <div>
+                    <Button
+                      size="small"
+                      icon={<HugeiconsIcon icon={AddMaleIcon} size={16} />}
+                      className="text-gray-500"
+                      onClick={() => {setShowAddMemberModal(true); setOpen(false);}}
+                    >
+                      invite members
+                    </Button>
                   </div>
                 )}
               </div>

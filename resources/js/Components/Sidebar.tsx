@@ -34,18 +34,24 @@ function Sidebar() {
     { key: 'server-monitor', icon: <HugeiconsIcon icon={ServerStack02Icon} />, label: 'Server Monitor', url: `server.${getDomain()}` },
   ]
 
-  const lowerItems = [
+  const proItems = [
     { key: 'upgrade', icon: <HugeiconsIcon icon={Rocket01Icon} className="animate-pulse" />, label: 'Upgrade' },
     { key: 'subscription', icon: <HugeiconsIcon icon={CreditCard} />, label: 'Subscription', route: 'subscription.index' },
   ]
 
   const logBackItem = { key: 'log-back', icon: <HugeiconsIcon icon={ArrowTurnBackwardIcon} />, label: 'Log Back', route: 'logout-as' }
 
+  const lowerItems = [];
+
+  if (import.meta.env.PRO_MODE ?? false) {
+    lowerItems.push(...proItems);
+  }
+
   if (auth.is_logged_as ?? false) {
     lowerItems.unshift(logBackItem);
   }
 
-  const allItems = [...items, ...adminItems, ...lowerItems];
+  const allItems = [...items, ...adminItems, ...proItems];
   const flattenItems = () => {
     return allItems.reduce((acc: any[], item: any) => {
       acc.push(item);
@@ -89,8 +95,9 @@ function Sidebar() {
     })?.key || ''
   }
 
-  const showUpgrade = gallery?.pivot?.access == 'owner' && !gallery?.is_subscribed && !user?.is_demo && !user?.is_admin
-  const showSubscription = gallery?.pivot?.access == 'owner' && gallery?.is_subscribed && !user?.is_admin
+  const isProMode = import.meta.env.VITE_PRO_MODE === 'true';
+  const showUpgrade = isProMode && gallery?.pivot?.access == 'owner' && !gallery?.is_subscribed && !user?.is_demo && !user?.is_admin
+  const showSubscription = isProMode && gallery?.pivot?.access == 'owner' && gallery?.is_subscribed && !user?.is_admin
 
   return (
     <div

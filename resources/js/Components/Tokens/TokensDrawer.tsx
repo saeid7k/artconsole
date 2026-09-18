@@ -30,6 +30,8 @@ function TokensDrawer({ open, onClose }: Props) {
     }
   }, [open]);
 
+  const isProMode = import.meta.env.VITE_PRO_MODE === 'true';
+
   return (
     <Drawer
       title="Tokens Balance"
@@ -48,14 +50,16 @@ function TokensDrawer({ open, onClose }: Props) {
             <TokenIcon />
           </FlexBox>
         </Container>
-        <Button
-          variant="outlined"
-          color="green"
-          icon={<HugeiconsIcon icon={Coins02Icon} size={16} />}
-          onClick={() => setShowPackages(prev => !prev)}
-        >
-          Top Up
-        </Button>
+        {isProMode && (
+          <Button
+            variant="outlined"
+            color="green"
+            icon={<HugeiconsIcon icon={Coins02Icon} size={16} />}
+            onClick={() => setShowPackages(prev => !prev)}
+          >
+            Top Up
+          </Button>
+        )}
       </FlexBox>
 
       <AnimatedContainer condition={showPackages}

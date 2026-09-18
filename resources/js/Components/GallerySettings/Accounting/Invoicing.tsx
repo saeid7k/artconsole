@@ -2,15 +2,15 @@ import ProBadge from "@/Components/Subscription/ProBadge";
 import CONFIGS from "@/constants/configs.json";
 import { useGallerySettings } from "@/contexts/GallerySettingsContext";
 import useGalleryMeta from "@/hooks/useGalleryMeta";
-import { usePage } from "@inertiajs/react";
 import { Form, Input, Switch } from "antd";
 import TextArea from "antd/es/input/TextArea";
 
 function Invoicing() {
 
-  const user = usePage()?.props?.auth?.user
   const { gallery } = useGallerySettings()
   const { saveChipNode, setMeta } = useGalleryMeta(gallery)
+
+  const isProMode = import.meta.env.VITE_PRO_MODE === 'true';
 
   return (
     <div>
@@ -56,15 +56,15 @@ function Invoicing() {
           label={
             <div className="flex items-start gap-2">
               <div>{CONFIGS.app.name} Branding</div>
-              <ProBadge />
+              {isProMode && <ProBadge />}
             </div>
           }
         >
           <div className="flex gap-2">
             <Switch
-              defaultChecked={gallery?.meta?.app_branding ?? true}
+              defaultChecked={(gallery?.meta?.app_branding ?? true) || !isProMode}
               onChange={(checked) => setMeta("app_branding", checked)}
-              disabled={!gallery?.is_subscribed}
+              disabled={!gallery?.is_subscribed || !isProMode}
             />
             <div className="text-ghost">Show "Powered by {CONFIGS.app.name}" in invoices' footer</div>
           </div>
