@@ -1,8 +1,10 @@
 # ArtConsole
 
-**ArtConsole** is a SaaS gallery management platform for art galleries. It provides a full back-office console to manage artworks, contacts, invoices, locations, and team members — with AI-powered assistance and subscription billing built in.
+**ArtConsole** is a SaaS gallery management platform for art galleries. It provides a full back-office console to manage artworks, contacts, invoices, locations, and team members, with AI-powered assistance.
 
 **Live app:** https://app.artconsole.io
+
+> This application is a free, open-source project. It is operated strictly for non-commercial purposes, generates no revenue, and is not a business entity or paid service.
 
 ---
 
@@ -18,8 +20,7 @@
 - **Locations** — Manage multiple physical storage/display locations for artworks; set primary location.
 - **Tags** — Create and assign grouped tags to artworks and contacts.
 - **Tax Configuration** — Define and manage tax rates; set a default tax rate per gallery.
-- **Subscriptions & Billing** — Stripe-powered subscription plans; manage payment methods, billing details, and subscription lifecycle (subscribe, cancel, resume).
-- **Token System** — Purchase AI token packages via Stripe; track transaction history.
+- **Token System** — Track AI token transaction history.
 - **AI Assistant** — Gemini-powered sidebar assistant for contextual help; AI-generated artwork descriptions and room mockup images.
 - **Team Members** — Invite users to a gallery via invite links; manage access levels and remove members.
 - **Notifications** — In-app notification centre with mark-as-read/unread support.
@@ -42,7 +43,6 @@
 | PDF | DomPDF, Spatie Laravel PDF (Browsershot/Puppeteer) |
 | Storage | AWS S3 (production) / Local public disk (development) |
 | Auth | Laravel Breeze + Laravel Socialite (Google) |
-| Billing | Laravel Cashier (Stripe) |
 | AI | Laravel AI (Google Gemini) |
 | Infrastructure | Docker, Docker Compose, Nginx, Redis |
 
@@ -114,6 +114,7 @@ docker compose build --no-cache             # Rebuild images
 All service credentials are configured in `.env`. Copy `.env.example` and fill in the values below.
 
 ### Stripe (Billing & Subscriptions)
+> **Note:** The billing and subscription features are currently disabled as this project is for non-commercial use only.
 
 Handles subscription plans and token package purchases via Laravel Cashier.
 
