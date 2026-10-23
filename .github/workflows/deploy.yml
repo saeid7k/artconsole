@@ -33,6 +33,7 @@ jobs:
           context: .
           target: production
           push: true
+          pull: true
           tags: ghcr.io/${{ github.repository }}/artconsole-app:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -43,6 +44,7 @@ jobs:
           context: .
           target: nginx-prod
           push: true
+          pull: true
           tags: ghcr.io/${{ github.repository }}/artconsole-nginx:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
